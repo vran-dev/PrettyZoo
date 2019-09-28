@@ -1,10 +1,10 @@
 ## What
 
-A GUI for Zookeeper created by JAVAFX and Curator Framework.
+A GUI for Zookeeper created by JavaFX and Curator Framework.
 
 ## Requires
 
-- JDK 1.8+
+- Java 1.8 +
 
 ## Download
 
