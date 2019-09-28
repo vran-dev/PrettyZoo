@@ -59,6 +59,9 @@ public class NodeTreeViewController {
     @FXML
     private TextArea dataTextArea;
 
+    @FXML
+    private ProgressBar nodeSyncProgressBar;
+
     private CuratorlistenerManager curatorlistenerManager;
 
     private Map<String, TreeItem<ZkNode>> treeItemMap = new ConcurrentHashMap<>();
@@ -66,6 +69,16 @@ public class NodeTreeViewController {
     private CuratorFramework curatorFramework;
 
     private long start;
+
+    /**
+     * loaded node num
+     */
+    private AtomicInteger loadedNodeNum = new AtomicInteger(0);
+
+    /**
+     * total node num
+     */
+    private AtomicInteger totalNodeNum = new AtomicInteger(0);
 
     @FXML
     private void initialize() {
@@ -103,9 +116,6 @@ public class NodeTreeViewController {
         zkNodeTreeView.setRoot(virtualRoot);
     }
 
-
-    private AtomicInteger atomicInteger = new AtomicInteger(0);
-
     private void initZookeeperListener(CuratorFramework client) {
         curatorlistenerManager = new CuratorlistenerManager(client);
         curatorlistenerManager.start(new TreeCacheListener() {
@@ -124,7 +134,8 @@ public class NodeTreeViewController {
                 }
 
                 if (event.getType() == TreeCacheEvent.Type.INITIALIZED) {
-                    System.err.println("cached node numbers: " + atomicInteger.get() + ":" + treeItemMap.size());
+                    nodeSyncProgressBar.setVisible(false);
+                    System.err.println("cached node numbers: " + loadedNodeNum.get() + ":" + treeItemMap.size());
                     System.err.println("cost time: " + (System.currentTimeMillis() - start) + " mill");
                 }
 
@@ -160,12 +171,14 @@ public class NodeTreeViewController {
         final String path = eventData.getPath();
         final String name = PathUtils.getLastPath(path);
 
-        atomicInteger.incrementAndGet();
+        loadedNodeNum.incrementAndGet();
         final ZkNode node = new ZkNode(name, path);
         node.setStat(eventData.getStat());
         node.setData(new String(eventData.getData()));
         final TreeItem<ZkNode> treeItem = new TreeItem<>(node);
         treeItemMap.put(path, treeItem);
+
+        totalNodeNum.addAndGet(eventData.getStat().getNumChildren());
         if (path.equals("/")) {
             treeItem.setExpanded(true);
             zkNodeTreeView.setRoot(treeItem);
@@ -174,6 +187,10 @@ public class NodeTreeViewController {
             final TreeItem<ZkNode> parentItem = treeItemMap.get(parent);
             parentItem.getChildren().add(treeItem);
         }
+
+        // calc progress
+        final double p = loadedNodeNum.get() / (totalNodeNum.get() + 0.0);
+        nodeSyncProgressBar.setProgress(p);
     }
 
     private void showStat(Stat stat) {

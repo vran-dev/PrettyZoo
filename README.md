@@ -25,6 +25,8 @@ java -jar PrettyZoo.jar
 
 - [ ] support CRD node
 
+- [ ] remember history server and auto suggestion
+
 - [ ] support ACL
 
 ## Example
