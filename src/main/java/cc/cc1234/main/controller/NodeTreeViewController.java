@@ -167,6 +167,7 @@ public class NodeTreeViewController {
         final TreeItem<ZkNode> treeItem = new TreeItem<>(node);
         treeItemMap.put(path, treeItem);
         if (path.equals("/")) {
+            treeItem.setExpanded(true);
             zkNodeTreeView.setRoot(treeItem);
         } else {
             final String parent = PathUtils.getParent(path);
