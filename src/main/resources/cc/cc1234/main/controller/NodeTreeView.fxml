@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.main.controller.NodeTreeViewController">
+    <children>
+        <SplitPane dividerPositions="0.29797979797979796" layoutX="133.0" layoutY="53.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" >
+                    <children>
+                        <TreeView fx:id="zkNodeTreeView" prefHeight="398.0" prefWidth="174.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                    <children>
+                        <SplitPane dividerPositions="0.7" layoutX="128.0" layoutY="99.0" orientation="VERTICAL" prefHeight="398.0" prefWidth="416.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <items>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                    <children>
+                                        <GridPane fx:id="NodeDetail" prefHeight="273.0" prefWidth="554.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="128.0" />
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="82.0" />
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="231.0" minWidth="10.0" prefWidth="231.0" />
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="83.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                            <children>
+                                                <Label text="pZxid" GridPane.rowIndex="3" />
+                                                <Label layoutX="10.0" layoutY="26.0" text="mtime" GridPane.rowIndex="2" />
+                                                <Label layoutX="10.0" layoutY="26.0" text="cZxid" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                <Label layoutX="10.0" layoutY="75.0" text="mZxid" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                <Label layoutX="10.0" layoutY="124.0" text="cversion" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                <Label layoutX="218.0" layoutY="124.0" text="aclVersion" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                <Label layoutX="10.0" layoutY="172.0" text="dataVersion" GridPane.rowIndex="4" />
+                                                <Label layoutX="10.0" layoutY="172.0" text="ctime" GridPane.rowIndex="1" />
+                                                <Label layoutX="10.0" layoutY="194.0" text="ephemeralOwner" GridPane.rowIndex="5" />
+                                                <Label layoutX="10.0" layoutY="248.0" text="dataLength" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                <Label layoutX="10.0" layoutY="71.0" text="path" />
+                                                <Label layoutX="10.0" layoutY="25.0" text="numChildren" GridPane.columnIndex="2" />
+                                                <Label fx:id="numChildrenLabel" GridPane.columnIndex="3" />
+                                                <Label fx:id="pathLabel" layoutX="498.0" layoutY="25.0" GridPane.columnIndex="1" />
+                                                <Label fx:id="ctimeLabel" layoutX="170.0" layoutY="25.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Label fx:id="mtimeLabel" layoutX="170.0" layoutY="71.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label fx:id="pZxidLabel" layoutX="170.0" layoutY="117.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Label fx:id="dataVersionLabel" layoutX="170.0" layoutY="162.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <Label fx:id="ephemeralOwnerLabel" layoutX="170.0" layoutY="207.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                <Label fx:id="cZxidLabel" layoutX="170.0" layoutY="252.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                <Label fx:id="mZxidLabel" layoutX="498.0" layoutY="71.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                <Label fx:id="cversionLabel" layoutX="498.0" layoutY="117.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                <Label fx:id="aclVersionLabel" layoutX="498.0" layoutY="162.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                <Label fx:id="dataLengthLabel" layoutX="498.0" layoutY="207.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                            </children>
+                                        </GridPane>
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="108.0" prefWidth="414.0">
+                                    <children>
+                                        <SplitPane dividerPositions="0.8" layoutX="59.0" layoutY="-32.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+                                                    <children>
+                                                        <TextArea fx:id="dataTextArea" layoutX="74.0" layoutY="-43.0" prefHeight="200.0" prefWidth="200.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                    </children>
+                                                </AnchorPane>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                    <children>
+                                                        <Button layoutX="24.0" layoutY="43.0" mnemonicParsing="false"
+                                                                onAction="#updateDataAction" text="Update" />
+                                                    </children>
+                                                </AnchorPane>
+                                            </items>
+                                        </SplitPane>
+                                    </children>
+                                </AnchorPane>
+                            </items>
+                        </SplitPane>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>
