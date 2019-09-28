@@ -4,10 +4,7 @@ import cc.cc1234.main.manager.CuratorlistenerManager;
 import cc.cc1234.main.model.ZkNode;
 import cc.cc1234.main.util.PathUtils;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.ChildData;
 import org.apache.curator.framework.recipes.cache.TreeCacheEvent;
@@ -127,9 +124,11 @@ public class NodeTreeViewController {
                 }
 
                 if (event.getType() == TreeCacheEvent.Type.INITIALIZED) {
-                    System.err.println("over: " + atomicInteger.get() + ":" + treeItemMap.size());
+                    System.err.println("cached node numbers: " + atomicInteger.get() + ":" + treeItemMap.size());
                     System.err.println("cost time: " + (System.currentTimeMillis() - start) + " mill");
                 }
+
+                // ignore other event now
             }
         });
     }
@@ -147,6 +146,12 @@ public class NodeTreeViewController {
         final String parent = PathUtils.getParent(path);
         final TreeItem<ZkNode> parentItem = treeItemMap.get(parent);
         final TreeItem<ZkNode> removeItem = treeItemMap.remove(path);
+
+        // note: must be clear selection before remove
+        final TreeItem<ZkNode> selectedItem = zkNodeTreeView.getSelectionModel().getSelectedItem();
+        if (selectedItem == removeItem) {
+            zkNodeTreeView.getSelectionModel().clearSelection();
+        }
         parentItem.getChildren().remove(removeItem);
     }
 
