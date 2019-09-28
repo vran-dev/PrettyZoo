@@ -1,8 +1,10 @@
 package cc.cc1234.main.controller;
 
-import cc.cc1234.main.PrettyZooApplication;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.RetryOneTime;
@@ -14,10 +16,13 @@ public class ConnectViewController {
     @FXML
     private TextField serverTextFields;
 
-
-    private PrettyZooApplication prettyZooApplication;
+    private Stage primaryStage;
 
     private CuratorFramework client;
+
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
 
     @FXML
     private void onConnectConfirm() {
@@ -33,7 +38,7 @@ public class ConnectViewController {
         }
 
         try {
-            prettyZooApplication.nodeTreeView();
+            showNodeTreeView();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -42,14 +47,17 @@ public class ConnectViewController {
 
     @FXML
     private void onConnectCancel() {
-        prettyZooApplication.close();
+        primaryStage.close();
     }
 
-    public void setPrettyZooApplication(PrettyZooApplication prettyZooApplication) {
-        this.prettyZooApplication = prettyZooApplication;
-    }
+    private void showNodeTreeView() throws IOException {
+        final FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(ConnectViewController.class.getResource("NodeTreeView.fxml"));
+        final AnchorPane anchorPane = loader.load();
+        primaryStage.getScene().setRoot(anchorPane);
+        primaryStage.sizeToScene();
 
-    public CuratorFramework getClient() {
-        return client;
+        NodeTreeViewController controller = loader.getController();
+        controller.viewInit(client);
     }
 }
