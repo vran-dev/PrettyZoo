@@ -19,20 +19,34 @@ java -jar PrettyZoo.jar
 
 - [x] support dynamic update view
 
-- [x] support update node data
-
 - [ ] different nodes by style
 
-- [ ] support CRD node
+- [x] support `CRUD` node
 
 - [ ] remember history server and auto suggestion
 
 - [ ] support ACL
 
+- [ ] error log
+
+- [ ] optmize user experience
+
 ## Example
+
+### connect zookeeper
 
 ![](release/example/connectView.jpg)
 
+### show node tree
+
 ![](release/example/mainView.jpg)
 
+### delete node
 
+![](release/example/deleteLeafNode.jpg)
+
+### add node
+
+![](release/example/addNode-01.jpg)
+
+![](release/example/addNode-02.jpg)

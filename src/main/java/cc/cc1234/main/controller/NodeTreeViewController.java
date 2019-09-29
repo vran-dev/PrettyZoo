@@ -11,6 +11,7 @@ import org.apache.curator.framework.recipes.cache.TreeCacheEvent;
 import org.apache.curator.framework.recipes.cache.TreeCacheListener;
 import org.apache.zookeeper.data.Stat;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -86,6 +87,7 @@ public class NodeTreeViewController {
         initTreeItemListener();
         // create virtual root item
         initVirtualRoot("/");
+        zkNodeTreeView.setCellFactory(view -> new TreeCellImpl());
     }
 
     public void viewInit(CuratorFramework client) {
@@ -112,6 +114,8 @@ public class NodeTreeViewController {
     private void initVirtualRoot(String root) {
         final ZkNode zkNode = new ZkNode(root, root);
         TreeItem<ZkNode> virtualRoot = new TreeItem<>(zkNode);
+        zkNode.setData("");
+        zkNode.setStat(new Stat());
         treeItemMap.put(root, virtualRoot);
         zkNodeTreeView.setRoot(virtualRoot);
     }
@@ -194,18 +198,35 @@ public class NodeTreeViewController {
     }
 
     private void showStat(Stat stat) {
-        this.ctimeLabel.setText(String.valueOf(stat.getCtime()));
-        this.mtimeLabel.setText(String.valueOf(stat.getMtime()));
+        if (stat == null) {
+            setDefaultValue();
+        } else {
+            this.ctimeLabel.setText(String.valueOf(stat.getCtime()));
+            this.mtimeLabel.setText(String.valueOf(stat.getMtime()));
+            this.numChildrenLabel.setText(String.valueOf(stat.getNumChildren()));
+            this.aclVersionLabel.setText(String.valueOf(stat.getAversion()));
+            this.cversionLabel.setText(String.valueOf(stat.getCversion()));
+            this.cZxidLabel.setText(String.valueOf(stat.getCzxid()));
+            this.mZxidLabel.setText(String.valueOf(stat.getMzxid()));
+            this.pZxidLabel.setText(String.valueOf(stat.getPzxid()));
+            this.dataLengthLabel.setText(String.valueOf(stat.getDataLength()));
+            this.dataVersionLabel.setText(String.valueOf(stat.getVersion()));
+            this.ephemeralOwnerLabel.setText(String.valueOf(stat.getEphemeralOwner()));
+        }
+    }
 
-        this.numChildrenLabel.setText(String.valueOf(stat.getNumChildren()));
-        this.aclVersionLabel.setText(String.valueOf(stat.getAversion()));
-        this.cversionLabel.setText(String.valueOf(stat.getCversion()));
-        this.cZxidLabel.setText(String.valueOf(stat.getCzxid()));
-        this.mZxidLabel.setText(String.valueOf(stat.getMzxid()));
-        this.pZxidLabel.setText(String.valueOf(stat.getPzxid()));
-        this.dataLengthLabel.setText(String.valueOf(stat.getDataLength()));
-        this.dataVersionLabel.setText(String.valueOf(stat.getVersion()));
-        this.ephemeralOwnerLabel.setText(String.valueOf(stat.getEphemeralOwner()));
+    private void setDefaultValue() {
+        this.ctimeLabel.setText("");
+        this.mtimeLabel.setText("");
+        this.numChildrenLabel.setText("");
+        this.aclVersionLabel.setText("");
+        this.cversionLabel.setText("");
+        this.cZxidLabel.setText("");
+        this.mZxidLabel.setText("");
+        this.pZxidLabel.setText("");
+        this.dataLengthLabel.setText("");
+        this.dataVersionLabel.setText("");
+        this.ephemeralOwnerLabel.setText("");
     }
 
     private void showData(String data) {
@@ -218,6 +239,72 @@ public class NodeTreeViewController {
             curatorFramework.setData().forPath(this.pathLabel.getText(), this.dataTextArea.getText().getBytes());
         } catch (Exception e) {
             throw new IllegalStateException(e);
+        }
+    }
+
+    final class TreeCellImpl extends TreeCell<ZkNode> {
+
+        private ContextMenu operationMenus;
+
+        private final MenuItem deleteMenu;
+
+        private final MenuItem addMenu;
+
+
+        TreeCellImpl() {
+            deleteMenu = new MenuItem("Delete");
+            deleteMenu.setOnAction(event -> {
+                try {
+                    curatorFramework.delete().forPath(getTreeItem().getValue().getPath());
+                } catch (Exception e) {
+                    throw new IllegalStateException(e);
+                }
+            });
+
+            // TODO @vran add action
+            addMenu = new MenuItem("Add");
+            addMenu.setOnAction(event -> {
+                try {
+                    AddNodeViewController.initController(getTreeItem().getValue().getPath(), curatorFramework);
+                } catch (IOException e) {
+                    throw new IllegalStateException(e);
+                }
+            });
+            operationMenus = new ContextMenu();
+        }
+
+        @Override
+        protected void updateItem(ZkNode item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                setText(item.getName());
+                final TreeItem<ZkNode> treeItem = getTreeItem();
+                setGraphic(treeItem.getGraphic());
+                setContextMenu(operationMenus);
+
+                if (item.getStat() != null && item.getStat().getEphemeralOwner() == 0) {
+                    addIfAbsent(addMenu);
+                } else {
+                    operationMenus.getItems().remove(addMenu);
+                }
+
+                // add delete menu for leaf node
+                if (treeItem.isLeaf() && treeItem.getParent() != null) {
+                    addIfAbsent(deleteMenu);
+                } else {
+                    operationMenus.getItems().remove(deleteMenu);
+                }
+
+            }
+        }
+
+        private void addIfAbsent(MenuItem menuItem) {
+            if (!operationMenus.getItems().contains(menuItem)) {
+                operationMenus.getItems().add(menuItem);
+            }
         }
     }
 }
