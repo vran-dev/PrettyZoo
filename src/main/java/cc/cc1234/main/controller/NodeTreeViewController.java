@@ -5,7 +5,10 @@ import cc.cc1234.main.model.ZkNode;
 import cc.cc1234.main.util.PathUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.ChildData;
 import org.apache.curator.framework.recipes.cache.TreeCacheEvent;
@@ -70,6 +73,8 @@ public class NodeTreeViewController {
 
     private CuratorFramework curatorFramework;
 
+    private Stage primaryStage;
+
     private long start;
 
     /**
@@ -82,6 +87,21 @@ public class NodeTreeViewController {
      */
     private AtomicInteger totalNodeNum = new AtomicInteger(0);
 
+    public static void showNodeTreeView(CuratorFramework client, Stage primary) throws IOException {
+        final FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(ConnectViewController.class.getResource("NodeTreeView.fxml"));
+        final AnchorPane anchorPane = loader.load();
+        primary.getScene().setRoot(anchorPane);
+        primary.sizeToScene();
+        NodeTreeViewController controller = loader.getController();
+        controller.setPrimaryStage(primary);
+        controller.initTreeNode(client);
+    }
+
+    private void setPrimaryStage(Stage primary) {
+        this.primaryStage = primary;
+    }
+
     @FXML
     private void initialize() {
         // init tree item select event listener
@@ -91,7 +111,7 @@ public class NodeTreeViewController {
         zkNodeTreeView.setCellFactory(view -> new TreeCellImpl());
     }
 
-    void viewInit(CuratorFramework client) {
+    void initTreeNode(CuratorFramework client) {
         this.curatorFramework = client;
         // curator treeCache listener
         start = System.currentTimeMillis();

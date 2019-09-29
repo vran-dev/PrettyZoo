@@ -1,9 +1,7 @@
 package cc.cc1234.main.controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -38,7 +36,7 @@ public class ConnectViewController {
         }
 
         try {
-            showNodeTreeView();
+            NodeTreeViewController.showNodeTreeView(client, primaryStage);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -50,14 +48,4 @@ public class ConnectViewController {
         primaryStage.close();
     }
 
-    private void showNodeTreeView() throws IOException {
-        final FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(ConnectViewController.class.getResource("NodeTreeView.fxml"));
-        final AnchorPane anchorPane = loader.load();
-        primaryStage.getScene().setRoot(anchorPane);
-        primaryStage.sizeToScene();
-
-        NodeTreeViewController controller = loader.getController();
-        controller.viewInit(client);
-    }
 }
