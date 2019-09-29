@@ -3,6 +3,7 @@ package cc.cc1234.main.controller;
 import cc.cc1234.main.manager.CuratorlistenerManager;
 import cc.cc1234.main.model.ZkNode;
 import cc.cc1234.main.util.PathUtils;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.apache.curator.framework.CuratorFramework;
@@ -90,7 +91,7 @@ public class NodeTreeViewController {
         zkNodeTreeView.setCellFactory(view -> new TreeCellImpl());
     }
 
-    public void viewInit(CuratorFramework client) {
+    void viewInit(CuratorFramework client) {
         this.curatorFramework = client;
         // curator treeCache listener
         start = System.currentTimeMillis();
@@ -124,23 +125,25 @@ public class NodeTreeViewController {
         curatorlistenerManager = new CuratorlistenerManager(client);
         curatorlistenerManager.start(new TreeCacheListener() {
             @Override
-            public void childEvent(CuratorFramework client, TreeCacheEvent event) throws Exception {
+            public void childEvent(CuratorFramework client, TreeCacheEvent event) {
                 if (event.getType() == TreeCacheEvent.Type.NODE_ADDED) {
-                    onNodeAdded(client, event);
+                    Platform.runLater(() -> onNodeAdded(client, event));
                 }
 
                 if (event.getType() == TreeCacheEvent.Type.NODE_REMOVED) {
-                    onNodeRemoved(event);
+                    Platform.runLater(() -> onNodeRemoved(event));
                 }
 
                 if (event.getType() == TreeCacheEvent.Type.NODE_UPDATED) {
-                    onNodeUpdated(event);
+                    Platform.runLater(() -> onNodeUpdated(event));
                 }
 
                 if (event.getType() == TreeCacheEvent.Type.INITIALIZED) {
-                    nodeSyncProgressBar.setVisible(false);
-                    System.err.println("cached node numbers: " + loadedNodeNum.get() + ":" + treeItemMap.size());
-                    System.err.println("cost time: " + (System.currentTimeMillis() - start) + " mill");
+                    Platform.runLater(() -> {
+                        nodeSyncProgressBar.setVisible(false);
+                        System.err.println("cached node numbers: " + loadedNodeNum.get() + ":" + treeItemMap.size());
+                        System.err.println("cost time: " + (System.currentTimeMillis() - start) + " mill");
+                    });
                 }
 
                 // ignore other event now
@@ -154,6 +157,9 @@ public class NodeTreeViewController {
         final ZkNode node = item.getValue();
         node.setStat(event.getData().getStat());
         node.setData(new String(event.getData().getData()));
+        if (zkNodeTreeView.getSelectionModel().getSelectedItem() == item) {
+            showStat(node.getStat());
+        }
     }
 
     private void onNodeRemoved(TreeCacheEvent event) {
