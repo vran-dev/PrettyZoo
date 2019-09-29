@@ -21,15 +21,17 @@ java -jar PrettyZoo.jar
 
 - [ ] different nodes by style
 
+- [ ] node search
+
 - [x] support `CRUD` node
 
-- [ ] remember history server and auto suggestion
+- [x] remember history server
 
 - [ ] support ACL
 
 - [ ] error log
 
-- [ ] optmize user experience
+- [ ] optimize user experience
 
 ## Example
 

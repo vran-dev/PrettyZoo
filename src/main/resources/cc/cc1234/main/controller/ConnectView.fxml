@@ -20,7 +20,7 @@
         </rowConstraints>
          <children>
             <Label text="server:" />
-            <TextField fx:id="serverTextFields" text="127.0.0.1:2181" GridPane.columnIndex="1">
+            <TextField fx:id="serverTextFields" onKeyReleased="#onInputChange" onMouseClicked="#onInputChange" text="127.0.0.1:2181" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
