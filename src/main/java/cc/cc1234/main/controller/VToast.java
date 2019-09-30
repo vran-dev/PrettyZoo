@@ -10,25 +10,37 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import javafx.util.Duration;
 
 public class VToast {
 
-    public static void toastSuccess(Stage primaryStage) {
-        toast(primaryStage, successPanel("√ success"));
+    public static void toastSuccess(Window parent) {
+        toast(parent, successPanel("√ success"));
     }
 
-    public static void toastFailure(Stage primaryStage) {
-
-        toast(primaryStage, failurePanel("× failure"));
+    public static void toastFailure(Window parent) {
+        toast(parent, failurePanel("× failure"));
     }
 
-    public static void toast(Stage primaryStage, StackPane panel) {
-        toast(primaryStage, panel, 1000, 3000);
+    public static void toastSuccess(Window parent, String message) {
+        toast(parent, successPanel(message));
     }
 
-    public static void toast(Stage primaryStage, StackPane root, int fadeInDelay, int fadeOutDelay) {
-        final Stage toastStage = initToastStage(primaryStage, root);
+    public static void toastFailure(Window parent, String message) {
+        toast(parent, failurePanel(message));
+    }
+
+    public static void toastInfo(Window parent, String message) {
+        toast(parent, infoPanel(message));
+    }
+
+    public static void toast(Window parent, StackPane panel) {
+        toast(parent, panel, 1000, 3000);
+    }
+
+    public static void toast(Window parent, StackPane root, int fadeInDelay, int fadeOutDelay) {
+        final Stage toastStage = initToastStage(parent, root);
         toastStage.show();
         initAnimation(toastStage, fadeInDelay, fadeOutDelay);
     }
@@ -55,15 +67,26 @@ public class VToast {
         return root;
     }
 
-    private static Stage initToastStage(Stage primaryStage, StackPane root) {
+    private static StackPane infoPanel(String message) {
+        Text text = new Text(message);
+        text.setFont(Font.font("Verdana", 16));
+        text.setFill(Color.WHITE);
+
+        StackPane root = new StackPane(text);
+        root.setStyle("-fx-background-radius: 20; -fx-background-color: #66bb6a; -fx-padding: 6px;");
+        root.setOpacity(0);
+        return root;
+    }
+
+    private static Stage initToastStage(Window parent, StackPane root) {
         Stage toastStage = new Stage();
-        toastStage.initOwner(primaryStage);
+        toastStage.initOwner(parent);
         toastStage.setResizable(false);
         toastStage.initStyle(StageStyle.TRANSPARENT);
 
         // set position
-        toastStage.setX(primaryStage.getX());
-        toastStage.setY(primaryStage.getY() + primaryStage.getScene().getY() + 10);
+        toastStage.setX(parent.getX());
+        toastStage.setY(parent.getY() + parent.getScene().getY() + 10);
 
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
