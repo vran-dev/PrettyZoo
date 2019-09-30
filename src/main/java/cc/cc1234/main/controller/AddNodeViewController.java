@@ -73,9 +73,12 @@ public class AddNodeViewController {
             curatorFramework.create()
                     .withMode(createMode())
                     // must use Platform to close stage
-                    .inBackground(((client, event) -> Platform.runLater(() -> stage.close())))
+                    .inBackground((client, event) -> {
+                        Platform.runLater(() -> stage.close());
+                    })
                     .forPath(path, nodeData.getBytes());
         } catch (Exception e) {
+            VToast.toastFailure(stage);
             throw new IllegalStateException(e);
         }
     }

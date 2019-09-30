@@ -262,8 +262,11 @@ public class NodeTreeViewController {
     @FXML
     private void updateDataAction() {
         try {
-            curatorFramework.setData().forPath(this.pathLabel.getText(), this.dataTextArea.getText().getBytes());
+            curatorFramework.setData()
+                    .inBackground((client, event) -> Platform.runLater(() -> VToast.toastSuccess(primaryStage)))
+                    .forPath(this.pathLabel.getText(), this.dataTextArea.getText().getBytes());
         } catch (Exception e) {
+            VToast.toastFailure(primaryStage);
             throw new IllegalStateException(e);
         }
     }
