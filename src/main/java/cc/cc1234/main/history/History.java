@@ -10,7 +10,9 @@ import java.util.Properties;
 
 public class History {
 
-    private static final String HISTORY_FORMAT = System.getProperty("user.home") + "/.prettyZoo/%s.history";
+    public static final String SERVER_HISTORY = "server-input.history";
+
+    private static final String HISTORY_FORMAT = System.getProperty("user.home") + "/.prettyZoo/%s";
 
     private final Properties properties;
 
@@ -51,6 +53,10 @@ public class History {
 
     public void save(String key, String value) {
         properties.put(key, value);
+    }
+
+    public boolean contains(String key) {
+        return properties.containsKey(key);
     }
 
     public String get(String key, String def) {

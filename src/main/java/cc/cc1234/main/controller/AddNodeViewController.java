@@ -69,7 +69,13 @@ public class AddNodeViewController {
         final String nodeName = nodeNameTextField.getText();
         final String nodeData = nodeDataTextArea.getText();
         try {
-            String path = parentPathLabel.getText() + "/" + nodeName;
+
+            String path = parentPathLabel.getText();
+            if (parentPathLabel.getText().endsWith("/")) {
+                path += nodeName;
+            } else {
+                path += "/" + nodeName;
+            }
             curatorFramework.create()
                     .withMode(createMode())
                     // must use Platform to close stage

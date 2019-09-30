@@ -1,8 +1,7 @@
 package cc.cc1234.main.model;
 
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import org.apache.zookeeper.data.Stat;
 
@@ -18,18 +17,40 @@ public class ZkNode {
      */
     private SimpleStringProperty path = new SimpleStringProperty();
 
-    private SimpleIntegerProperty numOfChildren = new SimpleIntegerProperty();
-
-    private ObjectProperty<Stat> stat = new SimpleObjectProperty<>();
+    private SimpleLongProperty czxid = new SimpleLongProperty();
+    private SimpleLongProperty mzxid = new SimpleLongProperty();
+    private SimpleLongProperty ctime = new SimpleLongProperty();
+    private SimpleLongProperty mtime = new SimpleLongProperty();
+    private SimpleIntegerProperty version = new SimpleIntegerProperty();
+    private SimpleIntegerProperty cversion = new SimpleIntegerProperty();
+    private SimpleIntegerProperty aversion = new SimpleIntegerProperty();
+    private SimpleLongProperty ephemeralOwner = new SimpleLongProperty();
+    private SimpleIntegerProperty dataLength = new SimpleIntegerProperty();
+    private SimpleIntegerProperty numChildren = new SimpleIntegerProperty();
+    private SimpleLongProperty pzxid = new SimpleLongProperty();
 
     private SimpleStringProperty data = new SimpleStringProperty();
 
     public ZkNode() {
     }
 
-    public ZkNode(String name, String  path) {
+    public ZkNode(String name, String path) {
         setName(name);
         setPath(path);
+    }
+
+    public void setStat(Stat stat) {
+        setCzxid(stat.getCzxid());
+        setMzxid(stat.getMzxid());
+        setCtime(stat.getCtime());
+        setMtime(stat.getMtime());
+        setVersion(stat.getVersion());
+        setCversion(stat.getCversion());
+        setAversion(stat.getAversion());
+        setEphemeralOwner(stat.getEphemeralOwner());
+        setDataLength(stat.getDataLength());
+        setNumChildren(stat.getNumChildren());
+        setPzxid(stat.getPzxid());
     }
 
     public String getName() {
@@ -44,22 +65,6 @@ public class ZkNode {
         this.name.set(name);
     }
 
-    public int getNumOfChildren() {
-        return numOfChildren.get();
-    }
-
-    public SimpleIntegerProperty numOfChildrenProperty() {
-        return numOfChildren;
-    }
-
-    public void setNumOfChildren(int numOfChildren) {
-        this.numOfChildren.set(numOfChildren);
-    }
-
-    public String toString() {
-        return this.getName();
-    }
-
     public String getPath() {
         return path.get();
     }
@@ -72,16 +77,136 @@ public class ZkNode {
         this.path.set(path);
     }
 
-    public Stat getStat() {
-        return stat.get();
+    public long getCzxid() {
+        return czxid.get();
     }
 
-    public ObjectProperty<Stat> statProperty() {
-        return stat;
+    public SimpleLongProperty czxidProperty() {
+        return czxid;
     }
 
-    public void setStat(Stat stat) {
-        this.stat.set(stat);
+    public void setCzxid(long czxid) {
+        this.czxid.set(czxid);
+    }
+
+    public long getMzxid() {
+        return mzxid.get();
+    }
+
+    public SimpleLongProperty mzxidProperty() {
+        return mzxid;
+    }
+
+    public void setMzxid(long mzxid) {
+        this.mzxid.set(mzxid);
+    }
+
+    public long getCtime() {
+        return ctime.get();
+    }
+
+    public SimpleLongProperty ctimeProperty() {
+        return ctime;
+    }
+
+    public void setCtime(long ctime) {
+        this.ctime.set(ctime);
+    }
+
+    public long getMtime() {
+        return mtime.get();
+    }
+
+    public SimpleLongProperty mtimeProperty() {
+        return mtime;
+    }
+
+    public void setMtime(long mtime) {
+        this.mtime.set(mtime);
+    }
+
+    public int getVersion() {
+        return version.get();
+    }
+
+    public SimpleIntegerProperty versionProperty() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version.set(version);
+    }
+
+    public int getCversion() {
+        return cversion.get();
+    }
+
+    public SimpleIntegerProperty cversionProperty() {
+        return cversion;
+    }
+
+    public void setCversion(int cversion) {
+        this.cversion.set(cversion);
+    }
+
+    public int getAversion() {
+        return aversion.get();
+    }
+
+    public SimpleIntegerProperty aversionProperty() {
+        return aversion;
+    }
+
+    public void setAversion(int aversion) {
+        this.aversion.set(aversion);
+    }
+
+    public long getEphemeralOwner() {
+        return ephemeralOwner.get();
+    }
+
+    public SimpleLongProperty ephemeralOwnerProperty() {
+        return ephemeralOwner;
+    }
+
+    public void setEphemeralOwner(long ephemeralOwner) {
+        this.ephemeralOwner.set(ephemeralOwner);
+    }
+
+    public int getDataLength() {
+        return dataLength.get();
+    }
+
+    public SimpleIntegerProperty dataLengthProperty() {
+        return dataLength;
+    }
+
+    public void setDataLength(int dataLength) {
+        this.dataLength.set(dataLength);
+    }
+
+    public int getNumChildren() {
+        return numChildren.get();
+    }
+
+    public SimpleIntegerProperty numChildrenProperty() {
+        return numChildren;
+    }
+
+    public void setNumChildren(int numChildren) {
+        this.numChildren.set(numChildren);
+    }
+
+    public long getPzxid() {
+        return pzxid.get();
+    }
+
+    public SimpleLongProperty pzxidProperty() {
+        return pzxid;
+    }
+
+    public void setPzxid(long pzxid) {
+        this.pzxid.set(pzxid);
     }
 
     public String getData() {
@@ -95,4 +220,6 @@ public class ZkNode {
     public void setData(String data) {
         this.data.set(data);
     }
+
+
 }

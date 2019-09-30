@@ -1,6 +1,6 @@
 package cc.cc1234.main;
 
-import cc.cc1234.main.controller.ConnectViewController;
+import cc.cc1234.main.controller.NodeTreeViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -20,19 +20,18 @@ public class PrettyZooApplication extends Application {
         this.primaryStage = primaryStage;
         final URL resource = Thread.currentThread().getContextClassLoader().getResource("icon.jpg");
         primaryStage.getIcons().add(new Image(resource.openStream()));
-        showConnectView();
+        showNodeTreeView(primaryStage);
     }
 
-    private void showConnectView() throws IOException {
+    public static void showNodeTreeView(Stage primary) throws IOException {
         final FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(PrettyZooApplication.class.getResource("controller/ConnectView.fxml"));
-        final AnchorPane panel = loader.load();
-        final Scene scene = new Scene(panel);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-        ConnectViewController controller = loader.getController();
-        controller.setPrimaryStage(primaryStage);
+        loader.setLocation(NodeTreeViewController.class.getResource("NodeTreeView.fxml"));
+        final AnchorPane anchorPane = loader.load();
+        final Scene scene = new Scene(anchorPane);
+        primary.setScene(scene);
+        NodeTreeViewController controller = loader.getController();
+        controller.setPrimaryStage(primary);
+        primary.show();
     }
 
     public static void main(String[] args) {
