@@ -8,7 +8,7 @@ A GUI for Zookeeper created by JavaFX and Curator Framework.
 
 ## Download
 
-[Download from Here](release/)
+[Download from Here](https://github.com/vran-dev/PrettyZoo/releases)
 
 - usage
 ```shell
@@ -16,6 +16,8 @@ java -jar PrettyZoo.jar
 ```
 
 ## TODO
+
+- [ ] Change UI
 
 - [x] support dynamic update view
 
@@ -29,9 +31,9 @@ java -jar PrettyZoo.jar
 
 - [ ] support ACL
 
-- [ ] error log
+- [ ] support Proxy
 
-- [ ] optimize user experience
+- [ ] error log
 
 ## Example
 
