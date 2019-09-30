@@ -27,4 +27,10 @@ public class ZkClientCache {
         return CACHE.put(server, client);
     }
 
+    public void closeAll() {
+        CACHE.forEach((key, client) -> {
+            client.close();
+        });
+    }
+
 }

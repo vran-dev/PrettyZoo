@@ -1,5 +1,7 @@
 package cc.cc1234.main;
 
+import cc.cc1234.main.cache.ZkClientCache;
+import cc.cc1234.main.cache.ZkListenerCache;
 import cc.cc1234.main.controller.NodeTreeViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +34,14 @@ public class PrettyZooApplication extends Application {
         NodeTreeViewController controller = loader.getController();
         controller.setPrimaryStage(primary);
         primary.show();
+
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        ZkListenerCache.getInstance().closeAll();
+        ZkClientCache.getInstance().closeAll();
     }
 
     public static void main(String[] args) {

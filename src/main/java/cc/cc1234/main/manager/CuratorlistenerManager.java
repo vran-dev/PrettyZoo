@@ -24,4 +24,8 @@ public class CuratorlistenerManager {
         }
     }
 
+    public void close() {
+        treeCache.close();
+    }
+
 }

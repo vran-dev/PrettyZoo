@@ -2,6 +2,7 @@ package cc.cc1234.main.controller;
 
 import cc.cc1234.main.cache.TreeItemCache;
 import cc.cc1234.main.cache.ZkClientCache;
+import cc.cc1234.main.cache.ZkListenerCache;
 import cc.cc1234.main.curator.NodeEventHandler;
 import cc.cc1234.main.history.History;
 import cc.cc1234.main.manager.CuratorlistenerManager;
@@ -19,13 +20,14 @@ import org.apache.curator.framework.recipes.cache.TreeCacheEvent;
 import org.apache.curator.framework.recipes.cache.TreeCacheListener;
 import org.apache.curator.retry.RetryOneTime;
 import org.apache.zookeeper.data.Stat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class NodeTreeViewController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(NodeTreeViewController.class);
 
     @FXML
     private TreeView<ZkNode> zkNodeTreeView;
@@ -81,10 +83,7 @@ public class NodeTreeViewController {
 
     private ZkClientCache serverClientCache = ZkClientCache.getInstance();
 
-    /**
-     * [server:manager]
-     */
-    private Map<String, CuratorlistenerManager> curatorlistenerManagerCache = new ConcurrentHashMap<>();
+    public static ZkListenerCache zkListenerCache = ZkListenerCache.getInstance();
 
     /**
      * current selected zk server
@@ -98,6 +97,9 @@ public class NodeTreeViewController {
 
     public void setPrimaryStage(Stage primary) {
         this.primaryStage = primary;
+        primary.onCloseRequestProperty().addListener((observable, oldValue, newValue) -> {
+            serverClientCache.closeAll();
+        });
     }
 
     @FXML
@@ -185,10 +187,11 @@ public class NodeTreeViewController {
             // TODO @vran use connection listener
             client.blockUntilConnected();
         } catch (InterruptedException e) {
-            throw new IllegalStateException(e);
+            VToast.toastFailure(primaryStage, "Connect zookeeper failed");
+            LOG.error("", e);
         }
 
-        Executors.newSingleThreadExecutor().execute(() -> {
+        Platform.runLater(() -> {
             final String value = history.get(server.getServer(), "0");
             history.save(server.getServer(), String.valueOf(Integer.parseInt(value) + 1));
             history.store();
@@ -201,9 +204,10 @@ public class NodeTreeViewController {
     }
 
     private void startSyncTreeNodeListener(String server, CuratorFramework client) {
-        CuratorlistenerManager manager = curatorlistenerManagerCache.getOrDefault(server,
-                new CuratorlistenerManager(client));
-        manager.start(new TreeCacheListener() {
+        if (!zkListenerCache.contains(server)) {
+            zkListenerCache.put(server, new CuratorlistenerManager(client));
+        }
+        zkListenerCache.get(server).start(new TreeCacheListener() {
 
             private NodeEventHandler eventHandler = new NodeEventHandler(server);
 
@@ -245,8 +249,8 @@ public class NodeTreeViewController {
                     .inBackground((client, event) -> Platform.runLater(() -> VToast.toastSuccess(primaryStage)))
                     .forPath(this.pathLabel.getText(), this.dataTextArea.getText().getBytes());
         } catch (Exception e) {
-            VToast.toastFailure(primaryStage);
-            throw new IllegalStateException(e);
+            VToast.toastFailure(primaryStage, "update data failed");
+            LOG.error("update data error", e);
         }
     }
 
