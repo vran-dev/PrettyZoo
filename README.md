@@ -17,7 +17,7 @@ java -jar PrettyZoo.jar
 
 ## TODO
 
-- [ ] Change UI
+- [x] Change UI
 
 - [x] support dynamic update view
 
@@ -37,13 +37,17 @@ java -jar PrettyZoo.jar
 
 ## Example
 
-### connect zookeeper
+### Main view
 
-![](release/example/connectView.jpg)
+![](release/example/main.jpg)
 
-### show node tree
+### Right click to add server
 
-![](release/example/mainView.jpg)
+![](release/example/addServer.jpg)
+
+![](release/example/addServers.jpg)
+
+![](release/example/syncNode.jpg)
 
 ### delete node
 
