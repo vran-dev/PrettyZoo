@@ -1,13 +1,10 @@
 package cc.cc1234.main.controller;
 
-import cc.cc1234.main.cache.TreeItemCache;
-import cc.cc1234.main.cache.ZkClientCache;
-import cc.cc1234.main.cache.ZkListenerCache;
-import cc.cc1234.main.curator.NodeEventHandler;
+import cc.cc1234.main.cache.TreeViewCache;
 import cc.cc1234.main.history.History;
-import cc.cc1234.main.manager.CuratorlistenerManager;
 import cc.cc1234.main.model.ZkNode;
 import cc.cc1234.main.model.ZkServer;
+import cc.cc1234.main.service.ZkServerService;
 import cc.cc1234.main.view.DefaultTreeCell;
 import cc.cc1234.main.view.ServerTableView;
 import javafx.application.Platform;
@@ -15,10 +12,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.framework.recipes.cache.TreeCacheEvent;
-import org.apache.curator.framework.recipes.cache.TreeCacheListener;
-import org.apache.curator.retry.RetryOneTime;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class NodeTreeViewController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(NodeTreeViewController.class);
+    private static final Logger log = LoggerFactory.getLogger(NodeTreeViewController.class);
 
     @FXML
     private TreeView<ZkNode> zkNodeTreeView;
@@ -79,11 +72,7 @@ public class NodeTreeViewController {
 
     public static final String ROOT_PATH = "/";
 
-    private TreeItemCache serverTreeCache = TreeItemCache.getInstance();
-
-    private ZkClientCache serverClientCache = ZkClientCache.getInstance();
-
-    public static ZkListenerCache zkListenerCache = ZkListenerCache.getInstance();
+    private TreeViewCache<ZkNode> treeViewCache = TreeViewCache.getInstance();
 
     /**
      * current selected zk server
@@ -94,21 +83,18 @@ public class NodeTreeViewController {
 
     private History history;
 
-
     public void setPrimaryStage(Stage primary) {
         this.primaryStage = primary;
-        primary.onCloseRequestProperty().addListener((observable, oldValue, newValue) -> {
-            serverClientCache.closeAll();
-        });
     }
 
     @FXML
     private void initialize() {
         initServerTableView();
-        initZkNodeTreeView();
+        bindZkNodeProperties();
+        treeViewCache.setTreeView(zkNodeTreeView);
     }
 
-    private void initZkNodeTreeView() {
+    private void bindZkNodeProperties() {
         zkNodeTreeView.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(((observable, oldValue, newValue) -> {
@@ -119,76 +105,50 @@ public class NodeTreeViewController {
                         }
                         // properties bind
                         final ZkNode node = newValue.getValue();
-                        this.pathLabel.textProperty().bind(node.pathProperty());
-                        this.cZxidLabel.textProperty().bind(node.czxidProperty().asString());
-                        this.mZxidLabel.textProperty().bind(node.mzxidProperty().asString());
-                        this.ctimeLabel.textProperty().bind(node.ctimeProperty().asString());
-                        this.mtimeLabel.textProperty().bind(node.mtimeProperty().asString());
-                        this.dataVersionLabel.textProperty().bind(node.versionProperty().asString());
-                        this.cversionLabel.textProperty().bind(node.cversionProperty().asString());
-                        this.aclVersionLabel.textProperty().bind(node.aversionProperty().asString());
-                        this.ephemeralOwnerLabel.textProperty().bind(node.ephemeralOwnerProperty().asString());
-                        this.dataLengthLabel.textProperty().bind(node.dataLengthProperty().asString());
-                        this.numChildrenLabel.textProperty().bind(node.numChildrenProperty().asString());
-                        this.pZxidLabel.textProperty().bind(node.pzxidProperty().asString());
-                        this.dataTextArea.textProperty().bindBidirectional(node.dataProperty());
+                        bindZkNodeProperties(node);
                     }
                 }));
 
+    }
+
+    private void bindZkNodeProperties(ZkNode node) {
+        this.pathLabel.textProperty().bind(node.pathProperty());
+        this.cZxidLabel.textProperty().bind(node.czxidProperty().asString());
+        this.mZxidLabel.textProperty().bind(node.mzxidProperty().asString());
+        this.ctimeLabel.textProperty().bind(node.ctimeProperty().asString());
+        this.mtimeLabel.textProperty().bind(node.mtimeProperty().asString());
+        this.dataVersionLabel.textProperty().bind(node.versionProperty().asString());
+        this.cversionLabel.textProperty().bind(node.cversionProperty().asString());
+        this.aclVersionLabel.textProperty().bind(node.aversionProperty().asString());
+        this.ephemeralOwnerLabel.textProperty().bind(node.ephemeralOwnerProperty().asString());
+        this.dataLengthLabel.textProperty().bind(node.dataLengthProperty().asString());
+        this.numChildrenLabel.textProperty().bind(node.numChildrenProperty().asString());
+        this.pZxidLabel.textProperty().bind(node.pzxidProperty().asString());
+        this.dataTextArea.textProperty().bindBidirectional(node.dataProperty());
     }
 
     private void initServerTableView() {
         history = History.createIfAbsent(History.SERVER_HISTORY);
         ServerTableView.init(serversTableView,
                 (observable, oldValue, newValue) -> {
-                    refreshClient(newValue);
-                    // TODO  use async to avoiding UI blocking
-                    switchTreeTableRoot(newValue);
+                    if (newValue != null) {
+                        switchTreeView(newValue);
+                    }
                 },
                 history);
-
     }
 
-    private void refreshClient(ZkServer newValue) {
-        if (!serverClientCache.contains(newValue.getServer())) {
-            final CuratorFramework client = doConnect(newValue);
-            serverClientCache.put(newValue.getServer(), client);
-            newValue.setConnect(true);
-        }
-        zkNodeTreeView.setCellFactory(view -> new DefaultTreeCell(primaryStage,
-                serverClientCache.get(newValue.getServer())));
-    }
-
-    private void switchTreeTableRoot(ZkServer newValue) {
-        if (!serverTreeCache.hasServer(newValue.getServer())) {
-            initVirtualRoot(newValue.getServer(), ROOT_PATH);
-            final CuratorFramework client = serverClientCache.get(newValue.getServer());
-            syncTreeNode(newValue.getServer(), client);
-        }
-
-        activeServer.set(newValue.getServer());
-        zkNodeTreeView.setRoot(serverTreeCache.getItemByPath(newValue.getServer(), ROOT_PATH));
-    }
-
-    private void initVirtualRoot(String server, String root) {
-        final ZkNode zkNode = new ZkNode(root, root);
-        TreeItem<ZkNode> virtualRoot = new TreeItem<>(zkNode);
-        zkNode.setData("");
-        zkNode.setStat(new Stat());
-        serverTreeCache.cacheItemByPath(server, root, virtualRoot);
-        zkNodeTreeView.setRoot(virtualRoot);
-    }
-
-    private CuratorFramework doConnect(ZkServer server) {
-        final RetryOneTime retryPolicy = new RetryOneTime(3000);
-        final CuratorFramework client = CuratorFrameworkFactory.newClient(server.getServer(), retryPolicy);
+    private void switchTreeView(ZkServer server) {
+        final ZkServerService service = ZkServerService.getInstance(server.getServer());
         try {
-            client.start();
-            // TODO @vran use connection listener
-            client.blockUntilConnected();
+            final CuratorFramework client = service.connectIfNecessary();
+            zkNodeTreeView.setCellFactory(view -> new DefaultTreeCell(primaryStage, client));
         } catch (InterruptedException e) {
-            VToast.toastFailure(primaryStage, "Connect zookeeper failed");
-            LOG.error("", e);
+            VToast.toastFailure(primaryStage, "Failed: " + e.getMessage());
+        }
+
+        if (!treeViewCache.hasServer(server.getServer())) {
+            initRootIfNecessary(server.getServer());
         }
 
         Platform.runLater(() -> {
@@ -196,46 +156,24 @@ public class NodeTreeViewController {
             history.save(server.getServer(), String.valueOf(Integer.parseInt(value) + 1));
             history.store();
         });
-        return client;
+
+        final TreeItem<ZkNode> root = treeViewCache.get(server.getServer(), ROOT_PATH);
+        bindZkNodeProperties(root.getValue());
+        zkNodeTreeView.setRoot(root);
+        service.syncNodeIfNecessary();
+        activeServer.set(server.getServer());
+        server.setConnect(true);
     }
 
-    void syncTreeNode(String server, CuratorFramework client) {
-        startSyncTreeNodeListener(server, client);
+    private TreeItem<ZkNode> initRootIfNecessary(String server) {
+        String path = NodeTreeViewController.ROOT_PATH;
+        final ZkNode zkNode = new ZkNode(path, path);
+        TreeItem<ZkNode> virtualRoot = new TreeItem<>(zkNode);
+        zkNode.setData("");
+        zkNode.setStat(new Stat());
+        treeViewCache.add(server, path, virtualRoot);
+        return virtualRoot;
     }
-
-    private void startSyncTreeNodeListener(String server, CuratorFramework client) {
-        if (!zkListenerCache.contains(server)) {
-            zkListenerCache.put(server, new CuratorlistenerManager(client));
-        }
-        zkListenerCache.get(server).start(new TreeCacheListener() {
-
-            private NodeEventHandler eventHandler = new NodeEventHandler(server);
-
-            @Override
-            public void childEvent(CuratorFramework client, TreeCacheEvent event) {
-                if (event.getType() == TreeCacheEvent.Type.NODE_ADDED) {
-                    Platform.runLater(() -> eventHandler.onNodeAdded(zkNodeTreeView, event));
-                }
-
-                if (event.getType() == TreeCacheEvent.Type.NODE_REMOVED) {
-                    Platform.runLater(() -> eventHandler.onNodeRemoved(zkNodeTreeView, event));
-                }
-
-                if (event.getType() == TreeCacheEvent.Type.NODE_UPDATED) {
-                    Platform.runLater(() -> eventHandler.onNodeUpdated(event));
-                }
-
-                if (event.getType() == TreeCacheEvent.Type.INITIALIZED) {
-                    Platform.runLater(() -> {
-                        nodeSyncProgressBar.setVisible(false);
-                    });
-                }
-
-                // ignore other event now
-            }
-        });
-    }
-
 
     @FXML
     private void updateDataAction() {
@@ -244,14 +182,15 @@ public class NodeTreeViewController {
             return;
         }
         try {
-            serverClientCache.get(activeServer.get())
-                    .setData()
-                    .inBackground((client, event) -> Platform.runLater(() -> VToast.toastSuccess(primaryStage)))
-                    .forPath(this.pathLabel.getText(), this.dataTextArea.getText().getBytes());
+            ZkServerService.getInstance(activeServer.get())
+                    .setData(this.pathLabel.getText(),
+                            this.dataTextArea.getText(),
+                            (client, event) -> Platform.runLater(() -> VToast.toastSuccess(primaryStage)));
         } catch (Exception e) {
             VToast.toastFailure(primaryStage, "update data failed");
-            LOG.error("update data error", e);
+            log.error("update data error", e);
         }
     }
+
 
 }

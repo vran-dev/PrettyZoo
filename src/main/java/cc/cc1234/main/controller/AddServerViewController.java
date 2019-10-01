@@ -55,7 +55,6 @@ public class AddServerViewController {
         final AddServerViewController controller = loader.getController();
         controller.setStage(stage);
         controller.setServersTableView(serversTableView);
-        stage.setAlwaysOnTop(true);
 
         final Window parent = serversTableView.getParent().getScene().getWindow();
         double x = parent.getX() + parent.getWidth() / 2 - panel.getPrefWidth() / 2;

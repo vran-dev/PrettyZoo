@@ -1,8 +1,7 @@
 package cc.cc1234.main;
 
-import cc.cc1234.main.cache.ZkClientCache;
-import cc.cc1234.main.cache.ZkListenerCache;
 import cc.cc1234.main.controller.NodeTreeViewController;
+import cc.cc1234.main.service.ZkServerService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -40,8 +39,7 @@ public class PrettyZooApplication extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-        ZkListenerCache.getInstance().closeAll();
-        ZkClientCache.getInstance().closeAll();
+        ZkServerService.close();
     }
 
     public static void main(String[] args) {
