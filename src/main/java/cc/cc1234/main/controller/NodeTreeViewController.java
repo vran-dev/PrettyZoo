@@ -88,6 +88,23 @@ public class NodeTreeViewController {
     }
 
     @FXML
+    private void updateDataAction() {
+        if (activeServer.get() == null) {
+            VToast.toastFailure(primaryStage, "Error: connect zookeeper first");
+            return;
+        }
+        try {
+            ZkServerService.getInstance(activeServer.get())
+                    .setData(this.pathLabel.getText(),
+                            this.dataTextArea.getText(),
+                            (client, event) -> Platform.runLater(() -> VToast.toastSuccess(primaryStage)));
+        } catch (Exception e) {
+            VToast.toastFailure(primaryStage, "update data failed");
+            log.error("update data error", e);
+        }
+    }
+
+    @FXML
     private void initialize() {
         initServerTableView();
         bindZkNodeProperties();
@@ -132,65 +149,53 @@ public class NodeTreeViewController {
         ServerTableView.init(serversTableView,
                 (observable, oldValue, newValue) -> {
                     if (newValue != null) {
-                        switchTreeView(newValue);
+                        switchServer(newValue);
                     }
                 },
                 history);
     }
 
-    private void switchTreeView(ZkServer server) {
+    private void switchServer(ZkServer server) {
         final ZkServerService service = ZkServerService.getInstance(server.getServer());
         try {
             final CuratorFramework client = service.connectIfNecessary();
             zkNodeTreeView.setCellFactory(view -> new DefaultTreeCell(primaryStage, client));
         } catch (InterruptedException e) {
             VToast.toastFailure(primaryStage, "Failed: " + e.getMessage());
+            return;
         }
 
-        if (!treeViewCache.hasServer(server.getServer())) {
-            initRootIfNecessary(server.getServer());
-        }
-
-        Platform.runLater(() -> {
-            final String value = history.get(server.getServer(), "0");
-            history.save(server.getServer(), String.valueOf(Integer.parseInt(value) + 1));
-            history.store();
-        });
-
-        final TreeItem<ZkNode> root = treeViewCache.get(server.getServer(), ROOT_PATH);
-        bindZkNodeProperties(root.getValue());
-        zkNodeTreeView.setRoot(root);
+        initVirtualRootIfNecessary(server.getServer());
+        refreshServerHistory(server.getServer());
+        switchTreeRoot(server.getServer());
         service.syncNodeIfNecessary();
         activeServer.set(server.getServer());
         server.setConnect(true);
     }
 
-    private TreeItem<ZkNode> initRootIfNecessary(String server) {
-        String path = NodeTreeViewController.ROOT_PATH;
-        final ZkNode zkNode = new ZkNode(path, path);
-        TreeItem<ZkNode> virtualRoot = new TreeItem<>(zkNode);
-        zkNode.setData("");
-        zkNode.setStat(new Stat());
-        treeViewCache.add(server, path, virtualRoot);
-        return virtualRoot;
-    }
-
-    @FXML
-    private void updateDataAction() {
-        if (activeServer.get() == null) {
-            VToast.toastFailure(primaryStage, "Error: connect zookeeper first");
-            return;
-        }
-        try {
-            ZkServerService.getInstance(activeServer.get())
-                    .setData(this.pathLabel.getText(),
-                            this.dataTextArea.getText(),
-                            (client, event) -> Platform.runLater(() -> VToast.toastSuccess(primaryStage)));
-        } catch (Exception e) {
-            VToast.toastFailure(primaryStage, "update data failed");
-            log.error("update data error", e);
+    private void initVirtualRootIfNecessary(String server) {
+        if (!treeViewCache.hasServer(server)) {
+            String path = NodeTreeViewController.ROOT_PATH;
+            final ZkNode zkNode = new ZkNode(path, path);
+            TreeItem<ZkNode> virtualRoot = new TreeItem<>(zkNode);
+            zkNode.setData("");
+            zkNode.setStat(new Stat());
+            treeViewCache.add(server, path, virtualRoot);
         }
     }
 
+    private void refreshServerHistory(String server) {
+        Platform.runLater(() -> {
+            final String value = history.get(server, "0");
+            history.save(server, String.valueOf(Integer.parseInt(value) + 1));
+            history.store();
+        });
+    }
+
+    private void switchTreeRoot(String server) {
+        final TreeItem<ZkNode> root = treeViewCache.get(server, ROOT_PATH);
+        bindZkNodeProperties(root.getValue());
+        zkNodeTreeView.setRoot(root);
+    }
 
 }

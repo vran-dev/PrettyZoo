@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 public class ZkServerService {
 
@@ -52,7 +53,7 @@ public class ZkServerService {
                     client = CuratorFrameworkFactory.newClient(this.server, retryPolicy);
                     client.start();
                     // TODO @vran use connection listener
-                    client.blockUntilConnected();
+                    client.blockUntilConnected(5000, TimeUnit.SECONDS);
                     connected = true;
                 }
             }
