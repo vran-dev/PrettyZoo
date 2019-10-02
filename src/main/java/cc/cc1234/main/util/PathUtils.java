@@ -70,4 +70,18 @@ public class PathUtils {
         return new PathIterator(path);
     }
 
+    public static String concat(String parent, String child) {
+        final boolean end = parent.endsWith("/");
+        final boolean start = child.startsWith("/");
+        if (end && start) {
+            return parent + child.substring(1);
+        }
+
+        if (end || start) {
+            return parent + child;
+        }
+
+        return parent + "/" + child;
+    }
+
 }

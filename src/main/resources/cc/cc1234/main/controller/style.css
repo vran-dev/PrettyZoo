@@ -1,12 +1,29 @@
 
 .lineLabel {
-    /*-fx-border-color: transparent transparent #4db6ac transparent;*/
+    -fx-border-color: transparent transparent #4db6ac transparent;
+    -fx-min-width: 30px;
+    -fx-border-width: 2px;
+    -fx-background-color: transparent;
+    -fx-padding: 1;
+    -fx-text-fill: #4db6ac;
+}
+
+.infoLabel {
     -fx-border-color: transparent transparent transparent transparent;
     -fx-min-width: 30px;
     -fx-border-width: 2px;
     -fx-background-color: transparent;
     -fx-padding: 1;
     -fx-text-fill: #4db6ac;
+}
+
+.lineInput {
+    -fx-border-color: transparent transparent #4db6ac transparent;
+    -fx-min-width: 30px;
+    -fx-border-width: 2px;
+    -fx-background-color: transparent;
+    -fx-padding: 1;
+    -fx-text-fill: #000;
 }
 
 .confirmButton {
@@ -18,4 +35,69 @@
 .confirmButton:hover {
     -fx-opacity: 0.9;
     -fx-background-color: #00796b;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #009688;
+
+}
+
+.box {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #009688;
+    -fx-border-radius: 20;
+}
+
+.box:hover {
+    -fx-border-color: #81d4fa;
+}
+
+.table-view {
+    -fx-padding: 5;
+}
+
+.table-view .column-header {
+    -fx-background-color: #ddd;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 20;
+    -fx-text-fill: #009688;
+}
+
+.table-view {
+    /*-fx-base: #1d1d1d;*/
+    -fx-control-inner-background: white;
+    -fx-background-color: white;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-cell-border-size: 3px;
+    -fx-table-header-border-color: transparent;
+    -fx-table-header-border-size: 5px;
+    -fx-padding: 5;
+    -fx-selection-bar: transparent;
+    -fx-selection-bar-non-focused: transparent;
+}
+
+.table-row-cell {
+    -fx-padding: 10, 5, 10, 5;
+    -fx-cell-size: 50;
+    -fx-font-size: 13;
+}
+
+
+.table-view:focused .table-row-cell:selected .table-cell {
+    -fx-background-color: #009688;
+    -fx-text-fill: #FFF;
+}
+
+.table-row-cell:filled:selected .table-cell {
+    -fx-background-color: #E0E0E0;
+    -fx-text-fill: #000;
+}
+
+.tree-view:focused .tree-cell:selected {
+    -fx-text-fill: #FFF;
+    -fx-background-color: #009688;
+}
+
+.tree-cell:filled:selected {
+    -fx-background-color: #E0E0E0;
 }

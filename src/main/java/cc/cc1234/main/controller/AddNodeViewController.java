@@ -1,5 +1,6 @@
 package cc.cc1234.main.controller;
 
+import cc.cc1234.main.util.PathUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,7 +9,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.CreateMode;
@@ -30,11 +33,13 @@ public class AddNodeViewController {
     private CheckBox isNodeEph;
 
     @FXML
-    private Label parentPathLabel;
+    private Label currentPathLabel;
 
     private CuratorFramework curatorFramework;
 
     private Stage stage;
+
+    private String parentPath;
 
     public static void initController(String parentPath, CuratorFramework curatorFramework) throws IOException {
         String fxml = "AddNodeView.fxml";
@@ -43,17 +48,33 @@ public class AddNodeViewController {
         AnchorPane panel = loader.load();
         final AddNodeViewController controller = loader.getController();
         controller.setCuratorFramework(curatorFramework);
-        controller.setParentPath(parentPath);
+        controller.setCurrentPath(parentPath);
 
         final Scene scene = new Scene(panel);
         final Stage stage = new Stage();
         stage.setScene(scene);
+        stage.initModality(Modality.APPLICATION_MODAL);
         controller.setStage(stage);
-        stage.showAndWait();
+        stage.show();
     }
 
-    public void setParentPath(String parentPath) {
-        this.parentPathLabel.setText(parentPath);
+    @FXML
+    private void initialize() {
+        this.nodeNameTextField.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
+            TextField textField = (TextField) event.getSource();
+            final String input = textField.getText();
+            if (input != null && !input.trim().equals("")) {
+                currentPathLabel.setText(PathUtils.concat(parentPath, input));
+            } else {
+                currentPathLabel.setText(parentPath);
+            }
+        });
+
+    }
+
+    public void setCurrentPath(String parentPath) {
+        this.currentPathLabel.setText(parentPath);
+        this.parentPath = parentPath;
     }
 
     public void setStage(Stage stage) {
@@ -66,16 +87,9 @@ public class AddNodeViewController {
 
     @FXML
     private void onNodeAddAction() {
-        final String nodeName = nodeNameTextField.getText();
         final String nodeData = nodeDataTextArea.getText();
         try {
-
-            String path = parentPathLabel.getText();
-            if (parentPathLabel.getText().endsWith("/")) {
-                path += nodeName;
-            } else {
-                path += "/" + nodeName;
-            }
+            String path = currentPathLabel.getText();
             curatorFramework.create()
                     .withMode(createMode())
                     // must use Platform to close stage
