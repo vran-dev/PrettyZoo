@@ -67,9 +67,6 @@ public class NodeTreeViewController {
     @FXML
     private TextArea dataTextArea;
 
-    @FXML
-    private ProgressBar nodeSyncProgressBar;
-
     public static final String ROOT_PATH = "/";
 
     private TreeViewCache<ZkNode> treeViewCache = TreeViewCache.getInstance();
