@@ -90,9 +90,14 @@ public class NodeTreeViewController {
             VToast.toastFailure(primaryStage, "Error: connect zookeeper first");
             return;
         }
+        final String path = this.pathLabel.getText();
+        if (treeViewCache.get(activeServer.get(), path) == null) {
+            VToast.toastFailure(primaryStage, "Node not exists");
+            return;
+        }
         try {
             ZkServerService.getInstance(activeServer.get())
-                    .setData(this.pathLabel.getText(),
+                    .setData(path,
                             this.dataTextArea.getText(),
                             (client, event) -> Platform.runLater(() -> VToast.toastSuccess(primaryStage)));
         } catch (Exception e) {
