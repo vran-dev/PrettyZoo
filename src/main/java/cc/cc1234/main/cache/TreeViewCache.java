@@ -42,4 +42,8 @@ public class TreeViewCache<T> {
     public TreeItem<ZkNode> get(String server, String path) {
         return CACHE.get(server).get(path);
     }
+
+    public void remove(String server, String path) {
+        CACHE.get(server).remove(path);
+    }
 }

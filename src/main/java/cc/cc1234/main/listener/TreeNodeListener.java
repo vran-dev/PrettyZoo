@@ -80,6 +80,8 @@ public class TreeNodeListener implements TreeCacheListener {
             zkNodeTreeView.getSelectionModel().clearSelection();
         }
         parentItem.getChildren().remove(removeItem);
+        treeViewCache.getTreeView().getSelectionModel().select(parentItem);
+        treeViewCache.remove(server, path);
         decreaseNumOfChildFiled(path);
     }
 
