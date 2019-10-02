@@ -7,6 +7,8 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.apache.curator.framework.CuratorFramework;
 
@@ -38,7 +40,6 @@ public class DefaultTreeCell extends TreeCell<ZkNode> {
             }
         });
 
-        // TODO @vran add action
         addMenu = new MenuItem("Add");
         addMenu.setOnAction(event -> {
             try {
@@ -58,9 +59,13 @@ public class DefaultTreeCell extends TreeCell<ZkNode> {
             setText(null);
             setGraphic(null);
         } else {
-            setText(item.getName());
+            setText(null);
             final TreeItem<ZkNode> treeItem = getTreeItem();
-            setGraphic(treeItem.getGraphic());
+            final Text graphic = new Text(item.getName());
+            if (treeItem.getValue().getEphemeralOwner() != 0) {
+                graphic.setFill(Color.valueOf("#ffab00"));
+            }
+            setGraphic(graphic);
             setContextMenu(operationMenus);
 
             if (item.getEphemeralOwner() == 0) {

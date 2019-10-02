@@ -12,6 +12,7 @@ import org.apache.curator.framework.recipes.cache.ChildData;
 import org.apache.curator.framework.recipes.cache.TreeCacheEvent;
 import org.apache.curator.framework.recipes.cache.TreeCacheListener;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TreeNodeListener implements TreeCacheListener {
@@ -79,6 +80,7 @@ public class TreeNodeListener implements TreeCacheListener {
             zkNodeTreeView.getSelectionModel().clearSelection();
         }
         parentItem.getChildren().remove(removeItem);
+        decreaseNumOfChildFiled(path);
     }
 
     public void onNodeAdded(TreeCacheEvent event) {
@@ -104,7 +106,30 @@ public class TreeNodeListener implements TreeCacheListener {
             final String parent = PathUtils.getParent(path);
             final TreeItem<ZkNode> parentItem = treeViewCache.get(server, parent);
             parentItem.getChildren().add(treeItem);
+            increaseNumOfChildField(path);
         }
+    }
+
+    private void increaseNumOfChildField(String node) {
+        if (!completed || Objects.equals(node, NodeTreeViewController.ROOT_PATH)) {
+            return;
+        }
+
+        final TreeItem<ZkNode> parentItem = treeViewCache.get(server, PathUtils.getParent(node));
+        final int numChildren = parentItem.getValue().getNumChildren();
+        parentItem.getValue().setNumChildren(numChildren + 1);
+    }
+
+    private void decreaseNumOfChildFiled(String node) {
+        if (!completed || Objects.equals(node, NodeTreeViewController.ROOT_PATH)) {
+            return;
+        }
+        final TreeItem<ZkNode> parentItem = treeViewCache.get(server, PathUtils.getParent(node));
+        final int numChildren = parentItem.getValue().getNumChildren();
+        if (numChildren == 0) {
+            return;
+        }
+        parentItem.getValue().setNumChildren(numChildren - 1);
     }
 
 
