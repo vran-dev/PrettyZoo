@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.main.controller.NodeTreeViewController">
+<?import javafx.scene.text.Font?>
+<AnchorPane minHeight="556.2" minWidth="900.0" prefHeight="556.2" prefWidth="900.0" xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.main.controller.NodeTreeViewController">
     <children>
-        <SplitPane dividerPositions="0.4" layoutX="133.0" layoutY="53.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <SplitPane dividerPositions="0.382" layoutX="133.0" layoutY="53.0" AnchorPane.bottomAnchor="0.0"
+                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                <AnchorPane>
                     <children>
-                  <SplitPane dividerPositions="0.4" layoutX="34.0" layoutY="92.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane dividerPositions="0.45" layoutX="34.0" layoutY="92.0" prefHeight="160.0"
+                                   prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="396.0" prefWidth="103.0">
+                        <AnchorPane minWidth="80.0" prefWidth="150.0">
                            <children>
-                              <TableView fx:id="serversTableView" fixedCellSize="0.0" layoutX="-29.0" layoutY="45.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                               <TableView fx:id="serversTableView" fixedCellSize="0.0" layoutX="-29.0" layoutY="45.0"
+                                          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                   <placeholder>
                                       <Label text="right click" />
                                   </placeholder>
@@ -22,85 +27,130 @@
                               </TableView>
                            </children>
                         </AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                        <AnchorPane minHeight="0.0" minWidth="100.0" prefHeight="160.0" prefWidth="212.47">
                            <children>
                                     <TreeView fx:id="zkNodeTreeView" prefHeight="398.0" prefWidth="174.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                    <ProgressBar fx:id="nodeSyncProgressBar" maxHeight="34.0" minHeight="-Infinity" prefHeight="17.0" prefWidth="234.0" progress="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="381.0" />
                            </children></AnchorPane>
                     </items>
                   </SplitPane>
                     </children>
                 </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                <AnchorPane minHeight="350.0" minWidth="500.0" prefHeight="350.0" prefWidth="556.2"
+                            SplitPane.resizableWithParent="false">
                     <children>
-                        <SplitPane dividerPositions="0.7" layoutX="128.0" layoutY="99.0" orientation="VERTICAL" prefHeight="398.0" prefWidth="416.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <items>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                        <AnchorPane minHeight="330.0" minWidth="350.0" prefHeight="330.0" prefWidth="350.0"
+                                    style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0"
+                                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <AnchorPane layoutX="311.0" layoutY="120.0" style="-fx-background-color: #eee;"
+                                            AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="272.0"
+                                            AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="110.0">
                                     <children>
-                                        <GridPane fx:id="NodeDetail" prefHeight="273.0" prefWidth="554.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <columnConstraints>
-                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="128.0" />
-                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="82.0" />
-                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="231.0" minWidth="10.0" prefWidth="231.0" />
-                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="83.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                            <children>
-                                                <Label text="pZxid" GridPane.rowIndex="3" />
-                                                <Label layoutX="10.0" layoutY="26.0" text="mtime" GridPane.rowIndex="2" />
-                                                <Label layoutX="10.0" layoutY="26.0" text="cZxid" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                                <Label layoutX="10.0" layoutY="75.0" text="mZxid" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                                <Label layoutX="10.0" layoutY="124.0" text="cversion" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                                <Label layoutX="218.0" layoutY="124.0" text="aclVersion" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                                                <Label layoutX="10.0" layoutY="172.0" text="dataVersion" GridPane.rowIndex="4" />
-                                                <Label layoutX="10.0" layoutY="172.0" text="ctime" GridPane.rowIndex="1" />
-                                                <Label layoutX="10.0" layoutY="194.0" text="ephemeralOwner" GridPane.rowIndex="5" />
-                                                <Label layoutX="10.0" layoutY="248.0" text="dataLength" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                                                <Label layoutX="10.0" layoutY="71.0" text="path" />
-                                                <Label layoutX="10.0" layoutY="25.0" text="numChildren" GridPane.columnIndex="2" />
-                                                <Label fx:id="numChildrenLabel" GridPane.columnIndex="3" />
-                                                <Label fx:id="pathLabel" layoutX="498.0" layoutY="25.0" GridPane.columnIndex="1" />
-                                                <Label fx:id="ctimeLabel" layoutX="170.0" layoutY="25.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <Label fx:id="mtimeLabel" layoutX="170.0" layoutY="71.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <Label fx:id="pZxidLabel" layoutX="170.0" layoutY="117.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                <Label fx:id="dataVersionLabel" layoutX="170.0" layoutY="162.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                                <Label fx:id="ephemeralOwnerLabel" layoutX="170.0" layoutY="207.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                                <Label fx:id="cZxidLabel" layoutX="170.0" layoutY="252.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                                <Label fx:id="mZxidLabel" layoutX="498.0" layoutY="71.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                                <Label fx:id="cversionLabel" layoutX="498.0" layoutY="117.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                                <Label fx:id="aclVersionLabel" layoutX="498.0" layoutY="162.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                                                <Label fx:id="dataLengthLabel" layoutX="498.0" layoutY="207.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-                                            </children>
-                                        </GridPane>
+                                        <Label layoutX="28.0" layoutY="156.0" text="aclVersion"
+                                               AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="130.0"/>
+                                        <Label fx:id="aclVersionLabel" layoutX="107.0" layoutY="173.0"
+                                               styleClass="lineLabel" stylesheets="@style.css"
+                                               AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="20.0"
+                                               AnchorPane.topAnchor="170.0"/>
+                                        <Label layoutX="15.0" layoutY="128.0" text="dataVersion"
+                                               AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="90.0"/>
+                                        <Label fx:id="dataVersionLabel" layoutX="107.0" layoutY="125.0"
+                                               styleClass="lineLabel" stylesheets="@style.css"
+                                               AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="20.0"
+                                               AnchorPane.topAnchor="90.0"/>
+                                        <Label layoutX="26.0" layoutY="192.0" text="cversion"
+                                               AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="170.0"/>
+                                        <Label fx:id="cversionLabel" layoutX="107.0" layoutY="189.0"
+                                               styleClass="lineLabel" stylesheets="@style.css"
+                                               AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="20.0"
+                                               AnchorPane.topAnchor="130.0"/>
+                                        <Label layoutX="15.0" layoutY="14.0" prefHeight="17.0" prefWidth="74.0"
+                                               text="dataLength" AnchorPane.leftAnchor="20.0"
+                                               AnchorPane.topAnchor="10.0"/>
+                                        <Label fx:id="dataLengthLabel" layoutX="122.0" layoutY="11.0"
+                                               styleClass="lineLabel" stylesheets="@style.css"
+                                               AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="20.0"
+                                               AnchorPane.topAnchor="10.0"/>
+                                        <Label layoutX="18.0" layoutY="52.0" text="numChildren"
+                                               AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="50.0"/>
+                                        <Label fx:id="numChildrenLabel" layoutX="119.0" layoutY="49.0"
+                                               styleClass="lineLabel" stylesheets="@style.css"
+                                               AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="20.0"
+                                               AnchorPane.topAnchor="50.0">
+                                            <font>
+                                                <Font size="14.0"/>
+                                            </font>
+                                        </Label>
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="108.0" prefWidth="414.0">
+                                <AnchorPane maxWidth="1.7976931348623157E308" minWidth="500.0" prefHeight="80.0"
+                                            prefWidth="533.0" style="-fx-background-color: #ECEFF1;"
+                                            AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"
+                                            AnchorPane.topAnchor="10.0">
                                     <children>
-                                        <SplitPane dividerPositions="0.8" layoutX="59.0" layoutY="-32.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <items>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
-                                                    <children>
-                                                        <TextArea fx:id="dataTextArea" layoutX="74.0" layoutY="-43.0" prefHeight="200.0" prefWidth="200.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                    </children>
-                                                </AnchorPane>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                    <children>
-                                                        <Button layoutX="24.0" layoutY="43.0" mnemonicParsing="false" onAction="#updateDataAction" text="Update" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="3.0" />
-                                                    </children>
-                                                </AnchorPane>
-                                            </items>
-                                        </SplitPane>
+                                        <Label layoutX="50.0" layoutY="19.0" text="path" AnchorPane.leftAnchor="30.0"
+                                               AnchorPane.topAnchor="10.0">
+                                            <font>
+                                                <Font size="15.0"/>
+                                            </font>
+                                        </Label>
+                                        <Label fx:id="pathLabel" layoutX="105.0" layoutY="13.0" styleClass="lineLabel"
+                                               stylesheets="@style.css" AnchorPane.leftAnchor="90.0"
+                                               AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0"/>
+                                        <Label layoutX="15.0" layoutY="44.0" text="ephemeralOwner"
+                                               AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="45.0"/>
+                                        <Label fx:id="ephemeralOwnerLabel" layoutX="135.0" layoutY="46.0"
+                                               styleClass="lineLabel" stylesheets="@style.css"
+                                               AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="30.0"
+                                               AnchorPane.topAnchor="45.0"/>
                                     </children>
                                 </AnchorPane>
-                            </items>
-                        </SplitPane>
+                                <AnchorPane layoutX="62.0" layoutY="120.0" maxWidth="1.7976931348623157E308"
+                                            minWidth="250.0" prefWidth="250.0" style="-fx-background-color: #eee;"
+                                            AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+                                            AnchorPane.topAnchor="110.0">
+                                    <children>
+                                        <Label layoutX="48.0" layoutY="16.0" text="mtime" AnchorPane.leftAnchor="20.0"
+                                               AnchorPane.topAnchor="10.0"/>
+                                        <Label layoutX="32.0" layoutY="47.0" text="ctime" AnchorPane.leftAnchor="20.0"
+                                               AnchorPane.topAnchor="50.0"/>
+                                        <Label fx:id="mtimeLabel" layoutX="87.0" layoutY="7.0" styleClass="lineLabel"
+                                               stylesheets="@style.css" AnchorPane.leftAnchor="70.0"
+                                               AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0"/>
+                                        <Label fx:id="ctimeLabel" contentDisplay="RIGHT" layoutX="87.0" layoutY="36.0"
+                                               styleClass="lineLabel" stylesheets="@style.css"
+                                               AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="20.0"
+                                               AnchorPane.topAnchor="50.0"/>
+                                        <Label layoutX="32.0" layoutY="95.0" text="pZxid" AnchorPane.leftAnchor="20.0"
+                                               AnchorPane.topAnchor="130.0"/>
+                                        <Label fx:id="pZxidLabel" layoutX="92.0" layoutY="107.0" styleClass="lineLabel"
+                                               stylesheets="@style.css" AnchorPane.leftAnchor="70.0"
+                                               AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="130.0"/>
+                                        <Label layoutX="30.0" layoutY="82.0" text="mZxid" AnchorPane.leftAnchor="20.0"
+                                               AnchorPane.topAnchor="90.0"/>
+                                        <Label fx:id="mZxidLabel" layoutX="79.0" layoutY="84.0" styleClass="lineLabel"
+                                               stylesheets="@style.css" AnchorPane.leftAnchor="70.0"
+                                               AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0"/>
+                                        <Label layoutX="156.0" layoutY="73.0" text="cZxid" AnchorPane.leftAnchor="20.0"
+                                               AnchorPane.topAnchor="170.0"/>
+                                        <Label fx:id="cZxidLabel" layoutX="158.0" layoutY="99.0" styleClass="lineLabel"
+                                               stylesheets="@style.css" AnchorPane.leftAnchor="70.0"
+                                               AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="170.0"/>
+                                    </children>
+                                </AnchorPane>
+                                <Separator layoutX="-2.0" layoutY="105.0" prefHeight="0.0" prefWidth="269.0"
+                                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                           AnchorPane.topAnchor="100.0"/>
+                            </children>
+                        </AnchorPane>
+                        <Button layoutX="458.0" layoutY="403.0" mnemonicParsing="false" onAction="#updateDataAction"
+                                styleClass="confirmButton" stylesheets="@style.css" text="Update"
+                                AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="350.0"/>
+                        <TextArea fx:id="dataTextArea" layoutX="18.0" layoutY="349.0" maxHeight="1.7976931348623157E308"
+                                  maxWidth="1.7976931348623157E308" minHeight="150.0" minWidth="350.0"
+                                  prefHeight="135.0" prefWidth="350.0" wrapText="true" AnchorPane.bottomAnchor="20.0"
+                                  AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="100.0"
+                                  AnchorPane.topAnchor="350.0"/>
                     </children>
                 </AnchorPane>
             </items>

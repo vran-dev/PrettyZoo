@@ -1,0 +1,21 @@
+
+.lineLabel {
+    /*-fx-border-color: transparent transparent #4db6ac transparent;*/
+    -fx-border-color: transparent transparent transparent transparent;
+    -fx-min-width: 30px;
+    -fx-border-width: 2px;
+    -fx-background-color: transparent;
+    -fx-padding: 1;
+    -fx-text-fill: #4db6ac;
+}
+
+.confirmButton {
+    -fx-background-color: #009688;
+    -fx-text-fill: #FFF;
+}
+
+
+.confirmButton:hover {
+    -fx-opacity: 0.9;
+    -fx-background-color: #00796b;
+}
