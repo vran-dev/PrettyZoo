@@ -15,25 +15,31 @@ A GUI for Zookeeper created by JavaFX and Curator Framework.
 java -jar PrettyZoo.jar
 ```
 
+## Features
+
+- connect multi zookeeper server at same time
+
+- remember your server at local
+
+- sync node tree between server and local automatic
+
+- you can recognize different node (persist, ephemeral) by style
+
+- you can add / delete / update node
+
 ## TODO
 
-- [x] Change UI
+- [ ] support node search
 
-- [x] support dynamic update view
-
-- [ ] different nodes by style
-
-- [ ] node search
-
-- [x] support `CRUD` node
-
-- [x] remember history server
+- [ ] support recursive delete / add (now you can only delete leaf node and add one children)
 
 - [ ] support ACL
 
 - [ ] support Proxy
 
-- [ ] error log
+- [ ] more strictly check of input, and more friendly reminder
+
+- [ ] installer of OS (exe, img, deb......)
 
 ## Example
 
@@ -45,7 +51,7 @@ java -jar PrettyZoo.jar
 
 ![](release/example/addServer.jpg)
 
-![](release/example/addServers.jpg)
+### Double click to connect and sync
 
 ![](release/example/syncNode.jpg)
 
