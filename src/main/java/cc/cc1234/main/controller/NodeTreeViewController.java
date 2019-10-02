@@ -143,13 +143,7 @@ public class NodeTreeViewController {
 
     private void initServerTableView() {
         history = History.createIfAbsent(History.SERVER_HISTORY);
-        ServerTableView.init(serversTableView,
-                (observable, oldValue, newValue) -> {
-                    if (newValue != null) {
-                        switchServer(newValue);
-                    }
-                },
-                history);
+        ServerTableView.init(serversTableView, this::switchServer, history);
     }
 
     private void switchServer(ZkServer server) {
