@@ -1,7 +1,7 @@
 package cc.cc1234.main.listener;
 
 import cc.cc1234.main.cache.TreeViewCache;
-import cc.cc1234.main.controller.NodeTreeViewController;
+import cc.cc1234.main.controller.TreeNodeViewController;
 import cc.cc1234.main.model.ZkNode;
 import cc.cc1234.main.util.PathUtils;
 import javafx.application.Platform;
@@ -96,11 +96,11 @@ public class TreeNodeListener implements TreeCacheListener {
         node.setData(new String(eventData.getData()));
 
         totalNodeNum.addAndGet(eventData.getStat().getNumChildren());
-        if (path.equals(NodeTreeViewController.ROOT_PATH)) {
+        if (path.equals(TreeNodeViewController.ROOT_PATH)) {
             final TreeView<ZkNode> treeView = treeViewCache.getTreeView();
-            final ZkNode exists = treeView.getRoot().getValue();
-            exists.setStat(eventData.getStat());
-            exists.setData(new String(eventData.getData()));
+            final TreeItem<ZkNode> root = treeViewCache.get(server, TreeNodeViewController.ROOT_PATH);
+            root.getValue().setStat(eventData.getStat());
+            root.getValue().setData(new String(eventData.getData()));
             treeView.getRoot().setExpanded(true);
         } else {
             final TreeItem<ZkNode> treeItem = new TreeItem<>(node);
@@ -113,7 +113,7 @@ public class TreeNodeListener implements TreeCacheListener {
     }
 
     private void increaseNumOfChildField(String node) {
-        if (!completed || Objects.equals(node, NodeTreeViewController.ROOT_PATH)) {
+        if (!completed || Objects.equals(node, TreeNodeViewController.ROOT_PATH)) {
             return;
         }
 
@@ -123,7 +123,7 @@ public class TreeNodeListener implements TreeCacheListener {
     }
 
     private void decreaseNumOfChildFiled(String node) {
-        if (!completed || Objects.equals(node, NodeTreeViewController.ROOT_PATH)) {
+        if (!completed || Objects.equals(node, TreeNodeViewController.ROOT_PATH)) {
             return;
         }
         final TreeItem<ZkNode> parentItem = treeViewCache.get(server, PathUtils.getParent(node));

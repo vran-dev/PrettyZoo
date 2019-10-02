@@ -18,9 +18,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class NodeTreeViewController {
+public class TreeNodeViewController {
 
-    private static final Logger log = LoggerFactory.getLogger(NodeTreeViewController.class);
+    private static final Logger log = LoggerFactory.getLogger(TreeNodeViewController.class);
 
     @FXML
     private TreeView<ZkNode> zkNodeTreeView;
@@ -108,12 +108,12 @@ public class NodeTreeViewController {
 
     @FXML
     private void initialize() {
+        initBindListener();
         initServerTableView();
-        bindZkNodeProperties();
         treeViewCache.setTreeView(zkNodeTreeView);
     }
 
-    private void bindZkNodeProperties() {
+    private void initBindListener() {
         zkNodeTreeView.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(((observable, oldValue, newValue) -> {
@@ -161,8 +161,8 @@ public class NodeTreeViewController {
             return;
         }
 
-        initVirtualRootIfNecessary(server.getServer());
         refreshServerHistory(server.getServer());
+        initVirtualRootIfNecessary(server.getServer());
         switchTreeRoot(server.getServer());
         service.syncNodeIfNecessary();
         activeServer.set(server.getServer());
@@ -171,7 +171,7 @@ public class NodeTreeViewController {
 
     private void initVirtualRootIfNecessary(String server) {
         if (!treeViewCache.hasServer(server)) {
-            String path = NodeTreeViewController.ROOT_PATH;
+            String path = TreeNodeViewController.ROOT_PATH;
             final ZkNode zkNode = new ZkNode(path, path);
             TreeItem<ZkNode> virtualRoot = new TreeItem<>(zkNode);
             zkNode.setData("");
@@ -190,8 +190,9 @@ public class NodeTreeViewController {
 
     private void switchTreeRoot(String server) {
         final TreeItem<ZkNode> root = treeViewCache.get(server, ROOT_PATH);
-        bindZkNodeProperties(root.getValue());
         zkNodeTreeView.setRoot(root);
+        // fix binding error
+//        bindZkNodeProperties(root.getValue());
     }
 
 }

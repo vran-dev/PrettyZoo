@@ -1,6 +1,6 @@
 package cc.cc1234.main;
 
-import cc.cc1234.main.controller.NodeTreeViewController;
+import cc.cc1234.main.controller.TreeNodeViewController;
 import cc.cc1234.main.service.ZkServerService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -26,11 +26,11 @@ public class PrettyZooApplication extends Application {
 
     public static void showNodeTreeView(Stage primary) throws IOException {
         final FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(NodeTreeViewController.class.getResource("NodeTreeView.fxml"));
+        loader.setLocation(TreeNodeViewController.class.getResource("TreeNodeView.fxml"));
         final AnchorPane anchorPane = loader.load();
         final Scene scene = new Scene(anchorPane);
         primary.setScene(scene);
-        NodeTreeViewController controller = loader.getController();
+        TreeNodeViewController controller = loader.getController();
         controller.setPrimaryStage(primary);
         primary.show();
 
