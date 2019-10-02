@@ -53,7 +53,10 @@ public class ZkServerService {
                     client = CuratorFrameworkFactory.newClient(this.server, retryPolicy);
                     client.start();
                     // TODO @vran use connection listener
-                    client.blockUntilConnected(5000, TimeUnit.SECONDS);
+                    final boolean res = client.blockUntilConnected(5, TimeUnit.SECONDS);
+                    if (!res) {
+                        throw new InterruptedException("connect timeout");
+                    }
                     connected = true;
                 }
             }
