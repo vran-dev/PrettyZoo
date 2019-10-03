@@ -21,7 +21,8 @@
       <CheckBox fx:id="isNodeEph" layoutX="335.0" layoutY="99.0" mnemonicParsing="false" text="Ephemeral"
                 AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="105.0"/>
       <TextArea fx:id="nodeDataTextArea" layoutX="170.0" layoutY="144.0" minWidth="260.0" prefHeight="200.0"
-                prefWidth="260.0" promptText="Input node data here" style="-fx-border-color: #009688;" wrapText="true"
+                prefWidth="260.0" styleClass="vTextArea" promptText="Input node data here"
+                style="-fx-border-color: #009688;" wrapText="true"
                 AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0"
                 AnchorPane.topAnchor="145.0"/>
       <Button contentDisplay="CENTER" layoutX="255.0" layoutY="352.0" minWidth="50.0" mnemonicParsing="false"

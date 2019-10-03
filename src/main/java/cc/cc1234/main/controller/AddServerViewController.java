@@ -49,7 +49,7 @@ public class AddServerViewController {
         scene.setFill(Color.TRANSPARENT);
         final Stage stage = new Stage();
         stage.setScene(scene);
-        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.initModality(Modality.APPLICATION_MODAL);
 
         final AddServerViewController controller = loader.getController();
@@ -61,7 +61,7 @@ public class AddServerViewController {
         double y = parent.getY() + parent.getHeight() / 2 - panel.getPrefHeight() / 2;
         stage.setX(x);
         stage.setY(y);
-        animation(panel);
+//        animation(panel);
         stage.show();
     }
 

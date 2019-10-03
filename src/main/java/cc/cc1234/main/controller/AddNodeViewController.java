@@ -1,6 +1,7 @@
 package cc.cc1234.main.controller;
 
 import cc.cc1234.main.util.PathUtils;
+import com.google.common.base.Strings;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.CreateMode;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class AddNodeViewController {
 
@@ -87,9 +89,13 @@ public class AddNodeViewController {
 
     @FXML
     private void onNodeAddAction() {
+        String path = currentPathLabel.getText();
+        if (Strings.isNullOrEmpty(path) || Objects.equals(path, parentPath)) {
+            VToast.toastFailure(stage, "node must not be empty");
+            return;
+        }
         final String nodeData = nodeDataTextArea.getText();
         try {
-            String path = currentPathLabel.getText();
             curatorFramework.create()
                     .withMode(createMode())
                     // must use Platform to close stage

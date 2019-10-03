@@ -1,11 +1,11 @@
 
 .lineLabel {
-    -fx-border-color: transparent transparent #4db6ac transparent;
+    -fx-border-color: transparent transparent #3F51B5 transparent;
     -fx-min-width: 30px;
     -fx-border-width: 2px;
     -fx-background-color: transparent;
     -fx-padding: 1;
-    -fx-text-fill: #4db6ac;
+    -fx-text-fill: #3F51B5;
 }
 
 .infoLabel {
@@ -14,11 +14,11 @@
     -fx-border-width: 2px;
     -fx-background-color: transparent;
     -fx-padding: 1;
-    -fx-text-fill: #4db6ac;
+    -fx-text-fill: #3F51B5;
 }
 
 .lineInput {
-    -fx-border-color: transparent transparent #4db6ac transparent;
+    -fx-border-color: transparent transparent #3F51B5 transparent;
     -fx-min-width: 30px;
     -fx-border-width: 2px;
     -fx-background-color: transparent;
@@ -27,29 +27,59 @@
 }
 
 .confirmButton {
-    -fx-background-color: #009688;
+    -fx-background-color: #3F51B5;
     -fx-text-fill: #FFF;
+    -fx-effect: dropshadow(three-pass-box, #8e8e8e, 20, 0.1, 1, 1);
 }
 
+.confirmButton:hover:pressed {
+    -fx-background-color: #7986CB;
+}
 
 .confirmButton:hover {
-    -fx-opacity: 0.9;
-    -fx-background-color: #00796b;
+    -fx-background-color: #303F9F;
+}
+
+.defaultButton {
+    -fx-background-color: #9B9B9B;
+    -fx-text-fill: #FFF;
+    -fx-effect: dropshadow(three-pass-box, #E0E0E0, 20, 0.1, 1, 1);
+}
+
+.defaultButton:hover:pressed {
+    -fx-background-color: #858383;
+}
+
+.defaultButton:hover {
+    -fx-background-color: #686060;
+}
+
+.warnButton {
+    -fx-background-color: #F50057;
+    -fx-text-fill: #FFF;
+    -fx-effect: dropshadow(three-pass-box, #E0E0E0, 20, 0.1, 1, 1);
+}
+
+.warnButton:hover:pressed {
+    -fx-background-color: #FF4081;
+}
+
+.warnButton:hover {
+    -fx-background-color: #C51162;
 }
 
 .check-box:selected .mark {
-    -fx-background-color: #009688;
-
+    -fx-background-color: #3F51B5;
 }
 
 .box {
     -fx-background-color: #FFFFFF;
-    -fx-border-color: #009688;
+    -fx-border-color: #3F51B5;
     -fx-border-radius: 20;
 }
 
 .box:hover {
-    -fx-border-color: #81d4fa;
+    -fx-border-color: #303F9F;
 }
 
 .table-view {
@@ -60,7 +90,7 @@
     -fx-background-color: #ddd;
     -fx-border-color: #ddd;
     -fx-border-radius: 20;
-    -fx-text-fill: #009688;
+    -fx-text-fill: #3F51B5;
 }
 
 .table-view {
@@ -84,7 +114,17 @@
 
 
 .table-view:focused .table-row-cell:selected .table-cell {
-    -fx-background-color: #009688;
+    -fx-background-color: #3F51B5;
+    -fx-text-fill: #FFF;
+}
+
+.table-view:focused .table-row-cell:selected:hover .table-cell {
+    -fx-background-color: #303F9F;
+    -fx-text-fill: #FFF;
+}
+
+.table-view:focused .table-row-cell:selected:hover .table-cell:pressed {
+    -fx-background-color: #7986CB;
     -fx-text-fill: #FFF;
 }
 
@@ -93,11 +133,74 @@
     -fx-text-fill: #000;
 }
 
+.tree-view {
+    -fx-background-color: transparent;
+    -fx-text-fill: red;
+}
+
+.tree-view:focused {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.tree-view:disabled {
+    -fx-background-color: transparent;
+}
+
+.tree-cell {
+    -fx-text-fill: red;
+}
+
 .tree-view:focused .tree-cell:selected {
-    -fx-text-fill: #FFF;
-    -fx-background-color: #009688;
+    -fx-background-color: #3F51B5;
 }
 
 .tree-cell:filled:selected {
     -fx-background-color: #E0E0E0;
+}
+
+.split-pane-divider {
+    -fx-padding: 0 3 0 0;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.whiteCard {
+    -fx-background-color: #fff;
+    -fx-border-color: #fff;
+    -fx-effect: dropshadow(gaussian, #8e8e8e, 10, 0.2, 2, 2);
+}
+
+.vTextArea {
+    -fx-border-color: #fff, #fff;
+    -fx-background-insets: 0;
+    -fx-background-color: transparent, white, transparent, white;
+    -fx-border-width: 0, 0, 2, 0;
+    -fx-effect: dropshadow(three-pass-box, #8e8e8e, 10, 0.3, 2.2, 2.2);
+}
+
+.vTextArea .content {
+    -fx-background-color: #fff;
+}
+
+.vTextArea:focused .content {
+    -fx-background-color: #fff;
+}
+
+.vTextField {
+    -fx-border-color: #3F51B5;
+    -fx-border-width: 0 0 2 0;
+    -fx-background-color:transparent;
+    -fx-font-size: 14;
+}
+
+.vTextField:focused {
+    -fx-border-color: #7986CB;
+    -fx-font-size: 16;
+}
+
+.vDialog {
+    -fx-background-color: #fff;
+    -fx-border-color: #ddd;
+    -fx-effect: dropshadow(gaussian, black, 10, 2, 3, 3);
 }
