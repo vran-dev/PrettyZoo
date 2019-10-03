@@ -10,6 +10,7 @@ import cc.cc1234.main.view.ServerListViewManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.data.Stat;
@@ -27,6 +28,12 @@ public class TreeNodeViewController {
 
     @FXML
     private ListView<ZkServer> serversListView;
+
+    @FXML
+    private Button serverListMenu;
+
+    @FXML
+    private AnchorPane serverListItems;
 
     @FXML
     private Label numChildrenLabel;
@@ -85,6 +92,25 @@ public class TreeNodeViewController {
     }
 
     @FXML
+    private void onAddServerAction() {
+        serverListItems.setVisible(false);
+        AddServerViewController.show(serversListView);
+    }
+
+    @FXML
+    private void onRemoveServerAction() {
+        serverListItems.setVisible(false);
+        final ZkServer removeItem = serversListView.getSelectionModel().getSelectedItem();
+        if (removeItem == null) {
+            VToast.toastFailure(primaryStage, "no server exists");
+            return;
+        }
+        serversListView.getItems().remove(removeItem);
+        history.remove(removeItem.getServer());
+        history.store();
+    }
+
+    @FXML
     private void updateDataAction() {
         if (activeServer.get() == null) {
             VToast.toastFailure(primaryStage, "Error: connect zookeeper first");
@@ -111,6 +137,12 @@ public class TreeNodeViewController {
         initBindListener();
         initServerTableView();
         treeViewCache.setTreeView(zkNodeTreeView);
+        // TODO support batch delete
+//        serversListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        serversListView.setOnMouseClicked(event -> serverListItems.setVisible(false));
+        serverListMenu.setOnMouseClicked(event -> {
+            serverListItems.setVisible(!serverListItems.isVisible());
+        });
     }
 
     private void initBindListener() {

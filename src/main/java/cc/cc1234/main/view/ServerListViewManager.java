@@ -1,6 +1,5 @@
 package cc.cc1234.main.view;
 
-import cc.cc1234.main.controller.AddServerViewController;
 import cc.cc1234.main.history.History;
 import cc.cc1234.main.model.ZkServer;
 import javafx.beans.binding.Bindings;
@@ -10,8 +9,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,7 +23,6 @@ public class ServerListViewManager {
                             History history) {
         // items
         serverListView.setItems(historyToItems(history));
-        configTableViewEvent(serverListView);
         configCellEvent(serverListView, callback);
     }
 
@@ -40,14 +36,6 @@ public class ServerListViewManager {
         Collections.reverse(historyServers);
         historyServers.forEach(zs -> items.add(new ZkServer(zs.server)));
         return items;
-    }
-
-    private static void configTableViewEvent(ListView<ZkServer> serverListView) {
-        serverListView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            if (e.getButton() == MouseButton.SECONDARY) {
-                AddServerViewController.show(serverListView);
-            }
-        });
     }
 
     private static void configCellEvent(ListView<ZkServer> serverListView,

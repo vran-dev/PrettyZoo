@@ -71,6 +71,10 @@ public class History {
         }
     }
 
+    public boolean remove(String key) {
+        return properties.remove(key) != null;
+    }
+
     public void clear() {
         properties.clear();
         store();

@@ -26,6 +26,8 @@
     -fx-text-fill: #000;
 }
 
+/*   ==================================  Button ==================================*/
+
 .confirmButton {
     -fx-background-color: #3F51B5;
     -fx-text-fill: #FFF;
@@ -85,46 +87,42 @@
     -fx-background-color: #303F9F;
 }
 
-
 .warnCircleButton {
     -fx-background-color: #F50057;
-    -fx-background-radius: 13;
+    -fx-background-radius: 30;
     -fx-border-color: #F50057;
-    -fx-pref-width: 13;
-    -fx-border-radius: 13;
+    -fx-pref-width: 30;
+    -fx-border-radius: 30;
     -fx-text-fill: #FFF;
-    -fx-font-size: 8;
-    -fx-effect: dropshadow(three-pass-box, #E0E0E0, 0, 0.1, 1, 1);
+    -fx-effect: dropshadow(three-pass-box, #E0E0E0, 20, 0.1, 1, 1);
+}
+
+.warnCircleButton:hover {
+    -fx-background-color: #C51162;
 }
 
 .warnCircleButton:hover:pressed {
     -fx-background-color: #FF4081;
 }
 
-.warnCircleButton:hover {
-    -fx-background-color: #C51162;
+
+.moveUpButton {
+    -fx-background-image: url("moveUp.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 20;
 }
 
 .removeButton {
     -fx-background-color: transparent;
-    -fx-border-color: transparent;
     -fx-background-image: url("remove.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
+    -fx-background-size: 18;
 }
 
-.removeButton:hover {
-    -fx-effect: dropshadow(three-pass-box, #FF4081, 0, 0.1, 2, 2);
-}
 
-.warnCircleButton:hover:pressed {
-
-}
-
-.warnCircleButton:hover {
-    -fx-background-color: #C51162;
-}
-
+/*   ==================================  Checkbox ==================================*/
 
 .check-box:selected .mark {
     -fx-background-color: #3F51B5;
@@ -241,7 +239,7 @@
 .vTextField {
     -fx-border-color: #3F51B5;
     -fx-border-width: 0 0 2 0;
-    -fx-background-color:transparent;
+    -fx-background-color: transparent;
     -fx-font-size: 14;
 }
 
