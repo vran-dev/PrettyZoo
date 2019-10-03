@@ -68,6 +68,64 @@
     -fx-background-color: #C51162;
 }
 
+.primaryCircleButton {
+    -fx-background-color: #3F51B5;
+    -fx-background-radius: 30;
+    -fx-pref-width: 30;
+    -fx-border-radius: 30;
+    -fx-text-fill: #FFF;
+    -fx-effect: dropshadow(three-pass-box, #E0E0E0, 20, 0.1, 1, 1);
+}
+
+.primaryCircleButton:hover:pressed {
+    -fx-background-color: #7986CB;
+}
+
+.primaryCircleButton:hover {
+    -fx-background-color: #303F9F;
+}
+
+
+.warnCircleButton {
+    -fx-background-color: #F50057;
+    -fx-background-radius: 13;
+    -fx-border-color: #F50057;
+    -fx-pref-width: 13;
+    -fx-border-radius: 13;
+    -fx-text-fill: #FFF;
+    -fx-font-size: 8;
+    -fx-effect: dropshadow(three-pass-box, #E0E0E0, 0, 0.1, 1, 1);
+}
+
+.warnCircleButton:hover:pressed {
+    -fx-background-color: #FF4081;
+}
+
+.warnCircleButton:hover {
+    -fx-background-color: #C51162;
+}
+
+.removeButton {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-image: url("remove.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.removeButton:hover {
+    -fx-effect: dropshadow(three-pass-box, #FF4081, 0, 0.1, 2, 2);
+}
+
+.warnCircleButton:hover:pressed {
+
+}
+
+.warnCircleButton:hover {
+    -fx-background-color: #C51162;
+}
+
+
 .check-box:selected .mark {
     -fx-background-color: #3F51B5;
 }
@@ -82,18 +140,9 @@
     -fx-border-color: #303F9F;
 }
 
-.table-view {
-    -fx-padding: 5;
-}
 
-.table-view .column-header {
-    -fx-background-color: #ddd;
-    -fx-border-color: #ddd;
-    -fx-border-radius: 20;
-    -fx-text-fill: #3F51B5;
-}
-
-.table-view {
+/*   ==================================  List view ==================================*/
+.list-view {
     /*-fx-base: #1d1d1d;*/
     -fx-control-inner-background: white;
     -fx-background-color: white;
@@ -101,41 +150,42 @@
     -fx-table-cell-border-size: 3px;
     -fx-table-header-border-color: transparent;
     -fx-table-header-border-size: 5px;
-    -fx-padding: 5;
+    -fx-padding: 2;
     -fx-selection-bar: transparent;
     -fx-selection-bar-non-focused: transparent;
 }
 
-.table-row-cell {
-    -fx-padding: 10, 5, 10, 5;
-    -fx-cell-size: 50;
-    -fx-font-size: 13;
+.list-cell {
+    -fx-background-radius: 2;
+    -fx-cell-size: 40;
+    -fx-font-size: 14;
 }
 
-
-.table-view:focused .table-row-cell:selected .table-cell {
+.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:focused {
     -fx-background-color: #3F51B5;
     -fx-text-fill: #FFF;
+
 }
 
-.table-view:focused .table-row-cell:selected:hover .table-cell {
+.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:selected:hover {
     -fx-background-color: #303F9F;
     -fx-text-fill: #FFF;
 }
 
-.table-view:focused .table-row-cell:selected:hover .table-cell:pressed {
+.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:selected:hover:pressed {
     -fx-background-color: #7986CB;
     -fx-text-fill: #FFF;
 }
 
-.table-row-cell:filled:selected .table-cell {
+.list-view .list-cell:filled:selected {
     -fx-background-color: #E0E0E0;
     -fx-text-fill: #000;
 }
 
+/*   ==================================  Tree view ==================================*/
 .tree-view {
     -fx-background-color: transparent;
-    -fx-text-fill: red;
+    -fx-text-fill: #000;
 }
 
 .tree-view:focused {
@@ -148,11 +198,12 @@
 }
 
 .tree-cell {
-    -fx-text-fill: red;
+    -fx-text-fill: #000;
 }
 
 .tree-view:focused .tree-cell:selected {
     -fx-background-color: #3F51B5;
+    -fx-text-fill: #FFF;
 }
 
 .tree-cell:filled:selected {

@@ -6,7 +6,7 @@ import cc.cc1234.main.model.ZkNode;
 import cc.cc1234.main.model.ZkServer;
 import cc.cc1234.main.service.ZkServerService;
 import cc.cc1234.main.view.DefaultTreeCell;
-import cc.cc1234.main.view.ServerTableView;
+import cc.cc1234.main.view.ServerListViewManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -26,7 +26,7 @@ public class TreeNodeViewController {
     private TreeView<ZkNode> zkNodeTreeView;
 
     @FXML
-    private TableView<ZkServer> serversTableView;
+    private ListView<ZkServer> serversListView;
 
     @FXML
     private Label numChildrenLabel;
@@ -148,7 +148,7 @@ public class TreeNodeViewController {
 
     private void initServerTableView() {
         history = History.createIfAbsent(History.SERVER_HISTORY);
-        ServerTableView.init(serversTableView, this::switchServer, history);
+        ServerListViewManager.init(serversListView, this::switchServer, history);
     }
 
     private void switchServer(ZkServer server) {

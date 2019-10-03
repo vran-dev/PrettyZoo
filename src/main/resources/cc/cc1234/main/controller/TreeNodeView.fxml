@@ -14,12 +14,8 @@
                     <items>
                         <AnchorPane minWidth="80.0" prefWidth="150.0">
                            <children>
-                               <TableView fx:id="serversTableView" fixedCellSize="0.0" layoutX="-29.0" layoutY="45.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                  <placeholder>
-                                      <Label text="right click" />
-                                  </placeholder>
-                                  <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
-                              </TableView>
+                              <ListView fx:id="serversListView" layoutY="97.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="14.0" prefHeight="30.0" style="-fx-background-color: #FFF;" text="server" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane minHeight="0.0" minWidth="100.0" prefHeight="160.0" prefWidth="212.47" style="-fx-background-color: transparent;">

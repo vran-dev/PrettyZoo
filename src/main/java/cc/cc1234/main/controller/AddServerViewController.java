@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.TableView;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -31,9 +31,9 @@ public class AddServerViewController {
     private Stage stage;
 
 
-    private TableView<ZkServer> serversTableView;
+    private ListView<ZkServer> serversTableView;
 
-    public static void show(TableView<ZkServer> serversTableView) {
+    public static void show(ListView<ZkServer> serversTableView) {
         String fxml = "AddServerView.fxml";
         final FXMLLoader loader = new FXMLLoader();
         loader.setLocation(AddServerViewController.class.getResource(fxml));
@@ -79,7 +79,7 @@ public class AddServerViewController {
         this.stage = stage;
     }
 
-    public void setServersTableView(TableView<ZkServer> serversTableView) {
+    public void setServersTableView(ListView<ZkServer> serversTableView) {
         this.serversTableView = serversTableView;
     }
 
