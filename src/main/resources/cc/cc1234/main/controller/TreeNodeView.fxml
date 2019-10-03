@@ -16,19 +16,21 @@
                         <AnchorPane minWidth="80.0" prefWidth="150.0">
                            <children>
                               <ListView fx:id="serversListView" layoutY="97.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="14.0" prefHeight="30.0" styleClass="iconLabel" text="PrettyZoo" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0" />
+                              <Label fx:id="prettyZooLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="14.0" prefHeight="30.0" styleClass="prettyZoo" text="PrettyZoo" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0" />
                               <Button fx:id="serverListMenu" layoutX="102.0" layoutY="437.0" mnemonicParsing="false" AnchorPane.bottomAnchor="90.0" AnchorPane.rightAnchor="20.0">
                                  <styleClass>
-                                    <String fx:value="primaryCircleButton" />
+                                    <String fx:value="primary-circle-button" />
                                     <String fx:value="moveUpButton" />
                                  </styleClass>
                               </Button>
-                              <AnchorPane fx:id="serverListItems" layoutX="73.0" layoutY="337.0" prefHeight="67.0" prefWidth="87.0" visible="false" AnchorPane.bottomAnchor="130.0" AnchorPane.rightAnchor="20.0">
+                              <AnchorPane fx:id="serverListItems" layoutX="73.0" layoutY="337.0" prefHeight="107.0" prefWidth="127.0" visible="false" AnchorPane.bottomAnchor="130.0" AnchorPane.rightAnchor="20.0">
                                  <children>
-                                    <Button layoutX="19.0" layoutY="57.0" mnemonicParsing="false" onAction="#onRemoveServerAction" styleClass="warnCircleButton" text="-" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                                    <Button layoutX="19.0" layoutY="19.0" mnemonicParsing="false" onAction="#onAddServerAction" styleClass="primaryCircleButton" text="+" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="0.0" />
+                                    <Button layoutX="19.0" layoutY="57.0" mnemonicParsing="false" onAction="#onRemoveServerAction" styleClass="danger-circle-button" text="-" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                    <Button layoutX="19.0" layoutY="19.0" mnemonicParsing="false" onAction="#onAddServerAction" styleClass="primary-circle-button" text="+" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="0.0" />
                                     <Label layoutX="10.0" layoutY="6.0" styleClass="infoLabel" text="add server" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0" />
                                     <Label layoutX="10.0" layoutY="44.0" styleClass="infoLabel" text="delete server" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="40.0" />
+                                    <CheckBox fx:id="recursiveModeCheckBox" alignment="CENTER" contentDisplay="CENTER" layoutX="33.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="warn" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="0.0" />
+                                    <Label layoutX="27.0" layoutY="9.0" styleClass="infoLabel" text="recursive mode" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="40.0" />
                                  </children>
                               </AnchorPane>
                            </children>
@@ -91,7 +93,7 @@
                                 </AnchorPane>
                             </children>
                         </AnchorPane>
-                        <Button layoutX="458.0" layoutY="403.0" mnemonicParsing="false" onAction="#updateDataAction" styleClass="confirmButton" text="Update" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="350.0" />
+                        <Button layoutX="458.0" layoutY="403.0" mnemonicParsing="false" onAction="#updateDataAction" styleClass="primary-button" text="Update" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="350.0" />
                         <TextArea fx:id="dataTextArea" layoutX="30.0" layoutY="350.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="150.0" minWidth="350.0" prefHeight="135.0" prefWidth="350.0" styleClass="vTextArea" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="350.0" />
                     </children>
                 </AnchorPane>

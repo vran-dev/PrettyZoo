@@ -1,5 +1,6 @@
 package cc.cc1234.main.controller;
 
+import cc.cc1234.main.cache.RecursiveModeContext;
 import cc.cc1234.main.cache.TreeViewCache;
 import cc.cc1234.main.history.History;
 import cc.cc1234.main.model.ZkNode;
@@ -74,6 +75,12 @@ public class TreeNodeViewController {
     @FXML
     private TextArea dataTextArea;
 
+    @FXML
+    private Label prettyZooLabel;
+
+    @FXML
+    private CheckBox recursiveModeCheckBox;
+
     public static final String ROOT_PATH = "/";
 
     private TreeViewCache<ZkNode> treeViewCache = TreeViewCache.getInstance();
@@ -143,6 +150,18 @@ public class TreeNodeViewController {
         serverListMenu.setOnMouseClicked(event -> {
             serverListItems.setVisible(!serverListItems.isVisible());
         });
+
+        recursiveModeCheckBox.selectedProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    RecursiveModeContext.change(newValue);
+                    if (newValue) {
+                        prettyZooLabel.getStyleClass().remove(RecursiveModeContext.PRETTYZOO);
+                        prettyZooLabel.getStyleClass().add(RecursiveModeContext.PRETTYZOO_RECURSIVE);
+                    } else {
+                        prettyZooLabel.getStyleClass().remove(RecursiveModeContext.PRETTYZOO_RECURSIVE);
+                        prettyZooLabel.getStyleClass().add(RecursiveModeContext.PRETTYZOO);
+                    }
+                });
     }
 
     private void initBindListener() {

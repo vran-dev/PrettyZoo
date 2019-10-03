@@ -61,6 +61,7 @@ public class DefaultTreeCell extends TreeCell<ZkNode> {
         } else {
             final TreeItem<ZkNode> treeItem = getTreeItem();
             final Text graphic = new Text(item.getName());
+            // ephemeral node
             if (treeItem.getValue().getEphemeralOwner() != 0) {
                 graphic.setFill(Color.valueOf("#ffab00"));
                 setGraphic(graphic);

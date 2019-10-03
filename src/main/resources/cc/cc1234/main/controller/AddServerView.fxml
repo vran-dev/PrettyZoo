@@ -11,7 +11,7 @@
             <Font name="Avenir Roman" size="14.0" />
          </font>
       </TextField>
-      <Button alignment="CENTER" layoutX="44.0" layoutY="142.0" mnemonicParsing="false" onAction="#onCancel" opacity="0.8" styleClass="defaultButton" text="cancel" AnchorPane.leftAnchor="40.0" />
-      <Button alignment="CENTER" layoutX="146.0" layoutY="142.0" mnemonicParsing="false" onAction="#onConfirm" opacity="0.8" styleClass="confirmButton" text="confirm" AnchorPane.rightAnchor="40.0" />
+      <Button alignment="CENTER" layoutX="44.0" layoutY="142.0" mnemonicParsing="false" onAction="#onCancel" opacity="0.8" styleClass="default-button" text="cancel" AnchorPane.leftAnchor="40.0" />
+      <Button alignment="CENTER" layoutX="146.0" layoutY="142.0" mnemonicParsing="false" onAction="#onConfirm" opacity="0.8" styleClass="primary-button" text="confirm" AnchorPane.rightAnchor="40.0" />
    </children>
 </AnchorPane>
