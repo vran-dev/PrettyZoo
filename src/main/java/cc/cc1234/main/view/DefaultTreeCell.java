@@ -59,15 +59,16 @@ public class DefaultTreeCell extends TreeCell<ZkNode> {
             setText(null);
             setGraphic(null);
         } else {
-            setText(null);
             final TreeItem<ZkNode> treeItem = getTreeItem();
             final Text graphic = new Text(item.getName());
             if (treeItem.getValue().getEphemeralOwner() != 0) {
                 graphic.setFill(Color.valueOf("#ffab00"));
+                setGraphic(graphic);
+                setText(null);
+            } else {
+                setText(treeItem.getValue().getName());
             }
-            setGraphic(graphic);
             setContextMenu(operationMenus);
-
             if (item.getEphemeralOwner() == 0) {
                 addIfAbsent(addMenu);
             } else {
