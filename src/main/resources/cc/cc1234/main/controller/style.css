@@ -1,4 +1,10 @@
 
+.iconLabel {
+    -fx-background-color: #FFF;
+    -fx-text-fill: #3F51B5;
+    -fx-font-size: 14;
+}
+
 .lineLabel {
     -fx-border-color: transparent transparent #3F51B5 transparent;
     -fx-min-width: 30px;
@@ -208,10 +214,80 @@
     -fx-background-color: #E0E0E0;
 }
 
+/*   ==================================  split pane ==================================*/
+
 .split-pane-divider {
-    -fx-padding: 0 3 0 0;
+    -fx-padding: 0 2 0 0;
     -fx-background-color: transparent;
     -fx-background-insets: 0;
+}
+
+.scroll-bar {
+    -fx-background-color: #FFF;
+    -fx-pref-width: 4;
+    -fx-min-width: 4;
+    -fx-max-width: 4;
+    -fx-min-hight: 2px;
+    -fx-pref-hight: 2px;
+    -fx-max-hight: 2px;
+    -fx-block-increment: 1;
+}
+
+.scroll-bar:vertical {
+    -fx-pref-width: 7;
+    -fx-padding: 1;
+}
+
+.scroll-bar:horizontal {
+    -fx-pref-height: 7;
+    -fx-padding: 1;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+    visibility: false;
+}
+
+*.scroll-bar > *.track-background {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    visibility: false;
+}
+
+*.scroll-bar > *.thumb {
+    -fx-background-color: #DDD;
+    -fx-background-insets: 0;
+    -fx-min-width: 3;
+    -fx-pref-width: 3;
+    -fx-max-width: 3;
+    -fx-min-hight: 2px;
+    -fx-pref-hight: 2px;
+    -fx-max-hight: 2px;
+    -fx-padding: 0;
+}
+
+*.virtual-flow > *.corner {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    visibility: false;
+    -fx-max-width: 5;
+    -fx-max-height: 5;
+}
+
+.scroll-bar > *.increment-button,
+.scroll-bar > *.increment-button > *.increment-arrow {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    visibility: false;
+    -fx-max-width: 5;
+    -fx-max-height: 5;
+}
+
+.scroll-bar > *.decrement-button,
+.scroll-bar > *.decrement-button > *.decrement-arrow {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    visibility: false;
 }
 
 .whiteCard {

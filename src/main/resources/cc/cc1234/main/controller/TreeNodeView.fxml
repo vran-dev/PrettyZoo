@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import java.lang.String?>
-<AnchorPane minHeight="556.2" minWidth="900.0" prefHeight="556.2" prefWidth="900.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.main.controller.TreeNodeViewController">
+<AnchorPane minHeight="556.2" minWidth="900.0" prefHeight="556.2" prefWidth="960.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.main.controller.TreeNodeViewController">
 
     <children>
         <SplitPane dividerPositions="0.382" layoutX="133.0" layoutY="53.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -16,17 +16,19 @@
                         <AnchorPane minWidth="80.0" prefWidth="150.0">
                            <children>
                               <ListView fx:id="serversListView" layoutY="97.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="14.0" prefHeight="30.0" style="-fx-background-color: #FFF;" text="server" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0" />
-                              <Button fx:id="serverListMenu" layoutX="102.0" layoutY="437.0" mnemonicParsing="false" AnchorPane.bottomAnchor="90.0" AnchorPane.rightAnchor="30.0">
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="14.0" prefHeight="30.0" styleClass="iconLabel" text="PrettyZoo" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0" />
+                              <Button fx:id="serverListMenu" layoutX="102.0" layoutY="437.0" mnemonicParsing="false" AnchorPane.bottomAnchor="90.0" AnchorPane.rightAnchor="20.0">
                                  <styleClass>
                                     <String fx:value="primaryCircleButton" />
                                     <String fx:value="moveUpButton" />
                                  </styleClass>
                               </Button>
-                              <AnchorPane fx:id="serverListItems" layoutX="73.0" layoutY="337.0" visible="false" AnchorPane.bottomAnchor="130.0" AnchorPane.rightAnchor="30.0">
+                              <AnchorPane fx:id="serverListItems" layoutX="73.0" layoutY="337.0" prefHeight="67.0" prefWidth="87.0" visible="false" AnchorPane.bottomAnchor="130.0" AnchorPane.rightAnchor="20.0">
                                  <children>
                                     <Button layoutX="19.0" layoutY="57.0" mnemonicParsing="false" onAction="#onRemoveServerAction" styleClass="warnCircleButton" text="-" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                                     <Button layoutX="19.0" layoutY="19.0" mnemonicParsing="false" onAction="#onAddServerAction" styleClass="primaryCircleButton" text="+" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="0.0" />
+                                    <Label layoutX="10.0" layoutY="6.0" styleClass="infoLabel" text="add server" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+                                    <Label layoutX="10.0" layoutY="44.0" styleClass="infoLabel" text="delete server" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="40.0" />
                                  </children>
                               </AnchorPane>
                            </children>
