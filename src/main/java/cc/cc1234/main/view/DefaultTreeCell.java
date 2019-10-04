@@ -1,55 +1,29 @@
 package cc.cc1234.main.view;
 
-import cc.cc1234.main.controller.AddNodeViewController;
+import cc.cc1234.main.cache.TreeViewCache;
+import cc.cc1234.main.controller.TreeNodeMenuViewController;
 import cc.cc1234.main.controller.VToast;
 import cc.cc1234.main.model.ZkNode;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.apache.curator.framework.CuratorFramework;
-
-import java.io.IOException;
+import javafx.stage.Window;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DefaultTreeCell extends TreeCell<ZkNode> {
 
-    private ContextMenu operationMenus;
+    private static final Logger log = LoggerFactory.getLogger(DefaultTreeCell.class);
 
     private final Stage primaryStage;
 
-    private final CuratorFramework client;
-
-    private final MenuItem deleteMenu;
-
-    private final MenuItem addMenu;
-
-
-    public DefaultTreeCell(Stage primaryStage, CuratorFramework client) {
+    public DefaultTreeCell(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.client = client;
-        deleteMenu = new MenuItem("Delete");
-        deleteMenu.setOnAction(event -> {
-            try {
-                client.delete().forPath(getTreeItem().getValue().getPath());
-            } catch (Exception e) {
-                VToast.toastFailure(primaryStage);
-                throw new IllegalStateException(e);
-            }
-        });
-
-        addMenu = new MenuItem("Add");
-        addMenu.setOnAction(event -> {
-            try {
-                AddNodeViewController.initController(getTreeItem().getValue().getPath(), client);
-            } catch (IOException e) {
-                VToast.toastFailure(primaryStage);
-                throw new IllegalStateException(e);
-            }
-        });
-        operationMenus = new ContextMenu();
     }
 
     @Override
@@ -59,6 +33,7 @@ public class DefaultTreeCell extends TreeCell<ZkNode> {
             setText(null);
             setGraphic(null);
         } else {
+            this.setOnMouseClicked(this::mouseEvent);
             final TreeItem<ZkNode> treeItem = getTreeItem();
             final Text graphic = new Text(item.getName());
             // ephemeral node
@@ -69,26 +44,22 @@ public class DefaultTreeCell extends TreeCell<ZkNode> {
             } else {
                 setText(treeItem.getValue().getName());
             }
-            setContextMenu(operationMenus);
-            if (item.getEphemeralOwner() == 0) {
-                addIfAbsent(addMenu);
-            } else {
-                operationMenus.getItems().remove(addMenu);
-            }
-
-            // add delete menu for leaf node
-            if (treeItem.isLeaf() && treeItem.getParent() != null) {
-                addIfAbsent(deleteMenu);
-            } else {
-                operationMenus.getItems().remove(deleteMenu);
-            }
-
         }
     }
 
-    private void addIfAbsent(MenuItem menuItem) {
-        if (!operationMenus.getItems().contains(menuItem)) {
-            operationMenus.getItems().add(menuItem);
+    private void mouseEvent(MouseEvent event) {
+        if (event.getButton() == MouseButton.SECONDARY) {
+            final TreeViewCache<ZkNode> cache = TreeViewCache.getInstance();
+            final TreeView<ZkNode> treeView = cache.getTreeView();
+            final Window window = treeView.getParent().getScene().getWindow();
+            final double x = event.getScreenX() - event.getX();
+            try {
+                TreeNodeMenuViewController.show(window, getTreeItem(), x, event.getScreenY(), treeView.getWidth());
+            } catch (Exception e) {
+                log.error("tree node menu show failed", e);
+                VToast.toastFailure(primaryStage, "unknown error");
+            }
         }
     }
+
 }

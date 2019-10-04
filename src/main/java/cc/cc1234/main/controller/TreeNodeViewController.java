@@ -1,5 +1,6 @@
 package cc.cc1234.main.controller;
 
+import cc.cc1234.main.cache.ActiveServerContext;
 import cc.cc1234.main.cache.RecursiveModeContext;
 import cc.cc1234.main.cache.TreeViewCache;
 import cc.cc1234.main.history.History;
@@ -17,8 +18,6 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 public class TreeNodeViewController {
 
@@ -85,11 +84,6 @@ public class TreeNodeViewController {
 
     private TreeViewCache<ZkNode> treeViewCache = TreeViewCache.getInstance();
 
-    /**
-     * current selected zk server
-     */
-    private AtomicReference<String> activeServer = new AtomicReference<>();
-
     private Stage primaryStage;
 
     private History history;
@@ -119,17 +113,17 @@ public class TreeNodeViewController {
 
     @FXML
     private void updateDataAction() {
-        if (activeServer.get() == null) {
+        if (!ActiveServerContext.exists()) {
             VToast.toastFailure(primaryStage, "Error: connect zookeeper first");
             return;
         }
         final String path = this.pathLabel.getText();
-        if (treeViewCache.get(activeServer.get(), path) == null) {
+        if (treeViewCache.get(ActiveServerContext.get(), path) == null) {
             VToast.toastFailure(primaryStage, "Node not exists");
             return;
         }
         try {
-            ZkServerService.getInstance(activeServer.get())
+            ZkServerService.getInstance(ActiveServerContext.get())
                     .setData(path,
                             this.dataTextArea.getText(),
                             (client, event) -> Platform.runLater(() -> VToast.toastSuccess(primaryStage)));
@@ -178,7 +172,6 @@ public class TreeNodeViewController {
                         bindZkNodeProperties(node);
                     }
                 }));
-
     }
 
     private void bindZkNodeProperties(ZkNode node) {
@@ -206,7 +199,7 @@ public class TreeNodeViewController {
         final ZkServerService service = ZkServerService.getInstance(server.getServer());
         try {
             final CuratorFramework client = service.connectIfNecessary();
-            zkNodeTreeView.setCellFactory(view -> new DefaultTreeCell(primaryStage, client));
+            zkNodeTreeView.setCellFactory(view -> new DefaultTreeCell(primaryStage));
         } catch (InterruptedException e) {
             VToast.toastFailure(primaryStage, "Failed: " + e.getMessage());
             return;
@@ -215,8 +208,8 @@ public class TreeNodeViewController {
         refreshServerHistory(server.getServer());
         initVirtualRootIfNecessary(server.getServer());
         switchTreeRoot(server.getServer());
+        ActiveServerContext.change(server.getServer());
         service.syncNodeIfNecessary();
-        activeServer.set(server.getServer());
         server.setConnect(true);
     }
 

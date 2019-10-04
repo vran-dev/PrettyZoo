@@ -110,4 +110,7 @@ public class ZkServerService {
         }
     }
 
+    public CuratorFramework getClient() {
+        return client;
+    }
 }

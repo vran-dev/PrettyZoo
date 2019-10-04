@@ -1,5 +1,6 @@
 package cc.cc1234.main.controller;
 
+import cc.cc1234.main.cache.RecursiveModeContext;
 import cc.cc1234.main.util.PathUtils;
 import com.google.common.base.Strings;
 import javafx.application.Platform;
@@ -15,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.api.CreateBuilder;
 import org.apache.zookeeper.CreateMode;
 
 import java.io.IOException;
@@ -95,14 +97,19 @@ public class AddNodeViewController {
             return;
         }
         final String nodeData = nodeDataTextArea.getText();
+        final CreateBuilder createBuilder = curatorFramework.create();
         try {
-            curatorFramework.create()
-                    .withMode(createMode())
-                    // must use Platform to close stage
-                    .inBackground((client, event) -> {
-                        Platform.runLater(() -> stage.close());
-                    })
-                    .forPath(path, nodeData.getBytes());
+            // must use Platform to close stage
+            if (RecursiveModeContext.get()) {
+                createBuilder.creatingParentsIfNeeded()
+                        .withMode(createMode())
+                        .inBackground((client, event) -> Platform.runLater(() -> stage.close()))
+                        .forPath(path, nodeData.getBytes());
+            } else {
+                createBuilder.withMode(createMode())
+                        .inBackground((client, event) -> Platform.runLater(() -> stage.close()))
+                        .forPath(path, nodeData.getBytes());
+            }
         } catch (Exception e) {
             VToast.toastFailure(stage);
             throw new IllegalStateException(e);
