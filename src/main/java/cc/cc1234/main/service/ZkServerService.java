@@ -1,5 +1,6 @@
 package cc.cc1234.main.service;
 
+import cc.cc1234.main.cache.ActiveServerContext;
 import cc.cc1234.main.cache.TreeViewCache;
 import cc.cc1234.main.listener.TreeNodeListener;
 import org.apache.curator.framework.CuratorFramework;
@@ -35,8 +36,12 @@ public class ZkServerService {
         treeNodeListener = new TreeNodeListener(server);
     }
 
-    public static ZkServerService getInstance(String server) {
+    public static ZkServerService getOrCreate(String server) {
         return ZK_SERVICES.computeIfAbsent(server, ZkServerService::new);
+    }
+
+    public static ZkServerService getActive() {
+        return ZK_SERVICES.get(ActiveServerContext.get());
     }
 
     public static void close() {
@@ -96,9 +101,7 @@ public class ZkServerService {
     }
 
     public void setData(String path, String data, BackgroundCallback callback) throws Exception {
-        client.setData()
-                .inBackground(callback)
-                .forPath(path, data.getBytes());
+        client.setData().inBackground(callback).forPath(path, data.getBytes());
     }
 
     public void closeALl() {

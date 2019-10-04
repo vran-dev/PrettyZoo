@@ -11,7 +11,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -64,16 +63,15 @@ public class AddNodeViewController {
 
     @FXML
     private void initialize() {
-        this.nodeNameTextField.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
+        this.nodeNameTextField.setOnKeyReleased(event -> {
             TextField textField = (TextField) event.getSource();
             final String input = textField.getText();
-            if (input != null && !input.trim().equals("")) {
-                currentPathLabel.setText(PathUtils.concat(parentPath, input));
-            } else {
+            if (Strings.isNullOrEmpty(input)) {
                 currentPathLabel.setText(parentPath);
+            } else {
+                currentPathLabel.setText(PathUtils.concat(parentPath, input));
             }
         });
-
     }
 
     public void setCurrentPath(String parentPath) {
@@ -111,7 +109,7 @@ public class AddNodeViewController {
                         .forPath(path, nodeData.getBytes());
             }
         } catch (Exception e) {
-            VToast.toastFailure(stage);
+            VToast.toastFailure(stage, e.getMessage());
             throw new IllegalStateException(e);
         }
     }

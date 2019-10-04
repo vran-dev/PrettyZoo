@@ -53,9 +53,6 @@ public class TreeNodeListener implements TreeCacheListener {
 
         if (event.getType() == TreeCacheEvent.Type.INITIALIZED) {
             completed = true;
-//            Platform.runLater(() -> {
-//                nodeSyncProgressBar.setVisible(false);
-//            });
         }
     }
 
@@ -80,7 +77,7 @@ public class TreeNodeListener implements TreeCacheListener {
             zkNodeTreeView.getSelectionModel().clearSelection();
         }
         parentItem.getChildren().remove(removeItem);
-        treeViewCache.getTreeView().getSelectionModel().select(parentItem);
+//        treeViewCache.getTreeView().getSelectionModel().select(parentItem);
         treeViewCache.remove(server, path);
         decreaseNumOfChildFiled(path);
     }

@@ -16,13 +16,13 @@ import javafx.stage.Window;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DefaultTreeCell extends TreeCell<ZkNode> {
+public class ZkNodeTreeCell extends TreeCell<ZkNode> {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultTreeCell.class);
+    private static final Logger log = LoggerFactory.getLogger(ZkNodeTreeCell.class);
 
     private final Stage primaryStage;
 
-    public DefaultTreeCell(Stage primaryStage) {
+    public ZkNodeTreeCell(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 

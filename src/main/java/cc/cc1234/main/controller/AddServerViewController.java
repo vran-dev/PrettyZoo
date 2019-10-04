@@ -2,10 +2,8 @@ package cc.cc1234.main.controller;
 
 import cc.cc1234.main.history.History;
 import cc.cc1234.main.model.ZkServer;
-import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -15,7 +13,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
-import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,19 +58,8 @@ public class AddServerViewController {
         double y = parent.getY() + parent.getHeight() / 2 - panel.getPrefHeight() / 2;
         stage.setX(x);
         stage.setY(y);
-//        animation(panel);
         stage.show();
     }
-
-    private static void animation(Node node) {
-        final FadeTransition transition = new FadeTransition();
-        transition.setFromValue(0.3);
-        transition.setToValue(1.0);
-        transition.setDuration(Duration.millis(800));
-        transition.setNode(node);
-        transition.play();
-    }
-
 
     public void setStage(Stage stage) {
         this.stage = stage;

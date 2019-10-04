@@ -1,7 +1,7 @@
 package cc.cc1234.main.controller;
 
-import cc.cc1234.main.cache.ActiveServerContext;
 import cc.cc1234.main.cache.RecursiveModeContext;
+import cc.cc1234.main.cache.TreeViewCache;
 import cc.cc1234.main.model.ZkNode;
 import cc.cc1234.main.service.ZkServerService;
 import javafx.animation.TranslateTransition;
@@ -47,7 +47,7 @@ public class TreeNodeMenuViewController {
     @FXML
     private void onNodeDeleteAction() {
         stage.close();
-        final CuratorFramework client = ZkServerService.getInstance(ActiveServerContext.get()).getClient();
+        final CuratorFramework client = ZkServerService.getActive().getClient();
         final String path = selectedItem.getValue().getPath();
         final DeleteBuilder deleteBuilder = client.delete();
         try {
@@ -60,12 +60,13 @@ public class TreeNodeMenuViewController {
             log.error("delete node failed", e);
             VToast.toastFailure(stage, "delete failed");
         }
+        TreeViewCache.getInstance().getTreeView().getSelectionModel().clearSelection();
     }
 
     @FXML
     private void onNodeAddAction() {
         stage.close();
-        final CuratorFramework client = ZkServerService.getInstance(ActiveServerContext.get()).getClient();
+        final CuratorFramework client = ZkServerService.getActive().getClient();
         try {
             AddNodeViewController.initController(selectedItem.getValue().getPath(), client);
         } catch (IOException e) {

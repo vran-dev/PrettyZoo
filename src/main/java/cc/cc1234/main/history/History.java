@@ -1,12 +1,15 @@
 package cc.cc1234.main.history;
 
+import cc.cc1234.main.model.ZkServer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class History {
 
@@ -43,6 +46,17 @@ public class History {
         }
     }
 
+    public ObservableList<ZkServer> getHistoryServers() {
+        final List<ZkServer> sortedZkServers = this.getAll().entrySet()
+                .stream()
+                .map(e -> new ZkServerHistory(e.getKey(), e.getValue()))
+                .sorted(Comparator.comparingInt(e -> e.times))
+                .map(h -> new ZkServer(h.server))
+                .collect(Collectors.toList());
+        Collections.reverse(sortedZkServers);
+        return FXCollections.observableArrayList(sortedZkServers);
+    }
+
     public Map<String, String> getAll() {
         Map<String, String> copy = new HashMap<>();
         properties.forEach((key, value) -> {
@@ -63,20 +77,33 @@ public class History {
         return properties.getProperty(key, def);
     }
 
-    public void store() {
+    public History store() {
         try {
             properties.store(Files.newBufferedWriter(Paths.get(file)), "");
+            return this;
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    public boolean remove(String key) {
-        return properties.remove(key) != null;
+    public History remove(String key) {
+        properties.remove(key);
+        return this;
     }
 
-    public void clear() {
+    public History clear() {
         properties.clear();
         store();
+        return this;
+    }
+
+    private static class ZkServerHistory {
+        String server;
+        int times;
+
+        ZkServerHistory(String server, String times) {
+            this.server = server;
+            this.times = Integer.parseInt(times);
+        }
     }
 }
