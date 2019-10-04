@@ -27,15 +27,15 @@ java -jar PrettyZoo.jar
 
 - you can add / delete / update node
 
+- recursive mode: add / delete node recursively
+
 ## TODO
 
 - [ ] support node search
 
-- [ ] support recursive delete / add (now you can only delete leaf node and add one children)
+- [x] support recursive delete / add (now you can only delete leaf node and add one children)
 
 - [ ] support ACL
-
-- [ ] support Proxy
 
 - [ ] more strictly check of input, and more friendly reminder
 
@@ -47,7 +47,9 @@ java -jar PrettyZoo.jar
 
 ![](release/example/main.jpg)
 
-### Right click to add server
+![](release/example/main-2.jpg)
+
+### add server
 
 ![](release/example/addServer.jpg)
 
@@ -55,11 +57,7 @@ java -jar PrettyZoo.jar
 
 ![](release/example/syncNode.jpg)
 
-### delete node
-
-![](release/example/deleteLeafNode.jpg)
-
-### add node
+### right click item to add / delete node
 
 ![](release/example/addNode-01.jpg)
 
