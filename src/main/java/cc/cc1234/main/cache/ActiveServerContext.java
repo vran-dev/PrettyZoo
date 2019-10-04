@@ -17,4 +17,8 @@ public class ActiveServerContext {
     public static boolean exists() {
         return !Strings.isNullOrEmpty(active);
     }
+
+    public static void invalidate() {
+        active = null;
+    }
 }

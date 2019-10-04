@@ -27,13 +27,13 @@ public class TreeNodeViewController {
     private TreeView<ZkNode> zkNodeTreeView;
 
     @FXML
-    private ListView<ZkServer> serversListView;
+    private ListView<ZkServer> serverListView;
 
     @FXML
     private Button serverListMenu;
 
     @FXML
-    private AnchorPane serverListItems;
+    private AnchorPane serverViewMenuItems;
 
     @FXML
     private Label numChildrenLabel;
@@ -94,21 +94,25 @@ public class TreeNodeViewController {
 
     @FXML
     private void onAddServerAction() {
-        serverListItems.setVisible(false);
-        AddServerViewController.show(serversListView);
+        serverViewMenuItems.setVisible(false);
+        AddServerViewController.show(serverListView);
     }
 
     @FXML
     private void onRemoveServerAction() {
-        serverListItems.setVisible(false);
-        final ZkServer removeItem = serversListView.getSelectionModel().getSelectedItem();
+        serverViewMenuItems.setVisible(false);
+        final ZkServer removeItem = serverListView.getSelectionModel().getSelectedItem();
         if (removeItem == null) {
             VToast.toastFailure(primaryStage, "no server exists");
             return;
         }
-        serversListView.getItems().remove(removeItem);
+
+        serverListView.getItems().remove(removeItem);
         history.remove(removeItem.getServer());
         history.store();
+        zkNodeTreeView.setRoot(null);
+        ActiveServerContext.invalidate();
+        ZkServerService.getInstance(removeItem.getServer()).closeALl();
     }
 
     @FXML
@@ -140,9 +144,9 @@ public class TreeNodeViewController {
         treeViewCache.setTreeView(zkNodeTreeView);
         // TODO support batch delete
 //        serversListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        serversListView.setOnMouseClicked(event -> serverListItems.setVisible(false));
+        serverListView.setOnMouseClicked(event -> serverViewMenuItems.setVisible(false));
         serverListMenu.setOnMouseClicked(event -> {
-            serverListItems.setVisible(!serverListItems.isVisible());
+            serverViewMenuItems.setVisible(!serverViewMenuItems.isVisible());
         });
 
         recursiveModeCheckBox.selectedProperty()
@@ -155,6 +159,7 @@ public class TreeNodeViewController {
                         prettyZooLabel.getStyleClass().remove(RecursiveModeContext.PRETTYZOO_RECURSIVE);
                         prettyZooLabel.getStyleClass().add(RecursiveModeContext.PRETTYZOO);
                     }
+                    serverViewMenuItems.setVisible(false);
                 });
     }
 
@@ -192,7 +197,7 @@ public class TreeNodeViewController {
 
     private void initServerTableView() {
         history = History.createIfAbsent(History.SERVER_HISTORY);
-        ServerListViewManager.init(serversListView, this::switchServer, history);
+        ServerListViewManager.init(serverListView, this::switchServer, history);
     }
 
     private void switchServer(ZkServer server) {

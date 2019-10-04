@@ -1,5 +1,6 @@
 package cc.cc1234.main.service;
 
+import cc.cc1234.main.cache.TreeViewCache;
 import cc.cc1234.main.listener.TreeNodeListener;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -101,6 +102,9 @@ public class ZkServerService {
     }
 
     public void closeALl() {
+        ZK_SERVICES.remove(server);
+        TreeViewCache.getInstance().clear(server);
+
         if (treeCache != null) {
             treeCache.close();
         }

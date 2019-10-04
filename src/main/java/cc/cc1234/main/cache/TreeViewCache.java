@@ -46,4 +46,8 @@ public class TreeViewCache<T> {
     public void remove(String server, String path) {
         CACHE.get(server).remove(path);
     }
+
+    public void clear(String server) {
+        CACHE.remove(server);
+    }
 }

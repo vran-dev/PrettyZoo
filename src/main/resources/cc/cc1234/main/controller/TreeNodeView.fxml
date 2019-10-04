@@ -15,7 +15,7 @@
                     <items>
                         <AnchorPane minWidth="80.0" prefWidth="150.0">
                            <children>
-                              <ListView fx:id="serversListView" layoutY="97.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
+                              <ListView fx:id="serverListView" layoutY="97.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
                               <Label fx:id="prettyZooLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="14.0" prefHeight="30.0" styleClass="prettyZoo" text="PrettyZoo" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0" />
                               <Button fx:id="serverListMenu" layoutX="102.0" layoutY="437.0" mnemonicParsing="false" AnchorPane.bottomAnchor="90.0" AnchorPane.rightAnchor="20.0">
                                  <styleClass>
@@ -23,7 +23,8 @@
                                     <String fx:value="moveUpButton" />
                                  </styleClass>
                               </Button>
-                              <AnchorPane fx:id="serverListItems" layoutX="73.0" layoutY="337.0" prefHeight="107.0" prefWidth="127.0" visible="false" AnchorPane.bottomAnchor="130.0" AnchorPane.rightAnchor="20.0">
+                              <AnchorPane fx:id="serverViewMenuItems" layoutX="73.0" layoutY="337.0" prefHeight="107.0"
+                                          prefWidth="127.0" visible="false" AnchorPane.bottomAnchor="130.0" AnchorPane.rightAnchor="20.0">
                                  <children>
                                     <Button layoutX="19.0" layoutY="57.0" mnemonicParsing="false" onAction="#onRemoveServerAction" styleClass="danger-circle-button" text="-" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                                     <Button layoutX="19.0" layoutY="19.0" mnemonicParsing="false" onAction="#onAddServerAction" styleClass="primary-circle-button" text="+" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="0.0" />
