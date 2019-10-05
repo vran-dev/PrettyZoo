@@ -1,54 +1,7 @@
-
-.prettyZoo {
-    -fx-background-color: #FFF;
-    -fx-text-fill: #3F51B5;
-    -fx-font-size: 14;
-}
-
-.prettyZoo-recursive {
-    -fx-background-color: #FDD835;
-    -fx-text-fill: #3F51B5;
-    -fx-font-size: 14;
-    -fx-effect: dropshadow(three-pass-box, #FBC02D, 2, 0.5, 3, 3);
-}
-
-.lineLabel {
-    -fx-border-color: transparent transparent #3F51B5 transparent;
-    -fx-min-width: 30px;
-    -fx-border-width: 2px;
-    -fx-background-color: transparent;
-    -fx-padding: 1;
-    -fx-text-fill: #3F51B5;
-}
-
-.infoLabel {
-    -fx-border-color: transparent transparent transparent transparent;
-    -fx-min-width: 30px;
-    -fx-border-width: 2px;
-    -fx-background-color: transparent;
-    -fx-padding: 1;
-    -fx-text-fill: #3F51B5;
-}
-
-.lineInput {
-    -fx-border-color: transparent transparent #3F51B5 transparent;
-    -fx-min-width: 30px;
-    -fx-border-width: 2px;
-    -fx-background-color: transparent;
-    -fx-padding: 1;
-    -fx-text-fill: #000;
-}
-
-/* ====================== background color ======================*/
-
-.primary-background {
-    -fx-background-color: #3F51B5;
-}
-
-/*   ==================================  Button ==================================*/
+/* ====================== /Button ======================*/
 
 .primary-button {
-    -fx-background-color: #3F51B5;
+    -fx-background-color: #2C6DD2;
     -fx-text-fill: #FFF;
     -fx-effect: dropshadow(three-pass-box, #8e8e8e, 20, 0.1, 1, 1);
 }
@@ -58,7 +11,7 @@
 }
 
 .primary-button:hover {
-    -fx-background-color: #2c3b80;
+    -fx-background-color: #3F51B5;
 }
 
 .default-button {
@@ -89,8 +42,18 @@
     -fx-background-color: #C51162;
 }
 
+.circle-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 30;
+    -fx-pref-width: 30;
+    -fx-pref-height: 30;
+    -fx-border-radius: 30;
+    -fx-text-fill: #000;
+    -fx-effect: dropshadow(three-pass-box, #E0E0E0, 20, 0.1, 1, 1);
+}
+
 .primary-circle-button {
-    -fx-background-color: #3F51B5;
+    -fx-background-color: #2C6DD2;
     -fx-background-radius: 30;
     -fx-pref-width: 30;
     -fx-pref-height: 30;
@@ -104,7 +67,7 @@
 }
 
 .primary-circle-button:hover {
-    -fx-background-color: #303F9F;
+    -fx-background-color: #3F51B5;
 }
 
 .danger-circle-button {
@@ -126,20 +89,29 @@
     -fx-background-color: #FF4081;
 }
 
+/* ====================== /image Button ======================*/
 
-.moveUpButton {
-    -fx-background-image: url("img/moveUp.png");
+.arrow-up-button {
+    -fx-background-image: url("img/arrowUp.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-size: 20;
 }
 
-.removeButton {
-    -fx-background-color: transparent;
+.remove-button {
     -fx-background-image: url("img/remove.png");
+    -fx-background-color: transparent;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-size: 18;
+    -fx-background-size: 28;
+}
+
+.remove-button:hover {
+    -fx-background-image: url("img/remove-hover.png");
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 28;
 }
 
 .refresh-button {
@@ -154,41 +126,86 @@
     -fx-background-image: url("img/refresh-hover.png");
 }
 
+/* ====================== Button/ ======================*/
+
+.lineLabel {
+    -fx-border-color: transparent transparent #3F51B5 transparent;
+    -fx-min-width: 30px;
+    -fx-border-width: 2px;
+    -fx-background-color: transparent;
+    -fx-padding: 1;
+    -fx-text-fill: #3F51B5;
+}
+
+.infoLabel {
+    -fx-border-color: transparent transparent transparent transparent;
+    -fx-min-width: 30px;
+    -fx-border-width: 2px;
+    -fx-background-color: transparent;
+    -fx-padding: 1;
+    -fx-text-fill: #3F51B5;
+}
+
+.line-textField {
+    -fx-border-color: transparent transparent #3F51B5 transparent;
+    -fx-min-width: 30px;
+    -fx-border-width: 2px;
+    -fx-background-color: transparent;
+    -fx-padding: 1;
+    -fx-text-fill: #000;
+}
+
+/* ====================== background color ======================*/
+
+.primary-background {
+    -fx-background-color: #2C6DD2;
+}
+
 
 /*   ==================================  Checkbox ==================================*/
 
 .primary:selected .box .mark {
-    -fx-background-color: #3F51B5;
+    -fx-background-color: #2C6DD2;
 }
 
 .primary .box {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: transparent;
     -fx-background-radius: 30;
-    -fx-border-color: #3F51B5;
+    -fx-border-color: #2C6DD2;
     -fx-pref-width: 30;
     -fx-pref-height: 30;
     -fx-border-radius: 30;
 }
 
 .primary:hover .box {
-    -fx-border-color: #303F9F;
+    -fx-border-color: #3F51B5;
 }
 
-.warn:selected .box .mark {
-    -fx-background-color: #FDD835;
-}
 
 .warn .box {
     -fx-background-color: #FFF;
     -fx-background-radius: 30;
-    -fx-border-color: #FDD835;
+    -fx-border-color: #FBBD34;
     -fx-pref-width: 30;
     -fx-pref-height: 30;
     -fx-border-radius: 30;
 }
 
 .warn:hover .box {
-    -fx-border-color: #FBC02D;
+    -fx-border-color: #000;
+}
+
+.warn:selected .box .mark {
+    -fx-background-color: #FBBD34;
+}
+
+.warn:selected:hover .box {
+    -fx-background-color: #FBBD34;
+    -fx-border-color: #FFF;
+}
+
+.warn:selected:hover .box .mark {
+    -fx-background-color: #FFF;
 }
 
 /*   ==================================  List view ==================================*/
@@ -212,15 +229,18 @@
 }
 
 .list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:focused {
-    -fx-background-color: #3F51B5;
+    -fx-background-color: #2C6DD2;
     -fx-text-fill: #FFF;
+    -fx-border-color: #FFF;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
 
 }
 
-.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:selected:hover {
-    -fx-background-color: #303F9F;
-    -fx-text-fill: #FFF;
-}
+/*.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:selected:hover {*/
+/*    -fx-background-color: #303F9F;*/
+/*    -fx-text-fill: #FFF;*/
+/*}*/
 
 /*.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:selected:hover:pressed {*/
 /*    -fx-background-color: #7986CB;*/
@@ -252,7 +272,7 @@
 }
 
 .tree-view:focused .tree-cell:selected {
-    -fx-background-color: #3F51B5;
+    -fx-background-color: #2C6DD2;
     -fx-text-fill: #FFF;
 }
 
@@ -340,7 +360,9 @@
 .whiteCard {
     -fx-background-color: #fff;
     -fx-border-color: #fff;
-    -fx-effect: dropshadow(gaussian, #8e8e8e, 10, 0.2, 2, 2);
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    /*-fx-effect: dropshadow(gaussian, #8e8e8e, 10, 0.2, 2, 2);*/
 }
 
 .vTextArea {
@@ -348,7 +370,7 @@
     -fx-background-insets: 0;
     -fx-background-color: transparent, white, transparent, white;
     -fx-border-width: 0, 0, 2, 0;
-    -fx-effect: dropshadow(three-pass-box, #8e8e8e, 10, 0.3, 2.2, 2.2);
+    /*-fx-effect: dropshadow(three-pass-box, #8e8e8e, 10, 0.3, 2.2, 2.2);*/
 }
 
 .vTextArea .content {
@@ -375,4 +397,52 @@
     -fx-background-color: #fff;
     -fx-border-color: #ddd;
     -fx-effect: dropshadow(gaussian, black, 10, 2, 3, 3);
+}
+
+.default-pane {
+    -fx-background-color: #F4F8FB;
+}
+
+.left-pane {
+    -fx-border-color: #F4F8FB, #F4F8FB;
+    -fx-border-width: 0 5 0 0;
+    -fx-effect: dropshadow(three-pass-box, #E7EAEE, 10, 0.3, 2.5, 2.2);
+}
+
+.mid-pane {
+
+}
+
+.right-pane {
+    -fx-border-color: #FFF;
+    -fx-border-width: 1;
+}
+
+.right-pane .path {
+    -fx-background-color: #E8EFF3;
+    /*-fx-background-color: #000;*/
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-padding: 2 2 2 2;
+    -fx-text-alignment: center;
+    -fx-content-display: center;
+    -fx-alignment: center;
+    -fx-text-fill: #3F51B5;
+
+}
+
+
+.prettyZoo {
+    -fx-background-color: #FFF;
+    -fx-text-fill: #3F51B5;
+    -fx-font-size: 14;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 0 0 1 0;
+}
+
+.prettyZoo-recursive {
+    -fx-background-color: #FBBD34;
+    -fx-text-fill: #FFF;
+    -fx-font-size: 14;
+    -fx-effect: dropshadow(three-pass-box, #FFF, 1, 0.5, 1, 1);
 }

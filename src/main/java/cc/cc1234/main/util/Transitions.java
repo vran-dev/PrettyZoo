@@ -26,7 +26,7 @@ public class Transitions {
     }
 
     public static ScaleTransition scale(Node node, EventHandler<ActionEvent> finishedEvent) {
-        return scale(node, Duration.seconds(1), 1.1, 1.3, 2, true, finishedEvent);
+        return scale(node, Duration.seconds(1), 0.8, 0.8, 2, true, finishedEvent);
     }
 
     public static ScaleTransition scale(Node node,
