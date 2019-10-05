@@ -1,6 +1,7 @@
 package cc.cc1234.main.controller;
 
-import cc.cc1234.main.history.History;
+import cc.cc1234.main.cache.PrettyZooConfigContext;
+import cc.cc1234.main.model.PrettyZooConfig;
 import cc.cc1234.main.model.ZkServer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,9 +28,6 @@ public class AddServerViewController {
 
     private Stage stage;
 
-
-    private ListView<ZkServer> serversTableView;
-
     public static void show(ListView<ZkServer> serversTableView) {
         String fxml = "AddServerView.fxml";
         final FXMLLoader loader = new FXMLLoader();
@@ -51,7 +49,6 @@ public class AddServerViewController {
 
         final AddServerViewController controller = loader.getController();
         controller.setStage(stage);
-        controller.setServersTableView(serversTableView);
 
         final Window parent = serversTableView.getParent().getScene().getWindow();
         double x = parent.getX() + parent.getWidth() / 2 - panel.getPrefWidth() / 2;
@@ -65,9 +62,6 @@ public class AddServerViewController {
         this.stage = stage;
     }
 
-    public void setServersTableView(ListView<ZkServer> serversTableView) {
-        this.serversTableView = serversTableView;
-    }
 
     @FXML
     private void onCancel() {
@@ -81,13 +75,13 @@ public class AddServerViewController {
             VToast.toastFailure(stage, "server must not be empty");
             return;
         }
-        final History history = History.createIfAbsent(History.SERVER_HISTORY);
-        if (history.contains(server)) {
+
+        final PrettyZooConfig config = PrettyZooConfigContext.get();
+        if (config.contains(server)) {
             VToast.toastFailure(stage, "server exists!");
             return;
         }
-        history.save(server, "0");
-        serversTableView.getItems().add(new ZkServer(server));
+        config.save(server);
         VToast.toastSuccess(stage);
         stage.close();
     }

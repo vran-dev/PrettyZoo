@@ -1,6 +1,7 @@
 package cc.cc1234.main.model;
 
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class ZkServer {
@@ -8,6 +9,8 @@ public class ZkServer {
     private SimpleStringProperty server = new SimpleStringProperty();
 
     private SimpleBooleanProperty connect = new SimpleBooleanProperty(false);
+
+    private SimpleIntegerProperty connectTimes = new SimpleIntegerProperty();
 
     public ZkServer(String server) {
         this.setServer(server);
@@ -35,5 +38,21 @@ public class ZkServer {
 
     public void setConnect(boolean connect) {
         this.connect.set(connect);
+    }
+
+    public boolean isConnect() {
+        return connect.get();
+    }
+
+    public int getConnectTimes() {
+        return connectTimes.get();
+    }
+
+    public SimpleIntegerProperty connectTimesProperty() {
+        return connectTimes;
+    }
+
+    public void setConnectTimes(int connectTimes) {
+        this.connectTimes.set(connectTimes);
     }
 }

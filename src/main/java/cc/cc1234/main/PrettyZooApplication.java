@@ -1,7 +1,9 @@
 package cc.cc1234.main;
 
+import cc.cc1234.main.cache.PrettyZooConfigContext;
 import cc.cc1234.main.controller.TreeNodeViewController;
 import cc.cc1234.main.service.ZkServerService;
+import cc.cc1234.main.util.Configs;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -39,6 +41,7 @@ public class PrettyZooApplication extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
+        Configs.store(PrettyZooConfigContext.get());
         ZkServerService.close();
     }
 

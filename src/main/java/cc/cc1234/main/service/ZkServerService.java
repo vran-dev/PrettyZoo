@@ -1,6 +1,7 @@
 package cc.cc1234.main.service;
 
 import cc.cc1234.main.cache.ActiveServerContext;
+import cc.cc1234.main.cache.PrettyZooConfigContext;
 import cc.cc1234.main.cache.TreeViewCache;
 import cc.cc1234.main.listener.TreeNodeListener;
 import org.apache.curator.framework.CuratorFramework;
@@ -63,6 +64,7 @@ public class ZkServerService {
                     if (!res) {
                         throw new InterruptedException("connect timeout");
                     }
+                    PrettyZooConfigContext.get().save(server);
                     connected = true;
                 }
             }

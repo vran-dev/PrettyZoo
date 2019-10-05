@@ -6,7 +6,7 @@ public class ActiveServerContext {
 
     private static volatile String active;
 
-    public static void change(String change) {
+    public static void set(String change) {
         active = change;
     }
 

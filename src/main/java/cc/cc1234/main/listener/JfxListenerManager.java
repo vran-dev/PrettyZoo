@@ -9,7 +9,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class JfxListenerManager {
 
-    public static ChangeListener<Boolean> getRecursiveModeCheckChangeListener(Label prettyZooLabel, AnchorPane serverViewMenuItems) {
+    public static ChangeListener<Boolean> getRecursiveModeChangeListener(Label prettyZooLabel, AnchorPane serverViewMenuItems) {
         return (observable, oldValue, newValue) -> {
             if (newValue) {
                 prettyZooLabel.getStyleClass().remove(RecursiveModeContext.PRETTYZOO);
