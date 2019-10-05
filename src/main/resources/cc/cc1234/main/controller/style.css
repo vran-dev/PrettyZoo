@@ -39,6 +39,12 @@
     -fx-text-fill: #000;
 }
 
+/* ====================== background color ======================*/
+
+.primary-background {
+    -fx-background-color: #3F51B5;
+}
+
 /*   ==================================  Button ==================================*/
 
 .primary-button {
@@ -122,7 +128,7 @@
 
 
 .moveUpButton {
-    -fx-background-image: url("moveUp.png");
+    -fx-background-image: url("img/moveUp.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-size: 20;
@@ -130,10 +136,22 @@
 
 .removeButton {
     -fx-background-color: transparent;
-    -fx-background-image: url("remove.png");
+    -fx-background-image: url("img/remove.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-size: 18;
+}
+
+.refresh-button {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/refresh.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 20;
+}
+
+.refresh-button:hover {
+    -fx-background-image: url("img/refresh-hover.png");
 }
 
 
@@ -204,10 +222,10 @@
     -fx-text-fill: #FFF;
 }
 
-.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:selected:hover:pressed {
-    -fx-background-color: #7986CB;
-    -fx-text-fill: #FFF;
-}
+/*.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:selected:hover:pressed {*/
+/*    -fx-background-color: #7986CB;*/
+/*    -fx-text-fill: #FFF;*/
+/*}*/
 
 .list-view .list-cell:filled:selected {
     -fx-background-color: #E0E0E0;

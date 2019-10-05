@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import java.lang.String?>
-<AnchorPane minHeight="556.2" minWidth="900.0" prefHeight="556.2" prefWidth="960.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.main.controller.TreeNodeViewController">
+<AnchorPane minHeight="556.2" minWidth="900.0" prefHeight="556.2" prefWidth="960.0" stylesheets="@style.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="cc.cc1234.main.controller.TreeNodeViewController">
 
     <children>
         <SplitPane dividerPositions="0.382" layoutX="133.0" layoutY="53.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -23,8 +25,7 @@
                                     <String fx:value="moveUpButton" />
                                  </styleClass>
                               </Button>
-                              <AnchorPane fx:id="serverViewMenuItems" layoutX="73.0" layoutY="337.0" prefHeight="107.0"
-                                          prefWidth="127.0" visible="false" AnchorPane.bottomAnchor="130.0" AnchorPane.rightAnchor="20.0">
+                              <AnchorPane fx:id="serverViewMenuItems" layoutX="73.0" layoutY="337.0" prefHeight="107.0" prefWidth="127.0" visible="false" AnchorPane.bottomAnchor="130.0" AnchorPane.rightAnchor="20.0">
                                  <children>
                                     <Button layoutX="19.0" layoutY="57.0" mnemonicParsing="false" onAction="#onRemoveServerAction" styleClass="danger-circle-button" text="-" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                                     <Button layoutX="19.0" layoutY="19.0" mnemonicParsing="false" onAction="#onAddServerAction" styleClass="primary-circle-button" text="+" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="0.0" />
@@ -46,9 +47,9 @@
                 </AnchorPane>
                 <AnchorPane minHeight="350.0" minWidth="500.0" prefHeight="350.0" prefWidth="556.2" style="-fx-background-color: #fafafa;" SplitPane.resizableWithParent="false">
                     <children>
-                        <AnchorPane minHeight="330.0" minWidth="350.0" prefHeight="330.0" prefWidth="350.0" style="-fx-background-color: #fafafa;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane minHeight="310.0" minWidth="350.0" prefHeight="310.0" prefWidth="350.0" styleClass="whiteCard" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0">
                             <children>
-                                <AnchorPane layoutX="311.0" layoutY="120.0" styleClass="whiteCard" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="272.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="110.0">
+                                <AnchorPane layoutX="311.0" layoutY="120.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="272.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="95.0">
                                     <children>
                                         <Label layoutX="28.0" layoutY="156.0" text="aclVersion" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="130.0" />
                                         <Label fx:id="aclVersionLabel" layoutX="107.0" layoutY="173.0" styleClass="infoLabel" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="170.0" />
@@ -66,7 +67,7 @@
                                         </Label>
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane maxWidth="1.7976931348623157E308" minWidth="500.0" prefHeight="80.0" prefWidth="533.0" styleClass="whiteCard" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                <AnchorPane maxWidth="1.7976931348623157E308" minWidth="500.0" prefHeight="80.0" prefWidth="533.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                     <children>
                                         <Label layoutX="50.0" layoutY="19.0" text="path" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="10.0">
                                             <font>
@@ -78,7 +79,7 @@
                                         <Label fx:id="ephemeralOwnerLabel" layoutX="135.0" layoutY="46.0" styleClass="infoLabel" AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="45.0" />
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane layoutX="62.0" layoutY="120.0" maxWidth="1.7976931348623157E308" minWidth="250.0" prefWidth="250.0" styleClass="whiteCard" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="110.0">
+                                <AnchorPane layoutX="62.0" layoutY="120.0" maxWidth="1.7976931348623157E308" minWidth="250.0" prefWidth="250.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="95.0">
                                     <children>
                                         <Label layoutX="48.0" layoutY="16.0" text="mtime" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" />
                                         <Label layoutX="32.0" layoutY="47.0" text="ctime" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="50.0" />
@@ -94,8 +95,22 @@
                                 </AnchorPane>
                             </children>
                         </AnchorPane>
-                        <Button layoutX="458.0" layoutY="403.0" mnemonicParsing="false" onAction="#updateDataAction" styleClass="primary-button" text="Update" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="350.0" />
-                        <TextArea fx:id="dataTextArea" layoutX="30.0" layoutY="350.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="150.0" minWidth="350.0" prefHeight="135.0" prefWidth="350.0" styleClass="vTextArea" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="350.0" />
+                        <TextArea fx:id="dataTextArea" layoutX="30.0" layoutY="350.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="150.0" minWidth="350.0" prefHeight="135.0" prefWidth="350.0" styleClass="vTextArea" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="375.0" />
+                  <HBox layoutX="14.0" layoutY="314.0" prefHeight="35.0" spacing="5.0" styleClass="primary-background" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="340.0">
+                     <children>
+                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updateDataAction" styleClass="refresh-button" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="10.0" top="2.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </HBox>
                     </children>
                 </AnchorPane>
             </items>

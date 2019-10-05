@@ -7,9 +7,12 @@ import cc.cc1234.main.listener.JfxListenerManager;
 import cc.cc1234.main.model.ZkNode;
 import cc.cc1234.main.model.ZkServer;
 import cc.cc1234.main.service.ZkServerService;
+import cc.cc1234.main.util.Transitions;
 import cc.cc1234.main.view.ZkNodeTreeCell;
 import cc.cc1234.main.view.ZkServerListCell;
+import javafx.animation.RotateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -114,7 +117,8 @@ public class TreeNodeViewController {
     }
 
     @FXML
-    private void updateDataAction() {
+    private void updateDataAction(ActionEvent mouseEvent) {
+
         if (!ActiveServerContext.exists()) {
             VToast.toastFailure(primaryStage, "Error: connect zookeeper first");
             return;
@@ -124,10 +128,15 @@ public class TreeNodeViewController {
             VToast.toastFailure(primaryStage, "Node not exists");
             return;
         }
+        Button button = (Button) mouseEvent.getSource();
+        final RotateTransition rotate = Transitions.rotate(button);
+        rotate.play();
         try {
             ZkServerService.getActive()
                     .setData(path, this.dataTextArea.getText(),
-                            (client, event) -> Platform.runLater(() -> VToast.toastSuccess(primaryStage)));
+                            (client, event) -> {
+                                Platform.runLater(() -> VToast.toastSuccess(primaryStage));
+                            });
         } catch (Exception e) {
             VToast.toastFailure(primaryStage, "update data failed");
             log.error("update data error", e);
