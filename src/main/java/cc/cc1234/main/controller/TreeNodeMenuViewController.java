@@ -94,7 +94,6 @@ public class TreeNodeMenuViewController {
             log.error("open add node view failed", e);
             VToast.toastFailure(parent, "Unknown error");
         }
-        VToast.toastSuccess(parent);
     }
 
     public void show(AnchorPane anchorPane, TreeItem<ZkNode> selectedItem, double x, double y) {
