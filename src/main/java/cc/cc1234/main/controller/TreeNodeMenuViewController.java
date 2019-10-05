@@ -9,12 +9,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -38,15 +39,34 @@ public class TreeNodeMenuViewController {
 
     private Stage stage;
 
+    private Node node;
+
+    private double width;
+
+    private double toX;
+
     @FXML
     private Button nodeDeleteButton;
 
     @FXML
     private Button nodeAddButton;
 
+
+    public static void show(TreeItem<ZkNode> selectedItem, double x, double y) throws Exception {
+        if (selectedItem == null || selectedItem.getValue() == null) {
+            return;
+        }
+        final FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(TreeNodeMenuViewController.class.getResource("TreeNodeMenuView.fxml"));
+        final AnchorPane anchorPane = fxmlLoader.load();
+        final TreeNodeMenuViewController controller = fxmlLoader.getController();
+        controller.show(anchorPane, selectedItem, x, y);
+    }
+
+
     @FXML
     private void onNodeDeleteAction() {
-        stage.close();
+        shrink(e -> stage.close());
         final CuratorFramework client = ZkServerService.getActive().getClient();
         final String path = selectedItem.getValue().getPath();
         final DeleteBuilder deleteBuilder = client.delete();
@@ -61,11 +81,12 @@ public class TreeNodeMenuViewController {
             VToast.toastFailure(stage, "delete failed");
         }
         TreeViewCache.getInstance().getTreeView().getSelectionModel().clearSelection();
+        VToast.toastSuccess(parent);
     }
 
     @FXML
     private void onNodeAddAction() {
-        stage.close();
+        shrink(e -> stage.close());
         final CuratorFramework client = ZkServerService.getActive().getClient();
         try {
             AddNodeViewController.initController(selectedItem.getValue().getPath(), client);
@@ -73,39 +94,37 @@ public class TreeNodeMenuViewController {
             log.error("open add node view failed", e);
             VToast.toastFailure(parent, "Unknown error");
         }
+        VToast.toastSuccess(parent);
     }
 
-    public static void show(Window parent,
-                            TreeItem<ZkNode> selectedItem,
-                            double x,
-                            double y,
-                            double width) throws Exception {
-        if (selectedItem == null || selectedItem.getValue() == null) {
-            return;
-        }
-        final FXMLLoader fxmlLoader = new FXMLLoader(TreeNodeMenuViewController.class.getResource("TreeNodeMenuView.fxml"));
-        AnchorPane anchorPane = fxmlLoader.load();
+    public void show(AnchorPane anchorPane, TreeItem<ZkNode> selectedItem, double x, double y) {
+        final TreeViewCache<ZkNode> cache = TreeViewCache.getInstance();
+        final TreeView<ZkNode> treeView = cache.getTreeView();
+        double width = treeView.getWidth();
+        final Window owner = treeView.getParent().getScene().getWindow();
+
         // init stage
-        final Stage stage = initStage(parent, anchorPane, x, y);
-        anchorPane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            shrink(-width, anchorPane, e -> stage.close());
-        });
+        final Stage stage = initStage(owner, anchorPane, x, y);
+        anchorPane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> shrink(e -> stage.close()));
 
         // set controller
-        final TreeNodeMenuViewController controller = fxmlLoader.getController();
-        controller.setParent(parent);
-        controller.setSelectedItem(selectedItem);
-        controller.setStage(stage);
-        hideButtonConditional(selectedItem, controller);
+        this.setStage(stage);
+        this.setParent(owner);
+        this.setNode(anchorPane);
+        this.setSelectedItem(selectedItem);
+        this.setToX(toX);
+        this.setWidth(width);
+        hideButtonConditional(selectedItem);
         // show
+        anchorPane.setVisible(false);
         stage.show();
-        expand(width, anchorPane);
+        expand();
     }
 
-    private static Stage initStage(Window parent,
-                                   AnchorPane anchorPane,
-                                   double x,
-                                   double y) {
+    private Stage initStage(Window parent,
+                            AnchorPane anchorPane,
+                            double x,
+                            double y) {
         final Scene scene = new Scene(anchorPane);
         scene.setFill(Color.TRANSPARENT);
 
@@ -120,31 +139,32 @@ public class TreeNodeMenuViewController {
         return stage;
     }
 
-    private static void hideButtonConditional(TreeItem<ZkNode> selectedItem, TreeNodeMenuViewController controller) {
+    private void hideButtonConditional(TreeItem<ZkNode> selectedItem) {
         final ZkNode node = selectedItem.getValue();
         // leaf && ephemeral: can not add
         if (selectedItem.isLeaf() && node.getEphemeralOwner() != 0) {
-            controller.hideAddButton();
+            hideAddButton();
         }
 
         // only delete leaf node in common mode
         if (!RecursiveModeContext.get() && !selectedItem.isLeaf()) {
-            controller.hideDeleteButton();
+            hideDeleteButton();
         }
     }
 
-    private static void expand(double width, Pane node) {
+    private void expand() {
         node.setTranslateX(-width);
+        node.setVisible(true);
         final TranslateTransition transition = new TranslateTransition(Duration.millis(500), node);
         transition.setToX(0);
         transition.setAutoReverse(false);
         transition.play();
     }
 
-    private static void shrink(double toX, Pane node, EventHandler<ActionEvent> finishedEvent) {
+    private void shrink(EventHandler<ActionEvent> finishedEvent) {
         final TranslateTransition transition = new TranslateTransition(Duration.millis(500), node);
         transition.setOnFinished(finishedEvent);
-        transition.setToX(toX);
+        transition.setToX(-width);
         transition.setAutoReverse(false);
         transition.play();
     }
@@ -161,16 +181,27 @@ public class TreeNodeMenuViewController {
     }
 
 
-    public void setSelectedItem(TreeItem<ZkNode> selectedItem) {
+    private void setSelectedItem(TreeItem<ZkNode> selectedItem) {
         this.selectedItem = selectedItem;
     }
 
-    public void setParent(Window parent) {
+    private void setParent(Window parent) {
         this.parent = parent;
     }
 
-    public void setStage(Stage stage) {
+    private void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    private void setNode(Node node) {
+        this.node = node;
+    }
+
+    private void setWidth(double width) {
+        this.width = width;
+    }
+
+    private void setToX(double toX) {
+        this.toX = toX;
+    }
 }
