@@ -120,6 +120,9 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-size: 20;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
 }
 
 .refresh-button:hover {

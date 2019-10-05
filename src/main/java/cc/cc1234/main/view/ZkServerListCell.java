@@ -1,16 +1,19 @@
 package cc.cc1234.main.view;
 
 import cc.cc1234.main.model.ZkServer;
+import cc.cc1234.main.util.Transitions;
+import javafx.animation.ScaleTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.util.Duration;
 
 import java.util.function.Consumer;
 
 public class ZkServerListCell extends ListCell<ZkServer> {
 
-    private final  Consumer<ZkServer> callback;
+    private final Consumer<ZkServer> callback;
 
     public ZkServerListCell(Consumer<ZkServer> callback) {
         this.callback = callback;
@@ -38,11 +41,14 @@ public class ZkServerListCell extends ListCell<ZkServer> {
                     } else {
                         // double click to connect zk
                         if (mouseEvent.getClickCount() == 2) {
-                            callback.accept(zkServer);
+                            final ScaleTransition scale = Transitions.scale(this, Duration.millis(200),
+                                    e -> callback.accept(zkServer));
+                            scale.play();
                         }
                     }
                 }
             });
         }
     }
+
 }

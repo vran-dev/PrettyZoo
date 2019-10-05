@@ -91,10 +91,10 @@
                             </children>
                         </AnchorPane>
                         <TextArea fx:id="dataTextArea" layoutX="30.0" layoutY="350.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="150.0" minWidth="350.0" prefHeight="135.0" prefWidth="350.0" styleClass="vTextArea" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="375.0" />
-                  <HBox layoutX="14.0" layoutY="314.0" prefHeight="35.0" spacing="5.0" styleClass="primary-background" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="340.0">
+                  <HBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="314.0" prefHeight="35.0" spacing="10.0" styleClass="primary-background" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="340.0">
                               <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updateDataAction" styleClass="refresh-button" textAlignment="CENTER" HBox.hgrow="ALWAYS">
                            <HBox.margin>
-                              <Insets left="10.0" top="2.0" />
+                              <Insets left="10.0" />
                            </HBox.margin>
                         </Button>
                      <opaqueInsets>
@@ -103,6 +103,9 @@
                      <cursor>
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
                   </HBox>
                 </AnchorPane>
             </items>

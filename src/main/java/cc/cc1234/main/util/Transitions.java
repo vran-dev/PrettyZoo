@@ -22,11 +22,11 @@ public class Transitions {
 
 
     public static ScaleTransition scale(Node node) {
-        return scale(node, null);
+        return scale(node, Duration.millis(800), null);
     }
 
-    public static ScaleTransition scale(Node node, EventHandler<ActionEvent> finishedEvent) {
-        return scale(node, Duration.seconds(1), 0.8, 0.8, 2, true, finishedEvent);
+    public static ScaleTransition scale(Node node, Duration duration, EventHandler<ActionEvent> finishedEvent) {
+        return scale(node, duration, 0.8, 0.8, 2, true, finishedEvent);
     }
 
     public static ScaleTransition scale(Node node,
