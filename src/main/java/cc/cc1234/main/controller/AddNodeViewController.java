@@ -4,6 +4,9 @@ import cc.cc1234.main.cache.RecursiveModeContext;
 import cc.cc1234.main.util.PathUtils;
 import com.google.common.base.Strings;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringBinding;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -42,7 +45,7 @@ public class AddNodeViewController {
 
     private Stage stage;
 
-    private String parentPath;
+    private SimpleStringProperty parentPath = new SimpleStringProperty();
 
     public static void initController(String parentPath, CuratorFramework curatorFramework) throws IOException {
         String fxml = "AddNodeView.fxml";
@@ -51,7 +54,7 @@ public class AddNodeViewController {
         AnchorPane panel = loader.load();
         final AddNodeViewController controller = loader.getController();
         controller.setCuratorFramework(curatorFramework);
-        controller.setCurrentPath(parentPath);
+        controller.setParentPath(parentPath);
 
         final Scene scene = new Scene(panel);
         final Stage stage = new Stage();
@@ -63,20 +66,15 @@ public class AddNodeViewController {
 
     @FXML
     private void initialize() {
-        this.nodeNameTextField.setOnKeyReleased(event -> {
-            TextField textField = (TextField) event.getSource();
-            final String input = textField.getText();
-            if (Strings.isNullOrEmpty(input)) {
-                currentPathLabel.setText(parentPath);
-            } else {
-                currentPathLabel.setText(PathUtils.concat(parentPath, input));
-            }
-        });
+        final StringBinding bind = Bindings.createStringBinding(() -> PathUtils.concat(parentPath.get(),
+                nodeNameTextField.getText()),
+                parentPath,
+                nodeNameTextField.textProperty());
+        currentPathLabel.textProperty().bind(bind);
     }
 
-    public void setCurrentPath(String parentPath) {
-        this.currentPathLabel.setText(parentPath);
-        this.parentPath = parentPath;
+    public void setParentPath(String parentPath) {
+        this.parentPath.set(parentPath);
     }
 
     public void setStage(Stage stage) {
@@ -90,7 +88,7 @@ public class AddNodeViewController {
     @FXML
     private void onNodeAddAction() {
         String path = currentPathLabel.getText();
-        if (Strings.isNullOrEmpty(path) || Objects.equals(path, parentPath)) {
+        if (Strings.isNullOrEmpty(path) || Objects.equals(path, parentPath.get())) {
             VToast.toastFailure(stage, "node must not be empty");
             return;
         }

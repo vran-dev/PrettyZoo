@@ -1,6 +1,8 @@
 package cc.cc1234.main.util;
 
 
+import com.google.common.base.Strings;
+
 public class PathUtils {
 
     public static String getLastPath(String path) {
@@ -71,6 +73,9 @@ public class PathUtils {
     }
 
     public static String concat(String parent, String child) {
+        if (Strings.isNullOrEmpty(child)) {
+            return parent;
+        }
         final boolean end = parent.endsWith("/");
         final boolean start = child.startsWith("/");
         if (end && start) {
