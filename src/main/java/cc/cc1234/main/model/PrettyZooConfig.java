@@ -5,6 +5,9 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class PrettyZooConfig {
 
     private ObservableList<ZkServer> servers = FXCollections.observableArrayList();
@@ -29,9 +32,10 @@ public class PrettyZooConfig {
     }
 
     public void remove(String server) {
-        servers.stream()
+        final List<ZkServer> removeServers = servers.stream()
                 .filter(z -> z.getServer().equals(server))
-                .forEach(zk -> servers.remove(zk));
+                .collect(Collectors.toList());
+        servers.removeAll(removeServers);
         Platform.runLater(() -> Configs.store(this));
     }
 
