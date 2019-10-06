@@ -153,7 +153,7 @@ public class TreeNodeViewController {
     private void onNodeDeleteAction(ActionEvent actionEvent) {
         Window parent = ((Node) actionEvent.getSource()).getParent().getScene().getWindow();
         Button button = (Button) actionEvent.getSource();
-        Transitions.rotate(button, 360).play();
+        Transitions.scaleAndRotate(button);
         final TreeItem<ZkNode> selectedItem = zkNodeTreeView.getSelectionModel().getSelectedItem();
         Conditions.on(() -> selectedItem == null)
                 .thenDo(() -> VToast.toastFailure(parent, "select item first"))
@@ -169,7 +169,7 @@ public class TreeNodeViewController {
     private void onNodeAddAction(ActionEvent actionEvent) {
         Window parent = ((Node) actionEvent.getSource()).getScene().getWindow();
         Button button = (Button) actionEvent.getSource();
-        Transitions.rotate(button, 360).play();
+        Transitions.scaleAndRotate(button);
         final TreeItem<ZkNode> selectedItem = zkNodeTreeView.getSelectionModel().getSelectedItem();
         Conditions.on(() -> selectedItem == null)
                 .thenDo(() -> VToast.toastFailure(parent, "select item first"))

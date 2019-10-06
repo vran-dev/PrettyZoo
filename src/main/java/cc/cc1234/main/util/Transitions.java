@@ -24,6 +24,10 @@ public class Transitions {
         return rotateTransition;
     }
 
+    public static void scaleAndRotate(Node node) {
+        scale(node, Duration.millis(200), e -> rotate(node, 360).play()).play();
+    }
+
 
     public static ScaleTransition scale(Node node) {
         return scale(node, Duration.millis(800), null);
