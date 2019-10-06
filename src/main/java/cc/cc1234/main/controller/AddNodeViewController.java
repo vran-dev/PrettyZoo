@@ -1,6 +1,7 @@
 package cc.cc1234.main.controller;
 
 import cc.cc1234.main.cache.RecursiveModeContext;
+import cc.cc1234.main.util.FXMLs;
 import cc.cc1234.main.util.PathUtils;
 import com.google.common.base.Strings;
 import javafx.application.Platform;
@@ -48,9 +49,8 @@ public class AddNodeViewController {
     private SimpleStringProperty parentPath = new SimpleStringProperty();
 
     public static void initController(String parentPath, CuratorFramework curatorFramework) throws IOException {
-        String fxml = "AddNodeView.fxml";
         final FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(AddNodeViewController.class.getResource(fxml));
+        loader.setLocation(FXMLs.load("fxml/AddNodeView.fxml"));
         AnchorPane panel = loader.load();
         final AddNodeViewController controller = loader.getController();
         controller.setCuratorFramework(curatorFramework);

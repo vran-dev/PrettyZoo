@@ -3,6 +3,7 @@ package cc.cc1234.main.controller;
 import cc.cc1234.main.cache.PrettyZooConfigContext;
 import cc.cc1234.main.model.PrettyZooConfig;
 import cc.cc1234.main.model.ZkServer;
+import cc.cc1234.main.util.FXMLs;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -29,9 +30,8 @@ public class AddServerViewController {
     private Stage stage;
 
     public static void show(ListView<ZkServer> serversTableView) {
-        String fxml = "AddServerView.fxml";
         final FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(AddServerViewController.class.getResource(fxml));
+        loader.setLocation(FXMLs.load("fxml/AddServerView.fxml"));
         AnchorPane panel = null;
         try {
             panel = loader.load();

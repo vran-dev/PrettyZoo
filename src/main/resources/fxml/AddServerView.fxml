@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="202.0" prefWidth="255.0" styleClass="vDialog" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.main.controller.AddServerViewController">
+<AnchorPane prefHeight="202.0" prefWidth="255.0" styleClass="vDialog" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.main.controller.AddServerViewController">
       <TextField fx:id="serverTextField" alignment="CENTER" layoutX="44.0" layoutY="63.0" opacity="0.8" prefHeight="27.0" prefWidth="175.0" promptText="input server here" styleClass="vTextField" text="127.0.0.1:2181" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="60.0">
          <font>
             <Font name="Avenir Roman" size="14.0" />

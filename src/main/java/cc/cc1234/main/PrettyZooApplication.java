@@ -4,6 +4,7 @@ import cc.cc1234.main.cache.PrettyZooConfigContext;
 import cc.cc1234.main.controller.TreeNodeViewController;
 import cc.cc1234.main.service.ZkServerService;
 import cc.cc1234.main.util.Configs;
+import cc.cc1234.main.util.FXMLs;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,14 +22,14 @@ public class PrettyZooApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
-        final URL resource = Thread.currentThread().getContextClassLoader().getResource("icon.jpg");
+        final URL resource = Thread.currentThread().getContextClassLoader().getResource("assets/icon/icon.jpg");
         primaryStage.getIcons().add(new Image(resource.openStream()));
         showNodeTreeView(primaryStage);
     }
 
     public static void showNodeTreeView(Stage primary) throws IOException {
         final FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(TreeNodeViewController.class.getResource("TreeNodeView.fxml"));
+        loader.setLocation(FXMLs.load("fxml/TreeNodeView.fxml"));
         final AnchorPane anchorPane = loader.load();
         final Scene scene = new Scene(anchorPane);
         primary.setScene(scene);

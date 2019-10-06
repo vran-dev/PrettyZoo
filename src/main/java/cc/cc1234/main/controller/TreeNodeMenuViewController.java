@@ -4,6 +4,7 @@ import cc.cc1234.main.cache.RecursiveModeContext;
 import cc.cc1234.main.cache.TreeViewCache;
 import cc.cc1234.main.model.ZkNode;
 import cc.cc1234.main.service.ZkServerService;
+import cc.cc1234.main.util.FXMLs;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -57,7 +58,7 @@ public class TreeNodeMenuViewController {
             return;
         }
         final FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(TreeNodeMenuViewController.class.getResource("TreeNodeMenuView.fxml"));
+        fxmlLoader.setLocation(FXMLs.load("fxml/TreeNodeMenuView.fxml"));
         final AnchorPane anchorPane = fxmlLoader.load();
         final TreeNodeMenuViewController controller = fxmlLoader.getController();
         controller.show(anchorPane, selectedItem, x, y);
