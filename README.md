@@ -45,7 +45,6 @@ java -jar PrettyZoo.jar
 
 ### Main view
 
-![](release/example/main.jpg)
 
 ![](release/example/main-2.jpg)
 
