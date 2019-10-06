@@ -12,6 +12,10 @@ public class PrettyZooConfig {
 
     private ObservableList<ZkServer> servers = FXCollections.observableArrayList();
 
+    public PrettyZooConfig() {
+        setServers(Configs.getHistoryServers());
+    }
+
     public void save(String server) {
         servers.stream()
                 .filter(z -> z.getServer().equals(server))

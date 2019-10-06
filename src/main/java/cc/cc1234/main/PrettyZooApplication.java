@@ -1,42 +1,25 @@
 package cc.cc1234.main;
 
 import cc.cc1234.main.cache.PrettyZooConfigContext;
-import cc.cc1234.main.controller.TreeNodeViewController;
 import cc.cc1234.main.service.ZkServerService;
 import cc.cc1234.main.util.Configs;
 import cc.cc1234.main.util.FXMLs;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
-
 public class PrettyZooApplication extends Application {
-
-    private Stage primaryStage;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.primaryStage = primaryStage;
-        final URL resource = Thread.currentThread().getContextClassLoader().getResource("assets/icon/icon.jpg");
-        primaryStage.getIcons().add(new Image(resource.openStream()));
-        showNodeTreeView(primaryStage);
-    }
-
-    public static void showNodeTreeView(Stage primary) throws IOException {
         final FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(FXMLs.load("fxml/TreeNodeView.fxml"));
+        loader.setLocation(FXMLs.loadFXML("fxml/TreeNodeView.fxml"));
         final AnchorPane anchorPane = loader.load();
-        final Scene scene = new Scene(anchorPane);
-        primary.setScene(scene);
-        TreeNodeViewController controller = loader.getController();
-        controller.setPrimaryStage(primary);
-        primary.show();
-
+        primaryStage.setScene(new Scene(anchorPane));
+        primaryStage.setTitle("PrettyZoo");
+        primaryStage.show();
     }
 
     @Override

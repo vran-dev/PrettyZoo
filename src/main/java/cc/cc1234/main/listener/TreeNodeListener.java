@@ -6,7 +6,6 @@ import cc.cc1234.main.model.ZkNode;
 import cc.cc1234.main.util.PathUtils;
 import javafx.application.Platform;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.ChildData;
 import org.apache.curator.framework.recipes.cache.TreeCacheEvent;
@@ -31,7 +30,7 @@ public class TreeNodeListener implements TreeCacheListener {
 
     private final String server;
 
-    private TreeViewCache<ZkNode> treeViewCache = TreeViewCache.getInstance();
+    private TreeViewCache treeViewCache = TreeViewCache.getInstance();
 
     public TreeNodeListener(String server) {
         this.server = server;
@@ -69,15 +68,7 @@ public class TreeNodeListener implements TreeCacheListener {
         final String parent = PathUtils.getParent(path);
         final TreeItem<ZkNode> parentItem = treeViewCache.get(server, parent);
         final TreeItem<ZkNode> removeItem = treeViewCache.get(server, path);
-
-        // note: must be clear selection before remove
-        final TreeView<ZkNode> zkNodeTreeView = treeViewCache.getTreeView();
-        final TreeItem<ZkNode> selectedItem = zkNodeTreeView.getSelectionModel().getSelectedItem();
-        if (selectedItem == removeItem) {
-            zkNodeTreeView.getSelectionModel().clearSelection();
-        }
         parentItem.getChildren().remove(removeItem);
-//        treeViewCache.getTreeView().getSelectionModel().select(parentItem);
         treeViewCache.remove(server, path);
         decreaseNumOfChildFiled(path);
     }
@@ -94,11 +85,10 @@ public class TreeNodeListener implements TreeCacheListener {
 
         totalNodeNum.addAndGet(eventData.getStat().getNumChildren());
         if (path.equals(TreeNodeViewController.ROOT_PATH)) {
-            final TreeView<ZkNode> treeView = treeViewCache.getTreeView();
             final TreeItem<ZkNode> root = treeViewCache.get(server, TreeNodeViewController.ROOT_PATH);
             root.getValue().setStat(eventData.getStat());
             root.getValue().setData(new String(eventData.getData()));
-            treeView.getRoot().setExpanded(true);
+            root.setExpanded(true);
         } else {
             final TreeItem<ZkNode> treeItem = new TreeItem<>(node);
             treeViewCache.add(server, path, treeItem);

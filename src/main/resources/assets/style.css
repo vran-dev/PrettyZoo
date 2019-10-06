@@ -129,6 +129,58 @@
     -fx-background-image: url("img/refresh-hover.png");
 }
 
+.add-button {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/add.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 20;
+    -fx-pref-height: 28;
+    -fx-pref-width: 28;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.add-button:hover {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/add-hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 20;
+    -fx-pref-height: 28;
+    -fx-pref-width: 28;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.delete-button {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/delete.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 20;
+    -fx-pref-height: 28;
+    -fx-pref-width: 28;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.delete-button:hover {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/delete-hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 20;
+    -fx-pref-height: 28;
+    -fx-pref-width: 28;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
 /* ====================== Button/ ======================*/
 
 .lineLabel {
@@ -416,6 +468,17 @@
 
 }
 
+.mid-pane .head {
+    -fx-background-color: #E8EFF3;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-padding: 2 2 2 2;
+    -fx-text-alignment: center;
+    -fx-content-display: center;
+    -fx-alignment: center-left;
+    -fx-text-fill: #3F51B5;
+}
+
 .right-pane {
     -fx-border-color: #FFF;
     -fx-border-width: 1;
@@ -430,8 +493,7 @@
     -fx-text-alignment: center;
     -fx-content-display: center;
     -fx-alignment: center;
-    -fx-text-fill: #3F51B5;
-
+    -fx-text-fill: #000;
 }
 
 

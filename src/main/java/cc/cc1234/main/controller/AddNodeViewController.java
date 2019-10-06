@@ -1,15 +1,12 @@
 package cc.cc1234.main.controller;
 
 import cc.cc1234.main.cache.RecursiveModeContext;
-import cc.cc1234.main.util.FXMLs;
 import cc.cc1234.main.util.PathUtils;
 import com.google.common.base.Strings;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -22,7 +19,6 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.api.CreateBuilder;
 import org.apache.zookeeper.CreateMode;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public class AddNodeViewController {
@@ -42,47 +38,32 @@ public class AddNodeViewController {
     @FXML
     private Label currentPathLabel;
 
-    private CuratorFramework curatorFramework;
+    @FXML
+    private AnchorPane addNodePane;
+
+    private CuratorFramework client;
 
     private Stage stage;
 
     private SimpleStringProperty parentPath = new SimpleStringProperty();
 
-    public static void initController(String parentPath, CuratorFramework curatorFramework) throws IOException {
-        final FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(FXMLs.load("fxml/AddNodeView.fxml"));
-        AnchorPane panel = loader.load();
-        final AddNodeViewController controller = loader.getController();
-        controller.setCuratorFramework(curatorFramework);
-        controller.setParentPath(parentPath);
-
-        final Scene scene = new Scene(panel);
-        final Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        controller.setStage(stage);
-        stage.show();
-    }
-
     @FXML
     private void initialize() {
-        final StringBinding bind = Bindings.createStringBinding(() -> PathUtils.concat(parentPath.get(),
-                nodeNameTextField.getText()),
+        this.stage = new Stage();
+        this.stage.setScene(new Scene(addNodePane));
+        this.stage.initModality(Modality.APPLICATION_MODAL);
+
+        final StringBinding bind = Bindings.createStringBinding(() -> PathUtils.concat(parentPath.get(), nodeNameTextField.getText()),
                 parentPath,
                 nodeNameTextField.textProperty());
         currentPathLabel.textProperty().bind(bind);
     }
 
-    public void setParentPath(String parentPath) {
+    public void show(String parentPath, CuratorFramework client) {
+        this.client = client;
         this.parentPath.set(parentPath);
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public void setCuratorFramework(CuratorFramework curatorFramework) {
-        this.curatorFramework = curatorFramework;
+        this.nodeNameTextField.setText("");
+        this.stage.show();
     }
 
     @FXML
@@ -93,19 +74,19 @@ public class AddNodeViewController {
             return;
         }
         final String nodeData = nodeDataTextArea.getText();
-        final CreateBuilder createBuilder = curatorFramework.create();
+        final CreateBuilder createBuilder = client.create();
         try {
             // must use Platform to close stage
             if (RecursiveModeContext.get()) {
                 createBuilder.creatingParentsIfNeeded()
                         .withMode(createMode())
-                        .inBackground((client, event) -> Platform.runLater(() -> stage.close()))
                         .forPath(path, nodeData.getBytes());
             } else {
                 createBuilder.withMode(createMode())
-                        .inBackground((client, event) -> Platform.runLater(() -> stage.close()))
                         .forPath(path, nodeData.getBytes());
             }
+            VToast.toastSuccess(stage);
+            stage.close();
         } catch (Exception e) {
             VToast.toastFailure(stage, e.getMessage());
             throw new IllegalStateException(e);

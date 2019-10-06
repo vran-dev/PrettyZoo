@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" styleClass="default-pane" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.main.controller.AddNodeViewController">
+<AnchorPane fx:id="addNodePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" styleClass="default-pane" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.main.controller.AddNodeViewController">
       <TextField fx:id="nodeNameTextField" layoutX="170.0" layoutY="53.0" prefHeight="27.0" prefWidth="251.0" promptText="input node name here" styleClass="line-textField" stylesheets="@../assets/style.css" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="65.0">
          <font>
             <Font size="17.0" />

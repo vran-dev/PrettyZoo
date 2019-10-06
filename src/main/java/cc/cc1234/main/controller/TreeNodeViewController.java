@@ -2,24 +2,26 @@ package cc.cc1234.main.controller;
 
 import cc.cc1234.main.cache.ActiveServerContext;
 import cc.cc1234.main.cache.PrettyZooConfigContext;
+import cc.cc1234.main.cache.RecursiveModeContext;
 import cc.cc1234.main.cache.TreeViewCache;
 import cc.cc1234.main.listener.JfxListenerManager;
 import cc.cc1234.main.model.PrettyZooConfig;
 import cc.cc1234.main.model.ZkNode;
 import cc.cc1234.main.model.ZkServer;
 import cc.cc1234.main.service.ZkServerService;
-import cc.cc1234.main.util.Configs;
+import cc.cc1234.main.util.Conditions;
+import cc.cc1234.main.util.FXMLs;
 import cc.cc1234.main.util.Transitions;
 import cc.cc1234.main.view.ZkNodeTreeCell;
 import cc.cc1234.main.view.ZkServerListCell;
-import javafx.animation.RotateTransition;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
+import javafx.stage.Window;
+import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,70 +89,95 @@ public class TreeNodeViewController {
 
     public static final String ROOT_PATH = "/";
 
-    private TreeViewCache<ZkNode> treeViewCache = TreeViewCache.getInstance();
-
-    private Stage primaryStage;
+    private TreeViewCache treeViewCache = TreeViewCache.getInstance();
 
     private PrettyZooConfig prettyZooConfig = new PrettyZooConfig();
 
-    public void setPrimaryStage(Stage primary) {
-        this.primaryStage = primary;
-    }
+    private AddServerViewController addServerViewController;
+
+    private AddNodeViewController addNodeViewController;
 
     @FXML
     private void initialize() {
         PrettyZooConfigContext.set(prettyZooConfig);
         initZkNodeTreeView();
         initServerListView();
-        treeViewCache.setTreeView(zkNodeTreeView);
         recursiveModeCheckBox.selectedProperty().addListener(JfxListenerManager.getRecursiveModeChangeListener(prettyZooLabel, serverViewMenuItems));
+        addServerViewController = FXMLs.getController("fxml/AddServerView.fxml");
+        addNodeViewController = FXMLs.getController("fxml/AddNodeView.fxml");
     }
 
     @FXML
-    private void onAddServerAction() {
+    private void onAddServerAction(ActionEvent event) {
         serverViewMenuItems.setVisible(false);
-        AddServerViewController.show(serverListView);
+        Window parent = ((Node) event.getSource()).getScene().getWindow();
+        addServerViewController.show(parent);
     }
 
     @FXML
-    private void onRemoveServerAction() {
+    private void onRemoveServerAction(ActionEvent event) {
         serverViewMenuItems.setVisible(false);
+        Window parent = ((Node) event.getSource()).getParent().getScene().getWindow();
         final ZkServer removeItem = serverListView.getSelectionModel().getSelectedItem();
-        if (removeItem == null) {
-            VToast.toastFailure(primaryStage, "no server exists");
-            return;
-        }
-
-        prettyZooConfig.remove(removeItem.getServer());
-        zkNodeTreeView.setRoot(null);
-        ActiveServerContext.invalidate();
-        ZkServerService.getOrCreate(removeItem.getServer()).closeALl();
+        Conditions.on(() -> removeItem == null)
+                .thenDo(() -> VToast.toastFailure(parent, "no server selected"))
+                .elseDo(() -> {
+                    prettyZooConfig.remove(removeItem.getServer());
+                    zkNodeTreeView.setRoot(null);
+                    ActiveServerContext.invalidate();
+                    ZkServerService.getOrCreate(removeItem.getServer()).closeALl();
+                });
     }
 
     @FXML
-    private void updateDataAction(ActionEvent mouseEvent) {
+    private void updateDataAction(ActionEvent actionEvent) {
+        Window parent = ((Node) actionEvent.getSource()).getParent().getScene().getWindow();
         if (!ActiveServerContext.exists()) {
-            VToast.toastFailure(primaryStage, "Error: connect zookeeper first");
+            VToast.toastFailure(parent, "Error: connect zookeeper first");
             return;
         }
         final String path = this.pathLabel.getText();
         if (treeViewCache.get(ActiveServerContext.get(), path) == null) {
-            VToast.toastFailure(primaryStage, "Node not exists");
+            VToast.toastFailure(parent, "Node not exists");
             return;
         }
-        Button button = (Button) mouseEvent.getSource();
-        final RotateTransition rotate = Transitions.rotate(button);
-        rotate.play();
-        try {
-            ZkServerService.getActive()
-                    .setData(path, this.dataTextArea.getText(),
-                            (client, event) -> Platform.runLater(() -> VToast.toastSuccess(primaryStage)));
-        } catch (Exception e) {
-            VToast.toastFailure(primaryStage, "update data failed");
-            log.error("update data error", e);
-        }
+        Button button = (Button) actionEvent.getSource();
+        Transitions.rotate(button).play();
+        ZkServerService.getActive().setData(path, this.dataTextArea.getText(),
+                (client, event) -> Platform.runLater(() -> VToast.toastSuccess(parent)),
+                e -> VToast.toastFailure(parent, e.getMessage()));
+
     }
 
+    @FXML
+    private void onNodeDeleteAction(ActionEvent actionEvent) {
+        Window parent = ((Node) actionEvent.getSource()).getParent().getScene().getWindow();
+        Button button = (Button) actionEvent.getSource();
+        Transitions.rotate(button, 360).play();
+        final TreeItem<ZkNode> selectedItem = zkNodeTreeView.getSelectionModel().getSelectedItem();
+        Conditions.on(() -> selectedItem == null)
+                .thenDo(() -> VToast.toastFailure(parent, "select item first"))
+                .elseDo(() -> {
+                    final String path = selectedItem.getValue().getPath();
+                    ZkServerService.getActive()
+                            .delete(path, RecursiveModeContext.get(), e -> VToast.toastFailure(parent, e.getMessage()));
+                    zkNodeTreeView.getSelectionModel().clearSelection();
+                });
+    }
+
+    @FXML
+    private void onNodeAddAction(ActionEvent actionEvent) {
+        Window parent = ((Node) actionEvent.getSource()).getScene().getWindow();
+        Button button = (Button) actionEvent.getSource();
+        Transitions.rotate(button, 360).play();
+        final TreeItem<ZkNode> selectedItem = zkNodeTreeView.getSelectionModel().getSelectedItem();
+        Conditions.on(() -> selectedItem == null)
+                .thenDo(() -> VToast.toastFailure(parent, "select item first"))
+                .elseDo(() -> {
+                    final CuratorFramework client = ZkServerService.getActive().getClient();
+                    addNodeViewController.show(selectedItem.getValue().getPath(), client);
+                });
+    }
 
     private void initZkNodeTreeView() {
         zkNodeTreeView.getSelectionModel()
@@ -185,26 +212,22 @@ public class TreeNodeViewController {
     }
 
     private void initServerListView() {
-        final ObservableList<ZkServer> servers = Configs.getHistoryServers();
-        prettyZooConfig.setServers(servers);
-        serverListView.itemsProperty().set(servers);
-        serverListMenu.setOnMouseClicked(event -> serverViewMenuItems.setVisible(!serverViewMenuItems.isVisible()));
+        serverListView.itemsProperty().set(prettyZooConfig.getServers());
         serverListView.setCellFactory(cellCallback -> new ZkServerListCell(this::switchServer));
-
-        // TODO support batch delete
-//        serversListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        serverListMenu.setOnMouseClicked(event -> serverViewMenuItems.setVisible(!serverViewMenuItems.isVisible()));
     }
 
     private void switchServer(ZkServer server) {
         final ZkServerService service = ZkServerService.getOrCreate(server.getServer());
+        Window parent = zkNodeTreeView.getParent().getScene().getWindow();
         try {
             service.connectIfNecessary();
         } catch (InterruptedException e) {
-            VToast.toastFailure(primaryStage, "Failed: " + e.getMessage());
+            VToast.toastFailure(parent, "Failed: " + e.getMessage());
             return;
         }
 
-        zkNodeTreeView.setCellFactory(view -> new ZkNodeTreeCell(primaryStage));
+        zkNodeTreeView.setCellFactory(view -> new ZkNodeTreeCell());
         initVirtualRootIfNecessary(server.getServer());
         switchTreeRoot(server.getServer());
         ActiveServerContext.set(server.getServer());
@@ -216,18 +239,14 @@ public class TreeNodeViewController {
         if (!treeViewCache.hasServer(server)) {
             String path = TreeNodeViewController.ROOT_PATH;
             final ZkNode zkNode = new ZkNode(path, path);
-            zkNode.setData("");
             zkNode.setStat(new Stat());
-            TreeItem<ZkNode> virtualRoot = new TreeItem<>(zkNode);
-            treeViewCache.add(server, path, virtualRoot);
+            treeViewCache.add(server, path, new TreeItem<>(zkNode));
         }
     }
 
     private void switchTreeRoot(String server) {
         final TreeItem<ZkNode> root = treeViewCache.get(server, ROOT_PATH);
         zkNodeTreeView.setRoot(root);
-        // fix binding error
-//        bindZkNodeProperties(root.getValue());
     }
 
 }

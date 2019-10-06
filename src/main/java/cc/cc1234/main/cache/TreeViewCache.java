@@ -2,36 +2,25 @@ package cc.cc1234.main.cache;
 
 import cc.cc1234.main.model.ZkNode;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class TreeViewCache<T> {
+public class TreeViewCache {
 
     private static final Map<String, Map<String, TreeItem<ZkNode>>> CACHE = new ConcurrentHashMap<>();
 
-    private static final TreeViewCache INSTANCE = new TreeViewCache<>();
-
-    private TreeView<T> treeView;
+    private static final TreeViewCache INSTANCE = new TreeViewCache();
 
     private TreeViewCache() {
     }
 
-    public static <T> TreeViewCache<T> getInstance() {
+    public static TreeViewCache getInstance() {
         return INSTANCE;
     }
 
     public boolean hasServer(String server) {
         return CACHE.containsKey(server);
-    }
-
-    public void setTreeView(TreeView<T> treeView) {
-        this.treeView = treeView;
-    }
-
-    public TreeView<T> getTreeView() {
-        return treeView;
     }
 
     public void add(String server, String path, TreeItem<ZkNode> item) {

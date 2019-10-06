@@ -7,6 +7,7 @@ import cc.cc1234.main.listener.TreeNodeListener;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.api.BackgroundCallback;
+import org.apache.curator.framework.api.DeleteBuilder;
 import org.apache.curator.framework.recipes.cache.TreeCache;
 import org.apache.curator.retry.RetryOneTime;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public class ZkServerService {
 
@@ -88,22 +90,28 @@ public class ZkServerService {
         }
     }
 
-    public void delete(String path) throws Exception {
-        client.delete().forPath(path);
+    public void delete(String path, boolean recursive, Consumer<Exception> errorCallback) {
+        final DeleteBuilder deleteBuilder = client.delete();
+        try {
+            if (recursive) {
+                deleteBuilder.deletingChildrenIfNeeded().forPath(path);
+            } else {
+                deleteBuilder.forPath(path);
+            }
+        } catch (Exception e) {
+            log.error("delete node failed", e);
+            errorCallback.accept(e);
+        }
     }
 
-    public void delete(String path, BackgroundCallback callback) throws Exception {
-        client.delete()
-                .inBackground(callback)
-                .forPath(path);
-    }
 
-    public void setData(String path, String data) throws Exception {
-        client.setData().forPath(path, data.getBytes());
-    }
-
-    public void setData(String path, String data, BackgroundCallback callback) throws Exception {
-        client.setData().inBackground(callback).forPath(path, data.getBytes());
+    public void setData(String path, String data, BackgroundCallback callback, Consumer<Exception> errorCallback) {
+        try {
+            client.setData().inBackground(callback).forPath(path, data.getBytes());
+        } catch (Exception e) {
+            log.error("set data failed", e);
+            errorCallback.accept(e);
+        }
     }
 
     public void closeALl() {

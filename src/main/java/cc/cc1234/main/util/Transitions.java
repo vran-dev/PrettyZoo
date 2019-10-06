@@ -11,9 +11,13 @@ import javafx.util.Duration;
 public class Transitions {
 
     public static RotateTransition rotate(Node node) {
+        return rotate(node, 720);
+    }
+
+    public static RotateTransition rotate(Node node, int angle) {
         final RotateTransition rotateTransition = new RotateTransition(Duration.millis(1000), node);
         rotateTransition.setFromAngle(0);
-        rotateTransition.setToAngle(720);
+        rotateTransition.setToAngle(angle);
         rotateTransition.setCycleCount(2);
         rotateTransition.setInterpolator(Interpolator.LINEAR);
         rotateTransition.setAutoReverse(true);

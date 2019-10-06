@@ -39,9 +39,18 @@
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane minHeight="0.0" minWidth="100.0" prefHeight="160.0" prefWidth="212.47">
+                        <AnchorPane minHeight="0.0" minWidth="100.0" prefHeight="160.0" prefWidth="212.47" styleClass="mid-pane">
                            <children>
-                               <TreeView fx:id="zkNodeTreeView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                               <TreeView fx:id="zkNodeTreeView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.0" />
+                        <HBox alignment="CENTER_LEFT" layoutX="44.0" layoutY="-29.0" prefHeight="32.0" spacing="10.0" styleClass="head" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#onNodeAddAction" styleClass="add-button" textFill="WHITE" HBox.hgrow="ALWAYS" />
+                              <Button alignment="CENTER" layoutX="20.0" layoutY="10.0" mnemonicParsing="false" onAction="#onNodeDeleteAction" styleClass="delete-button" textFill="WHITE" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </HBox>
                            </children></AnchorPane>
                     </items>
                   </SplitPane>
