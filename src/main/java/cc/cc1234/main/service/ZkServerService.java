@@ -1,7 +1,6 @@
 package cc.cc1234.main.service;
 
 import cc.cc1234.main.cache.ActiveServerContext;
-import cc.cc1234.main.cache.PrettyZooConfigContext;
 import cc.cc1234.main.cache.TreeViewCache;
 import cc.cc1234.main.listener.TreeNodeListener;
 import org.apache.curator.framework.CuratorFramework;
@@ -24,7 +23,7 @@ public class ZkServerService {
 
     private static final Logger log = LoggerFactory.getLogger(ZkServerService.class);
 
-    private final String server;
+    private final String host;
 
     private volatile CuratorFramework client;
 
@@ -34,9 +33,9 @@ public class ZkServerService {
 
     private TreeNodeListener treeNodeListener;
 
-    private ZkServerService(String server) {
-        this.server = server;
-        treeNodeListener = new TreeNodeListener(server);
+    private ZkServerService(String host) {
+        this.host = host;
+        treeNodeListener = new TreeNodeListener(host);
     }
 
     public static ZkServerService getOrCreate(String server) {
@@ -59,14 +58,13 @@ public class ZkServerService {
             synchronized (this) {
                 if (client == null) {
                     final RetryOneTime retryPolicy = new RetryOneTime(3000);
-                    client = CuratorFrameworkFactory.newClient(this.server, retryPolicy);
+                    client = CuratorFrameworkFactory.newClient(this.host, retryPolicy);
                     client.start();
                     // TODO @vran use connection listener
                     final boolean res = client.blockUntilConnected(5, TimeUnit.SECONDS);
                     if (!res) {
                         throw new InterruptedException("connect timeout");
                     }
-                    PrettyZooConfigContext.get().save(server);
                     connected = true;
                 }
             }
@@ -115,8 +113,8 @@ public class ZkServerService {
     }
 
     public void closeALl() {
-        ZK_SERVICES.remove(server);
-        TreeViewCache.getInstance().clear(server);
+        ZK_SERVICES.remove(host);
+        TreeViewCache.getInstance().clear(host);
 
         if (treeCache != null) {
             treeCache.close();

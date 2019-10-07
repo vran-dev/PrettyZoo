@@ -1,22 +1,22 @@
 package cc.cc1234.main.cache;
 
-import cc.cc1234.main.model.PrettyZooConfig;
+import cc.cc1234.main.vo.PrettyZooConfigVO;
 
 import java.util.Optional;
 
 public class PrettyZooConfigContext {
 
-    private static volatile Optional<PrettyZooConfig> config = Optional.empty();
+    private static volatile Optional<PrettyZooConfigVO> config = Optional.empty();
 
-    public static void set(PrettyZooConfig prettyZooConfig) {
-        config = Optional.ofNullable(prettyZooConfig);
+    public static void set(PrettyZooConfigVO prettyZooConfigVO) {
+        config = Optional.ofNullable(prettyZooConfigVO);
     }
 
-    public static Optional<PrettyZooConfig> getOption() {
+    public static Optional<PrettyZooConfigVO> getOption() {
         return config;
     }
 
-    public static PrettyZooConfig get() {
+    public static PrettyZooConfigVO get() {
         return config.orElseThrow(() -> new IllegalStateException("Must initialize config before get"));
     }
 

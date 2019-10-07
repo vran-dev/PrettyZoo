@@ -3,7 +3,6 @@ package cc.cc1234.main;
 import cc.cc1234.main.cache.PrettyZooConfigContext;
 import cc.cc1234.main.cache.PrimaryStageContext;
 import cc.cc1234.main.service.ZkServerService;
-import cc.cc1234.main.util.Configs;
 import cc.cc1234.main.util.FXMLs;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +26,7 @@ public class PrettyZooApplication extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-        Configs.store(PrettyZooConfigContext.get());
+        PrettyZooConfigContext.get().flush();
         ZkServerService.close();
     }
 

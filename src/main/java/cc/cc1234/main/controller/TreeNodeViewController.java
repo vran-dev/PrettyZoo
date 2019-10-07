@@ -1,19 +1,18 @@
 package cc.cc1234.main.controller;
 
 import cc.cc1234.main.cache.ActiveServerContext;
-import cc.cc1234.main.cache.PrettyZooConfigContext;
 import cc.cc1234.main.cache.RecursiveModeContext;
 import cc.cc1234.main.cache.TreeViewCache;
 import cc.cc1234.main.listener.JfxListenerManager;
-import cc.cc1234.main.model.PrettyZooConfig;
 import cc.cc1234.main.model.ZkNode;
-import cc.cc1234.main.model.ZkServer;
 import cc.cc1234.main.service.ZkServerService;
 import cc.cc1234.main.util.Conditions;
 import cc.cc1234.main.util.FXMLs;
 import cc.cc1234.main.util.Transitions;
 import cc.cc1234.main.view.ZkNodeTreeCell;
 import cc.cc1234.main.view.ZkServerListCell;
+import cc.cc1234.main.vo.PrettyZooConfigVO;
+import cc.cc1234.main.vo.ZkServerConfigVO;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,7 +33,7 @@ public class TreeNodeViewController {
     private TreeView<ZkNode> zkNodeTreeView;
 
     @FXML
-    private ListView<ZkServer> serverListView;
+    private ListView<ZkServerConfigVO> serverListView;
 
     @FXML
     private Button serverListMenu;
@@ -91,7 +90,7 @@ public class TreeNodeViewController {
 
     private TreeViewCache treeViewCache = TreeViewCache.getInstance();
 
-    private PrettyZooConfig prettyZooConfig = new PrettyZooConfig();
+    private PrettyZooConfigVO prettyZooConfig;
 
     private AddServerViewController addServerViewController;
 
@@ -99,7 +98,7 @@ public class TreeNodeViewController {
 
     @FXML
     private void initialize() {
-        PrettyZooConfigContext.set(prettyZooConfig);
+        prettyZooConfig = new PrettyZooConfigVO();
         initZkNodeTreeView();
         initServerListView();
         recursiveModeCheckBox.selectedProperty().addListener(JfxListenerManager.getRecursiveModeChangeListener(prettyZooLabel, serverViewMenuItems));
@@ -118,14 +117,15 @@ public class TreeNodeViewController {
     private void onRemoveServerAction(ActionEvent event) {
         serverViewMenuItems.setVisible(false);
         Window parent = ((Node) event.getSource()).getParent().getScene().getWindow();
-        final ZkServer removeItem = serverListView.getSelectionModel().getSelectedItem();
+        final ZkServerConfigVO removeItem = serverListView.getSelectionModel().getSelectedItem();
         Conditions.on(() -> removeItem == null)
                 .thenDo(() -> VToast.toastFailure(parent, "no server selected"))
                 .elseDo(() -> {
-                    prettyZooConfig.remove(removeItem.getServer());
+                    final String host = removeItem.getHost();
+                    prettyZooConfig.remove(host);
                     zkNodeTreeView.setRoot(null);
                     ActiveServerContext.invalidate();
-                    ZkServerService.getOrCreate(removeItem.getServer()).closeALl();
+                    ZkServerService.getOrCreate(host).closeALl();
                 });
     }
 
@@ -217,22 +217,22 @@ public class TreeNodeViewController {
         serverListMenu.setOnMouseClicked(event -> serverViewMenuItems.setVisible(!serverViewMenuItems.isVisible()));
     }
 
-    private void switchServer(ZkServer server) {
-        final ZkServerService service = ZkServerService.getOrCreate(server.getServer());
-        Window parent = zkNodeTreeView.getParent().getScene().getWindow();
+    private void switchServer(ZkServerConfigVO server) {
+        final String host = server.getHost();
+        final ZkServerService service = ZkServerService.getOrCreate(host);
         try {
             service.connectIfNecessary();
         } catch (InterruptedException e) {
-            VToast.toastFailure(parent, "Failed: " + e.getMessage());
+            VToast.toastFailure("Failed: " + e.getMessage());
             return;
         }
 
         zkNodeTreeView.setCellFactory(view -> new ZkNodeTreeCell());
-        initVirtualRootIfNecessary(server.getServer());
-        switchTreeRoot(server.getServer());
-        ActiveServerContext.set(server.getServer());
+        initVirtualRootIfNecessary(host);
+        switchTreeRoot(host);
+        ActiveServerContext.set(host);
         service.syncNodeIfNecessary();
-        server.setConnect(true);
+        server.connectSuccess();
     }
 
     private void initVirtualRootIfNecessary(String server) {

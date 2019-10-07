@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'war'
     id 'application'
     id 'org.springframework.boot' version '2.1.7.RELEASE' apply true
 }
@@ -31,5 +32,9 @@ dependencies {
     compile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.0'
+
+    providedCompile group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
 //    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
