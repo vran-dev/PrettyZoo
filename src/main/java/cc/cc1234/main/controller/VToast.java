@@ -1,5 +1,6 @@
 package cc.cc1234.main.controller;
 
+import cc.cc1234.main.cache.PrimaryStageContext;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -14,6 +15,14 @@ import javafx.stage.Window;
 import javafx.util.Duration;
 
 public class VToast {
+
+    public static void toastSuccess(String message) {
+        toastSuccess(PrimaryStageContext.get(), message);
+    }
+
+    public static void toastFailure(String message) {
+        toastFailure(PrimaryStageContext.get(), message);
+    }
 
     public static void toastSuccess(Window parent) {
         toast(parent, successPanel("√ success"));

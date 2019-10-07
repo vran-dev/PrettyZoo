@@ -1,6 +1,7 @@
 package cc.cc1234.main;
 
 import cc.cc1234.main.cache.PrettyZooConfigContext;
+import cc.cc1234.main.cache.PrimaryStageContext;
 import cc.cc1234.main.service.ZkServerService;
 import cc.cc1234.main.util.Configs;
 import cc.cc1234.main.util.FXMLs;
@@ -19,6 +20,7 @@ public class PrettyZooApplication extends Application {
         final AnchorPane anchorPane = loader.load();
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.setTitle("PrettyZoo");
+        PrimaryStageContext.set(primaryStage);
         primaryStage.show();
     }
 
