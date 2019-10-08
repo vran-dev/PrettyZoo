@@ -2,7 +2,6 @@ package cc.cc1234.main;
 
 import cc.cc1234.main.cache.CuratorCache;
 import cc.cc1234.main.cache.PrettyZooConfigCache;
-import cc.cc1234.main.cache.PrimaryStageContext;
 import cc.cc1234.main.context.ApplicationContext;
 import cc.cc1234.main.model.PrettyZooConfig;
 import cc.cc1234.main.service.PrettyZooConfigService;
@@ -27,7 +26,7 @@ public class PrettyZooApplication extends Application {
         final AnchorPane anchorPane = loader.load();
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.setTitle("PrettyZoo");
-        PrimaryStageContext.set(primaryStage);
+        ApplicationContext.get().setPrimaryStage(primaryStage);
 
         primaryStage.show();
     }

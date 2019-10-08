@@ -1,6 +1,6 @@
 package cc.cc1234.main.listener;
 
-import cc.cc1234.main.cache.TreeViewCache;
+import cc.cc1234.main.cache.TreeItemCache;
 import cc.cc1234.main.controller.TreeNodeViewController;
 import cc.cc1234.main.model.ZkNode;
 import cc.cc1234.main.util.PathUtils;
@@ -34,7 +34,7 @@ public class TreeNodeListener implements TreeCacheListener {
 
     private final String server;
 
-    private TreeViewCache treeViewCache = TreeViewCache.getInstance();
+    private TreeItemCache treeItemCache = TreeItemCache.getInstance();
 
     public TreeNodeListener(String server) {
         this.server = server;
@@ -62,7 +62,7 @@ public class TreeNodeListener implements TreeCacheListener {
 
     public void onNodeUpdated(TreeCacheEvent event) {
         final String path = event.getData().getPath();
-        final TreeItem<ZkNode> item = treeViewCache.get(server, path);
+        final TreeItem<ZkNode> item = treeItemCache.get(server, path);
         final ZkNode node = item.getValue();
         node.setStat(event.getData().getStat());
         node.setData(new String(event.getData().getData()));
@@ -71,10 +71,10 @@ public class TreeNodeListener implements TreeCacheListener {
     public void onNodeRemoved(TreeCacheEvent event) {
         final String path = event.getData().getPath();
         final String parent = PathUtils.getParent(path);
-        final TreeItem<ZkNode> parentItem = treeViewCache.get(server, parent);
-        final TreeItem<ZkNode> removeItem = treeViewCache.get(server, path);
+        final TreeItem<ZkNode> parentItem = treeItemCache.get(server, parent);
+        final TreeItem<ZkNode> removeItem = treeItemCache.get(server, path);
         parentItem.getChildren().remove(removeItem);
-        treeViewCache.remove(server, path);
+        treeItemCache.remove(server, path);
         decreaseNumOfChildFiled(path);
     }
 
@@ -90,15 +90,15 @@ public class TreeNodeListener implements TreeCacheListener {
 
         totalNodeNum.addAndGet(eventData.getStat().getNumChildren());
         if (path.equals(TreeNodeViewController.ROOT_PATH)) {
-            final TreeItem<ZkNode> root = treeViewCache.get(server, TreeNodeViewController.ROOT_PATH);
+            final TreeItem<ZkNode> root = treeItemCache.get(server, TreeNodeViewController.ROOT_PATH);
             root.getValue().setStat(eventData.getStat());
             root.getValue().setData(new String(eventData.getData()));
             root.setExpanded(true);
         } else {
             final TreeItem<ZkNode> treeItem = new TreeItem<>(node);
-            treeViewCache.add(server, path, treeItem);
+            treeItemCache.add(server, path, treeItem);
             final String parent = PathUtils.getParent(path);
-            final TreeItem<ZkNode> parentItem = treeViewCache.get(server, parent);
+            final TreeItem<ZkNode> parentItem = treeItemCache.get(server, parent);
             parentItem.getChildren().add(treeItem);
             increaseNumOfChildField(path);
         }
@@ -109,7 +109,7 @@ public class TreeNodeListener implements TreeCacheListener {
             return;
         }
 
-        final TreeItem<ZkNode> parentItem = treeViewCache.get(server, PathUtils.getParent(node));
+        final TreeItem<ZkNode> parentItem = treeItemCache.get(server, PathUtils.getParent(node));
         final int numChildren = parentItem.getValue().getNumChildren();
         parentItem.getValue().setNumChildren(numChildren + 1);
     }
@@ -118,7 +118,7 @@ public class TreeNodeListener implements TreeCacheListener {
         if (skip(node)) {
             return;
         }
-        final TreeItem<ZkNode> parentItem = treeViewCache.get(server, PathUtils.getParent(node));
+        final TreeItem<ZkNode> parentItem = treeItemCache.get(server, PathUtils.getParent(node));
         final int numChildren = parentItem.getValue().getNumChildren();
         if (numChildren == 0) {
             return;

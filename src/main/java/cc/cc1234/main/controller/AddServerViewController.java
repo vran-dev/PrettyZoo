@@ -1,5 +1,6 @@
 package cc.cc1234.main.controller;
 
+import cc.cc1234.main.context.ApplicationContext;
 import cc.cc1234.main.vo.AddServerVO;
 import com.google.common.base.Strings;
 import javafx.fxml.FXML;
@@ -10,7 +11,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.Window;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.model.StyleSpans;
@@ -57,7 +57,8 @@ public class AddServerViewController {
 
     }
 
-    public void show(Window parent) {
+    public void show() {
+        Stage parent = ApplicationContext.get().getPrimaryStage();
         serverTextField.setText("127.0.0.1:2181");
         aclArea.replaceText("");
         hasError = false;

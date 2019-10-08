@@ -1,7 +1,9 @@
 package cc.cc1234.main.vo;
 
-import cc.cc1234.main.cache.RecursiveModeContext;
+import cc.cc1234.main.cache.TreeItemCache;
+import cc.cc1234.main.context.ActiveServerContext;
 import cc.cc1234.main.context.ApplicationContext;
+import cc.cc1234.main.context.RecursiveModeContext;
 import cc.cc1234.main.service.ZkNodeService;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -25,6 +27,8 @@ public class ZkNodeOperationVO {
 
     private ZkNodeService zkNodeService = ApplicationContext.get().getBean(ZkNodeService.class);
 
+    private TreeItemCache treeItemCache = TreeItemCache.getInstance();
+
     public void onAdd() throws Exception {
         final boolean recursive = RecursiveModeContext.get();
         zkNodeService.add(getAbsolutePath(), getData(), createMode(), recursive);
@@ -36,6 +40,10 @@ public class ZkNodeOperationVO {
 
     public void updateData(Consumer<Exception> errorCallback) {
         zkNodeService.setData(getAbsolutePath(), getData(), errorCallback);
+    }
+
+    public boolean nodeExists() {
+        return treeItemCache.hasNode(ActiveServerContext.get(), getAbsolutePath());
     }
 
     private CreateMode createMode() {

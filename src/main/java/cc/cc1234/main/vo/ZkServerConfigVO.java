@@ -3,9 +3,13 @@ package cc.cc1234.main.vo;
 import cc.cc1234.main.context.ApplicationContext;
 import cc.cc1234.main.model.ZkServerConfig;
 import cc.cc1234.main.service.PrettyZooConfigService;
+import cc.cc1234.main.service.ZkNodeService;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.apache.curator.framework.CuratorFramework;
+
+import java.util.Optional;
 
 public class ZkServerConfigVO {
 
@@ -19,6 +23,8 @@ public class ZkServerConfigVO {
 
     private PrettyZooConfigService prettyZooConfigService = ApplicationContext.get().getBean(PrettyZooConfigService.class);
 
+    final ZkNodeService zkNodeService = ApplicationContext.get().getBean(ZkNodeService.class);
+
     public ZkServerConfigVO() {
     }
 
@@ -28,8 +34,21 @@ public class ZkServerConfigVO {
         aclList.get().addAll(config.getAclList());
     }
 
-    public void connectSuccess() {
-        setConnect(true);
+    public Optional<CuratorFramework> connectIfNecessary() throws InterruptedException {
+        final ZkServerConfig config = new ZkServerConfig();
+        config.setHost(getHost());
+        config.getAclList().addAll(getAclList());
+        final Optional<CuratorFramework> client = zkNodeService.connectIfNecessary(config);
+        client.ifPresent(c -> connectSuccess());
+        return client;
+    }
+
+    public void syncNodeIfNecessary() {
+        zkNodeService.syncIfNecessary(getHost());
+    }
+
+    private void connectSuccess() {
+        this.setConnect(true);
         this.setConnectTimes(getConnectTimes() + 1);
         prettyZooConfigService.updateConnectTimes(getHost(), getConnectTimes());
     }
@@ -81,4 +100,5 @@ public class ZkServerConfigVO {
     public void setAclList(ObservableList<String> aclList) {
         this.aclList.set(aclList);
     }
+
 }

@@ -1,7 +1,7 @@
 package cc.cc1234.main.vo;
 
-import cc.cc1234.main.cache.ActiveServerContext;
 import cc.cc1234.main.cache.CuratorCache;
+import cc.cc1234.main.context.ActiveServerContext;
 import cc.cc1234.main.context.ApplicationContext;
 import cc.cc1234.main.model.PrettyZooConfig;
 import cc.cc1234.main.model.ZkServerConfig;

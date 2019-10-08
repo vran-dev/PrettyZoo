@@ -1,6 +1,6 @@
 package cc.cc1234.main.controller;
 
-import cc.cc1234.main.cache.PrimaryStageContext;
+import cc.cc1234.main.context.ApplicationContext;
 import cc.cc1234.main.util.Transitions;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -14,11 +14,11 @@ import javafx.stage.Window;
 public class VToast {
 
     public static void toastSuccess(String message) {
-        toastSuccess(PrimaryStageContext.get(), message);
+        toastSuccess(ApplicationContext.get().getPrimaryStage(), message);
     }
 
     public static void toastFailure(String message) {
-        toastFailure(PrimaryStageContext.get(), message);
+        toastFailure(ApplicationContext.get().getPrimaryStage(), message);
     }
 
     public static void toastSuccess(Window parent) {
