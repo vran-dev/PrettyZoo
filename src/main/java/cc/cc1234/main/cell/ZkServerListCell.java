@@ -25,11 +25,8 @@ public class ZkServerListCell extends ListCell<ZkServerConfigVO> {
             setText(null);
             setGraphic(null);
         } else {
-            final String server = item.getHost();
-            final StringBinding bindings = Bindings.createStringBinding(() -> item.isConnect() ? "√ " + server :
-                    "× " + server, item.hostProperty(), item.connectProperty());
             final Label label = new Label();
-            label.textProperty().bind(bindings);
+            label.textProperty().bind(connectBinding(item));
             setText(null);
             setGraphic(label);
             setOnMouseClicked(mouseEvent -> {
@@ -47,6 +44,15 @@ public class ZkServerListCell extends ListCell<ZkServerConfigVO> {
                 }
             });
         }
+    }
+
+    private StringBinding connectBinding(ZkServerConfigVO item) {
+        return Bindings.createStringBinding(() -> connectStr(item), item.hostProperty(), item.connectProperty());
+    }
+
+    private String connectStr(ZkServerConfigVO item) {
+        String server = item.getHost();
+        return item.isConnect() ? "√ " + server : "× " + server;
     }
 
 }
