@@ -1,0 +1,17 @@
+.schema {
+    -fx-fill: rgb(136, 107, 151);
+}
+
+.username {
+    -fx-fill: rgb(200, 118, 50);
+}
+
+.password {
+    -fx-fill: rgb(218, 95, 92);
+}
+
+.error {
+    -fx-fill: rgb(218, 95, 92);
+    -fx-font-weight: bold;
+    -fx-underline: true;
+}

@@ -1,7 +1,11 @@
 package cc.cc1234.main;
 
-import cc.cc1234.main.cache.PrettyZooConfigContext;
+import cc.cc1234.main.cache.PrettyZooConfigCache;
 import cc.cc1234.main.cache.PrimaryStageContext;
+import cc.cc1234.main.context.ApplicationContext;
+import cc.cc1234.main.model.PrettyZooConfig;
+import cc.cc1234.main.service.PrettyZooConfigService;
+import cc.cc1234.main.service.ZkNodeService;
 import cc.cc1234.main.service.ZkServerService;
 import cc.cc1234.main.util.FXMLs;
 import javafx.application.Application;
@@ -12,21 +16,32 @@ import javafx.stage.Stage;
 
 public class PrettyZooApplication extends Application {
 
+    private ApplicationContext context = ApplicationContext.get();
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+        setup();
+
         final FXMLLoader loader = new FXMLLoader();
         loader.setLocation(FXMLs.loadFXML("fxml/TreeNodeView.fxml"));
         final AnchorPane anchorPane = loader.load();
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.setTitle("PrettyZoo");
         PrimaryStageContext.set(primaryStage);
+
         primaryStage.show();
+    }
+
+    private void setup() {
+        context.setBean(new PrettyZooConfigService());
+        context.setBean(new ZkNodeService());
     }
 
     @Override
     public void stop() throws Exception {
         super.stop();
-        PrettyZooConfigContext.get().flush();
+        final PrettyZooConfig config = PrettyZooConfigCache.get();
+        context.getBean(PrettyZooConfigService.class).save(config);
         ZkServerService.close();
     }
 

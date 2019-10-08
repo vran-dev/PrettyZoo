@@ -1,57 +1,36 @@
 package cc.cc1234.main.vo;
 
-import cc.cc1234.main.cache.PrettyZooConfigContext;
+import cc.cc1234.main.context.ApplicationContext;
 import cc.cc1234.main.model.PrettyZooConfig;
 import cc.cc1234.main.model.ZkServerConfig;
-import cc.cc1234.main.util.JsonUtils;
+import cc.cc1234.main.service.PrettyZooConfigService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class PrettyZooConfigVO {
 
-    private static final String PRETTYZOO_CONFIG = System.getProperty("user.home") + "/.prettyZoo/server-input.history";
-
-
     private ObservableList<ZkServerConfigVO> servers = FXCollections.observableArrayList();
+
+    private PrettyZooConfigService prettyZooConfigService = ApplicationContext.get().getBean(PrettyZooConfigService.class);
 
     public PrettyZooConfigVO() {
         init();
-        PrettyZooConfigContext.set(this);
     }
 
     private void init() {
-        final PrettyZooConfig config = JsonUtils.from(PRETTYZOO_CONFIG, PrettyZooConfig.class);
-        final List<ZkServerConfigVO> configs = config.getServers()
-                .stream()
-                .map(ZkServerConfigVO::new)
-                .sorted(Comparator.comparingInt(ZkServerConfigVO::getConnectTimes))
-                .collect(Collectors.toList());
-        // sort by connect times desc
-        Collections.reverse(configs);
-        servers.addAll(configs);
+        servers.addAll(toVO(prettyZooConfigService.load().getServers()));
+        prettyZooConfigService.registerListener(newConfig -> {
+            this.servers.clear();
+            this.servers.addAll(toVO(newConfig.getServers()));
+        });
     }
 
-
-    public boolean save(ZkServerConfigVO serverConfig) {
-        final Optional<ZkServerConfigVO> configOpt = servers.stream()
-                .filter(z -> z.getHost().equals(serverConfig.getHost()))
-                .findFirst();
-        return configOpt.map(c -> false)
-                .orElseGet(() -> {
-                    servers.add(serverConfig);
-                    flush();
-                    return true;
-                });
-    }
-
-    public boolean contains(String host) {
-        return servers.stream().anyMatch(z -> z.getHost().equals(host));
+    private List<ZkServerConfigVO> toVO(List<ZkServerConfig> servers) {
+        return servers.stream().map(ZkServerConfigVO::new).collect(Collectors.toList());
     }
 
     public void remove(String host) {
@@ -59,17 +38,7 @@ public class PrettyZooConfigVO {
                 .filter(z -> z.getHost().equals(host))
                 .collect(Collectors.toList());
         servers.removeAll(removeServers);
-        flush();
-    }
-
-    public void flush() {
-        final PrettyZooConfig config = toModel();
-        final String json = JsonUtils.to(config);
-        try {
-            Files.write(Paths.get(PRETTYZOO_CONFIG), json.getBytes());
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
+        prettyZooConfigService.save(toModel());
     }
 
     private PrettyZooConfig toModel() {

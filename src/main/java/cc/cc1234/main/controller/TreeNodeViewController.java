@@ -90,7 +90,7 @@ public class TreeNodeViewController {
 
     private TreeViewCache treeViewCache = TreeViewCache.getInstance();
 
-    private PrettyZooConfigVO prettyZooConfig;
+    private PrettyZooConfigVO prettyZooConfig = new PrettyZooConfigVO();
 
     private AddServerViewController addServerViewController;
 
@@ -98,7 +98,6 @@ public class TreeNodeViewController {
 
     @FXML
     private void initialize() {
-        prettyZooConfig = new PrettyZooConfigVO();
         initZkNodeTreeView();
         initServerListView();
         recursiveModeCheckBox.selectedProperty().addListener(JfxListenerManager.getRecursiveModeChangeListener(prettyZooLabel, serverViewMenuItems));

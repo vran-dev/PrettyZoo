@@ -1,9 +1,9 @@
 package cc.cc1234.main.vo;
 
+import cc.cc1234.main.context.ApplicationContext;
 import cc.cc1234.main.model.ZkServerConfig;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import cc.cc1234.main.service.PrettyZooConfigService;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -15,7 +15,9 @@ public class ZkServerConfigVO {
 
     private SimpleIntegerProperty connectTimes = new SimpleIntegerProperty(0);
 
-    private ObservableList<String> aclList = FXCollections.observableArrayList();
+    private ObjectProperty<ObservableList<String>> aclList = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+
+    private PrettyZooConfigService prettyZooConfigService = ApplicationContext.get().getBean(PrettyZooConfigService.class);
 
     public ZkServerConfigVO() {
     }
@@ -23,12 +25,13 @@ public class ZkServerConfigVO {
     public ZkServerConfigVO(ZkServerConfig config) {
         this.setHost(config.getHost());
         this.setConnectTimes(config.getConnectTimes());
-        aclList.addAll(config.getAclList());
+        aclList.get().addAll(config.getAclList());
     }
 
     public void connectSuccess() {
         setConnect(true);
         this.setConnectTimes(getConnectTimes() + 1);
+        prettyZooConfigService.updateConnectTimes(getHost(), getConnectTimes());
     }
 
     public String getHost() {
@@ -68,10 +71,14 @@ public class ZkServerConfigVO {
     }
 
     public ObservableList<String> getAclList() {
+        return aclList.get();
+    }
+
+    public ObjectProperty<ObservableList<String>> aclListProperty() {
         return aclList;
     }
 
     public void setAclList(ObservableList<String> aclList) {
-        this.aclList = aclList;
+        this.aclList.set(aclList);
     }
 }
