@@ -1,11 +1,11 @@
 package cc.cc1234.main.vo;
 
 import cc.cc1234.main.cache.ActiveServerContext;
+import cc.cc1234.main.cache.CuratorCache;
 import cc.cc1234.main.context.ApplicationContext;
 import cc.cc1234.main.model.PrettyZooConfig;
 import cc.cc1234.main.model.ZkServerConfig;
 import cc.cc1234.main.service.PrettyZooConfigService;
-import cc.cc1234.main.service.ZkServerService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -42,7 +42,7 @@ public class PrettyZooConfigVO {
         servers.removeAll(removeServers);
         prettyZooConfigService.save(toModel());
         ActiveServerContext.invalidate();
-        ZkServerService.getOrCreate(host).closeALl();
+        CuratorCache.close(host);
     }
 
     private PrettyZooConfig toModel() {

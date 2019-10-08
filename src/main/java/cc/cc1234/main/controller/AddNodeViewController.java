@@ -15,7 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.apache.curator.framework.CuratorFramework;
 
 public class AddNodeViewController {
 
@@ -36,8 +35,6 @@ public class AddNodeViewController {
 
     @FXML
     private AnchorPane addNodePane;
-
-    private CuratorFramework client;
 
     private Stage stage;
 
@@ -62,13 +59,12 @@ public class AddNodeViewController {
         currentPathLabel.textProperty().bind(zkNodeOperationVO.absolutePathProperty());
     }
 
-    public void show(String parentPath, CuratorFramework client) {
+    public void show(String parentPath) {
         parentPathProperty.set(parentPath);
         this.nodeNameTextField.setText("");
         this.isNodeEph.setSelected(false);
         this.isNodeSeq.setSelected(false);
         this.nodeDataTextArea.setText("");
-        this.client = client;
         this.stage.show();
     }
 
@@ -80,7 +76,7 @@ public class AddNodeViewController {
         }
 
         try {
-            zkNodeOperationVO.onAdd(client);
+            zkNodeOperationVO.onAdd();
         } catch (Exception e) {
             VToast.toastFailure(stage, e.getMessage());
             throw new IllegalStateException(e);

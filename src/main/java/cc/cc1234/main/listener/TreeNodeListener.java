@@ -10,11 +10,15 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.ChildData;
 import org.apache.curator.framework.recipes.cache.TreeCacheEvent;
 import org.apache.curator.framework.recipes.cache.TreeCacheListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TreeNodeListener implements TreeCacheListener {
+
+    private static final Logger log = LoggerFactory.getLogger(TreeNodeListener.class);
 
     /**
      * loaded node num
@@ -52,6 +56,7 @@ public class TreeNodeListener implements TreeCacheListener {
 
         if (event.getType() == TreeCacheEvent.Type.INITIALIZED) {
             completed = true;
+            log.debug("{} tree node sync finished", server);
         }
     }
 

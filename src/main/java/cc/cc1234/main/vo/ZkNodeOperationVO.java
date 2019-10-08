@@ -1,13 +1,12 @@
 package cc.cc1234.main.vo;
 
 import cc.cc1234.main.cache.RecursiveModeContext;
-import cc.cc1234.main.service.ZkServerService;
+import cc.cc1234.main.context.ApplicationContext;
+import cc.cc1234.main.service.ZkNodeService;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.api.CreateBuilder;
 import org.apache.zookeeper.CreateMode;
 
 import java.util.function.Consumer;
@@ -24,25 +23,19 @@ public class ZkNodeOperationVO {
 
     private StringProperty data = new SimpleStringProperty();
 
-    public void onAdd(CuratorFramework client) throws Exception {
-        final CreateBuilder createBuilder = client.create();
-        if (RecursiveModeContext.get()) {
-            createBuilder.creatingParentsIfNeeded()
-                    .withMode(createMode())
-                    .forPath(getAbsolutePath(), getData().getBytes());
-        } else {
-            createBuilder.withMode(createMode())
-                    .forPath(getAbsolutePath(), getData().getBytes());
-        }
+    private ZkNodeService zkNodeService = ApplicationContext.get().getBean(ZkNodeService.class);
+
+    public void onAdd() throws Exception {
+        final boolean recursive = RecursiveModeContext.get();
+        zkNodeService.add(getAbsolutePath(), getData(), createMode(), recursive);
     }
 
-    public void onDelete(Consumer<Exception>  errorHandler) {
-        ZkServerService.getActive()
-                .delete(getAbsolutePath(), RecursiveModeContext.get(), errorHandler);
+    public void onDelete(Consumer<Exception> errorHandler) {
+        zkNodeService.delete(getAbsolutePath(), RecursiveModeContext.get(), errorHandler);
     }
 
     public void updateData(Consumer<Exception> errorCallback) {
-        ZkServerService.getActive().setData(getAbsolutePath(), getData(), errorCallback);
+        zkNodeService.setData(getAbsolutePath(), getData(), errorCallback);
     }
 
     private CreateMode createMode() {

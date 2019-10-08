@@ -3,9 +3,11 @@ package cc.cc1234.main.controller;
 import cc.cc1234.main.cache.ActiveServerContext;
 import cc.cc1234.main.cache.PrimaryStageContext;
 import cc.cc1234.main.cache.TreeViewCache;
+import cc.cc1234.main.context.ApplicationContext;
 import cc.cc1234.main.listener.JfxListenerManager;
 import cc.cc1234.main.model.ZkNode;
-import cc.cc1234.main.service.ZkServerService;
+import cc.cc1234.main.model.ZkServerConfig;
+import cc.cc1234.main.service.ZkNodeService;
 import cc.cc1234.main.util.Conditions;
 import cc.cc1234.main.util.FXMLs;
 import cc.cc1234.main.util.Transitions;
@@ -21,7 +23,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -162,8 +163,7 @@ public class TreeNodeViewController {
             VToast.toastFailure("select node first");
             return;
         }
-        final CuratorFramework client = ZkServerService.getActive().getClient();
-        addNodeViewController.show(zkNodeOperationVO.getAbsolutePath(), client);
+        addNodeViewController.show(zkNodeOperationVO.getAbsolutePath());
     }
 
     private void initZkNodeTreeView() {
@@ -215,9 +215,11 @@ public class TreeNodeViewController {
 
     private void switchServer(ZkServerConfigVO server) {
         final String host = server.getHost();
-        final ZkServerService service = ZkServerService.getOrCreate(host);
+        final ZkNodeService service = ApplicationContext.get().getBean(ZkNodeService.class);
         try {
-            service.connectIfNecessary();
+            final ZkServerConfig config = new ZkServerConfig();
+            config.setHost(host);
+            service.connectIfNecessary(config);
         } catch (InterruptedException e) {
             VToast.toastFailure("Failed: " + e.getMessage());
             return;
@@ -227,7 +229,7 @@ public class TreeNodeViewController {
         initVirtualRootIfNecessary(host);
         switchTreeRoot(host);
         ActiveServerContext.set(host);
-        service.syncNodeIfNecessary();
+        service.syncIfNecessary(host);
         server.connectSuccess();
     }
 

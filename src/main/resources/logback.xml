@@ -19,6 +19,8 @@
         </encoder>
     </appender>
 
+    <logger name="cc.cc1234" level="DEBUG"/>
+
     <root level="INFO">
         <appender-ref ref="FILE"/>
         <appender-ref ref="STDOUT"/>

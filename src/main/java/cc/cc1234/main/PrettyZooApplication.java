@@ -1,12 +1,12 @@
 package cc.cc1234.main;
 
+import cc.cc1234.main.cache.CuratorCache;
 import cc.cc1234.main.cache.PrettyZooConfigCache;
 import cc.cc1234.main.cache.PrimaryStageContext;
 import cc.cc1234.main.context.ApplicationContext;
 import cc.cc1234.main.model.PrettyZooConfig;
 import cc.cc1234.main.service.PrettyZooConfigService;
 import cc.cc1234.main.service.ZkNodeService;
-import cc.cc1234.main.service.ZkServerService;
 import cc.cc1234.main.util.FXMLs;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -42,7 +42,7 @@ public class PrettyZooApplication extends Application {
         super.stop();
         final PrettyZooConfig config = PrettyZooConfigCache.get();
         context.getBean(PrettyZooConfigService.class).save(config);
-        ZkServerService.close();
+        CuratorCache.closeAll();
     }
 
     public static void main(String[] args) {
