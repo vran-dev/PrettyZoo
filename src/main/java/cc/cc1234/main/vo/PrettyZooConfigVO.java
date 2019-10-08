@@ -1,7 +1,5 @@
 package cc.cc1234.main.vo;
 
-import cc.cc1234.main.cache.CuratorCache;
-import cc.cc1234.main.context.ActiveServerContext;
 import cc.cc1234.main.context.ApplicationContext;
 import cc.cc1234.main.model.PrettyZooConfig;
 import cc.cc1234.main.model.ZkServerConfig;
@@ -41,8 +39,7 @@ public class PrettyZooConfigVO {
                 .collect(Collectors.toList());
         servers.removeAll(removeServers);
         prettyZooConfigService.save(toModel());
-        ActiveServerContext.invalidate();
-        CuratorCache.close(host);
+        ApplicationContext.close(host);
     }
 
     private PrettyZooConfig toModel() {

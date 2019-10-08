@@ -38,6 +38,8 @@ public class CuratorCache {
     public static void close(String host) {
         getTreeCache(host).ifPresent(TreeCache::close);
         getClientOption(host).ifPresent(CuratorFramework::close);
+        curatorClientCache.remove(host);
+        curatorTreeCache.remove(host);
     }
 
     public static void closeAll() {

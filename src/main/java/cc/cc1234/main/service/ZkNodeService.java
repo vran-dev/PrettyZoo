@@ -4,19 +4,26 @@ import cc.cc1234.main.cache.CuratorCache;
 import cc.cc1234.main.context.ActiveServerContext;
 import cc.cc1234.main.listener.TreeNodeListener;
 import cc.cc1234.main.model.ZkServerConfig;
+import cc.cc1234.main.util.ACLs;
+import org.apache.curator.framework.AuthInfo;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.api.ACLProvider;
 import org.apache.curator.framework.api.CreateBuilder;
 import org.apache.curator.framework.api.DeleteBuilder;
 import org.apache.curator.framework.recipes.cache.TreeCache;
 import org.apache.curator.retry.RetryOneTime;
 import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.data.ACL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class ZkNodeService {
 
@@ -29,11 +36,29 @@ public class ZkNodeService {
             return result;
         } else {
             final RetryOneTime retryPolicy = new RetryOneTime(3000);
-            final CuratorFramework client = CuratorFrameworkFactory.builder()
+            final CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
                     .connectString(config.getHost())
-                    .retryPolicy(retryPolicy)
-                    .build();
+                    .retryPolicy(retryPolicy);
+
+            if (!config.getAclList().isEmpty()) {
+                final List<AuthInfo> acls = config.getAclList().stream().map(ACLs::parseDigest).collect(Collectors.toList());
+                builder.authorization(acls)
+                        .aclProvider(new ACLProvider() {
+                            @Override
+                            public List<ACL> getDefaultAcl() {
+                                return ZooDefs.Ids.CREATOR_ALL_ACL;
+                            }
+
+                            @Override
+                            public List<ACL> getAclForPath(String path) {
+                                return ZooDefs.Ids.CREATOR_ALL_ACL;
+                            }
+                        });
+            }
+
+            final CuratorFramework client = builder.build();
             client.start();
+
             // TODO use async
             if (!client.blockUntilConnected(5, TimeUnit.SECONDS)) {
                 return Optional.empty();

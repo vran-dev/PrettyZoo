@@ -8,6 +8,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AddServerVO {
 
@@ -20,7 +22,12 @@ public class AddServerVO {
     public void onConfirm() {
         final ZkServerConfig zkServerConfig = new ZkServerConfig();
         zkServerConfig.setHost(getHost());
-        zkServerConfig.getAclList().addAll(Arrays.asList(Strings.nullToEmpty(acl.get()).split("\n")));
+        if (!Strings.isNullOrEmpty(acl.get())) {
+            final List<String> acls = Arrays.stream(acl.get().split("\n"))
+                    .filter(acl -> !Strings.isNullOrEmpty(acl))
+                    .collect(Collectors.toList());
+            zkServerConfig.getAclList().addAll(acls);
+        }
         prettyZooConfigService.add(zkServerConfig);
     }
 

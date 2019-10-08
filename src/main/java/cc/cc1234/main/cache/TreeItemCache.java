@@ -43,4 +43,7 @@ public class TreeItemCache {
         treeItemCache.get(server).remove(path);
     }
 
+    public void remove(String server) {
+        treeItemCache.remove(server);
+    }
 }
