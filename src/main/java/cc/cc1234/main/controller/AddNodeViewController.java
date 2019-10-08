@@ -1,7 +1,7 @@
 package cc.cc1234.main.controller;
 
-import cc.cc1234.main.cache.RecursiveModeContext;
 import cc.cc1234.main.util.PathUtils;
+import cc.cc1234.main.vo.ZkNodeOperationVO;
 import com.google.common.base.Strings;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
@@ -16,10 +16,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.api.CreateBuilder;
-import org.apache.zookeeper.CreateMode;
-
-import java.util.Objects;
 
 public class AddNodeViewController {
 
@@ -45,7 +41,9 @@ public class AddNodeViewController {
 
     private Stage stage;
 
-    private SimpleStringProperty parentPath = new SimpleStringProperty();
+    private SimpleStringProperty parentPathProperty = new SimpleStringProperty();
+
+    private ZkNodeOperationVO zkNodeOperationVO = new ZkNodeOperationVO();
 
     @FXML
     private void initialize() {
@@ -53,60 +51,44 @@ public class AddNodeViewController {
         this.stage.setScene(new Scene(addNodePane));
         this.stage.initModality(Modality.APPLICATION_MODAL);
 
-        final StringBinding bind = Bindings.createStringBinding(() -> PathUtils.concat(parentPath.get(), nodeNameTextField.getText()),
-                parentPath,
+        zkNodeOperationVO.relativePathProperty().bind(nodeNameTextField.textProperty());
+        zkNodeOperationVO.ephProperty().bind(isNodeEph.selectedProperty());
+        zkNodeOperationVO.seqProperty().bind(isNodeSeq.selectedProperty());
+        zkNodeOperationVO.dataProperty().bind(nodeDataTextArea.textProperty());
+        final StringBinding bind = Bindings.createStringBinding(() -> PathUtils.concat(parentPathProperty.get(), nodeNameTextField.getText()),
+                parentPathProperty,
                 nodeNameTextField.textProperty());
-        currentPathLabel.textProperty().bind(bind);
+        zkNodeOperationVO.absolutePathProperty().bind(bind);
+        currentPathLabel.textProperty().bind(zkNodeOperationVO.absolutePathProperty());
     }
 
     public void show(String parentPath, CuratorFramework client) {
-        this.client = client;
-        this.parentPath.set(parentPath);
+        parentPathProperty.set(parentPath);
         this.nodeNameTextField.setText("");
+        this.isNodeEph.setSelected(false);
+        this.isNodeSeq.setSelected(false);
+        this.nodeDataTextArea.setText("");
+        this.client = client;
         this.stage.show();
     }
 
     @FXML
     private void onNodeAddAction() {
-        String path = currentPathLabel.getText();
-        if (Strings.isNullOrEmpty(path) || Objects.equals(path, parentPath.get())) {
+        if (Strings.isNullOrEmpty(zkNodeOperationVO.getRelativePath())) {
             VToast.toastFailure(stage, "node must not be empty");
             return;
         }
-        final String nodeData = nodeDataTextArea.getText();
-        final CreateBuilder createBuilder = client.create();
+
         try {
-            // must use Platform to close stage
-            if (RecursiveModeContext.get()) {
-                createBuilder.creatingParentsIfNeeded()
-                        .withMode(createMode())
-                        .forPath(path, nodeData.getBytes());
-            } else {
-                createBuilder.withMode(createMode())
-                        .forPath(path, nodeData.getBytes());
-            }
-            VToast.toastSuccess(stage);
-            stage.close();
+            zkNodeOperationVO.onAdd(client);
         } catch (Exception e) {
             VToast.toastFailure(stage, e.getMessage());
             throw new IllegalStateException(e);
         }
+
+        VToast.toastSuccess(stage);
+        stage.close();
     }
 
-    private CreateMode createMode() {
-        if (isNodeSeq.isSelected() && isNodeEph.isSelected()) {
-            return CreateMode.EPHEMERAL_SEQUENTIAL;
-        }
 
-        if (isNodeSeq.isSelected()) {
-            return CreateMode.PERSISTENT_SEQUENTIAL;
-        }
-
-        if (isNodeEph.isSelected()) {
-            return CreateMode.EPHEMERAL;
-        }
-
-        // TODO  how to support CreateMode.CONTAINER ?
-        return CreateMode.PERSISTENT;
-    }
 }

@@ -5,7 +5,6 @@ import cc.cc1234.main.cache.TreeViewCache;
 import cc.cc1234.main.listener.TreeNodeListener;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.framework.api.BackgroundCallback;
 import org.apache.curator.framework.api.DeleteBuilder;
 import org.apache.curator.framework.recipes.cache.TreeCache;
 import org.apache.curator.retry.RetryOneTime;
@@ -103,9 +102,9 @@ public class ZkServerService {
     }
 
 
-    public void setData(String path, String data, BackgroundCallback callback, Consumer<Exception> errorCallback) {
+    public void setData(String path, String data, Consumer<Exception> errorCallback) {
         try {
-            client.setData().inBackground(callback).forPath(path, data.getBytes());
+            client.setData().forPath(path, data.getBytes());
         } catch (Exception e) {
             log.error("set data failed", e);
             errorCallback.accept(e);
