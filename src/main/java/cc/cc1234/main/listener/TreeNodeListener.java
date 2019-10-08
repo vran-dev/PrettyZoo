@@ -105,7 +105,7 @@ public class TreeNodeListener implements TreeCacheListener {
     }
 
     private void increaseNumOfChildField(String node) {
-        if (!completed || Objects.equals(node, TreeNodeViewController.ROOT_PATH)) {
+        if (skip(node)) {
             return;
         }
 
@@ -115,7 +115,7 @@ public class TreeNodeListener implements TreeCacheListener {
     }
 
     private void decreaseNumOfChildFiled(String node) {
-        if (!completed || Objects.equals(node, TreeNodeViewController.ROOT_PATH)) {
+        if (skip(node)) {
             return;
         }
         final TreeItem<ZkNode> parentItem = treeViewCache.get(server, PathUtils.getParent(node));
@@ -124,6 +124,10 @@ public class TreeNodeListener implements TreeCacheListener {
             return;
         }
         parentItem.getValue().setNumChildren(numChildren - 1);
+    }
+
+    private boolean skip(String node) {
+        return loadedNodeNum.get() < totalNodeNum.get() || !completed || Objects.equals(node, TreeNodeViewController.ROOT_PATH);
     }
 
 

@@ -15,6 +15,7 @@ import cc.cc1234.main.util.FXMLs;
 import cc.cc1234.main.util.Transitions;
 import cc.cc1234.main.vo.PrettyZooConfigVO;
 import cc.cc1234.main.vo.ZkNodeOperationVO;
+import cc.cc1234.main.vo.ZkNodeVO;
 import cc.cc1234.main.vo.ZkServerConfigVO;
 import com.google.common.base.Strings;
 import javafx.beans.binding.Bindings;
@@ -96,12 +97,15 @@ public class TreeNodeViewController {
 
     private ZkNodeOperationVO zkNodeOperationVO = new ZkNodeOperationVO();
 
+    private ZkNodeVO zkNodeVO = new ZkNodeVO();
+
     private AddServerViewController addServerViewController;
 
     private AddNodeViewController addNodeViewController;
 
     @FXML
     private void initialize() {
+        bindZkNodeProperties();
         initZkNodeTreeView();
         initServerListView();
         recursiveModeCheckBox.selectedProperty().addListener(JfxListenerManager.getRecursiveModeChangeListener(prettyZooLabel, serverViewMenuItems));
@@ -176,35 +180,33 @@ public class TreeNodeViewController {
         }, zkNodeTreeView.getSelectionModel().selectedItemProperty());
         zkNodeOperationVO.absolutePathProperty().bind(binding);
         zkNodeOperationVO.dataProperty().bind(dataTextArea.textProperty());
+
         zkNodeTreeView.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     // skip no selected item
                     if (newValue != null) {
-                        if (oldValue != null) {
-                            this.dataTextArea.textProperty().unbindBidirectional(oldValue.getValue().dataProperty());
-                        }
                         // properties bind
                         final ZkNode node = newValue.getValue();
-                        bindZkNodeProperties(node);
+                        zkNodeVO.change(node);
                     }
                 });
     }
 
-    private void bindZkNodeProperties(ZkNode node) {
-        this.pathLabel.textProperty().bind(node.pathProperty());
-        this.cZxidLabel.textProperty().bind(node.czxidProperty().asString());
-        this.mZxidLabel.textProperty().bind(node.mzxidProperty().asString());
-        this.ctimeLabel.textProperty().bind(node.ctimeProperty().asString());
-        this.mtimeLabel.textProperty().bind(node.mtimeProperty().asString());
-        this.dataVersionLabel.textProperty().bind(node.versionProperty().asString());
-        this.cversionLabel.textProperty().bind(node.cversionProperty().asString());
-        this.aclVersionLabel.textProperty().bind(node.aversionProperty().asString());
-        this.ephemeralOwnerLabel.textProperty().bind(node.ephemeralOwnerProperty().asString());
-        this.dataLengthLabel.textProperty().bind(node.dataLengthProperty().asString());
-        this.numChildrenLabel.textProperty().bind(node.numChildrenProperty().asString());
-        this.pZxidLabel.textProperty().bind(node.pzxidProperty().asString());
-        this.dataTextArea.textProperty().bindBidirectional(node.dataProperty());
+    private void bindZkNodeProperties() {
+        this.pathLabel.textProperty().bind(zkNodeVO.pathProperty());
+        this.cZxidLabel.textProperty().bind(zkNodeVO.czxidProperty().asString());
+        this.mZxidLabel.textProperty().bind(zkNodeVO.mzxidProperty().asString());
+        this.ctimeLabel.textProperty().bind(zkNodeVO.ctimeProperty().asString());
+        this.mtimeLabel.textProperty().bind(zkNodeVO.mtimeProperty().asString());
+        this.dataVersionLabel.textProperty().bind(zkNodeVO.versionProperty().asString());
+        this.cversionLabel.textProperty().bind(zkNodeVO.cversionProperty().asString());
+        this.aclVersionLabel.textProperty().bind(zkNodeVO.aversionProperty().asString());
+        this.ephemeralOwnerLabel.textProperty().bind(zkNodeVO.ephemeralOwnerProperty().asString());
+        this.dataLengthLabel.textProperty().bind(zkNodeVO.dataLengthProperty().asString());
+        this.numChildrenLabel.textProperty().bind(zkNodeVO.numChildrenProperty().asString());
+        this.pZxidLabel.textProperty().bind(zkNodeVO.pzxidProperty().asString());
+        this.dataTextArea.textProperty().bindBidirectional(zkNodeVO.dataProperty());
     }
 
     private void initServerListView() {
@@ -214,6 +216,7 @@ public class TreeNodeViewController {
     }
 
     private void switchServer(ZkServerConfigVO server) {
+        log.debug("begin to switch server to {}", server.getHost());
         final String host = server.getHost();
         final ZkNodeService service = ApplicationContext.get().getBean(ZkNodeService.class);
         try {
@@ -221,6 +224,7 @@ public class TreeNodeViewController {
             config.setHost(host);
             service.connectIfNecessary(config);
         } catch (InterruptedException e) {
+            log.debug("switch server {} failed: {}", server.getHost(), e.getMessage());
             VToast.toastFailure("Failed: " + e.getMessage());
             return;
         }
@@ -231,6 +235,7 @@ public class TreeNodeViewController {
         ActiveServerContext.set(host);
         service.syncIfNecessary(host);
         server.connectSuccess();
+        log.debug("switch server {} success", server.getHost());
     }
 
     private void initVirtualRootIfNecessary(String server) {
@@ -245,6 +250,7 @@ public class TreeNodeViewController {
     private void switchTreeRoot(String server) {
         final TreeItem<ZkNode> root = treeViewCache.get(server, ROOT_PATH);
         zkNodeTreeView.setRoot(root);
+        zkNodeVO.change(root.getValue());
     }
 
 }
