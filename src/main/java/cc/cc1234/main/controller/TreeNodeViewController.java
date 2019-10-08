@@ -137,7 +137,7 @@ public class TreeNodeViewController {
             VToast.toastFailure("select node first");
             return;
         }
-        zkNodeOperationVO.onDelete(e -> VToast.toastSuccess(e.getMessage()));
+        zkNodeOperationVO.onDelete(e -> VToast.toastFailure(e.getMessage()));
         zkNodeTreeView.getSelectionModel().clearSelection();
     }
 
