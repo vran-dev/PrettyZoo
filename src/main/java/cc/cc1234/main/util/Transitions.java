@@ -1,8 +1,6 @@
 package cc.cc1234.main.util;
 
-import javafx.animation.Interpolator;
-import javafx.animation.RotateTransition;
-import javafx.animation.ScaleTransition;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -53,4 +51,19 @@ public class Transitions {
         return transition;
     }
 
+    public static void fade(Node node, int fadeInDelay, int fadeOutDelay, EventHandler<ActionEvent> finishedEvent) {
+        Timeline fadeInTimeline = new Timeline();
+        final KeyValue fadeInKey = new KeyValue(node.getScene().getRoot().opacityProperty(), 1);
+        KeyFrame fadeIn = new KeyFrame(Duration.millis(fadeInDelay), fadeInKey);
+        fadeInTimeline.getKeyFrames().add(fadeIn);
+        fadeInTimeline.setOnFinished((ae) -> {
+            Timeline fadeOutTimeline = new Timeline();
+            final KeyValue fadeOutKey = new KeyValue(node.getScene().getRoot().opacityProperty(), 0);
+            KeyFrame fadeOut = new KeyFrame(Duration.millis(fadeOutDelay), fadeOutKey);
+            fadeOutTimeline.getKeyFrames().add(fadeOut);
+            fadeOutTimeline.setOnFinished(finishedEvent);
+            fadeOutTimeline.play();
+        });
+        fadeInTimeline.play();
+    }
 }

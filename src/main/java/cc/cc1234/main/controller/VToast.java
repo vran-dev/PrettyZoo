@@ -1,9 +1,7 @@
 package cc.cc1234.main.controller;
 
 import cc.cc1234.main.cache.PrimaryStageContext;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import cc.cc1234.main.util.Transitions;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -12,7 +10,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
-import javafx.util.Duration;
 
 public class VToast {
 
@@ -44,14 +41,14 @@ public class VToast {
         toast(parent, infoPanel(message));
     }
 
-    public static void toast(Window parent, StackPane panel) {
+    private static void toast(Window parent, StackPane panel) {
         toast(parent, panel, 1000, 3000);
     }
 
-    public static void toast(Window parent, StackPane root, int fadeInDelay, int fadeOutDelay) {
+    private static void toast(Window parent, StackPane root, int fadeInDelay, int fadeOutDelay) {
         final Stage toastStage = initToastStage(parent, root);
         toastStage.show();
-        initAnimation(toastStage, fadeInDelay, fadeOutDelay);
+        Transitions.fade(root, fadeInDelay, fadeOutDelay, e -> toastStage.close());
     }
 
     private static StackPane successPanel(String message) {
@@ -101,23 +98,6 @@ public class VToast {
         scene.setFill(Color.TRANSPARENT);
         toastStage.setScene(scene);
         return toastStage;
-    }
-
-    private static void initAnimation(Stage toastStage, int fadeInDelay, int fadeOutDelay) {
-        Timeline fadeInTimeline = new Timeline();
-        final KeyValue fadeInKey = new KeyValue(toastStage.getScene().getRoot().opacityProperty(), 1);
-        KeyFrame fadeIn = new KeyFrame(Duration.millis(fadeInDelay), fadeInKey);
-        fadeInTimeline.getKeyFrames().add(fadeIn);
-
-        fadeInTimeline.setOnFinished((ae) -> {
-            Timeline fadeOutTimeline = new Timeline();
-            final KeyValue fadeOutKey = new KeyValue(toastStage.getScene().getRoot().opacityProperty(), 0);
-            KeyFrame fadeOut = new KeyFrame(Duration.millis(fadeOutDelay), fadeOutKey);
-            fadeOutTimeline.getKeyFrames().add(fadeOut);
-            fadeOutTimeline.setOnFinished((aeb) -> toastStage.close());
-            fadeOutTimeline.play();
-        });
-        fadeInTimeline.play();
     }
 
 }
