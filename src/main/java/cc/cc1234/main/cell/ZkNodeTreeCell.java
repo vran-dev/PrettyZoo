@@ -1,4 +1,4 @@
-package cc.cc1234.main.view;
+package cc.cc1234.main.cell;
 
 import cc.cc1234.main.model.ZkNode;
 import javafx.scene.control.TreeCell;
