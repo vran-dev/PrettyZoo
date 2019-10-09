@@ -7,7 +7,7 @@ plugins {
 
 
 group 'cc.c1234'
-version '0.1.4'
+version '0.1.6'
 
 sourceCompatibility = 1.8
 
