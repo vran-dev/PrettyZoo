@@ -29,6 +29,8 @@ java -jar PrettyZoo.jar
 
 - recursive mode: add / delete node recursively
 
+- ACL syntax highlight
+
 ## TODO
 
 - [ ] support node search
@@ -47,6 +49,8 @@ java -jar PrettyZoo.jar
 
 
 ![](release/example/main-2.jpg)
+
+![](release/example/main.jpg)
 
 ### add server
 
