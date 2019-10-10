@@ -8,10 +8,7 @@ import cc.cc1234.main.listener.JfxListenerManager;
 import cc.cc1234.main.model.ZkNode;
 import cc.cc1234.main.util.FXMLs;
 import cc.cc1234.main.util.Transitions;
-import cc.cc1234.main.vo.PrettyZooConfigVO;
-import cc.cc1234.main.vo.ZkNodeOperationVO;
-import cc.cc1234.main.vo.ZkNodeVO;
-import cc.cc1234.main.vo.ZkServerConfigVO;
+import cc.cc1234.main.vo.*;
 import com.google.common.base.Strings;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
@@ -22,6 +19,8 @@ import javafx.scene.layout.AnchorPane;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class TreeNodeViewController {
 
@@ -83,6 +82,12 @@ public class TreeNodeViewController {
 
     @FXML
     private CheckBox recursiveModeCheckBox;
+
+    @FXML
+    private TextField searchTextField;
+
+    @FXML
+    private ListView<ZkNodeSearchResult> searchResultList;
 
     public static final String ROOT_PATH = "/";
 
@@ -154,6 +159,8 @@ public class TreeNodeViewController {
 
     @FXML
     private void initialize() {
+        initSearchResultList();
+        initSearchTextField();
         zkNodePropertyBind();
         zkOperationPropertyBind();
         registerTreeViewListener();
@@ -161,6 +168,57 @@ public class TreeNodeViewController {
         recursiveModeCheckBox.selectedProperty().addListener(JfxListenerManager.getRecursiveModeChangeListener(prettyZooLabel, serverViewMenuItems));
         addServerViewController = FXMLs.getController("fxml/AddServerView.fxml");
         addNodeViewController = FXMLs.getController("fxml/AddNodeView.fxml");
+    }
+
+    private void initSearchTextField() {
+        zkNodeOperationVO.searchNameProperty().bind(searchTextField.textProperty());
+        searchTextField.textProperty().addListener((o, old, cur) -> {
+            searchResultList.getItems().clear();
+            final List<ZkNodeSearchResult> items = zkNodeOperationVO.onSearch();
+            if (!items.isEmpty()) {
+                searchResultList.getItems().addAll(items);
+                searchResultList.getSelectionModel().select(0);
+                if (!searchResultList.isVisible()) {
+                    searchResultList.setVisible(true);
+                }
+            } else {
+                if (searchResultList.isVisible()) {
+                    searchResultList.setVisible(false);
+                }
+            }
+
+        });
+    }
+
+    private void initSearchResultList() {
+        searchResultList.setCellFactory(callback -> new ListCell<ZkNodeSearchResult>() {
+            @Override
+            protected void updateItem(ZkNodeSearchResult item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(null);
+                    setGraphic(item.getTextFlow());
+                    setOnMouseClicked(mouseEvent -> {
+                        if (mouseEvent.getClickCount() == 2) {
+                            ListCell<ZkNodeSearchResult> clickedRow = (ListCell<ZkNodeSearchResult>) mouseEvent.getSource();
+                            zkNodeTreeView.getSelectionModel().select(clickedRow.getItem().getItem());
+                            zkNodeTreeView.scrollTo(zkNodeTreeView.getSelectionModel().getSelectedIndex());
+                            if (searchResultList.isVisible()) {
+                                searchResultList.setVisible(false);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        searchResultList.setOnMouseExited(e -> {
+            if (searchResultList.isVisible()) {
+                searchResultList.setVisible(false);
+            }
+        });
     }
 
     private void zkOperationPropertyBind() {

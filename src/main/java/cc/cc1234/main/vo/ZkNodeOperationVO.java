@@ -5,13 +5,21 @@ import cc.cc1234.main.context.ActiveServerContext;
 import cc.cc1234.main.context.ApplicationContext;
 import cc.cc1234.main.context.RecursiveModeContext;
 import cc.cc1234.main.service.ZkNodeService;
+import cc.cc1234.main.util.Fills;
+import com.google.common.base.Strings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import org.apache.zookeeper.CreateMode;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class ZkNodeOperationVO {
 
@@ -24,6 +32,8 @@ public class ZkNodeOperationVO {
     private BooleanProperty eph = new SimpleBooleanProperty();
 
     private StringProperty data = new SimpleStringProperty();
+
+    private StringProperty searchName = new SimpleStringProperty();
 
     private ZkNodeService zkNodeService = ApplicationContext.get().getBean(ZkNodeService.class);
 
@@ -40,6 +50,28 @@ public class ZkNodeOperationVO {
 
     public void updateData(Consumer<Exception> errorCallback) {
         zkNodeService.setData(getAbsolutePath(), getData(), errorCallback);
+    }
+
+    public List<ZkNodeSearchResult> onSearch() {
+        final String host = ActiveServerContext.get();
+        if (Strings.isNullOrEmpty(getSearchName())) {
+            return Collections.emptyList();
+        }
+        final List<ZkNodeSearchResult> res = treeItemCache.search(host, getSearchName())
+                .stream()
+                .map(item -> {
+                    String path = item.getValue().getPath();
+                    final List<Text> highlights = Fills.fill(path, getSearchName(), Text::new,
+                            s -> {
+                                final Text highlight = new Text(s);
+                                highlight.setFill(Color.RED);
+                                return highlight;
+                            });
+                    final TextFlow textFlow = new TextFlow(highlights.toArray(new Text[0]));
+                    return new ZkNodeSearchResult(path, textFlow, item);
+                })
+                .collect(Collectors.toList());
+        return res;
     }
 
     public boolean nodeExists() {
@@ -121,5 +153,17 @@ public class ZkNodeOperationVO {
 
     public void setData(String data) {
         this.data.set(data);
+    }
+
+    public String getSearchName() {
+        return searchName.get();
+    }
+
+    public StringProperty searchNameProperty() {
+        return searchName;
+    }
+
+    public void setSearchName(String searchName) {
+        this.searchName.set(searchName);
     }
 }

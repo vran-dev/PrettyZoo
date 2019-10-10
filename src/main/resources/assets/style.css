@@ -202,7 +202,7 @@
 }
 
 .line-textField {
-    -fx-border-color: transparent transparent #3F51B5 transparent;
+    -fx-border-color: transparent transparent #2C6DD2 transparent;
     -fx-min-width: 30px;
     -fx-border-width: 2px;
     -fx-background-color: transparent;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.*?>
@@ -46,11 +46,16 @@
                            <children>
                               <Button alignment="CENTER" mnemonicParsing="false" onAction="#onNodeAddAction" styleClass="add-button" textFill="WHITE" HBox.hgrow="ALWAYS" />
                               <Button alignment="CENTER" layoutX="20.0" layoutY="10.0" mnemonicParsing="false" onAction="#onNodeDeleteAction" styleClass="delete-button" textFill="WHITE" />
+                              <TextField fx:id="searchTextField" promptText="search" styleClass="line-textField" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin></TextField>
                            </children>
                            <padding>
                               <Insets left="10.0" right="10.0" />
                            </padding>
                         </HBox>
+                        <ListView fx:id="searchResultList" layoutX="44.0" layoutY="32.0" maxHeight="1.7976931348623157E308" minHeight="300.0" prefHeight="0.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.0" />
                            </children></AnchorPane>
                     </items>
                   </SplitPane>
