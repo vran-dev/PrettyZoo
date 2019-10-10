@@ -29,11 +29,13 @@ java -jar PrettyZoo.jar
 
 - recursive mode: add / delete node recursively
 
-- ACL syntax highlight
+- support ACL (simplify) and ACL syntax highlight
+
+- support node search
 
 ## TODO
 
-- [ ] support node search
+- [x] support node search
 
 - [x] support recursive delete / add (now you can only delete leaf node and add one children)
 
@@ -59,6 +61,10 @@ java -jar PrettyZoo.jar
 ### Double click to connect and sync
 
 ![](release/example/syncNode.jpg)
+
+###  node search
+
+![](release/example/nodeSearch.jpg)
 
 ### right click item to add / delete node
 
