@@ -16,7 +16,9 @@ A GUI for Zookeeper created by JavaFX and Curator Framework.
 
 - v0.1.8+
 
-click to run
+> windows: unzip PrettyZoo-win.zip, click bin/prettyZoo.bat to Run
+
+> mac: click PrettyZoo.dmg to install and run
 
 - before v0.1.7
 ```shell
