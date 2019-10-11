@@ -4,13 +4,21 @@ A GUI for Zookeeper created by JavaFX and Curator Framework.
 
 ## Requires
 
-- Java 1.8 +
+-  v0.1.8+, you can install from **IMG** (for mac) without JAVA
 
-## Download
+> TODO windows you can run  with exe 
+
+- before version v0.1.7,  requires Java 1.8+
+
+## Download and Usage
 
 [Download from Here](https://github.com/vran-dev/PrettyZoo/releases)
 
-- usage
+- v0.1.8+
+
+click to run
+
+- before v0.1.7
 ```shell
 java -jar PrettyZoo.jar
 ```
@@ -39,7 +47,7 @@ java -jar PrettyZoo.jar
 
 - [x] support recursive delete / add (now you can only delete leaf node and add one children)
 
-- [ ] support ACL
+- [x] support ACL (not satisfied for me now)
 
 - [ ] more strictly check of input, and more friendly reminder
 
