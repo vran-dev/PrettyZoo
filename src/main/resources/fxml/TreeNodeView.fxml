@@ -61,7 +61,7 @@
                   </SplitPane>
                 </AnchorPane>
                 <AnchorPane minHeight="350.0" minWidth="500.0" prefHeight="350.0" prefWidth="556.2" styleClass="right-pane" SplitPane.resizableWithParent="false">
-                        <AnchorPane minHeight="300.0" minWidth="350.0" prefHeight="300.0" prefWidth="350.0" styleClass="whiteCard" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0">
+                        <AnchorPane minHeight="300.0" minWidth="350.0" prefHeight="300.0" prefWidth="350.0" styleClass="top" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0">
                             <children>
                                 <AnchorPane layoutX="311.0" layoutY="120.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="272.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="95.0">
                                     <children>

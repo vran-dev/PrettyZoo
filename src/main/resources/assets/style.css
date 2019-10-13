@@ -412,14 +412,6 @@
 }
 
 /* ========================== custom  =================================*/
-.whiteCard {
-    -fx-background-color: #fff;
-    -fx-border-color: #fff;
-    -fx-border-radius: 10;
-    -fx-background-radius: 10;
-    /*-fx-effect: dropshadow(gaussian, #8e8e8e, 10, 0.2, 2, 2);*/
-}
-
 .vTextArea {
     -fx-border-color: #fff, #fff;
     -fx-background-insets: 0;
@@ -494,6 +486,10 @@
     -fx-content-display: center;
     -fx-alignment: center;
     -fx-text-fill: #000;
+}
+
+.right-pane .top {
+    -fx-background-color: #FFF;
 }
 
 
