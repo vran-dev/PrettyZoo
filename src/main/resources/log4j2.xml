@@ -12,7 +12,7 @@
 
         <!--         这个会打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->
         <RollingFile name="RollingFile" fileName="${sys:user.home}/.prettyZoo/pretty.log"
-                     filePattern="${user.home}/.prettyZoo/prettyZoo.%d{yyyy-MM-dd}.log">
+                     filePattern="${sys:user.home}/.prettyZoo/prettyZoo.%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="[%d{yyyy-MM-dd 'at' HH:mm:ss z}] [%-5p] %l - %m%n"/>
             <TimeBasedTriggeringPolicy interval="1"/>
         </RollingFile>
