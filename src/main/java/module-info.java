@@ -16,7 +16,6 @@ open module PrettyZoo.main {
     requires com.google.common;
     requires richtextfx;
     requires flowless;
-    exports cc.cc1234.main;
     uses org.apache.logging.log4j.message.ThreadDumpMessage.ThreadInfoFactory;
     uses org.apache.logging.log4j.spi.Provider;
     uses org.apache.logging.log4j.util.PropertySource;

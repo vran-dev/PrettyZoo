@@ -61,6 +61,7 @@ public class ZkNodeService {
 
             // TODO use async
             if (!client.blockUntilConnected(5, TimeUnit.SECONDS)) {
+                client.close();
                 return Optional.empty();
             }
             CuratorCache.put(config.getHost(), client);

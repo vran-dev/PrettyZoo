@@ -37,6 +37,16 @@ jlink {
     }
 }
 
+compileJava {
+    inputs.property("moduleName", "PrettyZoo.main")
+    doFirst {
+        options.compilerArgs = [
+                '--module-path', classpath.asPath,
+        ]
+        classpath = files()
+    }
+}
+
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }

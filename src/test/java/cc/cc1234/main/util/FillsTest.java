@@ -33,6 +33,13 @@ public class FillsTest {
     }
 
     @Test
+    public void testSingleWordMatch() {
+        String origin = "helloworld";
+        final String res = String.join("", Fills.fill(origin, "l", s -> s, s -> "[" + s + "]"));
+        Assert.assertEquals("he[l][l]owor[l]d", res);
+    }
+
+    @Test
     public void testNoMatch() {
         String origin = "this is test no match";
         final String res = String.join("", Fills.fill(origin, "java", s -> s, s -> "*"));

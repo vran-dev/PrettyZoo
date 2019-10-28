@@ -39,6 +39,7 @@ public class ZkServerConfigVO {
         config.setHost(getHost());
         config.getAclList().addAll(getAclList());
         final Optional<CuratorFramework> client = zkNodeService.connectIfNecessary(config);
+        client.orElseThrow(() -> new InterruptedException("connect zookeeper failed"));
         client.ifPresent(c -> connectSuccess());
         return client;
     }
