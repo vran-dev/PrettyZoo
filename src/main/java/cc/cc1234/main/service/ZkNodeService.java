@@ -2,7 +2,8 @@ package cc.cc1234.main.service;
 
 import cc.cc1234.main.cache.CuratorCache;
 import cc.cc1234.main.context.ActiveServerContext;
-import cc.cc1234.main.listener.TreeNodeListener;
+import cc.cc1234.main.listener.CuratorTreeCacheListener;
+import cc.cc1234.main.listener.TreeNodeListeners;
 import cc.cc1234.main.model.ZkServerConfig;
 import cc.cc1234.main.util.ACLs;
 import org.apache.curator.framework.AuthInfo;
@@ -69,15 +70,14 @@ public class ZkNodeService {
         }
     }
 
-    public boolean syncIfNecessary(String host) {
+    public boolean syncIfNecessary(String host, TreeNodeListeners listeners) {
         final CuratorFramework client = CuratorCache.getClient(host);
         return CuratorCache.getTreeCache(host)
                 .map(treeCache -> true)
                 .orElseGet(() -> {
                     log.debug("begin to sync tree node from {}", host);
                     TreeCache treeCache = new TreeCache(client, "/");
-                    treeCache.getListenable()
-                            .addListener(new TreeNodeListener(host));
+                    treeCache.getListenable().addListener(new CuratorTreeCacheListener(host, listeners));
                     try {
                         treeCache.start();
                         CuratorCache.put(host, treeCache);

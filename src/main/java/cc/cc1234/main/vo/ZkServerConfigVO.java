@@ -1,6 +1,7 @@
 package cc.cc1234.main.vo;
 
 import cc.cc1234.main.context.ApplicationContext;
+import cc.cc1234.main.listener.TreeNodeListeners;
 import cc.cc1234.main.model.ZkServerConfig;
 import cc.cc1234.main.service.PrettyZooConfigService;
 import cc.cc1234.main.service.ZkNodeService;
@@ -44,8 +45,8 @@ public class ZkServerConfigVO {
         return client;
     }
 
-    public void syncNodeIfNecessary() {
-        zkNodeService.syncIfNecessary(getHost());
+    public void syncNodeIfNecessary(TreeNodeListeners listeners) {
+        zkNodeService.syncIfNecessary(getHost(), listeners);
     }
 
     private void connectSuccess() {

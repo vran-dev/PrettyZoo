@@ -5,6 +5,7 @@ import cc.cc1234.main.cell.ZkNodeTreeCell;
 import cc.cc1234.main.cell.ZkServerListCell;
 import cc.cc1234.main.context.ActiveServerContext;
 import cc.cc1234.main.listener.JfxListenerManager;
+import cc.cc1234.main.listener.TreeNodeListeners;
 import cc.cc1234.main.model.ZkNode;
 import cc.cc1234.main.util.FXMLs;
 import cc.cc1234.main.util.Transitions;
@@ -95,6 +96,8 @@ public class TreeNodeViewController {
 
     private ZkNodeOperationVO zkNodeOperationVO = new ZkNodeOperationVO();
 
+    private TreeNodeListeners treeNodeListeners = new TreeNodeListeners();
+
     private ZkNodeVO zkNodeVO = new ZkNodeVO();
 
     private AddServerViewController addServerViewController;
@@ -165,6 +168,12 @@ public class TreeNodeViewController {
         zkOperationPropertyBind();
         registerTreeViewListener();
         initServerListView();
+        treeNodeListeners.addNodeUpdateListener(zkNode -> {
+            if (zkNode.getPath().equalsIgnoreCase(zkNodeVO.getPath())) {
+                zkNodeVO.change(zkNode);
+            }
+        });
+
         recursiveModeCheckBox.selectedProperty().addListener(JfxListenerManager.getRecursiveModeChangeListener(prettyZooLabel, serverViewMenuItems));
         addServerViewController = FXMLs.getController("fxml/AddServerView.fxml");
         addNodeViewController = FXMLs.getController("fxml/AddNodeView.fxml");
@@ -280,7 +289,7 @@ public class TreeNodeViewController {
         zkNodeTreeView.setRoot(root);
         zkNodeVO.change(root.getValue());
         ActiveServerContext.set(server.getHost());
-        server.syncNodeIfNecessary();
+        server.syncNodeIfNecessary(treeNodeListeners);
 
         log.debug("switch server {} success", server.getHost());
     }

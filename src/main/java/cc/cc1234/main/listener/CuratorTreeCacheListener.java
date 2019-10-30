@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TreeNodeListener implements TreeCacheListener {
+public class CuratorTreeCacheListener implements TreeCacheListener {
 
-    private static final Logger log = LoggerFactory.getLogger(TreeNodeListener.class);
+    private static final Logger log = LoggerFactory.getLogger(CuratorTreeCacheListener.class);
 
     /**
      * loaded node num
@@ -36,8 +36,11 @@ public class TreeNodeListener implements TreeCacheListener {
 
     private TreeItemCache treeItemCache = TreeItemCache.getInstance();
 
-    public TreeNodeListener(String server) {
+    private TreeNodeListeners listeners;
+
+    public CuratorTreeCacheListener(String server, TreeNodeListeners listeners) {
         this.server = server;
+        this.listeners = listeners;
     }
 
     @Override
@@ -66,6 +69,7 @@ public class TreeNodeListener implements TreeCacheListener {
         final ZkNode node = item.getValue();
         node.setStat(event.getData().getStat());
         node.setData(new String(event.getData().getData()));
+        listeners.onNodeUpdate(node);
     }
 
     public void onNodeRemoved(TreeCacheEvent event) {
