@@ -216,6 +216,10 @@
     -fx-background-color: #2C6DD2;
 }
 
+.light-background {
+    -fx-background-color: #E8EFF3;
+}
+
 
 /*   ==================================  Checkbox ==================================*/
 
@@ -278,6 +282,7 @@
 }
 
 .list-cell {
+    -fx-background-color: #ffffff;
     -fx-background-radius: 2;
     -fx-cell-size: 36;
     -fx-font-size: 14;
@@ -287,9 +292,12 @@
     -fx-background-color: #2C6DD2;
     -fx-text-fill: #FFF;
     -fx-border-color: #FFF;
-    -fx-border-radius: 10;
-    -fx-background-radius: 10;
+    /*-fx-border-radius: 10;*/
+    /*-fx-background-radius: 10;*/
+}
 
+.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:focused > .label {
+    -fx-text-fill: #FFF;
 }
 
 /*.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:selected:hover {*/
