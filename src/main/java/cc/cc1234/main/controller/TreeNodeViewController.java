@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -140,7 +141,7 @@ public class TreeNodeViewController {
     @FXML
     private void onNodeDeleteAction(ActionEvent actionEvent) {
         Button button = (Button) actionEvent.getSource();
-        Transitions.scaleAndRotate(button);
+        Transitions.scale(button, Duration.millis(400d), null).play();
         if (Strings.isNullOrEmpty(zkNodeOperationVO.getAbsolutePath())) {
             VToast.toastFailure("select node first");
             return;
@@ -152,7 +153,7 @@ public class TreeNodeViewController {
     @FXML
     private void onNodeAddAction(ActionEvent actionEvent) {
         Button button = (Button) actionEvent.getSource();
-        Transitions.scaleAndRotate(button);
+        Transitions.scale(button, Duration.millis(400d), null).play();
         if (Strings.isNullOrEmpty(zkNodeOperationVO.getAbsolutePath())) {
             VToast.toastFailure("select node first");
             return;
