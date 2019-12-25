@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import java.lang.String?>
+<AnchorPane minHeight="556.2" minWidth="900.0" prefHeight="556.2" prefWidth="1000.0" styleClass="default-pane"
+            stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.controller.TreeNodeViewController">
+
+    <SplitPane dividerPositions="0.45" layoutX="133.0" layoutY="53.0" styleClass="default-pane"
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+               AnchorPane.topAnchor="0.0">
+        <items>
+            <AnchorPane style="-fx-background-color: #FFF;">
+                <SplitPane dividerPositions="0.45" layoutX="34.0" layoutY="92.0" prefHeight="160.0" prefWidth="200.0"
+                           styleClass="default-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                        <AnchorPane minWidth="80.0" prefWidth="150.0" styleClass="left-pane">
+                            <children>
+                                <ListView fx:id="serverListView" layoutY="97.0" AnchorPane.bottomAnchor="0.0"
+                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="4.0"
+                                          AnchorPane.topAnchor="32.0"/>
+                                <Label fx:id="prettyZooLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0"
+                                       layoutY="14.0" prefHeight="30.0" styleClass="prettyZoo" text="PrettyZoo"
+                                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="4.0"
+                                       AnchorPane.topAnchor="0.0"/>
+                                <Button fx:id="serverListMenu" layoutX="102.0" layoutY="437.0" mnemonicParsing="false"
+                                        AnchorPane.bottomAnchor="90.0" AnchorPane.rightAnchor="20.0">
+                                    <styleClass>
+                                        <String fx:value="primary-circle-button"/>
+                                        <String fx:value="arrow-up-button"/>
+                                    </styleClass>
+                                </Button>
+                                <AnchorPane fx:id="serverViewMenuItems" layoutX="73.0" layoutY="337.0"
+                                            prefHeight="107.0" prefWidth="127.0" visible="false"
+                                            AnchorPane.bottomAnchor="130.0" AnchorPane.rightAnchor="20.0">
+                                    <children>
+                                        <Button layoutX="19.0" layoutY="57.0" mnemonicParsing="false"
+                                                onAction="#onRemoveServerAction" AnchorPane.bottomAnchor="0.0"
+                                                AnchorPane.rightAnchor="0.0">
+                                            <styleClass>
+                                                <String fx:value="circle-button"/>
+                                                <String fx:value="remove-button"/>
+                                            </styleClass>
+                                        </Button>
+                                        <Button layoutX="19.0" layoutY="19.0" mnemonicParsing="false"
+                                                onAction="#onAddServerAction" styleClass="primary-circle-button"
+                                                text="+" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="0.0"/>
+                                        <Label layoutX="10.0" layoutY="6.0" styleClass="infoLabel" text="add server"
+                                               AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0"/>
+                                        <Label layoutX="10.0" layoutY="44.0" styleClass="infoLabel" text="delete server"
+                                               AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="40.0"/>
+                                        <CheckBox fx:id="recursiveModeCheckBox" alignment="CENTER"
+                                                  contentDisplay="CENTER" layoutX="33.0" layoutY="5.0"
+                                                  mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0"
+                                                  styleClass="warn" AnchorPane.bottomAnchor="80.0"
+                                                  AnchorPane.rightAnchor="0.0"/>
+                                        <Label layoutX="27.0" layoutY="9.0" styleClass="infoLabel" text="recursive mode"
+                                               AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="40.0"/>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane minHeight="0.0" minWidth="100.0" prefHeight="160.0" prefWidth="212.47"
+                                    styleClass="mid-pane">
+                            <children>
+                                <TreeView fx:id="zkNodeTreeView" AnchorPane.bottomAnchor="0.0"
+                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                          AnchorPane.topAnchor="32.0"/>
+                                <HBox alignment="CENTER_LEFT" layoutX="44.0" layoutY="-29.0" prefHeight="32.0"
+                                      spacing="10.0" styleClass="head" AnchorPane.leftAnchor="0.0"
+                                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#onNodeAddAction"
+                                                styleClass="add-button" textFill="WHITE" HBox.hgrow="ALWAYS"/>
+                                        <Button alignment="CENTER" layoutX="20.0" layoutY="10.0" mnemonicParsing="false"
+                                                onAction="#onNodeDeleteAction" styleClass="delete-button"
+                                                textFill="WHITE"/>
+                                        <TextField fx:id="searchTextField" promptText="search"
+                                                   styleClass="line-textField" HBox.hgrow="ALWAYS">
+                                            <HBox.margin>
+                                                <Insets right="5.0"/>
+                                            </HBox.margin>
+                                        </TextField>
+                                    </children>
+                                    <padding>
+                                        <Insets left="10.0" right="10.0"/>
+                                    </padding>
+                                </HBox>
+                                <ListView fx:id="searchResultList" layoutX="44.0" layoutY="32.0"
+                                          maxHeight="1.7976931348623157E308" minHeight="300.0" prefHeight="0.0"
+                                          visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.0"/>
+                            </children>
+                        </AnchorPane>
+                    </items>
+                </SplitPane>
+            </AnchorPane>
+            <AnchorPane minHeight="350.0" minWidth="500.0" prefHeight="350.0" prefWidth="556.2" styleClass="right-pane"
+                        SplitPane.resizableWithParent="false">
+                <AnchorPane minHeight="300.0" minWidth="350.0" prefHeight="300.0" prefWidth="350.0" styleClass="top"
+                            AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0">
+                    <children>
+                        <AnchorPane layoutX="311.0" layoutY="120.0" AnchorPane.bottomAnchor="20.0"
+                                    AnchorPane.leftAnchor="272.0" AnchorPane.rightAnchor="10.0"
+                                    AnchorPane.topAnchor="95.0">
+                            <children>
+                                <Label layoutX="28.0" layoutY="156.0" text="aclVersion" AnchorPane.leftAnchor="20.0"
+                                       AnchorPane.topAnchor="130.0"/>
+                                <Label fx:id="aclVersionLabel" layoutX="107.0" layoutY="173.0" styleClass="infoLabel"
+                                       AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="20.0"
+                                       AnchorPane.topAnchor="170.0"/>
+                                <Label layoutX="15.0" layoutY="128.0" text="dataVersion" AnchorPane.leftAnchor="20.0"
+                                       AnchorPane.topAnchor="90.0"/>
+                                <Label fx:id="dataVersionLabel" layoutX="107.0" layoutY="125.0" styleClass="infoLabel"
+                                       AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="20.0"
+                                       AnchorPane.topAnchor="90.0"/>
+                                <Label layoutX="26.0" layoutY="192.0" text="cversion" AnchorPane.leftAnchor="20.0"
+                                       AnchorPane.topAnchor="170.0"/>
+                                <Label fx:id="cversionLabel" layoutX="107.0" layoutY="189.0" styleClass="infoLabel"
+                                       AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="20.0"
+                                       AnchorPane.topAnchor="130.0"/>
+                                <Label layoutX="15.0" layoutY="14.0" prefHeight="17.0" prefWidth="74.0"
+                                       text="dataLength" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0"/>
+                                <Label fx:id="dataLengthLabel" layoutX="122.0" layoutY="11.0" styleClass="infoLabel"
+                                       AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="20.0"
+                                       AnchorPane.topAnchor="10.0"/>
+                                <Label layoutX="18.0" layoutY="52.0" text="numChildren" AnchorPane.leftAnchor="20.0"
+                                       AnchorPane.topAnchor="50.0"/>
+                                <Label fx:id="numChildrenLabel" layoutX="119.0" layoutY="49.0" styleClass="infoLabel"
+                                       AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="20.0"
+                                       AnchorPane.topAnchor="50.0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="12.0" layoutY="16.0" maxWidth="1.7976931348623157E308" minWidth="500.0"
+                                    prefHeight="40.0" prefWidth="549.0" AnchorPane.leftAnchor="11.0"
+                                    AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0">
+                            <children>
+                                <Label layoutX="15.0" layoutY="44.0" text="ephemeralOwner" AnchorPane.leftAnchor="10.0"
+                                       AnchorPane.topAnchor="15.0"/>
+                                <Label fx:id="ephemeralOwnerLabel" layoutX="135.0" layoutY="46.0" styleClass="infoLabel"
+                                       AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="30.0"
+                                       AnchorPane.topAnchor="15.0"/>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="62.0" layoutY="120.0" maxWidth="1.7976931348623157E308" minWidth="250.0"
+                                    prefWidth="250.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0"
+                                    AnchorPane.topAnchor="95.0">
+                            <children>
+                                <Label layoutX="48.0" layoutY="16.0" text="mtime" AnchorPane.leftAnchor="20.0"
+                                       AnchorPane.topAnchor="10.0"/>
+                                <Label layoutX="32.0" layoutY="47.0" text="ctime" AnchorPane.leftAnchor="20.0"
+                                       AnchorPane.topAnchor="50.0"/>
+                                <Label fx:id="mtimeLabel" layoutX="87.0" layoutY="7.0" styleClass="infoLabel"
+                                       AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="30.0"
+                                       AnchorPane.topAnchor="10.0"/>
+                                <Label fx:id="ctimeLabel" contentDisplay="RIGHT" layoutX="87.0" layoutY="36.0"
+                                       styleClass="infoLabel" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="20.0"
+                                       AnchorPane.topAnchor="50.0"/>
+                                <Label layoutX="32.0" layoutY="95.0" text="pZxid" AnchorPane.leftAnchor="20.0"
+                                       AnchorPane.topAnchor="130.0"/>
+                                <Label fx:id="pZxidLabel" layoutX="92.0" layoutY="107.0" styleClass="infoLabel"
+                                       AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="30.0"
+                                       AnchorPane.topAnchor="130.0"/>
+                                <Label layoutX="30.0" layoutY="82.0" text="mZxid" AnchorPane.leftAnchor="20.0"
+                                       AnchorPane.topAnchor="90.0"/>
+                                <Label fx:id="mZxidLabel" layoutX="79.0" layoutY="84.0" styleClass="infoLabel"
+                                       AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="20.0"
+                                       AnchorPane.topAnchor="90.0"/>
+                                <Label layoutX="156.0" layoutY="73.0" text="cZxid" AnchorPane.leftAnchor="20.0"
+                                       AnchorPane.topAnchor="170.0"/>
+                                <Label fx:id="cZxidLabel" layoutX="158.0" layoutY="99.0" styleClass="infoLabel"
+                                       AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="30.0"
+                                       AnchorPane.topAnchor="170.0"/>
+                            </children>
+                        </AnchorPane>
+                        <Label fx:id="pathLabel" layoutX="130.0" layoutY="14.0" prefHeight="30.0" styleClass="path"
+                               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                    </children>
+                </AnchorPane>
+                <TextArea fx:id="dataTextArea" layoutX="30.0" layoutY="350.0" maxHeight="1.7976931348623157E308"
+                          maxWidth="1.7976931348623157E308" minHeight="150.0" minWidth="350.0" prefHeight="135.0"
+                          prefWidth="350.0" styleClass="vTextArea" wrapText="true" AnchorPane.bottomAnchor="20.0"
+                          AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="375.0"/>
+                <HBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="314.0" prefHeight="35.0" spacing="10.0"
+                      styleClass="primary-background" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"
+                      AnchorPane.topAnchor="340.0">
+                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                            onAction="#updateDataAction" styleClass="refresh-button" textAlignment="CENTER"
+                            HBox.hgrow="ALWAYS">
+                        <HBox.margin>
+                            <Insets left="10.0"/>
+                        </HBox.margin>
+                    </Button>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <cursor>
+                        <Cursor fx:constant="DEFAULT"/>
+                    </cursor>
+                    <padding>
+                        <Insets left="5.0"/>
+                    </padding>
+                </HBox>
+            </AnchorPane>
+        </items>
+    </SplitPane>
+</AnchorPane>

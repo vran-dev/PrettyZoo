@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+group 'cc.c1234'
+version '0.1.8'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile project(':domain')
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
