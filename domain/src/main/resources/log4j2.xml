@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration status="debug" monitorInterval="30">
+    <!--     先定义所有的appender -->
+    <appenders>
+        <!--         这个输出控制台的配置 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--               控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
+            <!--            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>-->
+            <PatternLayout pattern="[%d{HH:mm:ss.SSS}] [%-5p] %l - %m%n"/>
+        </Console>
+
+        <!--         这个会打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->
+        <RollingFile name="RollingFile" fileName="${sys:user.home}/.prettyZoo/pretty.log"
+                     filePattern="${sys:user.home}/.prettyZoo/prettyZoo.%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="[%d{yyyy-MM-dd 'at' HH:mm:ss z}] [%-5p] %l - %m%n"/>
+            <TimeBasedTriggeringPolicy interval="1"/>
+        </RollingFile>
+    </appenders>
+
+    <loggers>
+        <logger name="cc.cc1234.main" level="DEBUG"></logger>
+        <!--         建立一个默认的root的logger -->
+        <root level="INFO">
+            <appender-ref ref="RollingFile"/>
+            <appender-ref ref="Console"/>
+        </root>
+
+    </loggers>
+</configuration>

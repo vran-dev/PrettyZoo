@@ -1,0 +1,28 @@
+plugins {
+    id "io.freefair.lombok" version "4.1.2"
+}
+
+lombok {
+    version = "1.18.10"
+}
+
+mainClassName = "app.main/cc.cc1234.PrettyZooApplication"
+compileJava {
+    inputs.property("moduleName", "domain.main")
+    doFirst {
+        options.compilerArgs = [
+                '--module-path', classpath.asPath,
+        ]
+        classpath = files()
+    }
+}
+
+
+dependencies {
+    compile project(':infrastructure')
+    compile project(':spi')
+
+
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
