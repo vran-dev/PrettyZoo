@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import java.lang.String?>
+<AnchorPane fx:id="addServerPane" prefHeight="403.0" prefWidth="255.0" stylesheets="@../assets/style.css"
+            xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="cc.cc1234.app.controller.AddServerViewController">
+    <TextField fx:id="serverTextField" alignment="CENTER" layoutX="44.0" layoutY="63.0" opacity="0.8" prefHeight="27.0"
+               prefWidth="175.0" promptText="input server here" styleClass="vTextField" text="127.0.0.1:2181"
+               AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="60.0">
+        <font>
+            <Font name="Avenir Roman" size="14.0"/>
+        </font>
+    </TextField>
+    <Button alignment="CENTER" layoutX="44.0" layoutY="142.0" mnemonicParsing="false" onAction="#onCancel" opacity="0.8"
+            styleClass="default-button" text="cancel" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="40.0"/>
+    <Button alignment="CENTER" layoutX="146.0" layoutY="142.0" mnemonicParsing="false" onAction="#onConfirm"
+            opacity="0.8" styleClass="primary-button" text="confirm" AnchorPane.bottomAnchor="20.0"
+            AnchorPane.rightAnchor="40.0"/>
+    <TextArea disable="true" editable="false" layoutX="14.0" layoutY="40.0" prefHeight="60.0" styleClass="default-pane"
+              text="ACL:&#10;digest:test:test&#10;auth:test:test&#10;&#10;" AnchorPane.leftAnchor="20.0"
+              AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0"/>
+    <styleClass>
+        <String fx:value="vDialog"/>
+        <String fx:value="default-pane"/>
+    </styleClass>
+</AnchorPane>

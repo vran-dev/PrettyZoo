@@ -2,4 +2,5 @@ rootProject.name = 'PrettyZoo'
 include 'app'
 include 'domain'
 include 'infrastructure'
+include 'spi'
 

@@ -1,17 +1,24 @@
-plugins {
-    id 'java'
-}
 
-group 'cc.c1234'
-version '0.1.8'
+mainClassName = "app.main/cc.cc1234.PrettyZooApplication"
 
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
+compileJava {
+    inputs.property("moduleName", "infrastructure.main")
+    doFirst {
+        options.compilerArgs = [
+                '--module-path', classpath.asPath,
+        ]
+        classpath = files()
+    }
 }
 
 dependencies {
-    compile project(':domain')
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile project(':spi')
+    compile('org.apache.curator:curator-recipes:4.2.0') {
+        exclude group: 'org.apache.zookeeper', module: 'zookeeper'
+    }
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.10.1'
+    compile('com.fasterxml.jackson.core:jackson-databind:2.10.0') {
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+    }
 }
