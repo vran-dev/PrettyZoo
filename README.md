@@ -34,3 +34,12 @@ Nothing, download and run。
 ![image-20191031173021118](release/img/image-20191031173021118.png)
 
 ![image-20191031173203940](release/img/image-20191031173203940.png)
+
+
+
+# Architecture
+
+![prettyzoo-arch](release/img/prettyzoo-arch.jpg)
+
+![image-20191230163721866](release/img/prettyzoo-arch2.png)
+
