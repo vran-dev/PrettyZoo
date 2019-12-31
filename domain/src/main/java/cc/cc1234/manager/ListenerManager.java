@@ -1,4 +1,4 @@
-package cc.cc1234.listener;
+package cc.cc1234.manager;
 
 import cc.cc1234.spi.listener.PrettyZooConfigChangeListener;
 import cc.cc1234.spi.listener.ZookeeperNodeListener;
@@ -11,6 +11,9 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ListenerManager {
 
+    /**
+     * singleton instance
+     */
     private static final ListenerManager instance = new ListenerManager();
 
     private List<PrettyZooConfigChangeListener> prettyZooConfigChangeListeners = new ArrayList<>();

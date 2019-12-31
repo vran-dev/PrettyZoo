@@ -1,8 +1,8 @@
 package cc.cc1234.service;
 
-import cc.cc1234.cache.PrettyZooConfigCache;
 import cc.cc1234.config.JsonPrettyZooConfigRepository;
-import cc.cc1234.listener.ListenerManager;
+import cc.cc1234.config.PrettyZooConfigRepositoryCacheWrapper;
+import cc.cc1234.manager.ListenerManager;
 import cc.cc1234.spi.config.PrettyZooConfigRepository;
 import cc.cc1234.spi.config.model.RootConfig;
 import cc.cc1234.spi.config.model.ServerConfig;
@@ -13,16 +13,11 @@ import java.util.stream.Collectors;
 
 public class PrettyZooConfigService {
 
-    private PrettyZooConfigRepository prettyZooConfigRepository = new JsonPrettyZooConfigRepository();
+    private PrettyZooConfigRepository prettyZooConfigRepository =
+            new PrettyZooConfigRepositoryCacheWrapper(new JsonPrettyZooConfigRepository());
 
     public RootConfig load() {
-        return PrettyZooConfigCache.getOption()
-                .orElseGet(() -> {
-                    final RootConfig config = prettyZooConfigRepository.get();
-                    // caching
-                    PrettyZooConfigCache.set(config);
-                    return config;
-                });
+        return prettyZooConfigRepository.get();
     }
 
     public void save(RootConfig config) {

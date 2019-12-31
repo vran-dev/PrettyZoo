@@ -4,22 +4,24 @@ import cc.cc1234.client.curator.CuratorZookeeperConnectionFactory;
 import cc.cc1234.spi.config.model.ServerConfig;
 import cc.cc1234.spi.connection.ZookeeperConnection;
 import cc.cc1234.spi.connection.ZookeeperConnectionFactory;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ZookeeperConnectionManager {
 
+    /**
+     * singleton instance
+     */
     private static final ZookeeperConnectionManager instance = new ZookeeperConnectionManager();
 
     private Map<String, ZookeeperConnection> connectionsMap = new ConcurrentHashMap<>();
 
     private ZookeeperConnectionFactory factory = new CuratorZookeeperConnectionFactory();
-
-    private ZookeeperConnectionManager() {
-
-    }
 
     public static ZookeeperConnectionManager instance() {
         return instance;

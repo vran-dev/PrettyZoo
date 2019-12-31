@@ -1,6 +1,6 @@
 package cc.cc1234.facade;
 
-import cc.cc1234.listener.ListenerManager;
+import cc.cc1234.manager.ListenerManager;
 import cc.cc1234.manager.ZookeeperConnectionManager;
 import cc.cc1234.service.PrettyZooConfigService;
 import cc.cc1234.spi.config.model.RootConfig;
@@ -62,10 +62,6 @@ public class PrettyZooFacade {
 
     public void removeConfig(String server) {
         configService.remove(server);
-    }
-
-    public void saveConfig(RootConfig config) {
-        configService.save(config);
     }
 
     public RootConfig loadConfig() {
