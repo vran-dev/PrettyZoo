@@ -1,6 +1,6 @@
 # What
 
-[PrettyZoo](https://github.com/vran-dev/PrettyZoo) is an GUI for [Zookeeper](https://zookeeper.apache.org/) created by JavaFX and Curator Framework, You can download from [Release](https://github.com/vran-dev/PrettyZoo/releases)。
+[PrettyZoo](https://github.com/vran-dev/PrettyZoo) is a GUI for [Zookeeper](https://zookeeper.apache.org/) created by JavaFX and Curator Framework, You can download from [Release](https://github.com/vran-dev/PrettyZoo/releases)。
 
 
 
