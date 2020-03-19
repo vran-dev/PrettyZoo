@@ -276,32 +276,36 @@
     /*-fx-base: #1d1d1d;*/
     -fx-control-inner-background: white;
     -fx-background-color: white;
-    -fx-table-cell-border-color: transparent;
-    -fx-table-cell-border-size: 3px;
-    -fx-table-header-border-color: transparent;
-    -fx-table-header-border-size: 5px;
-    -fx-padding: 3;
+    -fx-table-cell-border-color: white;
+    -fx-table-cell-border-size: 0;
+    -fx-table-header-border-color: white;
+    -fx-table-header-border-size: 0;
+    -fx-padding: 0 0 0 0;
+    -fx-border-color: 0 0 0 0;
     -fx-selection-bar: transparent;
     -fx-selection-bar-non-focused: transparent;
 }
 
 .list-cell {
     -fx-background-color: #ffffff;
-    -fx-background-radius: 2;
+    -fx-background-radius: 0;
+    -fx-padding: 0 3 0 10;
     -fx-cell-size: 36;
     -fx-font-size: 14;
+    -fx-text-fill: #000;
 }
 
 .list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:focused {
-    -fx-background-color: #2C6DD2;
-    -fx-text-fill: #FFF;
-    -fx-border-color: #FFF;
+    -fx-background-color: #F4F8FB;
+    -fx-text-fill: #2C6DD2;
+    -fx-border-color: #F4F8FB;
     /*-fx-border-radius: 10;*/
     /*-fx-background-radius: 10;*/
 }
 
 .list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:focused > .label {
-    -fx-text-fill: #FFF;
+    -fx-text-fill: #2C6DD2;
+    -fx-font-weight: bold;
 }
 
 /*.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:selected:hover {*/
@@ -315,8 +319,11 @@
 /*}*/
 
 .list-view .list-cell:filled:selected {
-    -fx-background-color: #E0E0E0;
-    -fx-text-fill: #000;
+    -fx-background-color: #F4F8FB;
+}
+
+.list-view .virtual-flow .clipped-container .sheet .list-cell:selected .text {
+    -fx-fill: #2C6DD2;
 }
 
 /*   ==================================  Tree view ==================================*/
@@ -341,10 +348,12 @@
 .tree-view:focused .tree-cell:selected {
     -fx-background-color: #2C6DD2;
     -fx-text-fill: #FFF;
+    -fx-border-width: 0 0 0 0;
 }
 
 .tree-cell:filled:selected {
     -fx-background-color: #E0E0E0;
+    -fx-border-width: 0 0 0 0;
 }
 
 /*   ==================================  split pane ==================================*/
@@ -475,8 +484,8 @@
 
 .left-pane {
     -fx-border-color: #F4F8FB, #F4F8FB;
-    -fx-border-width: 0 5 0 0;
-    -fx-effect: dropshadow(three-pass-box, #E7EAEE, 10, 0.3, 2.5, 2.2);
+    -fx-border-width: 0 0 0 0;
+    /*-fx-effect: dropshadow(three-pass-box, #E7EAEE, 10, 0.3, 2.5, 2.2);*/
 }
 
 .mid-pane {
@@ -519,14 +528,17 @@
 .prettyZoo {
     -fx-background-color: #FFF;
     -fx-text-fill: #3F51B5;
-    -fx-font-size: 14;
-    -fx-border-color: #E0E0E0;
-    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #FFF;
+    -fx-border-width: 0 0 0 0;
+    -fx-background-image: url("img/prettyzoo-logo.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
 
 .prettyZoo-recursive {
     -fx-background-color: #FBBD34;
-    -fx-text-fill: #FFF;
-    -fx-font-size: 14;
+    -fx-background-image: url("img/prettyzoo-logo.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
     -fx-effect: dropshadow(three-pass-box, #FFF, 1, 0.5, 1, 1);
 }

@@ -6,6 +6,7 @@ import cc.cc1234.facade.PrettyZooFacade;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -21,6 +22,7 @@ public class PrettyZooApplication extends Application {
         final AnchorPane anchorPane = loader.load();
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.setTitle("PrettyZoo");
+        primaryStage.getIcons().add(new Image(this.getClass().getClassLoader().getSystemResourceAsStream("assets/img/prettyzoo-logo.png")));
         primaryStage.show();
     }
 
