@@ -181,6 +181,104 @@
     -fx-content-display: center;
 }
 
+.menu-bar {
+    -fx-background-color: #FFF;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #000;
+}
+
+.menu-add-button {
+    -fx-background-image: url("img/menu/add.png");
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 35;
+    -fx-pref-height: 35;
+    -fx-pref-width: 35;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.menu-add-button:hover {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/menu/add-hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 35;
+    -fx-pref-height: 35;
+    -fx-pref-width: 35;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.menu-delete-button {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/menu/delete.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 25;
+    -fx-pref-height: 30;
+    -fx-pref-width: 35;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.menu-delete-button:hover {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/menu/delete-hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 25;
+    -fx-pref-height: 30;
+    -fx-pref-width: 35;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.menu-switch-button:selected:hover .box {
+    -fx-padding: 5;
+    -fx-background-size: 20;
+    -fx-pref-height: 20;
+    -fx-pref-width: 20;
+    -fx-border-color: #EEE;
+}
+
+.menu-switch-button:selected:hover .box .mark {
+    -fx-border-color: #EEE;
+}
+
+.menu-switch-button .box {
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-padding: 5;
+    -fx-background-size: 20;
+    -fx-pref-height: 20;
+    -fx-pref-width: 20;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+}
+
+.menu-switch-button .box:hover {
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 20;
+    -fx-pref-height: 20;
+    -fx-pref-width: 20;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+    -fx-border-color: #EEE;
+}
+
 /* ====================== Button/ ======================*/
 
 .lineLabel {

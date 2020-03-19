@@ -38,12 +38,6 @@ public class TreeNodeViewController {
     private ListView<ZkServerConfigVO> serverListView;
 
     @FXML
-    private Button serverListMenu;
-
-    @FXML
-    private AnchorPane serverViewMenuItems;
-
-    @FXML
     private Label numChildrenLabel;
 
     @FXML
@@ -110,13 +104,11 @@ public class TreeNodeViewController {
 
     @FXML
     private void onAddServerAction(ActionEvent event) {
-        serverViewMenuItems.setVisible(false);
         addServerViewController.show();
     }
 
     @FXML
     private void onRemoveServerAction() {
-        serverViewMenuItems.setVisible(false);
         final ZkServerConfigVO removeItem = serverListView.getSelectionModel().getSelectedItem();
         if (removeItem == null) {
             VToast.toastFailure("no server selected");
@@ -185,7 +177,7 @@ public class TreeNodeViewController {
         };
         prettyZooFacade.registerNodeListener(zookeeperNodeListener);
         prettyZooFacade.registerNodeListener(new DefaultTreeNodeListener());
-        recursiveModeCheckBox.selectedProperty().addListener(JfxListenerManager.getRecursiveModeChangeListener(prettyZooLabel, serverViewMenuItems));
+        recursiveModeCheckBox.selectedProperty().addListener(JfxListenerManager.getRecursiveModeChangeListener(prettyZooLabel));
         addServerViewController = FXMLs.getController("fxml/AddServerView.fxml");
         addNodeViewController = FXMLs.getController("fxml/AddNodeView.fxml");
     }
@@ -283,7 +275,6 @@ public class TreeNodeViewController {
     private void initServerListView() {
         serverListView.itemsProperty().set(prettyZooConfigVO.getServers());
         serverListView.setCellFactory(cellCallback -> new ZkServerListCell(this::switchServer));
-        serverListMenu.setOnMouseClicked(event -> serverViewMenuItems.setVisible(!serverViewMenuItems.isVisible()));
     }
 
     private void switchServer(ZkServerConfigVO server) {
