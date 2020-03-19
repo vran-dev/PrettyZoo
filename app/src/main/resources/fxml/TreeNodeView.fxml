@@ -23,15 +23,15 @@
                     <items>
                         <AnchorPane minWidth="80.0" prefWidth="150.0" styleClass="left-pane">
                             <children>
-                                <ListView fx:id="serverListView" layoutY="97.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="210.0" />
+                                <ListView fx:id="serverListView" layoutY="97.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="212.0" />
                                 <Label fx:id="prettyZooLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="14.0" prefHeight="160.0" styleClass="prettyZoo" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <HBox alignment="CENTER_LEFT" layoutY="138.0" prefHeight="50.0" prefWidth="200.0" styleClass="menu-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="160.0">
                            <children>
-                                        <Button mnemonicParsing="false" onAction="#onAddServerAction" styleClass="menu-add-button" textAlignment="CENTER">
+                                        <Button fx:id="serverAddButton" mnemonicParsing="false" onAction="#onAddServerAction" styleClass="menu-add-button" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets right="3.0" />
                                  </HBox.margin></Button>
-                                        <Button mnemonicParsing="false" onAction="#onRemoveServerAction" styleClass="menu-delete-button" textAlignment="CENTER">
+                                        <Button fx:id="serverDeleteButton" mnemonicParsing="false" onAction="#onRemoveServerAction" styleClass="menu-delete-button" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets right="3.0" />
                                  </HBox.margin>

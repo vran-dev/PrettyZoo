@@ -19,7 +19,6 @@ import javafx.beans.binding.StringBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,6 +80,12 @@ public class TreeNodeViewController {
 
     @FXML
     private CheckBox recursiveModeCheckBox;
+
+    @FXML
+    private Button serverDeleteButton;
+
+    @FXML
+    private Button serverAddButton;
 
     @FXML
     private TextField searchTextField;
@@ -164,6 +169,10 @@ public class TreeNodeViewController {
         zkOperationPropertyBind();
         registerTreeViewListener();
         initServerListView();
+        recursiveModeCheckBox.setTooltip(new Tooltip("开启递归操作模式"));
+        serverAddButton.setTooltip(new Tooltip("添加 zookeeper server"));
+        serverDeleteButton.setTooltip(new Tooltip("删除选定的 zookeeper server"));
+
 
         final ZookeeperNodeListener zookeeperNodeListener = new ZookeeperNodeListener() {
 
