@@ -220,6 +220,10 @@
     -fx-background-color: #E8EFF3;
 }
 
+.white-background {
+    -fx-background-color: #FFF;
+}
+
 
 /*   ==================================  Checkbox ==================================*/
 
@@ -421,10 +425,10 @@
 
 /* ========================== custom  =================================*/
 .vTextArea {
-    -fx-border-color: #fff, #fff;
+    -fx-border-color: #E8EFF3;
     -fx-background-insets: 0;
     -fx-background-color: transparent, white, transparent, white;
-    -fx-border-width: 0, 0, 2, 0;
+    -fx-border-width: 1 1 0 1;
     /*-fx-effect: dropshadow(three-pass-box, #8e8e8e, 10, 0.3, 2.2, 2.2);*/
 }
 
@@ -456,6 +460,17 @@
 
 .default-pane {
     -fx-background-color: #F4F8FB;
+    -fx-border-width: 0;
+}
+
+.default-pane .split-pane-divider {
+    /*visibility: false;*/
+    -fx-background-color: transparent;
+}
+
+.default-pane .split-pane-divider .horizontal-grabber {
+    /*visibility: false;*/
+    -fx-background-color: transparent;
 }
 
 .left-pane {
@@ -469,7 +484,7 @@
 }
 
 .mid-pane .head {
-    -fx-background-color: #E8EFF3;
+    -fx-background-color: #FFF;
     -fx-font-size: 14;
     -fx-font-weight: bold;
     -fx-padding: 2 2 2 2;
@@ -480,7 +495,7 @@
 }
 
 .right-pane {
-    -fx-border-color: #FFF;
+    -fx-border-color: #F4F8FB;
     -fx-border-width: 1;
 }
 
