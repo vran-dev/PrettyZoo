@@ -19,7 +19,6 @@ import javafx.beans.binding.StringBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,12 +35,6 @@ public class TreeNodeViewController {
 
     @FXML
     private ListView<ZkServerConfigVO> serverListView;
-
-    @FXML
-    private Button serverListMenu;
-
-    @FXML
-    private AnchorPane serverViewMenuItems;
 
     @FXML
     private Label numChildrenLabel;
@@ -89,6 +82,12 @@ public class TreeNodeViewController {
     private CheckBox recursiveModeCheckBox;
 
     @FXML
+    private Button serverDeleteButton;
+
+    @FXML
+    private Button serverAddButton;
+
+    @FXML
     private TextField searchTextField;
 
     @FXML
@@ -110,13 +109,11 @@ public class TreeNodeViewController {
 
     @FXML
     private void onAddServerAction(ActionEvent event) {
-        serverViewMenuItems.setVisible(false);
         addServerViewController.show();
     }
 
     @FXML
     private void onRemoveServerAction() {
-        serverViewMenuItems.setVisible(false);
         final ZkServerConfigVO removeItem = serverListView.getSelectionModel().getSelectedItem();
         if (removeItem == null) {
             VToast.toastFailure("no server selected");
@@ -172,6 +169,10 @@ public class TreeNodeViewController {
         zkOperationPropertyBind();
         registerTreeViewListener();
         initServerListView();
+        recursiveModeCheckBox.setTooltip(new Tooltip("开启递归操作模式"));
+        serverAddButton.setTooltip(new Tooltip("添加 zookeeper server"));
+        serverDeleteButton.setTooltip(new Tooltip("删除选定的 zookeeper server"));
+
 
         final ZookeeperNodeListener zookeeperNodeListener = new ZookeeperNodeListener() {
 
@@ -185,7 +186,7 @@ public class TreeNodeViewController {
         };
         prettyZooFacade.registerNodeListener(zookeeperNodeListener);
         prettyZooFacade.registerNodeListener(new DefaultTreeNodeListener());
-        recursiveModeCheckBox.selectedProperty().addListener(JfxListenerManager.getRecursiveModeChangeListener(prettyZooLabel, serverViewMenuItems));
+        recursiveModeCheckBox.selectedProperty().addListener(JfxListenerManager.getRecursiveModeChangeListener(prettyZooLabel));
         addServerViewController = FXMLs.getController("fxml/AddServerView.fxml");
         addNodeViewController = FXMLs.getController("fxml/AddNodeView.fxml");
     }
@@ -283,7 +284,6 @@ public class TreeNodeViewController {
     private void initServerListView() {
         serverListView.itemsProperty().set(prettyZooConfigVO.getServers());
         serverListView.setCellFactory(cellCallback -> new ZkServerListCell(this::switchServer));
-        serverListMenu.setOnMouseClicked(event -> serverViewMenuItems.setVisible(!serverViewMenuItems.isVisible()));
     }
 
     private void switchServer(ZkServerConfigVO server) {

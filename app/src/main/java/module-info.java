@@ -11,4 +11,5 @@ open module app.main {
     requires flowless;
     requires domain.main;
     requires spi.main;
+    requires java.desktop;
 }

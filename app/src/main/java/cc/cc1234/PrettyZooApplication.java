@@ -10,6 +10,12 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+
 public class PrettyZooApplication extends Application {
 
     private PrettyZooFacade facade = new PrettyZooFacade();
@@ -22,8 +28,12 @@ public class PrettyZooApplication extends Application {
         final AnchorPane anchorPane = loader.load();
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.setTitle("PrettyZoo");
-        primaryStage.getIcons().add(new Image(this.getClass().getClassLoader().getSystemResourceAsStream("assets/img/prettyzoo-logo.png")));
+        primaryStage.getIcons().add(new Image(getIconStream()));
         primaryStage.show();
+    }
+
+    private static InputStream getIconStream() {
+        return PrettyZooApplication.class.getClassLoader().getSystemResourceAsStream("assets/img/prettyzoo-logo.png");
     }
 
 
@@ -34,6 +44,11 @@ public class PrettyZooApplication extends Application {
     }
 
     public static void main(String[] args) {
+        try {
+            Taskbar.getTaskbar().setIconImage(ImageIO.read(getIconStream()));
+        } catch (IOException e) {
+            // ignore icon load failed
+        }
         Application.launch(args);
     }
 }
