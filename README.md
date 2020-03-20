@@ -9,6 +9,9 @@
 Nothing, download and run。
 
 
+# TODO
+1. support SSH Tunnel
+2. support i18n
 
 # Feature
 
@@ -21,21 +24,13 @@ Nothing, download and run。
 
 # Show
 
-![image-20191031171829524](release/img/image-20191031171829524.png)
+![](release/img/main-view.jpg)
 
+![](release/img/add-server.png)
 
-![image-20191031173547913](release/img/image-20191031173547913.png)
+![](release/img/add-node.png)
 
-
-![image-20191031171909157](release/img/image-20191031171909157.png)
-
-![image-20191031171946860](release/img/image-20191031171946860.png)
-
-![image-20191031173021118](release/img/image-20191031173021118.png)
-
-![image-20191031173203940](release/img/image-20191031173203940.png)
-
-
+![](release/img/search-view.jpg)
 
 # Architecture
 
