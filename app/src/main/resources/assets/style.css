@@ -379,7 +379,7 @@
     -fx-table-header-border-color: white;
     -fx-table-header-border-size: 0;
     -fx-padding: 0 0 0 0;
-    -fx-border-color: 0 0 0 0;
+    -fx-border-color: #FFF;
     -fx-selection-bar: transparent;
     -fx-selection-bar-non-focused: transparent;
 }
