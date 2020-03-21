@@ -8,6 +8,7 @@ open module infrastructure.main {
     requires curator.client;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.datatype.jdk8;
 
     exports cc.cc1234.client.curator;
     exports cc.cc1234.config;

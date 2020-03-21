@@ -27,6 +27,7 @@ Nothing, download and run。
 3. Support recursive add / delete node
 4. Support node search
 5. Support simple ACL and ACL syntax check
+6. Support SSH tunnel
 
 
 # Show
