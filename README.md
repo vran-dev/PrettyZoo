@@ -1,6 +1,12 @@
+# Language
+
+[中文页面](README_CN.md)
+
 # What
 
-[PrettyZoo](https://github.com/vran-dev/PrettyZoo) is a GUI for [Zookeeper](https://zookeeper.apache.org/) created by JavaFX and Curator Framework, You can download from [Release](https://github.com/vran-dev/PrettyZoo/releases)。
+[PrettyZoo](https://github.com/vran-dev/PrettyZoo) is a GUI for [Zookeeper](https://zookeeper.apache.org/) created by JavaFX and Curator Framework。
+ 
+You can download from [Release](https://github.com/vran-dev/PrettyZoo/releases)。
 
 
 
@@ -11,6 +17,7 @@ Nothing, download and run。
 
 # TODO
 1. support SSH Tunnel
+3. support config export and import
 2. support i18n
 
 # Feature
