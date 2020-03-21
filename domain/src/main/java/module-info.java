@@ -14,6 +14,8 @@ open module domain.main {
 
     requires infrastructure.main;
     requires spi.main;
+    requires sshj;
+
 
     uses org.apache.logging.log4j.message.ThreadDumpMessage.ThreadInfoFactory;
     uses org.apache.logging.log4j.spi.Provider;

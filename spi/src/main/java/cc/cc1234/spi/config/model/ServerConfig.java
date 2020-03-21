@@ -2,6 +2,7 @@ package cc.cc1234.spi.config.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ServerConfig {
 
@@ -13,6 +14,7 @@ public class ServerConfig {
 
     private List<String> aclList = new ArrayList<>();
 
+    private Optional<SSHTunnelConfig> sshTunnelConfig = Optional.empty();
 
     public String getHost() {
         return host;
@@ -44,5 +46,13 @@ public class ServerConfig {
 
     public void setAclList(List<String> aclList) {
         this.aclList = aclList;
+    }
+
+    public Optional<SSHTunnelConfig> getSshTunnelConfig() {
+        return sshTunnelConfig;
+    }
+
+    public void setSshTunnelConfig(Optional<SSHTunnelConfig> sshTunnelConfig) {
+        this.sshTunnelConfig = sshTunnelConfig;
     }
 }

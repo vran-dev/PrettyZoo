@@ -8,6 +8,7 @@ import cc.cc1234.spi.config.model.RootConfig;
 import cc.cc1234.spi.config.model.ServerConfig;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -68,4 +69,7 @@ public class PrettyZooConfigService {
         return config.getServers().stream().anyMatch(s -> s.getHost().equals(host));
     }
 
+    public Optional<ServerConfig> get(String host) {
+        return load().getServers().stream().filter(s -> s.getHost().equals(host)).findFirst();
+    }
 }

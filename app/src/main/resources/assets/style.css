@@ -559,9 +559,56 @@
     -fx-font-size: 16;
 }
 
+.server-field-no-line {
+    -fx-border-width: 0 0 0 0;
+    -fx-background-color: transparent;
+    -fx-font-size: 14;
+}
+.server-field-no-line:focused {
+    -fx-font-size: 16;
+    -fx-border-color: #000;
+    -fx-border-width: 0 0 1 0;
+}
+
+.server-field-line {
+    -fx-border-color: #000;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+    -fx-font-size: 14;
+}
+
+.server-field-line:focused {
+    -fx-border-color: #000;
+    -fx-font-size: 16;
+}
+
+.server-ssh-switch {
+    -fx-border-color: #000;
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.server-ssh-switch .box {
+    -fx-background-color: transparent;
+}
+
+.server-ssh-switch:hover .box {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.server-ssh-switch:selected .box .mark {
+    -fx-background-color: #000;
+    -fx-border-color: transparent;
+}
+
+.server-ssh-switch:selected:hover .box .mark {
+    -fx-background-color: #000;
+    -fx-border-color: transparent;
+}
+
 .vDialog {
     -fx-background-color: #fff;
-    -fx-border-color: #ddd;
     -fx-effect: dropshadow(gaussian, black, 10, 2, 3, 3);
 }
 

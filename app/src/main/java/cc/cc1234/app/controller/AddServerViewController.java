@@ -3,10 +3,14 @@ package cc.cc1234.app.controller;
 import cc.cc1234.app.context.PrimaryStageContext;
 import cc.cc1234.app.vo.AddServerVO;
 import com.google.common.base.Strings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -30,6 +34,27 @@ public class AddServerViewController {
     @FXML
     private AnchorPane addServerPane;
 
+    @FXML
+    private Pane zkServerPane;
+
+    @FXML
+    private Pane sshTunnelPane;
+
+    @FXML
+    private CheckBox sshTunnelSwitch;
+
+    @FXML
+    private TextField remoteHostField;
+
+    @FXML
+    private TextField sshHostField;
+
+    @FXML
+    private TextField sshUsernameField;
+
+    @FXML
+    private TextField sshPasswordField;
+
     private CodeArea aclArea;
 
     private volatile boolean hasError = false;
@@ -48,9 +73,27 @@ public class AddServerViewController {
         final Scene scene = new Scene(addServerPane);
         scene.setFill(Color.TRANSPARENT);
 
+        sshTunnelSwitch.selectedProperty()
+                .addListener(new ChangeListener<Boolean>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                        if (newValue) {
+                            AnchorPane.setTopAnchor(zkServerPane, 0.0);
+                            sshTunnelPane.setVisible(true);
+                        } else {
+                            sshTunnelPane.setVisible(false);
+                            AnchorPane.setTopAnchor(zkServerPane, 115.0);
+                        }
+                    }
+                });
         // property bind
         addServerVO.hostProperty().bind(serverTextField.textProperty());
         addServerVO.aclProperty().bind(aclArea.textProperty());
+        addServerVO.useSSHProperty().bind(sshTunnelSwitch.selectedProperty());
+        addServerVO.sshServerHostProperty().bind(sshHostField.textProperty());
+        addServerVO.sshPasswordProperty().bind(sshPasswordField.textProperty());
+        addServerVO.sshUsernameProperty().bind(sshUsernameField.textProperty());
+        addServerVO.remoteServerHostProperty().bind(remoteHostField.textProperty());
 
         scene.getStylesheets().add(Thread.currentThread().getContextClassLoader().getResource("assets/acl.css").toExternalForm());
         stage.setScene(scene);
@@ -60,7 +103,12 @@ public class AddServerViewController {
     public void show() {
         Stage parent = PrimaryStageContext.get();
         serverTextField.setText("127.0.0.1:2181");
+        sshUsernameField.setText("");
+        sshPasswordField.setText("");
+        sshHostField.setText("");
+        remoteHostField.setText("");
         aclArea.replaceText("");
+        sshTunnelSwitch.setSelected(false);
         hasError = false;
         double x = parent.getX() + parent.getWidth() / 2 - addServerPane.getPrefWidth() / 2;
         double y = parent.getY() + parent.getHeight() / 2 - addServerPane.getPrefHeight() / 2;
@@ -76,7 +124,7 @@ public class AddServerViewController {
                 .subscribe(ignore -> aclArea.setStyleSpans(0, computeHighlighting(aclArea.getText())));
         aclArea.setStyle("-fx-background-color: #FFF;-fx-font-size: 16;");
         final VirtualizedScrollPane<CodeArea> pane = new VirtualizedScrollPane<>(aclArea);
-        AnchorPane.setTopAnchor(pane, 160.0);
+        AnchorPane.setTopAnchor(pane, 380.0);
         AnchorPane.setBottomAnchor(pane, 60.0);
         AnchorPane.setLeftAnchor(pane, 20.0);
         AnchorPane.setRightAnchor(pane, 20.0);

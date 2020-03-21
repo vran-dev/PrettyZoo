@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
 public class PrettyZooApplication extends Application {
 
@@ -27,12 +28,13 @@ public class PrettyZooApplication extends Application {
         final AnchorPane anchorPane = loader.load();
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.setTitle("PrettyZoo");
-        primaryStage.getIcons().add(new Image(getIconStream()));
+        getIconStream().ifPresent(stream -> primaryStage.getIcons().add(new Image(stream)));
         primaryStage.show();
     }
 
-    private static InputStream getIconStream() {
-        return PrettyZooApplication.class.getClassLoader().getSystemResourceAsStream("assets/img/prettyzoo-logo.png");
+    private static Optional<InputStream> getIconStream() {
+        InputStream stream = PrettyZooApplication.class.getClassLoader().getSystemResourceAsStream("assets/img/prettyzoo-logo.png");
+        return Optional.ofNullable(stream);
     }
 
 
@@ -43,13 +45,20 @@ public class PrettyZooApplication extends Application {
     }
 
     public static void main(String[] args) {
-        try {
-            Taskbar.getTaskbar().setIconImage(ImageIO.read(getIconStream()));
-        } catch (UnsupportedOperationException e) {
-            // ignore not support platform, such as windows
-        } catch (IOException e) {
-            // ignore icon load failed
-        }
+        initIconImage();
         Application.launch(args);
+    }
+
+    private static void initIconImage() {
+        getIconStream()
+                .ifPresent(inputStream -> {
+                    try {
+                        Taskbar.getTaskbar().setIconImage(ImageIO.read(inputStream));
+                    } catch (UnsupportedOperationException e) {
+                        // ignore not support platform, such as windows
+                    } catch (IOException e) {
+                        // ignore icon load failed
+                    }
+                });
     }
 }

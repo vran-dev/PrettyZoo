@@ -1,31 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.text.Font?>
-<?import java.lang.String?>
-<AnchorPane fx:id="addServerPane" prefHeight="403.0" prefWidth="255.0" stylesheets="@../assets/style.css"
-            xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="cc.cc1234.app.controller.AddServerViewController">
-    <TextField fx:id="serverTextField" alignment="CENTER" layoutX="44.0" layoutY="63.0" opacity="0.8" prefHeight="27.0"
-               prefWidth="175.0" promptText="input server here" styleClass="vTextField" text="127.0.0.1:2181"
-               AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="60.0">
-        <font>
-            <Font name="Avenir Roman" size="14.0"/>
-        </font>
-    </TextField>
-    <Button alignment="CENTER" layoutX="44.0" layoutY="142.0" mnemonicParsing="false" onAction="#onCancel" opacity="0.8"
-            styleClass="default-button" text="cancel" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="40.0"/>
-    <Button alignment="CENTER" layoutX="146.0" layoutY="142.0" mnemonicParsing="false" onAction="#onConfirm"
-            opacity="0.8" styleClass="primary-button" text="confirm" AnchorPane.bottomAnchor="20.0"
-            AnchorPane.rightAnchor="40.0"/>
-    <TextArea disable="true" editable="false" layoutX="14.0" layoutY="40.0" prefHeight="60.0" styleClass="default-pane"
-              text="ACL:&#10;digest:test:test&#10;auth:test:test&#10;&#10;" AnchorPane.leftAnchor="20.0"
-              AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0"/>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="addServerPane" prefHeight="530.0" prefWidth="630.0" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.AddServerViewController">
+    <Button alignment="CENTER" layoutX="44.0" layoutY="142.0" mnemonicParsing="false" onAction="#onCancel" opacity="0.8" styleClass="default-button" text="cancel" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="150.0">
+      <font>
+         <Font size="16.0" />
+      </font></Button>
+    <Button alignment="CENTER" layoutX="146.0" layoutY="142.0" mnemonicParsing="false" onAction="#onConfirm" opacity="0.8" styleClass="primary-button" text="confirm" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="150.0">
+      <font>
+         <Font size="16.0" />
+      </font></Button>
+    <TextArea disable="true" editable="false" layoutX="14.0" layoutY="40.0" prefHeight="60.0" styleClass="default-pane" text="ACL:&#10;digest:test:test&#10;auth:test:test&#10;&#10;" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+   <Pane fx:id="sshTunnelPane" layoutY="113.0" prefHeight="180.0" prefWidth="630.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="115.0">
+      <children>
+         <Ellipse fill="WHITE" layoutX="195.0" layoutY="93.0" radiusX="170.0" radiusY="66.0" stroke="BLACK" strokeType="INSIDE" />
+         <TextField fx:id="sshHostField" alignment="CENTER" layoutX="108.0" layoutY="40.0" opacity="0.8" prefHeight="27.0" prefWidth="175.0" promptText="ssh server =&gt; host:port" styleClass="server-field-line">
+            <font>
+               <Font name="Avenir Roman" size="14.0" />
+            </font>
+         </TextField>
+         <TextField fx:id="sshUsernameField" alignment="CENTER" layoutX="108.0" layoutY="70.0" opacity="0.8" prefHeight="27.0" prefWidth="175.0" promptText="ssh username" styleClass="server-field-line">
+            <font>
+               <Font name="Avenir Roman" size="14.0" />
+            </font>
+         </TextField>
+         <TextField fx:id="sshPasswordField" alignment="CENTER" layoutX="108.0" layoutY="100.0" opacity="0.8" prefHeight="27.0" prefWidth="175.0" promptText="ssh password" styleClass="server-field-line">
+            <font>
+               <Font name="Avenir Roman" size="14.0" />
+            </font>
+         </TextField>
+         <Text layoutX="79.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2">
+            <font>
+               <Font size="30.0" />
+            </font>
+         </Text>
+         <Ellipse fill="WHITE" layoutX="496.0" layoutY="70.0" radiusX="120.0" radiusY="53.0" stroke="BLACK" strokeType="INSIDE" />
+         <TextField fx:id="remoteHostField" alignment="CENTER" layoutX="400.0" layoutY="55.0" opacity="0.8" prefHeight="31.0" prefWidth="207.0" promptText="remote server =&gt; host:port" styleClass="server-field-no-line">
+            <font>
+               <Font name="Avenir Roman" size="14.0" />
+            </font>
+         </TextField>
+         <Text layoutX="409.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
+            <font>
+               <Font size="30.0" />
+            </font>
+         </Text>
+      </children>
+   </Pane>
+   <Pane fx:id="zkServerPane" layoutY="106.0" prefHeight="115.0" prefWidth="778.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="115.0">
+      <children>
+         <Ellipse fill="WHITE" layoutX="190.0" layoutY="63.0" radiusX="107.0" radiusY="45.0" stroke="BLACK" strokeType="INSIDE" />
+         <TextField fx:id="serverTextField" alignment="CENTER" layoutX="102.0" layoutY="51.0" opacity="0.8" prefHeight="27.0" prefWidth="175.0" promptText="local host:port" styleClass="server-field-no-line" text="127.0.0.1:2181">
+            <font>
+               <Font name="Avenir Roman" size="14.0" />
+            </font>
+         </TextField>
+         <Text layoutX="102.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
+            <font>
+               <Font size="30.0" />
+            </font>
+         </Text>
+         <CheckBox fx:id="sshTunnelSwitch" layoutX="360.0" layoutY="46.0" mnemonicParsing="false" styleClass="server-ssh-switch" text="use ssh tunnel">
+            <font>
+               <Font size="15.0" />
+            </font>
+         </CheckBox>
+      </children>
+   </Pane>
     <styleClass>
-        <String fx:value="vDialog"/>
-        <String fx:value="default-pane"/>
+        <String fx:value="vDialog" />
+        <String fx:value="default-pane" />
     </styleClass>
 </AnchorPane>
