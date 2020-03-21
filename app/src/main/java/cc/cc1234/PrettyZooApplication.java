@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -46,6 +45,8 @@ public class PrettyZooApplication extends Application {
     public static void main(String[] args) {
         try {
             Taskbar.getTaskbar().setIconImage(ImageIO.read(getIconStream()));
+        } catch (UnsupportedOperationException e) {
+            // ignore not support platform, such as windows
         } catch (IOException e) {
             // ignore icon load failed
         }
