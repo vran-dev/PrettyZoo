@@ -31,7 +31,7 @@ public class SSHTunnelManager {
     }
 
     public void forwarding(SSHTunnelConfig sshTunnelConfig) {
-        String key = sshTunnelConfig.getLocalhost() + ":" + sshTunnelConfig.getLocalPort();
+        final String key = sshTunnelConfig.getLocalhost() + ":" + sshTunnelConfig.getLocalPort();
         if (configMap.containsKey(key)) {
             logger.info("ignore  {}, because it was exists", sshTunnelConfig.toString());
             return;
@@ -51,6 +51,8 @@ public class SSHTunnelManager {
                 ServerSocket socket = new ServerSocket();
                 socket.setReuseAddress(true);
                 socket.bind(new InetSocketAddress(param.getLocalHost(), param.getLocalPort()));
+                socketMap.put(key, socket);
+                sshClientMap.put(key, sshClient);
                 sshClient.newLocalPortForwarder(param, socket).listen();
             } catch (IOException e) {
                 logger.error("creat ssh tunnel failed", e);
@@ -59,6 +61,14 @@ public class SSHTunnelManager {
     }
 
     public void close(String host) {
+        try {
+            if (sshClientMap.containsKey(host)) {
+                sshClientMap.get(host).close();
+            }
+        } catch (IOException e) {
+            logger.error("close ssh tunnel error", e);
+        }
+
         // TODO optimize and log error
         try {
             if (socketMap.containsKey(host)) {
@@ -66,14 +76,6 @@ public class SSHTunnelManager {
             }
         } catch (IOException e) {
             logger.error("close ssh tunnel socket error", e);
-        }
-
-        try {
-            if (sshClientMap.containsKey(host)) {
-                sshClientMap.get(host).close();
-            }
-        } catch (IOException e) {
-            logger.error("close ssh tunnel error", e);
         }
     }
 
