@@ -12,11 +12,9 @@ PrettyZoo 是一个基于 Apache Curator 和 JavaFX 实现的 Zookeeper 图形�
 
 # 规划
 
-1、支持 SSH tunnel
+1、支持配置导入，导出
 
-2、支持配置导入，导出
-
-3、支持国际化
+2、支持国际化
 
 # 特性
 
@@ -29,6 +27,8 @@ PrettyZoo 是一个基于 Apache Curator 和 JavaFX 实现的 Zookeeper 图形�
 4、支持节点搜索，高亮
 
 5、支持简单的 ACL，以及 ACL 语法检查
+
+6、支持 SSH Tunnel
 
 # 界面展示
 

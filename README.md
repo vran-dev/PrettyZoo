@@ -16,8 +16,7 @@ Nothing, download and run。
 
 
 # TODO
-1. support SSH Tunnel
-3. support config export and import
+1. support config export and import
 2. support i18n
 
 # Feature
