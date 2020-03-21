@@ -38,7 +38,7 @@ public class SSHTunnelManager {
         }
 
         logger.info("create ssh tunnel: " + sshTunnelConfig.toString());
-        // TODO use JavaFX service to instead of
+        // TODO use JavaFX service or threadPool to instead of `new Thread`
         new Thread(() -> {
             try {
                 SSHClient sshClient = new SSHClient();

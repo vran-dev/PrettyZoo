@@ -28,10 +28,7 @@ public class ZkServerConfigVO {
     }
 
     public void connectIfNecessary() throws Exception {
-        final ServerConfig config = new ServerConfig();
-        config.setHost(getHost());
-        config.getAclList().addAll(getAclList());
-        prettyZooFacade.connect(config);
+        prettyZooFacade.connect(getHost());
         connectSuccess();
     }
 

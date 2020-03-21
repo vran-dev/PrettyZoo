@@ -11,6 +11,7 @@ import cc.cc1234.spi.listener.PrettyZooConfigChangeListener;
 import cc.cc1234.spi.listener.ZookeeperNodeListener;
 import cc.cc1234.spi.node.NodeMode;
 
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -36,13 +37,21 @@ public class PrettyZooFacade {
         connectionManager.getConnection(server).delete(path, recursive);
     }
 
+    public void connect(String host) throws Exception {
+        Optional<ServerConfig> config = configService.get(host);
+        connect(config.orElseThrow(() -> new IllegalStateException("server not exists")));
+    }
+
     public void connect(ServerConfig config) throws Exception {
+        if (connectionManager.getConnection(config.getHost()) != null) {
+            return;
+        }
         // if tunnel config exists, must be create ssh tunnel before connect server
         CountDownLatch latch = new CountDownLatch(1);
         config.getSshTunnelConfig()
                 .map(sshTunnelConfig -> {
-                    latch.countDown();
                     sshTunnelManager.forwarding(sshTunnelConfig);
+                    latch.countDown();
                     return true;
                 })
                 .orElseGet(() -> {
