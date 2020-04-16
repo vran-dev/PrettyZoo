@@ -10,6 +10,8 @@ PrettyZoo 是一个基于 Apache Curator 和 JavaFX 实现的 Zookeeper 图形�
 
 点击进入 [下载地址](https://github.com/vran-dev/PrettyZoo/releases)
 
+在目录 `prettyZoo/bin` 下，运行 `prettyZoo.sh` （windows 的话运行 `prettyZoo.bat`） 启动软件
+
 # 规划
 
 1、支持配置导入，导出

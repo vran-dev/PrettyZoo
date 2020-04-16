@@ -8,8 +8,8 @@
  
 You can download from [Release](https://github.com/vran-dev/PrettyZoo/releases)。
 
-
-
+Go to `prettyZoo/bin` directory, click `prettyZoo.sh` (or `prettyZoo.bat` for windows) to run
+ 
 # Require
 
 Nothing, download and run。
