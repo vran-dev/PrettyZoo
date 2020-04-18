@@ -1,5 +1,5 @@
 plugins {
-    id "io.freefair.lombok" version "4.1.2"
+    id "io.freefair.lombok" version "5.0.0"
 }
 
 lombok {

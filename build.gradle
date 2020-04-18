@@ -20,7 +20,7 @@ subprojects {
     apply plugin: 'application'
     apply plugin: 'idea'
 
-    sourceCompatibility = 11
+    sourceCompatibility = 14
     group 'cc.c1234'
     version '0.1.8'
 
