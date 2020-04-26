@@ -11,6 +11,7 @@ import cc.cc1234.spi.listener.PrettyZooConfigChangeListener;
 import cc.cc1234.spi.listener.ZookeeperNodeListener;
 import cc.cc1234.spi.node.NodeMode;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -103,5 +104,13 @@ public class PrettyZooFacade {
 
     public void registerNodeListener(ZookeeperNodeListener listener) {
         listenerManager.add(listener);
+    }
+
+    public void exportConfig(File file) {
+        configService.export(file);
+    }
+
+    public void importConfig(File configFile) {
+        configService.importConfig(configFile);
     }
 }

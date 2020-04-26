@@ -279,6 +279,58 @@
     -fx-border-color: #EEE;
 }
 
+.import-button {
+    -fx-background-image: url("img/menu/import.png");
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 21;
+    -fx-pref-height: 21;
+    -fx-pref-width: 21;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.import-button:hover {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/menu/import-hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 21;
+    -fx-pref-height: 21;
+    -fx-pref-width: 21;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.export-button {
+    -fx-background-image: url("img/menu/export.png");
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 23;
+    -fx-pref-height: 23;
+    -fx-pref-width: 23;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.export-button:hover {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/menu/export-hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 23;
+    -fx-pref-height: 23;
+    -fx-pref-width: 23;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
 /* ====================== Button/ ======================*/
 
 .lineLabel {
@@ -564,6 +616,7 @@
     -fx-background-color: transparent;
     -fx-font-size: 14;
 }
+
 .server-field-no-line:focused {
     -fx-font-size: 16;
     -fx-border-color: #000;

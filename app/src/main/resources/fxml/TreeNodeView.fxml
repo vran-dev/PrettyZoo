@@ -27,16 +27,18 @@
                                 <Label fx:id="prettyZooLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="14.0" prefHeight="160.0" styleClass="prettyZoo" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <HBox alignment="CENTER_LEFT" layoutY="138.0" prefHeight="50.0" prefWidth="200.0" styleClass="menu-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="160.0">
                            <children>
-                                        <Button fx:id="serverAddButton" mnemonicParsing="false" onAction="#onAddServerAction" styleClass="menu-add-button" textAlignment="CENTER">
+                                        <Button fx:id="serverAddButton" alignment="CENTER" mnemonicParsing="false" onAction="#onAddServerAction" styleClass="menu-add-button" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets right="3.0" />
                                  </HBox.margin></Button>
-                                        <Button fx:id="serverDeleteButton" mnemonicParsing="false" onAction="#onRemoveServerAction" styleClass="menu-delete-button" textAlignment="CENTER">
+                                        <Button fx:id="serverDeleteButton" alignment="CENTER" mnemonicParsing="false" onAction="#onRemoveServerAction" styleClass="menu-delete-button" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets right="3.0" />
                                  </HBox.margin>
                                         </Button>
                                         <CheckBox fx:id="recursiveModeCheckBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="menu-switch-button" />
+                              <Button fx:id="exportButton" alignment="CENTER" mnemonicParsing="false" onAction="#onExportAction" styleClass="export-button" textAlignment="CENTER" />
+                              <Button fx:id="importButton" alignment="CENTER" mnemonicParsing="false" onAction="#onImportAction" styleClass="import-button" textAlignment="CENTER" />
                            </children>
                            <padding>
                               <Insets left="10.0" top="1.0" />

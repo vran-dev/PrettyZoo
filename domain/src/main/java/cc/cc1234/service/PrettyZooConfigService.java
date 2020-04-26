@@ -7,6 +7,10 @@ import cc.cc1234.spi.config.PrettyZooConfigRepository;
 import cc.cc1234.spi.config.model.RootConfig;
 import cc.cc1234.spi.config.model.ServerConfig;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -71,5 +75,23 @@ public class PrettyZooConfigService {
 
     public Optional<ServerConfig> get(String host) {
         return load().getServers().stream().filter(s -> s.getHost().equals(host)).findFirst();
+    }
+
+    public void export(File file) {
+        RootConfig config = load();
+        try (var stream = Files.newOutputStream(file.toPath(), StandardOpenOption.WRITE, StandardOpenOption.CREATE)) {
+            prettyZooConfigRepository.exportConfig(config, stream);
+        } catch (IOException e) {
+            throw new IllegalStateException("export config failed", e);
+        }
+
+    }
+
+    public void importConfig(File configFile) {
+        try (var stream = Files.newInputStream(configFile.toPath(), StandardOpenOption.READ)) {
+            prettyZooConfigRepository.importConfig(stream);
+        } catch (IOException e) {
+            throw new IllegalStateException("import config failed", e);
+        }
     }
 }

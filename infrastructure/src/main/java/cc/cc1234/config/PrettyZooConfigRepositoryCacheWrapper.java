@@ -3,6 +3,8 @@ package cc.cc1234.config;
 import cc.cc1234.spi.config.PrettyZooConfigRepository;
 import cc.cc1234.spi.config.model.RootConfig;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Optional;
 
 public class PrettyZooConfigRepositoryCacheWrapper implements PrettyZooConfigRepository {
@@ -33,5 +35,16 @@ public class PrettyZooConfigRepositoryCacheWrapper implements PrettyZooConfigRep
         configRepository.save(config);
         // flush cache
         cache = Optional.of(config);
+    }
+
+    @Override
+    public void importConfig(InputStream stream) {
+        configRepository.importConfig(stream);
+        cache = Optional.of(configRepository.get());
+    }
+
+    @Override
+    public void exportConfig(RootConfig config, OutputStream targetStream) {
+        configRepository.exportConfig(config, targetStream);
     }
 }

@@ -9,8 +9,10 @@ import cc.cc1234.spi.listener.PrettyZooConfigChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,6 +57,13 @@ public class PrettyZooConfigVO {
         prettyZooFacade.removeConfig(host);
     }
 
+    public void export(File file) {
+        if (file == null) {
+            return;
+        }
+        prettyZooFacade.exportConfig(file);
+    }
+
     private RootConfig toModel() {
         final RootConfig config = new RootConfig();
         final List<ServerConfig> zkServerConfigs = getServers()
@@ -75,4 +84,15 @@ public class PrettyZooConfigVO {
         return servers;
     }
 
+    public void importConfig(File configFile) {
+        if (configFile == null) {
+            return;
+        }
+        if (!configFile.isFile()) {
+            throw new IllegalStateException("config must be a file");
+        }
+        prettyZooFacade.importConfig(configFile);
+        servers.clear();
+        servers.addAll(toVO(prettyZooFacade.loadConfig().getServers()));
+    }
 }
