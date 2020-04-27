@@ -4,6 +4,7 @@ import cc.cc1234.app.cache.TreeItemCache;
 import cc.cc1234.app.cell.ZkNodeTreeCell;
 import cc.cc1234.app.cell.ZkServerListCell;
 import cc.cc1234.app.context.ActiveServerContext;
+import cc.cc1234.app.context.PrimaryStageContext;
 import cc.cc1234.app.listener.DefaultTreeNodeListener;
 import cc.cc1234.app.listener.JfxListenerManager;
 import cc.cc1234.app.util.FXMLs;
@@ -19,10 +20,13 @@ import javafx.beans.binding.StringBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 
@@ -86,6 +90,12 @@ public class TreeNodeViewController {
 
     @FXML
     private Button serverAddButton;
+
+    @FXML
+    private Button exportButton;
+
+    @FXML
+    private Button importButton;
 
     @FXML
     private TextField searchTextField;
@@ -162,6 +172,26 @@ public class TreeNodeViewController {
     }
 
     @FXML
+    private void onExportAction(ActionEvent actionEvent) {
+        var button = (Button) actionEvent.getSource();
+        var fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose your target directory");
+        fileChooser.setInitialFileName("prettyZoo-config");
+        var file = fileChooser.showSaveDialog(PrimaryStageContext.get());
+        Platform.runLater(() -> prettyZooConfigVO.export(file));
+    }
+
+    @FXML
+    private void onImportAction(ActionEvent actionEvent) {
+        var button = (Button) actionEvent.getSource();
+        var fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose config file");
+        File configFile = fileChooser.showOpenDialog(PrimaryStageContext.get());
+        Platform.runLater(() -> prettyZooConfigVO.importConfig(configFile));
+    }
+
+
+    @FXML
     private void initialize() {
         initSearchResultList();
         initSearchTextField();
@@ -172,6 +202,8 @@ public class TreeNodeViewController {
         recursiveModeCheckBox.setTooltip(new Tooltip("开启递归操作模式"));
         serverAddButton.setTooltip(new Tooltip("添加 zookeeper server"));
         serverDeleteButton.setTooltip(new Tooltip("删除选定的 zookeeper server"));
+        exportButton.setTooltip(new Tooltip("导出配置文件"));
+        importButton.setTooltip(new Tooltip("导入配置文件"));
 
 
         final ZookeeperNodeListener zookeeperNodeListener = new ZookeeperNodeListener() {

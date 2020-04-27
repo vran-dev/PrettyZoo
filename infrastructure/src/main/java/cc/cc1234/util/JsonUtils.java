@@ -28,6 +28,15 @@ public class JsonUtils {
         }
     }
 
+    public static <T> T fromJson(String json, Class<T> clazz) {
+        final ObjectMapper mapper = mapper();
+        try {
+            return mapper.readValue(json.getBytes(), clazz);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
 
     public static <T> String to(T t) {
         final ObjectMapper mapper = mapper();
