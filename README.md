@@ -16,7 +16,7 @@ Nothing, download and run。
 
 
 # TODO
-1. support config export and import
+1. <del> support config export and import </del> [v0.2.1]
 2. support i18n
 
 # Feature
@@ -27,6 +27,7 @@ Nothing, download and run。
 4. Support node search
 5. Support simple ACL and ACL syntax check
 6. Support SSH tunnel
+7. Support Config export And import
 
 
 # Show
