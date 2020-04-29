@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class PrettyZooConfigRepositoryCacheWrapper implements PrettyZooConfigRepository {
 
-    private volatile Optional<RootConfig> cache = Optional.empty();
+    private static volatile Optional<RootConfig> cache = Optional.empty();
 
     private PrettyZooConfigRepository configRepository;
 
