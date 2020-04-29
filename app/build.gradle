@@ -9,6 +9,7 @@ javafx {
 }
 
 mainClassName = "app.main/cc.cc1234.PrettyZooApplication"
+ext.os = org.gradle.internal.os.OperatingSystem.current()
 jlink {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
     addExtraDependencies("javafx")
@@ -16,6 +17,29 @@ jlink {
     launcher {
         name = 'prettyZoo'
     }
+
+
+    jpackage {
+
+    }
+}
+
+task zipWindows(type: Zip) {
+    archiveFileName = "prettyZoo-win.zip"
+    destinationDirectory = file("$buildDir/jpackage")
+    from "$buildDir/jpackage/prettyZoo"
+}
+
+task zipMac(type: Zip) {
+    archiveFileName = "prettyZoo-mac.zip"
+    destinationDirectory = file("$buildDir/jpackage")
+    from "$buildDir/jpackage/prettyZoo.app"
+}
+
+task vpackage {
+    dependsOn jpackage
+    dependsOn zipWindows
+    dependsOn zipMac
 }
 
 dependencies {
