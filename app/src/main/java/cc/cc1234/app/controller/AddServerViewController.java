@@ -171,22 +171,22 @@ public class AddServerViewController {
     @FXML
     private void onConfirm() {
         if (hasError) {
-            VToast.toastFailure(stage, "ACL is invalid");
+            VToast.error(stage, "ACL is invalid");
             return;
         }
 
         if (Strings.isNullOrEmpty(addServerVO.getHost())) {
-            VToast.toastFailure(stage, "server must not be empty");
+            VToast.error(stage, "server must not be empty");
             return;
         }
 
         if (addServerVO.exists()) {
-            VToast.toastFailure(stage, "server exists!");
+            VToast.error(stage, "server exists!");
             return;
         }
 
         addServerVO.onConfirm();
-        VToast.toastSuccess("add success");
+        VToast.info("add success");
         stage.close();
     }
 

@@ -26,7 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 
@@ -126,7 +125,7 @@ public class TreeNodeViewController {
     private void onRemoveServerAction() {
         final ZkServerConfigVO removeItem = serverListView.getSelectionModel().getSelectedItem();
         if (removeItem == null) {
-            VToast.toastFailure("no server selected");
+            VToast.error("no server selected");
             return;
         }
         prettyZooConfigVO.remove(removeItem.getHost());
@@ -136,16 +135,16 @@ public class TreeNodeViewController {
     @FXML
     private void updateDataAction(ActionEvent actionEvent) {
         if (!ActiveServerContext.exists()) {
-            VToast.toastFailure("Error: connect zookeeper first");
+            VToast.error("Error: connect zookeeper first");
             return;
         }
         if (!zkNodeOperationVO.nodeExists()) {
-            VToast.toastFailure("Node not exists");
+            VToast.error("Node not exists");
             return;
         }
         Transitions.rotate((Button) actionEvent.getSource()).play();
-        zkNodeOperationVO.updateData(e -> VToast.toastFailure(e.getMessage()));
-        VToast.toastSuccess("update success");
+        zkNodeOperationVO.updateData(e -> VToast.error(e.getMessage()));
+        VToast.info("update success");
     }
 
     @FXML
@@ -153,10 +152,10 @@ public class TreeNodeViewController {
         Button button = (Button) actionEvent.getSource();
         Transitions.scale(button, Duration.millis(400d), null).play();
         if (Strings.isNullOrEmpty(zkNodeOperationVO.getAbsolutePath())) {
-            VToast.toastFailure("select node first");
+            VToast.error("select node first");
             return;
         }
-        zkNodeOperationVO.onDelete(e -> VToast.toastFailure(e.getMessage()));
+        zkNodeOperationVO.onDelete(e -> VToast.error(e.getMessage()));
         zkNodeTreeView.getSelectionModel().clearSelection();
     }
 
@@ -165,7 +164,7 @@ public class TreeNodeViewController {
         Button button = (Button) actionEvent.getSource();
         Transitions.scale(button, Duration.millis(400d), null).play();
         if (Strings.isNullOrEmpty(zkNodeOperationVO.getAbsolutePath())) {
-            VToast.toastFailure("select node first");
+            VToast.error("select node first");
             return;
         }
         addNodeViewController.show(zkNodeOperationVO.getAbsolutePath());
@@ -187,7 +186,13 @@ public class TreeNodeViewController {
         var fileChooser = new FileChooser();
         fileChooser.setTitle("Choose config file");
         File configFile = fileChooser.showOpenDialog(PrimaryStageContext.get());
-        Platform.runLater(() -> prettyZooConfigVO.importConfig(configFile));
+        Platform.runLater(() -> {
+            try {
+                prettyZooConfigVO.importConfig(configFile);
+            } catch (Exception e) {
+                VToast.error("Failed to load config");
+            }
+        });
     }
 
 
@@ -324,7 +329,7 @@ public class TreeNodeViewController {
             server.connectIfNecessary();
         } catch (Exception e) {
             log.debug("switch server {} failed: {}", server.getHost(), e.getMessage());
-            VToast.toastFailure("Failed: " + e.getMessage());
+            VToast.error("Failed: " + e.getMessage());
             return;
         }
 
