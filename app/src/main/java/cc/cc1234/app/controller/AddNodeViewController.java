@@ -72,18 +72,18 @@ public class AddNodeViewController {
     @FXML
     private void onNodeAddAction() {
         if (Strings.isNullOrEmpty(zkNodeOperationVO.getRelativePath())) {
-            VToast.toastFailure(stage, "node must not be empty");
+            VToast.error(stage, "node must not be empty");
             return;
         }
 
         try {
             zkNodeOperationVO.onAdd();
         } catch (Exception e) {
-            VToast.toastFailure(stage, e.getMessage());
+            VToast.error(e.getMessage());
             throw new IllegalStateException(e);
         }
 
-        VToast.toastSuccess(stage);
+        VToast.info(stage);
         stage.close();
     }
 

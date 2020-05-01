@@ -2,102 +2,124 @@ package cc.cc1234.app.controller;
 
 import cc.cc1234.app.context.PrimaryStageContext;
 import cc.cc1234.app.vo.Transitions;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Window;
 
 public class VToast {
 
-    public static void toastSuccess(String message) {
-        toastSuccess(PrimaryStageContext.get(), message);
+    public static void info(String message) {
+        info(PrimaryStageContext.get(), message);
     }
 
-    public static void toastFailure(String message) {
-        toastFailure(PrimaryStageContext.get(), message);
+    public static void error(String message) {
+        error(PrimaryStageContext.get(), message);
     }
 
-    public static void toastSuccess(Window parent) {
-        toast(parent, successPanel("√ success"));
+    public static void info(Window parent) {
+        toast(parent, createNotification("√ success", ToastType.INFO));
     }
 
-    public static void toastFailure(Window parent) {
-        toast(parent, failurePanel("× failure"));
+    public static void info(Window parent, String message) {
+
+        toast(parent, createNotification(message, ToastType.INFO));
     }
 
-    public static void toastSuccess(Window parent, String message) {
-        toast(parent, successPanel(message));
+    public static void error(Window parent, String message) {
+        toast(parent, createNotification(message, ToastType.ERROR));
     }
 
-    public static void toastFailure(Window parent, String message) {
-        toast(parent, failurePanel(message));
-    }
 
-    public static void toastInfo(Window parent, String message) {
-        toast(parent, infoPanel(message));
-    }
-
-    private static void toast(Window parent, StackPane panel) {
+    private static void toast(Window parent, Region panel) {
         toast(parent, panel, 1000, 3000);
     }
 
-    private static void toast(Window parent, StackPane root, int fadeInDelay, int fadeOutDelay) {
-        final Stage toastStage = initToastStage(parent, root);
-        toastStage.show();
-        Transitions.fade(root, fadeInDelay, fadeOutDelay, e -> toastStage.close());
+    private static void toast(Window parent, Region node, int fadeInDelay, int fadeOutDelay) {
+        showNotification(parent, node);
+        double x = parent.getWidth() - 10 - node.getPrefWidth() / 2;
+        double y = node.getPrefHeight() / 2 + 250;
+        Transitions.move(node, x, y, x, y - 240, e -> {
+            Transitions.fade(node, fadeInDelay, fadeOutDelay, fadeEvent -> {
+                removeNotification(parent, node);
+            });
+        });
+
     }
 
-    private static StackPane successPanel(String message) {
+
+    private static void showNotification(Window parent, Region node) {
+        Pane root = (Pane) parent.getScene().getRoot();
+        root.getChildren().add(node);
+    }
+
+    private static void removeNotification(Window parent, Region node) {
+        Pane root = (Pane) parent.getScene().getRoot();
+        root.getChildren().remove(node);
+    }
+
+
+    private static Region createNotification(String message, ToastType type) {
+        Label label = new Label();
+        label.setStyle("-fx-background-image: url('" + type.getIcon() + "');" +
+                "-fx-background-repeat: no-repeat;" +
+                "-fx-background-position: center;" +
+                "-fx-background-size: 25;" +
+                "-fx-start-margin: 10;");
+        label.setPrefHeight(30d);
+        label.setPrefWidth(30d);
+
         Text text = new Text(message);
+        text.setWrappingWidth(150);
+        text.setTextAlignment(TextAlignment.CENTER);
         text.setFont(Font.font("Verdana", 16));
         text.setFill(Color.WHITE);
 
-        StackPane root = new StackPane(text);
-        root.setStyle("-fx-background-radius: 20; -fx-background-color: #1e88e5; -fx-padding: 6px;");
-        root.setOpacity(0);
-        return root;
+        HBox hBox = new HBox(8, label, text);
+        hBox.setStyle("-fx-background-radius: 3; " +
+                "-fx-background-color: " + type.getColor() + ";" +
+                "-fx-opacity: 0.7");
+        hBox.setPrefHeight(38d);
+        hBox.setMinHeight(38d);
+        hBox.setPrefWidth(200);
+        hBox.setMinWidth(180);
+        hBox.setMaxHeight(38d);
+        hBox.setMaxWidth(200);
+        hBox.setAlignment(Pos.CENTER);
+        return hBox;
     }
 
-    private static StackPane failurePanel(String message) {
-        Text text = new Text(message);
-        text.setFont(Font.font("Verdana", 16));
-        text.setFill(Color.WHITE);
+    public enum ToastType {
+        ERROR {
+            @Override
+            String getIcon() {
+                return "assets/img/notification/error.png";
+            }
 
-        StackPane root = new StackPane(text);
-        root.setStyle("-fx-background-radius: 20; -fx-background-color: #d81b60; -fx-padding: 6px;");
-        root.setOpacity(0);
-        return root;
-    }
+            @Override
+            String getColor() {
+                return "#BB401E";
+            }
+        },
+        INFO {
+            @Override
+            String getIcon() {
+                return "assets/img/notification/ok.png";
+            }
 
-    private static StackPane infoPanel(String message) {
-        Text text = new Text(message);
-        text.setFont(Font.font("Verdana", 16));
-        text.setFill(Color.WHITE);
+            @Override
+            String getColor() {
+                return "#469F95";
+            }
+        };
 
-        StackPane root = new StackPane(text);
-        root.setStyle("-fx-background-radius: 20; -fx-background-color: #66bb6a; -fx-padding: 6px;");
-        root.setOpacity(0);
-        return root;
-    }
+        abstract String getIcon();
 
-    private static Stage initToastStage(Window parent, StackPane root) {
-        Stage toastStage = new Stage();
-        toastStage.initOwner(parent);
-        toastStage.setResizable(false);
-        toastStage.initStyle(StageStyle.TRANSPARENT);
-
-        // set position
-        toastStage.setX(parent.getX());
-        toastStage.setY(parent.getY() + parent.getScene().getY() + 10);
-
-        Scene scene = new Scene(root);
-        scene.setFill(Color.TRANSPARENT);
-        toastStage.setScene(scene);
-        return toastStage;
+        abstract String getColor();
     }
 
 }

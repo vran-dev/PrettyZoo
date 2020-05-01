@@ -4,6 +4,7 @@ import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.shape.*;
 import javafx.util.Duration;
 
 public class Transitions {
@@ -53,12 +54,12 @@ public class Transitions {
 
     public static void fade(Node node, int fadeInDelay, int fadeOutDelay, EventHandler<ActionEvent> finishedEvent) {
         Timeline fadeInTimeline = new Timeline();
-        final KeyValue fadeInKey = new KeyValue(node.getScene().getRoot().opacityProperty(), 1);
+        final KeyValue fadeInKey = new KeyValue(node.opacityProperty(), node.opacityProperty().doubleValue());
         KeyFrame fadeIn = new KeyFrame(Duration.millis(fadeInDelay), fadeInKey);
         fadeInTimeline.getKeyFrames().add(fadeIn);
         fadeInTimeline.setOnFinished((ae) -> {
             Timeline fadeOutTimeline = new Timeline();
-            final KeyValue fadeOutKey = new KeyValue(node.getScene().getRoot().opacityProperty(), 0);
+            final KeyValue fadeOutKey = new KeyValue(node.opacityProperty(), 0);
             KeyFrame fadeOut = new KeyFrame(Duration.millis(fadeOutDelay), fadeOutKey);
             fadeOutTimeline.getKeyFrames().add(fadeOut);
             fadeOutTimeline.setOnFinished(finishedEvent);
@@ -66,4 +67,26 @@ public class Transitions {
         });
         fadeInTimeline.play();
     }
+
+    public static void move(Node node,
+                            double moveX, double moveY,
+                            EventHandler<ActionEvent> callback) {
+        move(node, 0, 0, moveX, moveY, callback);
+    }
+
+    public static void move(Node node,
+                            double startX, double startY,
+                            double moveX, double moveY,
+                            EventHandler<ActionEvent> callback) {
+        Line line = new Line(startX, startY, moveX, moveY);
+
+        PathTransition transition = new PathTransition();
+        transition.setDuration(Duration.millis(500));
+        transition.setNode(node);
+        transition.setPath(line);
+        transition.setAutoReverse(false);
+        transition.setOnFinished(callback);
+        transition.play();
+    }
+
 }
