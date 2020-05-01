@@ -79,7 +79,7 @@ public class AddNodeViewController {
         try {
             zkNodeOperationVO.onAdd();
         } catch (Exception e) {
-            VToast.error(e.getMessage());
+            VToast.error(stage, e.getMessage());
             throw new IllegalStateException(e);
         }
 

@@ -5,6 +5,7 @@ import cc.cc1234.spi.listener.ZookeeperNodeListener;
 import cc.cc1234.spi.node.ZkNode;
 import cc.cc1234.spi.util.PathUtils;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.recipes.cache.TreeCache;
 import org.apache.curator.framework.recipes.cache.TreeCacheEvent;
 import org.apache.curator.framework.recipes.cache.TreeCacheListener;
 import org.slf4j.Logger;
@@ -30,6 +31,17 @@ public class CuratorTreeCacheListener implements TreeCacheListener {
             listeners.forEach(listeners -> listeners.syncCompleted(server));
             return;
         }
+        if (event.getType() == TreeCacheEvent.Type.CONNECTION_SUSPENDED
+                || event.getType() == TreeCacheEvent.Type.CONNECTION_LOST) {
+            listeners.forEach(listeners -> listeners.disConnect(server));
+            return;
+        }
+
+        if (event.getType() == TreeCacheEvent.Type.CONNECTION_RECONNECTED) {
+            listeners.forEach(listeners -> listeners.reconnected(server));
+            return;
+        }
+
         final String path = event.getData().getPath();
         final ZkNode node = new ZkNode();
         node.setPath(path);

@@ -41,8 +41,8 @@ public class VToast {
 
     private static void toast(Window parent, Region node, int fadeInDelay, int fadeOutDelay) {
         showNotification(parent, node);
-        double x = parent.getWidth() - 10 - node.getPrefWidth() / 2;
-        double y = node.getPrefHeight() / 2 + 250;
+        double x = parent.getWidth() - 20 - node.getWidth() / 2;
+        double y = node.getHeight() / 2 + 250;
         Transitions.move(node, x, y, x, y - 240, e -> {
             Transitions.fade(node, fadeInDelay, fadeOutDelay, fadeEvent -> {
                 removeNotification(parent, node);
@@ -74,21 +74,23 @@ public class VToast {
         label.setPrefWidth(30d);
 
         Text text = new Text(message);
-        text.setWrappingWidth(150);
+        text.setWrappingWidth(170);
         text.setTextAlignment(TextAlignment.CENTER);
-        text.setFont(Font.font("Verdana", 16));
+        text.setFont(Font.font("Verdana", 14));
         text.setFill(Color.WHITE);
 
         HBox hBox = new HBox(8, label, text);
         hBox.setStyle("-fx-background-radius: 3; " +
                 "-fx-background-color: " + type.getColor() + ";" +
                 "-fx-opacity: 0.7");
-        hBox.setPrefHeight(38d);
+        hBox.setPrefHeight(-1);
         hBox.setMinHeight(38d);
-        hBox.setPrefWidth(200);
+        hBox.setMaxHeight(-1);
+        hBox.autosize();
+
+        hBox.setPrefWidth(-1);
         hBox.setMinWidth(180);
-        hBox.setMaxHeight(38d);
-        hBox.setMaxWidth(200);
+        hBox.setMaxWidth(250);
         hBox.setAlignment(Pos.CENTER);
         return hBox;
     }

@@ -19,4 +19,11 @@ public interface ZookeeperNodeListener {
 
     }
 
+    default void disConnect(String server) {
+
+    }
+
+    default void reconnected(String server) {
+
+    }
 }

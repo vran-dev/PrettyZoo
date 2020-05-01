@@ -220,6 +220,11 @@ public class TreeNodeViewController {
                     Platform.runLater(() -> zkNodeVO.change(event.getNode()));
                 }
             }
+
+            @Override
+            public void disConnect(String server) {
+                Platform.runLater(() -> VToast.error(server + " disconnect"));
+            }
         };
         prettyZooFacade.registerNodeListener(zookeeperNodeListener);
         prettyZooFacade.registerNodeListener(new DefaultTreeNodeListener());
