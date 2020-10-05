@@ -59,6 +59,7 @@ public class PrettyZooFacade {
             connectionManager.getConnection(server).delete(path, recursive);
         } catch (Exception e) {
             log.error("delete node failed", e);
+            throw new IllegalStateException(e);
         }
     }
 

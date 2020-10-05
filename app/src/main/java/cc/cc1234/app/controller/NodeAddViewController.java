@@ -82,8 +82,9 @@ public class NodeAddViewController {
         String data = nodeDataTextArea.getText();
         try {
             prettyZooFacade.addNode(server, path, data, recursive, mode);
+            hide();
+            VToast.info("success");
         } catch (Exception e) {
-            final StackPane parent = (StackPane) nodeAddPane.getParent();
             VToast.error(e.getMessage());
         }
     }

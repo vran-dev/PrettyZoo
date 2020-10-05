@@ -7,6 +7,7 @@ import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.listener.DefaultTreeNodeListener;
 import cc.cc1234.app.util.FXMLs;
 import cc.cc1234.app.util.Transitions;
+import cc.cc1234.app.util.VToast;
 import cc.cc1234.app.vo.ZkNodeSearchResult;
 import cc.cc1234.spi.node.ZkNode;
 import javafx.fxml.FXML;
@@ -77,7 +78,12 @@ public class NodeViewController {
 
         nodeDeleteButton.setOnMouseClicked(e -> {
             final String path = zkNodeTreeView.getSelectionModel().getSelectedItem().getValue().getPath();
-            prettyZooFacade.deleteNode(ActiveServerContext.get(), path, false);
+            try {
+                prettyZooFacade.deleteNode(ActiveServerContext.get(), path, true);
+                VToast.info("delete success");
+            } catch (Exception exception) {
+                VToast.error("delete failed:" + exception.getMessage());
+            }
         });
     }
 
