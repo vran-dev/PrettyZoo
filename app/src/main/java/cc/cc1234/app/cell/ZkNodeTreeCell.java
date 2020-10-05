@@ -2,7 +2,7 @@ package cc.cc1234.app.cell;
 
 import cc.cc1234.spi.node.ZkNode;
 import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.slf4j.Logger;
@@ -23,16 +23,16 @@ public class ZkNodeTreeCell extends TreeCell<ZkNode> {
             setText(null);
             setGraphic(null);
         } else {
-            final TreeItem<ZkNode> treeItem = getTreeItem();
-            final Text graphic = new Text(item.getName());
+            final Text node = new Text(item.getName());
             // ephemeral node
-            if (treeItem.getValue().getEphemeralOwner() != 0) {
-                graphic.setFill(Color.valueOf("#ffab00"));
-                setGraphic(graphic);
-                setText(null);
-            } else {
-                setText(treeItem.getValue().getName());
+            if (item.getEphemeralOwner() != 0) {
+                node.setFill(Color.valueOf("#ffab00"));
             }
+
+            final HBox hbox = new HBox();
+            hbox.getChildren().add(node);
+            setGraphic(hbox);
+            setText(null);
         }
     }
 

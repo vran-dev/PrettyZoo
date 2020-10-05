@@ -2,21 +2,17 @@ package cc.cc1234.spi.config.model;
 
 public class SSHTunnelConfig {
 
-    private static final int DEFAULT_SSH_PORT = 22;
+    private String localhost;
 
-    private static final String DEFAULT_LOCALHOST = "127.0.0.1";
-
-    private String localhost = DEFAULT_LOCALHOST;
-
-    private int localPort;
+    private Integer localPort;
 
     private String sshHost;
 
-    private int sshPort = DEFAULT_SSH_PORT;
+    private Integer sshPort;
 
     private String remoteHost;
 
-    private int remotePort;
+    private Integer remotePort;
 
     private String sshUsername;
 
@@ -30,11 +26,11 @@ public class SSHTunnelConfig {
         this.localhost = localhost;
     }
 
-    public int getLocalPort() {
+    public Integer getLocalPort() {
         return localPort;
     }
 
-    public void setLocalPort(int localPort) {
+    public void setLocalPort(Integer localPort) {
         this.localPort = localPort;
     }
 
@@ -46,11 +42,11 @@ public class SSHTunnelConfig {
         this.sshHost = sshHost;
     }
 
-    public int getSshPort() {
+    public Integer getSshPort() {
         return sshPort;
     }
 
-    public void setSshPort(int sshPort) {
+    public void setSshPort(Integer sshPort) {
         this.sshPort = sshPort;
     }
 
@@ -62,11 +58,11 @@ public class SSHTunnelConfig {
         this.remoteHost = remoteHost;
     }
 
-    public int getRemotePort() {
+    public Integer getRemotePort() {
         return remotePort;
     }
 
-    public void setRemotePort(int remotePort) {
+    public void setRemotePort(Integer remotePort) {
         this.remotePort = remotePort;
     }
 
@@ -96,6 +92,7 @@ public class SSHTunnelConfig {
                 ", remoteHost='" + remoteHost + '\'' +
                 ", remotePort=" + remotePort +
                 ", sshUsername='" + sshUsername + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

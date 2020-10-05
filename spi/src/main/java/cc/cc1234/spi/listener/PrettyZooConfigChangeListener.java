@@ -13,4 +13,8 @@ public interface PrettyZooConfigChangeListener {
 
     }
 
+    default void onServerChange(ServerConfig oldValue, ServerConfig newValue) {
+
+    }
+
 }

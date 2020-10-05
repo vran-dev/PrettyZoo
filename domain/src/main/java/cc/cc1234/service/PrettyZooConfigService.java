@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,6 +28,40 @@ public class PrettyZooConfigService {
 
     public void save(RootConfig config) {
         prettyZooConfigRepository.save(config);
+    }
+
+    public void save(ServerConfig serverConfig) {
+        final RootConfig rootConfig = load();
+        final Optional<ServerConfig> existsServerConfig = rootConfig.getServers()
+                .stream()
+                .filter(server -> server.getHost().equals(serverConfig.getHost()))
+                .findFirst();
+
+        // update
+        var servers = rootConfig.getServers()
+                .stream()
+                .filter(s -> !Objects.equals(s.getHost(), serverConfig.getHost()))
+                .collect(Collectors.toList());
+        servers.add(serverConfig);
+        rootConfig.setServers(servers);
+        save(rootConfig);
+
+        // multicast change event
+        existsServerConfig
+                .map(oldValue -> {
+                    ListenerManager.instance()
+                            .getPrettyZooConfigChangeListeners()
+                            .forEach(listener -> listener.onServerChange(oldValue, serverConfig));
+                    return true;
+                })
+                .orElseGet(() -> {
+                    ListenerManager.instance()
+                            .getPrettyZooConfigChangeListeners()
+                            .forEach(listener -> listener.onServerAdd(serverConfig));
+                    return true;
+                });
+
+
     }
 
     public void add(ServerConfig zkServerConfig) {

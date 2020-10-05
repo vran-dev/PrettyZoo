@@ -142,44 +142,6 @@
     -fx-content-display: center;
 }
 
-.add-button:hover {
-    -fx-background-color: transparent;
-    -fx-background-image: url("img/add-hover.png");
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-    -fx-background-size: 20;
-    -fx-pref-height: 28;
-    -fx-pref-width: 28;
-    -fx-text-alignment: center;
-    -fx-alignment: center;
-    -fx-content-display: center;
-}
-
-.delete-button {
-    -fx-background-color: transparent;
-    -fx-background-image: url("img/delete.png");
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-    -fx-background-size: 20;
-    -fx-pref-height: 28;
-    -fx-pref-width: 28;
-    -fx-text-alignment: center;
-    -fx-alignment: center;
-    -fx-content-display: center;
-}
-
-.delete-button:hover {
-    -fx-background-color: transparent;
-    -fx-background-image: url("img/delete-hover.png");
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-    -fx-background-size: 20;
-    -fx-pref-height: 28;
-    -fx-pref-width: 28;
-    -fx-text-alignment: center;
-    -fx-alignment: center;
-    -fx-content-display: center;
-}
 
 .menu-bar {
     -fx-background-color: #FFF;
@@ -584,7 +546,7 @@
 
 /* ========================== custom  =================================*/
 .vTextArea {
-    -fx-border-color: #E8EFF3;
+    -fx-border-color: #a0a0a0;
     -fx-background-insets: 0;
     -fx-background-color: transparent, white, transparent, white;
     -fx-border-width: 1 1 0 1;
@@ -739,4 +701,101 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-effect: dropshadow(three-pass-box, #FFF, 1, 0.5, 1, 1);
+}
+
+
+/* V3.0 */
+
+.node-info-field {
+    -fx-border-color: transparent transparent transparent transparent;
+    -fx-background-color: transparent;
+    -fx-text-fill: #3F51B5;
+}
+
+.v-button {
+    -fx-background-color: #FFF;
+    -fx-border-color: #DDD;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-min-height: 18;
+}
+
+.v-button:hover {
+    -fx-background-color: #EEE;
+    -fx-border-color: #DDD;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-min-height: 18;
+}
+
+.v-button:hover:pressed {
+    -fx-background-color: #E2E2E2;
+    -fx-border-color: #DDD;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-min-height: 18;
+}
+
+.v-checkbox .box {
+    -fx-background-color: #FFF;
+    -fx-border-color: #a0a0a0;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-min-height: 18;
+}
+
+.v-line-textField {
+    -fx-border-color: transparent transparent #a0a0a0 transparent;
+    -fx-min-width: 30px;
+    -fx-border-width: 2px;
+    -fx-background-color: transparent;
+    -fx-padding: 1;
+    -fx-text-fill: #000;
+}
+
+
+.add-button:hover {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/add-hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 20;
+    -fx-pref-height: 28;
+    -fx-pref-width: 28;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.delete-button {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/delete.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 20;
+    -fx-pref-height: 28;
+    -fx-pref-width: 28;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.delete-button:hover {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/delete-hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 20;
+    -fx-pref-height: 28;
+    -fx-pref-width: 28;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.v-primary-background {
+    -fx-background-color: transparent;
+    -fx-border-color: #a0a0a0;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
 }

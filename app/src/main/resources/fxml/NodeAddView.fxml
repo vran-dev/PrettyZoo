@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="nodeAddPane" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #FFF;" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.NodeAddViewController">
+   <children>
+      <TextField fx:id="nodeNameTextField" layoutX="180.0" layoutY="63.0" prefHeight="27.0" prefWidth="251.0" promptText="input node name here" styleClass="v-line-textField" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="60.0">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </TextField>
+      <CheckBox fx:id="isNodeSeq" layoutX="180.0" layoutY="109.0" mnemonicParsing="false" styleClass="v-checkbox" text="Sequence" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="110.0" />
+      <CheckBox fx:id="isNodeEph" layoutX="345.0" layoutY="109.0" mnemonicParsing="false" styleClass="v-checkbox" text="Ephemeral" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="110.0" />
+      <TextArea fx:id="nodeDataTextArea" layoutX="180.0" layoutY="154.0" promptText="Input node data here" styleClass="vTextArea" wrapText="true" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="155.0" />
+      <Button fx:id="confirmButton" contentDisplay="CENTER" layoutX="174.0" layoutY="367.0" mnemonicParsing="false" styleClass="v-button" text="Add" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="150.0" />
+      <Label layoutX="171.0" layoutY="24.0" style="-fx-font-weight: bold;" text="Path" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="25.0" />
+      <Button fx:id="cancelButton" layoutX="219.0" layoutY="367.0" mnemonicParsing="false" styleClass="v-button" text="Cancel" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="70.0" />
+      <TextField fx:id="currentPathField" editable="false" style="-fx-background-color: transparent;" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="25.0" />
+   </children>
+</AnchorPane>

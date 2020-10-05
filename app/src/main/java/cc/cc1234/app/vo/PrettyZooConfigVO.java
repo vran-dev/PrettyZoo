@@ -2,23 +2,22 @@ package cc.cc1234.app.vo;
 
 import cc.cc1234.app.cache.TreeItemCache;
 import cc.cc1234.app.context.ActiveServerContext;
+import cc.cc1234.app.util.VToast;
 import cc.cc1234.facade.PrettyZooFacade;
-import cc.cc1234.spi.config.model.RootConfig;
 import cc.cc1234.spi.config.model.ServerConfig;
 import cc.cc1234.spi.listener.PrettyZooConfigChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PrettyZooConfigVO {
 
-    private ObservableList<ZkServerConfigVO> servers = FXCollections.observableArrayList();
+    private ObservableList<ServerConfigVO> servers = FXCollections.observableArrayList();
 
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
@@ -41,16 +40,78 @@ public class PrettyZooConfigVO {
                     ActiveServerContext.invalidate();
                 }
                 TreeItemCache.getInstance().remove(removeServer.getHost());
-                final List<ZkServerConfigVO> removeServers = servers.stream()
-                        .filter(z -> z.getHost().equals(removeServer.getHost()))
+                final List<ServerConfigVO> removeServers = servers.stream()
+                        .filter(z -> z.getZkServer().equals(removeServer.getHost()))
                         .collect(Collectors.toList());
                 servers.removeAll(removeServers);
+            }
+
+            @Override
+            public void onServerChange(ServerConfig oldValue, ServerConfig newValue) {
+                final ServerConfigVO vo = toVO(List.of(newValue)).iterator().next();
+                servers.stream()
+                        .filter(s -> Objects.equals(s.getZkServer(), oldValue.getHost()))
+                        .findFirst()
+                        .map(old -> {
+                            old.setAclList(FXCollections.observableList(newValue.getAclList()));
+                            newValue.getSshTunnelConfig()
+                                    .map(sshTunnelConfig -> {
+                                        old.setSshEnabled(newValue.getSshTunnelEnabled());
+                                        if (sshTunnelConfig.getSshHost() == null) {
+                                            old.setSshServer("");
+                                        } else {
+                                            old.setSshServer(String.format("%s:%d", sshTunnelConfig.getSshHost(), sshTunnelConfig.getSshPort()));
+                                        }
+                                        if (sshTunnelConfig.getRemoteHost() == null) {
+                                            old.setRemoteServer("");
+                                        } else {
+                                            old.setRemoteServer(String.format("%s:%d", sshTunnelConfig.getRemoteHost(), sshTunnelConfig.getRemotePort()));
+                                        }
+                                        old.setSshUsername(sshTunnelConfig.getSshUsername());
+                                        old.setSshPassword(sshTunnelConfig.getPassword());
+                                        return true;
+                                    })
+                                    .orElseGet(() -> {
+                                        old.setSshEnabled(newValue.getSshTunnelEnabled());
+                                        old.setSshServer("");
+                                        old.setSshUsername("");
+                                        old.setSshPassword("");
+                                        old.setRemoteServer("");
+                                        return true;
+                                    });
+
+                            return true;
+                        })
+                        .orElseGet(() -> servers.add(vo));
             }
         });
     }
 
-    private List<ZkServerConfigVO> toVO(List<ServerConfig> servers) {
-        return servers.stream().map(ZkServerConfigVO::new).collect(Collectors.toList());
+    private List<ServerConfigVO> toVO(List<ServerConfig> servers) {
+        return servers.stream()
+                .map(serverConfig -> {
+                    final ServerConfigVO vo = new ServerConfigVO();
+                    vo.setZkServer(serverConfig.getHost());
+                    vo.getAclList().addAll(serverConfig.getAclList());
+                    vo.setConnected(false);
+                    serverConfig.getSshTunnelConfig().ifPresent(sshTunnelConfig -> {
+                        if (sshTunnelConfig.getRemoteHost() == null || sshTunnelConfig.getRemotePort() == null) {
+                            vo.setRemoteServer("");
+                        } else {
+                            vo.setRemoteServer(sshTunnelConfig.getRemoteHost() + ":" + sshTunnelConfig.getRemotePort());
+                        }
+                        vo.setSshUsername(sshTunnelConfig.getSshUsername());
+                        vo.setSshPassword(sshTunnelConfig.getPassword());
+                        if (sshTunnelConfig.getRemoteHost() == null || sshTunnelConfig.getRemotePort() == null) {
+                            vo.setRemoteServer("");
+                        } else {
+                            vo.setSshServer(sshTunnelConfig.getSshHost() + ":" + sshTunnelConfig.getSshPort());
+                        }
+                    });
+                    vo.setSshEnabled(serverConfig.getSshTunnelEnabled());
+                    return vo;
+                })
+                .collect(Collectors.toList());
     }
 
     public void remove(String host) {
@@ -64,23 +125,8 @@ public class PrettyZooConfigVO {
         prettyZooFacade.exportConfig(file);
     }
 
-    private RootConfig toModel() {
-        final RootConfig config = new RootConfig();
-        final List<ServerConfig> zkServerConfigs = getServers()
-                .stream()
-                .map(zk -> {
-                    final ServerConfig serverConfig = new ServerConfig();
-                    serverConfig.setConnectTimes(zk.getConnectTimes());
-                    serverConfig.setAclList(new ArrayList<>(zk.getAclList()));
-                    serverConfig.setHost(zk.getHost());
-                    return serverConfig;
-                })
-                .collect(Collectors.toList());
-        config.setServers(zkServerConfigs);
-        return config;
-    }
 
-    public ObservableList<ZkServerConfigVO> getServers() {
+    public ObservableList<ServerConfigVO> getServers() {
         return servers;
     }
 
@@ -89,7 +135,8 @@ public class PrettyZooConfigVO {
             return;
         }
         if (!configFile.isFile()) {
-            throw new IllegalStateException("config must be a file");
+            VToast.error("config must be a file");
+            return;
         }
         prettyZooFacade.importConfig(configFile);
         servers.clear();
