@@ -4,11 +4,9 @@
 
 # What
 
-[PrettyZoo](https://github.com/vran-dev/PrettyZoo) is a GUI for [Zookeeper](https://zookeeper.apache.org/) created by JavaFX and Curator Framework。
+[PrettyZoo](https://github.com/vran-dev/PrettyZoo) is a GUI for [Zookeeper](https://zookeeper.apache.org/) created by JavaFX and Curator Framework.
  
-You can download from [Release](https://github.com/vran-dev/PrettyZoo/releases)。
-
-Go to `prettyZoo/bin` directory, click `prettyZoo.sh` (or `prettyZoo.bat` for windows) to run
+You can download from [Release](https://github.com/vran-dev/PrettyZoo/releases), exe for windows, dmg for mac.
  
 # Require
 
@@ -16,8 +14,8 @@ Nothing, download and run。
 
 
 # TODO
-1. <del> support config export and import </del> [v0.2.1]
-2. support i18n
+
+1. support i18n
 
 # Feature
 
@@ -32,13 +30,13 @@ Nothing, download and run。
 
 # Show
 
-![](release/img/main-view.jpg)
+![](release/img/main.png)
 
-![](release/img/add-server.png)
+![](release/img/server.png)
 
-![](release/img/add-node.png)
+![](release/img/node-list.png)
 
-![](release/img/search-view.jpg)
+![](release/img/node-add.png)
 
 # Architecture
 
