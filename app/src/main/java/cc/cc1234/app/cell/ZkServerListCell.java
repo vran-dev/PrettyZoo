@@ -1,26 +1,16 @@
 package cc.cc1234.app.cell;
 
-import cc.cc1234.app.vo.Transitions;
-import cc.cc1234.app.vo.ZkServerConfigVO;
+import cc.cc1234.app.vo.ServerConfigVO;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.util.Duration;
-
-import java.util.function.Consumer;
 
 
-public class ZkServerListCell extends ListCell<ZkServerConfigVO> {
-
-    private final Consumer<ZkServerConfigVO> callback;
-
-    public ZkServerListCell(Consumer<ZkServerConfigVO> callback) {
-        this.callback = callback;
-    }
+public class ZkServerListCell extends ListCell<ServerConfigVO> {
 
     @Override
-    protected void updateItem(ZkServerConfigVO item, boolean empty) {
+    protected void updateItem(ServerConfigVO item, boolean empty) {
         super.updateItem(item, empty);
         if (empty || item == null) {
             setText(null);
@@ -30,30 +20,16 @@ public class ZkServerListCell extends ListCell<ZkServerConfigVO> {
             label.textProperty().bind(connectBinding(item));
             setText(null);
             setGraphic(label);
-            setOnMouseClicked(mouseEvent -> {
-                ListCell<ZkServerConfigVO> clickedRow = (ListCell<ZkServerConfigVO>) mouseEvent.getSource();
-                if (!clickedRow.isEmpty()) {
-                    final ZkServerConfigVO zkServer = clickedRow.getItem();
-                    if (zkServer.isConnect()) {
-                        callback.accept(zkServer);
-                    } else {
-                        // double click to connect zk
-                        if (mouseEvent.getClickCount() == 2) {
-                            Transitions.scale(this, Duration.millis(200), e -> callback.accept(zkServer)).play();
-                        }
-                    }
-                }
-            });
         }
     }
 
-    private StringBinding connectBinding(ZkServerConfigVO item) {
-        return Bindings.createStringBinding(() -> connectStr(item), item.hostProperty(), item.connectProperty());
+    private StringBinding connectBinding(ServerConfigVO item) {
+        return Bindings.createStringBinding(() -> connectStr(item), item.zkServerProperty(), item.connectedProperty());
     }
 
-    private String connectStr(ZkServerConfigVO item) {
-        String server = item.getHost();
-        return item.isConnect() ? "√ " + server : "× " + server;
+    private String connectStr(ServerConfigVO item) {
+        String server = item.getZkServer();
+        return item.isConnected() ? "√ " + server : "× " + server;
     }
 
 }

@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
@@ -22,14 +23,7 @@ public class PrettyZooApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        PrimaryStageContext.set(primaryStage);
-        final FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(FXMLs.loadFXML("fxml/TreeNodeView.fxml"));
-        final AnchorPane anchorPane = loader.load();
-        primaryStage.setScene(new Scene(anchorPane));
-        primaryStage.setTitle("PrettyZoo");
-        getIconStream().ifPresent(stream -> primaryStage.getIcons().add(new Image(stream)));
-        primaryStage.show();
+        v2(primaryStage);
     }
 
     private static Optional<InputStream> getIconStream() {
@@ -47,6 +41,29 @@ public class PrettyZooApplication extends Application {
     public static void main(String[] args) {
         initIconImage();
         Application.launch(args);
+    }
+
+    private void v2(Stage primaryStage) throws IOException {
+        PrimaryStageContext.set(primaryStage);
+        final FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(FXMLs.loadFXML("fxml/MainView.fxml"));
+        final StackPane anchorPane = loader.load();
+        primaryStage.setScene(new Scene(anchorPane));
+        primaryStage.setTitle("PrettyZoo");
+        getIconStream().ifPresent(stream -> primaryStage.getIcons().add(new Image(stream)));
+        primaryStage.show();
+    }
+
+
+    private void v1(Stage primaryStage) throws IOException {
+        PrimaryStageContext.set(primaryStage);
+        final FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(FXMLs.loadFXML("fxml/TreeNodeView.fxml"));
+        final AnchorPane anchorPane = loader.load();
+        primaryStage.setScene(new Scene(anchorPane));
+        primaryStage.setTitle("PrettyZoo");
+        getIconStream().ifPresent(stream -> primaryStage.getIcons().add(new Image(stream)));
+        primaryStage.show();
     }
 
     private static void initIconImage() {

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="serverInfoPane" prefHeight="450.0" prefWidth="650.0" style="-fx-background-color: #fff;" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.ServerViewController">
+   <children>
+      <TextField fx:id="zkServer" layoutX="30.0" layoutY="25.0" prefHeight="25.0" prefWidth="240.0" promptText="127.0.0.1:2181" styleClass="v-line-textField" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="25.0" />
+      <CheckBox fx:id="sshTunnelCheckbox" layoutX="30.0" layoutY="70.0" mnemonicParsing="false" prefHeight="25.0" styleClass="v-checkbox" text="Use SSH Tunne" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="70.0" />
+      <AnchorPane fx:id="sshTunnelPane" layoutX="30.0" layoutY="175.0" prefHeight="246.0" prefWidth="590.0" style="-fx-border-color: #ddd; -fx-border-style: dashed; -fx-border-width: 2; -fx-background-color: transparent;" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="120.0">
+         <children>
+            <GridPane hgap="20.0" layoutX="2.0" layoutY="8.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="297.60003356933595" minWidth="240.0" prefWidth="240.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.2" minWidth="60.0" prefWidth="60.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="261.59997558593756" minWidth="240.0" prefWidth="240.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="100.0" minHeight="60.0" prefHeight="80.0" valignment="CENTER" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="180.0" minHeight="0.0" prefHeight="150.0" valignment="CENTER" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <AnchorPane prefHeight="140.0" prefWidth="200.0" style="-fx-border-color: #ddd;" GridPane.rowIndex="1">
+                     <children>
+                        <TextField fx:id="sshServer" disable="true" layoutX="15.0" layoutY="14.0" prefHeight="20.0" prefWidth="170.0" promptText="ssh server : port" styleClass="v-line-textField" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
+                        <TextField fx:id="sshUsername" disable="true" layoutX="15.0" layoutY="54.0" prefHeight="20.0" prefWidth="170.0" promptText="username" styleClass="v-line-textField" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="80.0" />
+                        <TextField fx:id="sshPassword" disable="true" layoutX="15.0" layoutY="93.0" prefHeight="20.0" prefWidth="170.0" promptText="password" styleClass="v-line-textField" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="120.0" />
+                        <Text layoutX="92.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SSH Server" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
+                  <ProgressBar fx:id="sshTunnelProgressBarTo" prefHeight="18.0" prefWidth="75.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <AnchorPane prefHeight="140.0" prefWidth="200.0" style="-fx-border-color: #ddd;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <children>
+                        <TextField fx:id="remoteServer" disable="true" layoutX="13.0" layoutY="61.0" prefHeight="23.0" prefWidth="170.0" promptText="remote server:port" styleClass="v-line-textField" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="60.0" />
+                        <Text layoutX="70.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remote Server" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="20.0" />
+                     </children>
+                  </AnchorPane>
+                  <ProgressBar fx:id="sshTunnelProgressBarFrom" prefHeight="18.0" prefWidth="81.0" progress="0.0" rotate="90.0" />
+               </children>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <Button fx:id="closeButton" layoutX="620.0" layoutY="14.0" mnemonicParsing="false" styleClass="v-button" text="X" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0" />
+      <TextArea fx:id="aclTextArea" layoutX="353.0" layoutY="51.0" prefHeight="60.0" prefWidth="240.0" styleClass="vTextArea" AnchorPane.rightAnchor="81.0" AnchorPane.topAnchor="20.0" />
+      <HBox fx:id="buttonHBox" alignment="CENTER" layoutX="444.0" layoutY="432.0" prefHeight="25.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="30.0">
+         <children>
+            <Button fx:id="saveButton" mnemonicParsing="false" styleClass="v-button" text="save" />
+            <Button fx:id="connectButton" mnemonicParsing="false" styleClass="v-button" text="connect" />
+            <Button fx:id="deleteButton" mnemonicParsing="false" styleClass="v-button" text="delete" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<AnchorPane fx:id="nodeViewPane" prefHeight="500.0" prefWidth="700.0" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.NodeViewController">
+   <children>
+      <SplitPane fx:id="nodeViewSplitPane" dividerPositions="0.3" layoutX="20.0" layoutY="20.0" prefHeight="160.0" prefWidth="200.0" style="-fx-background-color: #FFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <items>
+            <AnchorPane fx:id="nodeViewLeftPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="10.0" styleClass="head" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Button fx:id="nodeAddButton" alignment="CENTER" mnemonicParsing="false" styleClass="add-button" textFill="WHITE" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="nodeDeleteButton" alignment="CENTER" layoutX="20.0" layoutY="10.0" mnemonicParsing="false" styleClass="delete-button" textFill="WHITE" />
+                        <TextField fx:id="searchTextField" prefHeight="28.0" promptText="search" styleClass="v-line-textField" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </HBox>
+                  <TreeView fx:id="zkNodeTreeView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0" />
+                  <ListView fx:id="searchResultList" maxHeight="1.7976931348623157E308" minHeight="300.0" prefHeight="0.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0" />
+               </children></AnchorPane>
+            <StackPane fx:id="nodeViewRightPane" prefHeight="150.0" prefWidth="200.0">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding></StackPane>
+         </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

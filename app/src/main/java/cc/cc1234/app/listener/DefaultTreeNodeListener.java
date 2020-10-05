@@ -1,7 +1,6 @@
 package cc.cc1234.app.listener;
 
 import cc.cc1234.app.cache.TreeItemCache;
-import cc.cc1234.app.controller.TreeNodeViewController;
 import cc.cc1234.spi.listener.NodeEvent;
 import cc.cc1234.spi.listener.ZookeeperNodeListener;
 import cc.cc1234.spi.node.ZkNode;
@@ -66,8 +65,9 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
         final ZkNode node = new ZkNode(name, path);
         node.copyField(origin);
 
-        if (path.equals(TreeNodeViewController.ROOT_PATH)) {
-            final TreeItem<ZkNode> root = treeItemCache.get(event.getServer(), TreeNodeViewController.ROOT_PATH);
+        final String rootPath = "/";
+        if (path.equals(rootPath)) {
+            final TreeItem<ZkNode> root = treeItemCache.get(event.getServer(), rootPath);
             root.getValue().copyField(origin);
             root.setExpanded(true);
         } else {
@@ -111,7 +111,7 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
     }
 
     private boolean skip(String node, NodeEvent event) {
-        return !completed.contains(event.getServer()) || Objects.equals(node, TreeNodeViewController.ROOT_PATH);
+        return !completed.contains(event.getServer()) || Objects.equals(node, "/");
     }
 
 }

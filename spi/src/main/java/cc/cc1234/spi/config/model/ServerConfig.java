@@ -2,6 +2,7 @@ package cc.cc1234.spi.config.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class ServerConfig {
@@ -10,11 +11,19 @@ public class ServerConfig {
 
     private int connectTimes = 0;
 
-    private Boolean connected = false;
-
     private List<String> aclList = new ArrayList<>();
 
+    private Boolean sshTunnelEnabled = false;
+
     private Optional<SSHTunnelConfig> sshTunnelConfig = Optional.empty();
+
+    public Boolean getSshTunnelEnabled() {
+        return sshTunnelEnabled;
+    }
+
+    public void setSshTunnelEnabled(Boolean sshTunnelEnabled) {
+        this.sshTunnelEnabled = sshTunnelEnabled;
+    }
 
     public String getHost() {
         return host;
@@ -32,14 +41,6 @@ public class ServerConfig {
         this.connectTimes = connectTimes;
     }
 
-    public Boolean getConnected() {
-        return connected;
-    }
-
-    public void setConnected(Boolean connected) {
-        this.connected = connected;
-    }
-
     public List<String> getAclList() {
         return aclList;
     }
@@ -54,5 +55,21 @@ public class ServerConfig {
 
     public void setSshTunnelConfig(Optional<SSHTunnelConfig> sshTunnelConfig) {
         this.sshTunnelConfig = sshTunnelConfig;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ServerConfig that = (ServerConfig) o;
+        return connectTimes == that.connectTimes &&
+                host.equals(that.host) &&
+                aclList.equals(that.aclList) &&
+                sshTunnelConfig.equals(that.sshTunnelConfig);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(host, connectTimes, aclList, sshTunnelConfig);
     }
 }
