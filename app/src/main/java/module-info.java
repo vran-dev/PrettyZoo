@@ -7,8 +7,6 @@ open module app.main {
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
     requires com.google.common;
-    requires richtextfx;
-    requires flowless;
     requires domain.main;
     requires spi.main;
     requires java.desktop;

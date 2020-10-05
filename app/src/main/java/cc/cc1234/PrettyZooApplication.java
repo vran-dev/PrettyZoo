@@ -1,8 +1,8 @@
 package cc.cc1234;
 
 import cc.cc1234.app.context.PrimaryStageContext;
+import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.util.FXMLs;
-import cc.cc1234.facade.PrettyZooFacade;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

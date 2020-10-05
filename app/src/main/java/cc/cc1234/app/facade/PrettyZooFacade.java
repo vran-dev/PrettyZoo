@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 
 public class PrettyZooFacade {
 
-    private static final Logger log = LoggerFactory.getLogger(cc.cc1234.facade.PrettyZooFacade.class);
+    private static final Logger log = LoggerFactory.getLogger(PrettyZooFacade.class);
 
     private TreeItemCache treeItemCache = TreeItemCache.getInstance();
 
