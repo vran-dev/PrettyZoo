@@ -8,15 +8,13 @@ PrettyZoo 是一个基于 Apache Curator 和 JavaFX 实现的 Zookeeper 图形�
 
 基于 JDK11 实现，采用了 Java 最新的模块化打包技术，无需安装 Java 运行环境即可运行。
 
-点击进入 [下载地址](https://github.com/vran-dev/PrettyZoo/releases)
+点击进入 [下载地址](https://github.com/vran-dev/PrettyZoo/releases) (windows 下载 exe， mac 下载 dmg)
 
-在目录 `prettyZoo/bin` 下，运行 `prettyZoo.sh` （windows 的话运行 `prettyZoo.bat`） 启动软件
+
 
 # 规划
 
-1、<del> 支持配置导入，导出 </del> (从 v0.2.1 开始已经支持)
-
-2、支持国际化
+1、支持国际化
 
 # 特性
 
@@ -24,7 +22,7 @@ PrettyZoo 是一个基于 Apache Curator 和 JavaFX 实现的 Zookeeper 图形�
 
 2、节点数据实时同步
 
-3、支持递归和非递归模式操作（默认非递归模式，只能删除或增加无子节点的节点）
+3、<del>支持递归和非递归模式操作（默认非递归模式，只能删除或增加无子节点的节点）</del> (0.3.0 默认递归操作)
 
 4、支持节点搜索，高亮
 
@@ -36,13 +34,13 @@ PrettyZoo 是一个基于 Apache Curator 和 JavaFX 实现的 Zookeeper 图形�
 
 # 界面展示
 
-![](release/img/main-view.jpg)
+![](release/img/main.png)
 
-![](release/img/add-server.png)
+![](release/img/server.png)
 
-![](release/img/add-node.png)
+![](release/img/node-list.png)
 
-![](release/img/search-view.jpg)
+![](release/img/node-add.png)
 
 
 # 代码架构图
