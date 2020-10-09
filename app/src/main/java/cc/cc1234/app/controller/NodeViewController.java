@@ -165,9 +165,11 @@ public class NodeViewController {
         zkNodeTreeView.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
-                    nodeAddViewController.hide();
-                    if (newValue != null) {
-                        nodeInfoViewController.show(nodeViewRightPane, newValue.getValue());
+                    synchronized (this) {
+                        nodeAddViewController.hide();
+                        if (newValue != null) {
+                            nodeInfoViewController.show(nodeViewRightPane, newValue.getValue());
+                        }
                     }
                 });
     }

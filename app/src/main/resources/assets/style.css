@@ -549,7 +549,7 @@
     -fx-border-color: #a0a0a0;
     -fx-background-insets: 0;
     -fx-background-color: transparent, white, transparent, white;
-    -fx-border-width: 1 1 0 1;
+    -fx-border-width: 1 1 1 1;
     /*-fx-effect: dropshadow(three-pass-box, #8e8e8e, 10, 0.3, 2.2, 2.2);*/
 }
 
