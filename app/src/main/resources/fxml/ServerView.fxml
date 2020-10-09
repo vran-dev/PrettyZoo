@@ -21,13 +21,13 @@
          <children>
             <GridPane hgap="20.0" layoutX="2.0" layoutY="8.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columnConstraints>
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="297.60003356933595" minWidth="240.0" prefWidth="240.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.2" minWidth="60.0" prefWidth="60.0" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="261.59997558593756" minWidth="240.0" prefWidth="240.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="240.0" prefWidth="240.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="60.0" prefWidth="60.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="240.0" prefWidth="240.0" />
               </columnConstraints>
               <rowConstraints>
-                  <RowConstraints maxHeight="100.0" minHeight="60.0" prefHeight="80.0" valignment="CENTER" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="180.0" minHeight="0.0" prefHeight="150.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="60.0" prefHeight="80.0" valignment="CENTER" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="0.0" prefHeight="150.0" valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <AnchorPane prefHeight="140.0" prefWidth="200.0" style="-fx-border-color: #ddd;" GridPane.rowIndex="1">

@@ -166,7 +166,9 @@ public class NodeViewController {
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     nodeAddViewController.hide();
-                    nodeInfoViewController.show(nodeViewRightPane, newValue.getValue());
+                    if (newValue != null) {
+                        nodeInfoViewController.show(nodeViewRightPane, newValue.getValue());
+                    }
                 });
     }
 

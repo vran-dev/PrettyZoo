@@ -20,9 +20,9 @@ subprojects {
     apply plugin: 'application'
     apply plugin: 'idea'
 
-    sourceCompatibility = 14
+    sourceCompatibility = 11
     group 'cc.c1234'
-    version '0.1.8'
+    version '0.3.0'
 
     idea {
         module {
