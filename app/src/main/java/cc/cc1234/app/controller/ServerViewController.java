@@ -86,16 +86,13 @@ public class ServerViewController {
         if (config == null) {
             propertyReset();
             zkServer.setEditable(true);
-            if (buttonHBox.getChildren().contains(deleteButton)) {
-                buttonHBox.getChildren().remove(deleteButton);
-            }
+            buttonHBox.getChildren().remove(deleteButton);
+            buttonHBox.getChildren().remove(connectButton);
         } else {
+            connectButton.setOnMouseClicked(e -> onConnect(stackPane, config));
             propertyBind(config);
             zkServer.setEditable(false);
-            if (!buttonHBox.getChildren().contains(deleteButton)) {
-                buttonHBox.getChildren().add(deleteButton);
-            }
-
+            showConnectAndSaveButton();
             if (config.isConnected()) {
                 onConnect(stackPane, config);
                 return;
@@ -115,9 +112,16 @@ public class ServerViewController {
                 Transitions.zoomInY(serverInfoPane).playFromStart();
             });
         }
-        connectButton.setOnMouseClicked(e -> onConnect(stackPane, config));
     }
 
+    private void showConnectAndSaveButton() {
+        if (!buttonHBox.getChildren().contains(connectButton)) {
+            buttonHBox.getChildren().add(connectButton);
+        }
+        if (!buttonHBox.getChildren().contains(deleteButton)) {
+            buttonHBox.getChildren().add(deleteButton);
+        }
+    }
 
     private void propertyReset() {
         zkServer.textProperty().unbind();
@@ -140,7 +144,6 @@ public class ServerViewController {
         final String acl = String.join("\n", config.getAclList());
         aclTextArea.textProperty().setValue(acl);
     }
-
 
     public void hide() {
         final StackPane parent = (StackPane) serverInfoPane.getParent();
@@ -187,7 +190,6 @@ public class ServerViewController {
         remoteServer.disableProperty().bind(disableBinding);
     }
 
-
     private void onSave() {
         if (Checkers.isHostNotMatch(zkServer.textProperty().get())) {
             VToast.error("server must match pattern: [host:port]");
@@ -199,7 +201,6 @@ public class ServerViewController {
                 return;
             }
         }
-
 
         if (sshTunnelCheckbox.isSelected()) {
             if (Checkers.isHostNotMatch(remoteServer.getText())) {
@@ -214,17 +215,14 @@ public class ServerViewController {
                 VToast.error("sshPassword cannot be null");
                 return;
             }
-
             if (Checkers.isHostNotMatch(sshServer.getText())) {
                 VToast.error("sshServer must match pattern: [host:port]");
                 return;
             }
         }
 
-
         var serverConfigVO = new ServerConfigVO();
         serverConfigVO.setZkServer(zkServer.textProperty().get());
-        // TODO acl List
         if (sshTunnelCheckbox.isSelected()) {
             serverConfigVO.setSshEnabled(true);
         }
@@ -243,6 +241,10 @@ public class ServerViewController {
             serverConfigVO.getAclList().addAll(acls);
         }
         prettyZooFacade.saveConfig(serverConfigVO);
+        if (zkServer.isEditable()) {
+            hide();
+        }
+        VToast.info("save success");
     }
 
     private void onDelete() {

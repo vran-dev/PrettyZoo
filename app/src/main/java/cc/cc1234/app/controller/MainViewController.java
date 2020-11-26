@@ -105,7 +105,9 @@ public class MainViewController {
             cell.setOnMouseClicked(e -> {
                 final ListCell<ServerConfigVO> serverCell = ((ListCell<ServerConfigVO>) e.getSource());
                 var vo = serverCell.getItem();
-                serverViewController.show(mainRightPane, vo);
+                if (vo != null) {
+                    serverViewController.show(mainRightPane, vo);
+                }
                 e.consume();
             });
             return cell;
