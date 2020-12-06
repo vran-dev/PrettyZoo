@@ -11,6 +11,7 @@ import cc.cc1234.app.util.VToast;
 import cc.cc1234.app.vo.ZkNodeSearchResult;
 import cc.cc1234.spi.node.ZkNode;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
@@ -77,13 +78,20 @@ public class NodeViewController {
         });
 
         nodeDeleteButton.setOnMouseClicked(e -> {
-            final String path = zkNodeTreeView.getSelectionModel().getSelectedItem().getValue().getPath();
-            try {
-                prettyZooFacade.deleteNode(ActiveServerContext.get(), path, true);
-                VToast.info("delete success");
-            } catch (Exception exception) {
-                VToast.error("delete failed:" + exception.getMessage());
-            }
+            Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
+            dialog.setHeaderText("确定要删除该节点吗？");
+            dialog.setContentText("该操作将删除该节点及其对应的子节点，操作不可恢复，请谨慎执行");
+            dialog.showAndWait()
+                    .filter(response -> response == ButtonType.OK)
+                    .ifPresent(response -> {
+                        final String path = zkNodeTreeView.getSelectionModel().getSelectedItem().getValue().getPath();
+                        try {
+                            prettyZooFacade.deleteNode(ActiveServerContext.get(), path, true);
+                            VToast.info("delete success");
+                        } catch (Exception exception) {
+                            VToast.error("delete failed:" + exception.getMessage());
+                        }
+                    });
         });
     }
 
