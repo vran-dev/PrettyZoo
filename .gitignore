@@ -4,3 +4,4 @@
 **/build/**
 **/classes/**
 **/out/**
+lombok.config
