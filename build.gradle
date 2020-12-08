@@ -1,5 +1,4 @@
 group 'cc.c1234'
-version '0.1.8'
 
 
 tasks.withType(JavaCompile) {
@@ -22,7 +21,7 @@ subprojects {
 
     sourceCompatibility = 11
     group 'cc.c1234'
-    version '0.3.0'
+    version '1.0.0'
 
     idea {
         module {

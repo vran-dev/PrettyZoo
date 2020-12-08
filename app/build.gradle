@@ -18,6 +18,12 @@ jlink {
     }
 }
 
+jpackage {
+    doLast {
+        file("${buildDir}/jpackage/prettyZoo-${version}.dmg").renameTo("${buildDir}/jpackage/prettyZoo-mac.dmg")
+    }
+}
+
 dependencies {
     compile project(':domain')
     compile project(':spi')
