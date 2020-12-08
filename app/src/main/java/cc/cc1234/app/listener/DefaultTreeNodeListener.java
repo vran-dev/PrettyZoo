@@ -5,6 +5,7 @@ import cc.cc1234.spi.listener.NodeEvent;
 import cc.cc1234.spi.listener.ZookeeperNodeListener;
 import cc.cc1234.spi.node.ZkNode;
 import cc.cc1234.spi.util.PathUtils;
+import javafx.application.Platform;
 import javafx.scene.control.TreeItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,11 +50,13 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
         final String parent = PathUtils.getParent(path);
         final TreeItem<ZkNode> parentItem = treeItemCache.get(event.getServer(), parent);
         final TreeItem<ZkNode> removeItem = treeItemCache.get(event.getServer(), path);
-        parentItem.getChildren().remove(removeItem);
-        treeItemCache.remove(event.getServer(), path);
+        Platform.runLater(() -> {
+            parentItem.getChildren().remove(removeItem);
+            treeItemCache.remove(event.getServer(), path);
 //        totalNodeNum.get(event.getServer()).decrementAndGet();
 //        loadedNodeNum.get(event.getServer()).decrementAndGet();
-        decreaseNumOfChildFiled(path, event);
+            decreaseNumOfChildFiled(path, event);
+        });
     }
 
     @Override
@@ -66,19 +69,21 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
         node.copyField(origin);
 
         final String rootPath = "/";
-        if (path.equals(rootPath)) {
-            final TreeItem<ZkNode> root = treeItemCache.get(event.getServer(), rootPath);
-            root.getValue().copyField(origin);
-            root.setExpanded(true);
-        } else {
-            // fixme numOfChildren of the node should increase manual
-            final TreeItem<ZkNode> treeItem = new TreeItem<>(node);
-            treeItemCache.add(event.getServer(), path, treeItem);
-            final String parent = PathUtils.getParent(path);
-            final TreeItem<ZkNode> parentItem = treeItemCache.get(event.getServer(), parent);
-            parentItem.getChildren().add(treeItem);
-            increaseNumOfChildField(path, event);
-        }
+        Platform.runLater(() -> {
+            if (path.equals(rootPath)) {
+                final TreeItem<ZkNode> root = treeItemCache.get(event.getServer(), rootPath);
+                root.getValue().copyField(origin);
+                root.setExpanded(true);
+            } else {
+                // fixme numOfChildren of the node should increase manual
+                final TreeItem<ZkNode> treeItem = new TreeItem<>(node);
+                treeItemCache.add(event.getServer(), path, treeItem);
+                final String parent = PathUtils.getParent(path);
+                final TreeItem<ZkNode> parentItem = treeItemCache.get(event.getServer(), parent);
+                parentItem.getChildren().add(treeItem);
+                increaseNumOfChildField(path, event);
+            }
+        });
     }
 
 
