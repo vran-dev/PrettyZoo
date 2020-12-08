@@ -16,11 +16,27 @@ jlink {
     launcher {
         name = 'prettyZoo'
     }
+    jpackage {
+        def os = org.gradle.internal.os.OperatingSystem.current()
+        if(os.windows) {
+            installerType = 'exe'
+            installerOptions = [
+                    '--name', 'PrettyZoo',
+                    '--app-version', "${project.version}",
+                    '--description', 'Pretty nice Zookeeper GUI',
+                    '--copyright', 'Copyrigth',
+                    '--vendor', 'vran',
+                    '--win-per-user-install', '--win-dir-chooser',
+                    '--win-shortcut'
+            ]
+        }
+    }
 }
 
 jpackage {
     doLast {
         file("${buildDir}/jpackage/prettyZoo-${version}.dmg").renameTo("${buildDir}/jpackage/prettyZoo-mac.dmg")
+        file("${buildDir}/jpackage/prettyZoo-${version}.exe").renameTo("${buildDir}/jpackage/prettyZoo-win.exe")
     }
 }
 
