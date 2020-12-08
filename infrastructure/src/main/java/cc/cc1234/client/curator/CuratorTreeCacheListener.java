@@ -66,7 +66,5 @@ public class CuratorTreeCacheListener implements TreeCacheListener {
         if (event.getType() == TreeCacheEvent.Type.NODE_UPDATED) {
             listeners.forEach(listener -> listener.onNodeUpdate(new NodeEvent(node, server)));
         }
-
-
     }
 }

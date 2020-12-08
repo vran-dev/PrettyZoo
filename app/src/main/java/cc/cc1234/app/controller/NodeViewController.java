@@ -11,7 +11,6 @@ import cc.cc1234.app.util.VToast;
 import cc.cc1234.app.vo.ZkNodeSearchResult;
 import cc.cc1234.spi.node.ZkNode;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
@@ -56,7 +55,6 @@ public class NodeViewController {
     private NodeInfoViewController nodeInfoViewController = FXMLs.getController("fxml/NodeInfoView.fxml");
 
     private NodeAddViewController nodeAddViewController = FXMLs.getController("fxml/NodeAddView.fxml");
-
 
     @FXML
     public void initialize() {
@@ -106,7 +104,6 @@ public class NodeViewController {
         }
     }
 
-
     public void hideAndThen(Runnable runnable) {
         final StackPane parent = (StackPane) nodeViewPane.getParent();
         if (parent != null) {
@@ -116,7 +113,6 @@ public class NodeViewController {
             runnable.run();
         }
     }
-
 
     private void initSearchTextField() {
         searchTextField.textProperty().addListener((o, old, cur) -> {
@@ -173,15 +169,12 @@ public class NodeViewController {
         zkNodeTreeView.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
-                    synchronized (this) {
-                        nodeAddViewController.hide();
-                        if (newValue != null) {
-                            nodeInfoViewController.show(nodeViewRightPane, newValue.getValue());
-                        }
+                    nodeAddViewController.hide();
+                    if (newValue != null) {
+                        nodeInfoViewController.show(nodeViewRightPane, newValue.getValue());
                     }
                 });
     }
-
 
     private void switchServer(String host) {
 
@@ -214,5 +207,4 @@ public class NodeViewController {
         }
         return treeItemCache.get(host, root);
     }
-
 }
