@@ -25,7 +25,6 @@ public class PrettyZooApplication extends Application {
         v2(primaryStage);
     }
 
-
     @Override
     public void stop() throws Exception {
         super.stop();
@@ -47,7 +46,6 @@ public class PrettyZooApplication extends Application {
         getIconStream().ifPresent(stream -> primaryStage.getIcons().add(new Image(stream)));
         primaryStage.show();
     }
-
 
     private static void initIconImage() {
         getIconStream()
