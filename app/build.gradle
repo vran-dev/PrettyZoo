@@ -18,16 +18,31 @@ jlink {
     }
     jpackage {
         def os = org.gradle.internal.os.OperatingSystem.current()
-        if(os.windows) {
+        installerOptions = [
+                '--name', 'PrettyZoo',
+                '--app-version', "${project.version}",
+                '--description', 'Pretty nice Zookeeper GUI',
+                '--copyright', 'Copyrigth',
+                '--vendor', 'vran'
+        ]
+        if (os.windows) {
             installerType = 'exe'
-            installerOptions = [
-                    '--name', 'PrettyZoo',
-                    '--app-version', "${project.version}",
-                    '--description', 'Pretty nice Zookeeper GUI',
-                    '--copyright', 'Copyrigth',
-                    '--vendor', 'vran',
+            installerOptions += [
                     '--win-per-user-install', '--win-dir-chooser',
                     '--win-shortcut'
+            ]
+        }
+        if (os.macOsX) {
+            installerType = 'dmg'
+            icon = 'src/main/resources/assets/icon/Icon.icns'
+        }
+
+        if (os.linux) {
+            installerType = 'rpm'
+            icon = 'src/main/resources/assets/icon/icon.png'
+            installerOptions += [
+                    '--linux-rpm-license-type', 'GPLv3',
+                    '--linux-shortcut'
             ]
         }
     }
@@ -37,6 +52,7 @@ jpackage {
     doLast {
         file("${buildDir}/jpackage/prettyZoo-${version}.dmg").renameTo("${buildDir}/jpackage/prettyZoo-mac.dmg")
         file("${buildDir}/jpackage/prettyZoo-${version}.exe").renameTo("${buildDir}/jpackage/prettyZoo-win.exe")
+        file("${buildDir}/jpackage/prettyZoo-${version}.rpm").renameTo("${buildDir}/jpackage/prettyZoo-linux.rpm")
     }
 }
 
