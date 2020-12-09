@@ -9,12 +9,18 @@ javafx {
 }
 
 mainClassName = "app.main/cc.cc1234.PrettyZooApplication"
+
+run {
+    jvmArgs = ['-Djdk.gtk.version=2'] // required due to a bug in Java: https://github.com/javafxports/openjdk-jfx/issues/175
+}
+
 jlink {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
     addExtraDependencies("javafx")
     forceMerge("jackson", "log4j-api")
     launcher {
         name = 'prettyZoo'
+        jvmArgs = ['-Djdk.gtk.version=2']
     }
     jpackage {
         def os = org.gradle.internal.os.OperatingSystem.current()
@@ -26,12 +32,14 @@ jlink {
                 '--vendor', 'vran'
         ]
         if (os.windows) {
-            installerType = 'exe'
+            installerType = 'msi'
+            icon = 'src/main/resources/assets/icon/icon.ico'
             installerOptions += [
                     '--win-per-user-install', '--win-dir-chooser',
                     '--win-shortcut'
             ]
         }
+
         if (os.macOsX) {
             installerType = 'dmg'
             icon = 'src/main/resources/assets/icon/Icon.icns'
@@ -51,7 +59,7 @@ jlink {
 jpackage {
     doLast {
         file("${buildDir}/jpackage/prettyZoo-${version}.dmg").renameTo("${buildDir}/jpackage/prettyZoo-mac.dmg")
-        file("${buildDir}/jpackage/prettyZoo-${version}.exe").renameTo("${buildDir}/jpackage/prettyZoo-win.exe")
+        file("${buildDir}/jpackage/prettyZoo-${version}.msi").renameTo("${buildDir}/jpackage/prettyZoo-win.msi")
         file("${buildDir}/jpackage/prettyZoo-${version}.rpm").renameTo("${buildDir}/jpackage/prettyZoo-linux.rpm")
     }
 }
