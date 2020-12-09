@@ -46,9 +46,9 @@ jlink {
         }
 
         if (os.linux) {
-            installerType = 'rpm'
             icon = 'src/main/resources/assets/icon/icon.png'
             installerOptions += [
+                    '--linux-deb-maintainer', 'vran_dev@foxmail.com',
                     '--linux-rpm-license-type', 'GPLv3',
                     '--linux-shortcut'
             ]
@@ -61,6 +61,7 @@ jpackage {
         file("${buildDir}/jpackage/prettyZoo-${version}.dmg").renameTo("${buildDir}/jpackage/prettyZoo-mac.dmg")
         file("${buildDir}/jpackage/prettyZoo-${version}.msi").renameTo("${buildDir}/jpackage/prettyZoo-win.msi")
         file("${buildDir}/jpackage/prettyZoo-${version}.rpm").renameTo("${buildDir}/jpackage/prettyZoo-linux.rpm")
+        file("${buildDir}/jpackage/prettyZoo-${version}.deb").renameTo("${buildDir}/jpackage/prettyZoo-linux.deb")
     }
 }
 
