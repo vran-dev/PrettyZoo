@@ -38,10 +38,12 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
 
     @Override
     public void onNodeUpdate(NodeEvent event) {
-        final String path = event.getNode().getPath();
-        final TreeItem<ZkNode> item = treeItemCache.get(event.getServer(), path);
-        final ZkNode itemValue = item.getValue();
-        itemValue.copyField(event.getNode());
+        Platform.runLater(() -> {
+            final String path = event.getNode().getPath();
+            final TreeItem<ZkNode> item = treeItemCache.get(event.getServer(), path);
+            final ZkNode itemValue = item.getValue();
+            itemValue.copyField(event.getNode());
+        });
     }
 
     @Override
