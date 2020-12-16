@@ -5,16 +5,8 @@ import javafx.scene.control.TreeCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ZkNodeTreeCell extends TreeCell<ZkNode> {
-
-    private static final Logger log = LoggerFactory.getLogger(ZkNodeTreeCell.class);
-
-
-    public ZkNodeTreeCell() {
-    }
 
     @Override
     protected void updateItem(ZkNode item, boolean empty) {
@@ -35,5 +27,4 @@ public class ZkNodeTreeCell extends TreeCell<ZkNode> {
             setText(null);
         }
     }
-
 }

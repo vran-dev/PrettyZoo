@@ -31,5 +31,4 @@ public class ZkServerListCell extends ListCell<ServerConfigVO> {
         String server = item.getZkServer();
         return item.isConnected() ? "√ " + server : "× " + server;
     }
-
 }

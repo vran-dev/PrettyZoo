@@ -50,6 +50,9 @@ public class NodeViewController {
     @FXML
     private Button nodeDeleteButton;
 
+    @FXML
+    private Button disconnectButton;
+
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
     private NodeInfoViewController nodeInfoViewController = FXMLs.getController("fxml/NodeInfoView.fxml");
@@ -75,6 +78,13 @@ public class NodeViewController {
             }
         });
 
+        disconnectButton.setTooltip(new Tooltip("disconnect server"));
+        disconnectButton.setOnAction(e -> {
+            final String server = ActiveServerContext.get();
+            prettyZooFacade.disconnect(server);
+            hideAndThen(() -> VToast.info("disconnect " + server +" success"));
+        });
+
         nodeDeleteButton.setOnMouseClicked(e -> {
             Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
             dialog.setHeaderText("确定要删除该节点吗？");
@@ -94,7 +104,6 @@ public class NodeViewController {
     }
 
     public void show(StackPane parent, String server) {
-
         if (server != null) {
             switchServer(server);
         }
@@ -129,10 +138,8 @@ public class NodeViewController {
                     searchResultList.setVisible(false);
                 }
             }
-
         });
     }
-
 
     private void initSearchResultList() {
         searchResultList.setCellFactory(callback -> new ListCell<ZkNodeSearchResult>() {
@@ -177,16 +184,13 @@ public class NodeViewController {
     }
 
     private void switchServer(String host) {
-
         try {
-
             log.debug("begin to switch server to {}", host);
             prettyZooFacade.connect(host);
         } catch (Exception e) {
             log.debug("switch server {} failed: {}", host, e.getMessage());
             throw new IllegalStateException(e);
         }
-
 
         zkNodeTreeView.setCellFactory(view -> new ZkNodeTreeCell());
         final TreeItem<ZkNode> root = getOrCreateTreeRoot(host);

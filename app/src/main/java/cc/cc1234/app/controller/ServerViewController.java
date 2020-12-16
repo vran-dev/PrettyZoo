@@ -6,6 +6,7 @@ import cc.cc1234.app.util.FXMLs;
 import cc.cc1234.app.util.Transitions;
 import cc.cc1234.app.util.VToast;
 import cc.cc1234.app.vo.ServerConfigVO;
+import cc.cc1234.spi.listener.ServerListener;
 import com.google.common.base.Strings;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -100,10 +101,6 @@ public class ServerViewController {
         }
 
         if (stackPane.getChildren().contains(serverInfoPane)) {
-//            var scaleTransition = Transitions.scale(serverInfoPane, Duration.millis(500), 1.05, 1.05, 2, true);
-//            scaleTransition.setFromX(1);
-//            scaleTransition.setFromY(1);
-//            scaleTransition.playFromStart();
             Transitions.zoomInY(serverInfoPane).playFromStart();
         } else {
             nodeViewController.hideAndThen(() -> {
@@ -266,6 +263,15 @@ public class ServerViewController {
                 nodeViewController.show(parent, serverConfigVO.getZkServer());
                 parent.getChildren().remove(serverInfoPane);
                 serverConfigVO.setConnected(true);
+                prettyZooFacade.registerServerListener(new ServerListener() {
+                    @Override
+                    public void onClose(String serverHost) {
+                        if (serverHost.equals(serverConfigVO.getZkServer())) {
+                            serverConfigVO.setConnected(false);
+                            prettyZooFacade.removeServerListener(this);
+                        }
+                    }
+                });
             } catch (Exception e) {
                 VToast.error("连接 " + serverConfigVO.getZkServer() + " 失败");
             }

@@ -56,11 +56,11 @@ public class CuratorZookeeperConnection implements ZookeeperConnection<CuratorFr
         getClient().setData().forPath(path, data.getBytes());
     }
 
-
     @Override
     public void close() {
         treeCache.close();
         curatorFramework.close();
+        isSync.set(false);
     }
 
     @Override
