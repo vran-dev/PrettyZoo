@@ -1,21 +1,38 @@
+
+
+![](release/img/icon.png)
+
+![release-version](https://img.shields.io/github/v/release/vran-dev/prettyZoo?include_prereleases&style=for-the-badge) ![downloads](https://img.shields.io/github/downloads/vran-dev/PrettyZoo/total?style=for-the-badge) ![language](https://img.shields.io/github/languages/top/vran-dev/PrettyZoo?style=for-the-badge) ![licence](https://img.shields.io/github/license/vran-dev/PrettyZoo?style=for-the-badge) ![stars](https://img.shields.io/github/stars/vran-dev/PrettyZoo?style=for-the-badge)
+
+
+
 # Language
 
 [中文页面](README_CN.md)
 
+
+
 # What
 
-[PrettyZoo](https://github.com/vran-dev/PrettyZoo) is a GUI for [Zookeeper](https://zookeeper.apache.org/) created by JavaFX and Curator Framework.
- 
-You can download from [Release](https://github.com/vran-dev/PrettyZoo/releases), exe for windows, dmg for mac.
- 
-# Require
+[PrettyZoo](https://github.com/vran-dev/PrettyZoo) is a GUI for [Zookeeper](https://zookeeper.apache.org/) created by JavaFX and Apache Curator Framework.
 
-Nothing, download and run。
+You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/releases),  support
+
+- Windows (msi)
+- Mac (dmg)
+- Linux (rpm & deb)
+
 
 
 # TODO
 
 1. support i18n
+2. Disconnect function
+3. Remote update
+4. Charset switch
+5. Refactor ing......
+
+
 
 # Feature
 
@@ -28,19 +45,40 @@ Nothing, download and run。
 7. Support Config export And import
 
 
+
 # Show
+
+- main view
 
 ![](release/img/main.png)
 
+
+
+- server info
+
 ![](release/img/server.png)
+
+
+
+- node info
 
 ![](release/img/node-list.png)
 
+
+
+- node add
+
 ![](release/img/node-add.png)
 
-# Architecture
 
-![prettyzoo-arch](release/img/prettyzoo-arch.jpg)
 
-![image-20191230163721866](release/img/prettyzoo-arch2.png)
+- node search
+
+![](release/img/node-search.png)
+
+
+
+## Thanks
+
+- [ZooKeeper GUI 客户端](http://vip.iocoder.cn/Zookeeper/PrettyZoo/)  by 「芋道源码」
 
