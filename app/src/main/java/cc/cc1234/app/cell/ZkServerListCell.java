@@ -6,7 +6,6 @@ import javafx.beans.binding.StringBinding;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 
-
 public class ZkServerListCell extends ListCell<ServerConfigVO> {
 
     @Override

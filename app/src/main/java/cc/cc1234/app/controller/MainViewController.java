@@ -113,12 +113,11 @@ public class MainViewController {
             return cell;
         });
         var selectedItemProperty = serverListView.getSelectionModel().selectedItemProperty();
-        selectedItemProperty
-                .addListener((observable, oldValue, newValue) -> {
-                    if (oldValue != null) {
-                        oldValue.unbind();
-                    }
-                });
+        selectedItemProperty.addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null) {
+                oldValue.unbind();
+            }
+        });
     }
 
 }

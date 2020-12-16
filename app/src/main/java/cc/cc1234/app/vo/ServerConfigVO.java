@@ -133,7 +133,4 @@ public class ServerConfigVO {
     public void setRemoteServer(String remoteServer) {
         this.remoteServer.set(remoteServer);
     }
-
-
-
 }

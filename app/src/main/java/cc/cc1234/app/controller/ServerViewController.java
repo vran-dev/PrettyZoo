@@ -85,21 +85,31 @@ public class ServerViewController {
 
     public void show(StackPane stackPane, ServerConfigVO config) {
         if (config == null) {
-            propertyReset();
-            zkServer.setEditable(true);
-            buttonHBox.getChildren().remove(deleteButton);
-            buttonHBox.getChildren().remove(connectButton);
+            showNewServerView(stackPane);
+        } else if (config.isConnected()) {
+            showNodeListView(stackPane, config);
         } else {
-            connectButton.setOnMouseClicked(e -> onConnect(stackPane, config));
-            propertyBind(config);
-            zkServer.setEditable(false);
-            showConnectAndSaveButton();
-            if (config.isConnected()) {
-                onConnect(stackPane, config);
-                return;
-            }
+            showServerInfoView(stackPane, config);
         }
+    }
 
+    private void showNewServerView(StackPane stackPane) {
+        zkServer.setEditable(true);
+        buttonHBox.getChildren().remove(deleteButton);
+        buttonHBox.getChildren().remove(connectButton);
+        propertyReset();
+        switchIfNecessary(stackPane);
+    }
+
+    private void showServerInfoView(StackPane stackPane, ServerConfigVO config) {
+        zkServer.setEditable(false);
+        connectButton.setOnMouseClicked(e -> onConnect(stackPane, config));
+        propertyBind(config);
+        showConnectAndSaveButton();
+        switchIfNecessary(stackPane);
+    }
+
+    private void switchIfNecessary(StackPane stackPane) {
         if (stackPane.getChildren().contains(serverInfoPane)) {
             Transitions.zoomInY(serverInfoPane).playFromStart();
         } else {
@@ -109,6 +119,10 @@ public class ServerViewController {
                 Transitions.zoomInY(serverInfoPane).playFromStart();
             });
         }
+    }
+
+    private void showNodeListView(StackPane stackPane, ServerConfigVO config) {
+        onConnect(stackPane, config);
     }
 
     private void showConnectAndSaveButton() {
@@ -145,11 +159,7 @@ public class ServerViewController {
     public void hide() {
         final StackPane parent = (StackPane) serverInfoPane.getParent();
         if (parent != null) {
-            Transitions
-                    .zoomOut(serverInfoPane, e -> {
-                        parent.getChildren().remove(serverInfoPane);
-                    })
-                    .playFromStart();
+            Transitions.zoomOut(serverInfoPane, e -> parent.getChildren().remove(serverInfoPane)).playFromStart();
         }
     }
 

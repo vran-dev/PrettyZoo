@@ -11,7 +11,6 @@ import javafx.util.Duration;
 
 public class Transitions {
 
-
     public static ScaleTransition scale(Node node) {
         return scale(node, Duration.millis(800), null);
     }
@@ -141,7 +140,6 @@ public class Transitions {
         return zoom(node, Duration.millis(500), 1, 1, 0, 0, 1, false, finishedEvent);
     }
 
-
     public static ScaleTransition zoom(Node node,
                                        Duration duration,
                                        double fromX,
@@ -166,6 +164,4 @@ public class Transitions {
         return zoom(node, Duration.millis(500), 1, 1, 1.2, 1.2, 2, true, e -> {
         });
     }
-
-
 }
