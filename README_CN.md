@@ -1,14 +1,32 @@
+![](release/img/icon.png)
+
+![release-version](https://img.shields.io/github/v/release/vran-dev/prettyZoo?include_prereleases&style=for-the-badge) ![downloads](https://img.shields.io/github/downloads/vran-dev/PrettyZoo/total?style=for-the-badge) ![language](https://img.shields.io/github/languages/top/vran-dev/PrettyZoo?style=for-the-badge) ![licence](https://img.shields.io/github/license/vran-dev/PrettyZoo?style=for-the-badge) ![stars](https://img.shields.io/github/stars/vran-dev/PrettyZoo?style=for-the-badge)
+
+
+
 # 语言
 
-[英文页面](README.md)
+[English](README.md)
 
-# What
 
-PrettyZoo 是一个基于 Apache Curator 和 JavaFX 实现的 Zookeeper 图形化管理客户端。
 
-基于 JDK11 实现，采用了 Java 最新的模块化打包技术，无需安装 Java 运行环境即可运行。
+# 介绍
 
-点击进入 [下载地址](https://github.com/vran-dev/PrettyZoo/releases) (windows 下载 exe， mac 下载 dmg)
+[PrettyZoo](https://github.com/vran-dev/PrettyZoo) 是一个基于 Apache Curator 和 JavaFX 实现的 Zookeeper 图形化管理客户端。
+
+使用了 Java 的模块化（Jigsaw）技术，并基于 JPackage 打包了多平台的可运行文件（无需要额外安装 Java 运行时）。
+
+目前已提供了 mac（dmg 文件）、Linux（deb 和 rpm 文件）、windows（msi 文件） 的安装包，[下载地址](https://github.com/vran-dev/PrettyZoo/releases)。
+
+
+
+# MAC 安装问题
+
+mac 安装提示：已损坏，无法打开
+
+请参考 https://www.macwk.com/article/mac-catalina-1015-file-damage  解决
+
+本质是因为安装包打包时没有加入 apple 平台的签名，我会在后续寻找解决方案
 
 
 
@@ -16,36 +34,67 @@ PrettyZoo 是一个基于 Apache Curator 和 JavaFX 实现的 Zookeeper 图形�
 
 1、支持国际化
 
+2、支持在线更新
+
+3、支持断开连接
+
+4、支持数据字符集切换
+
+5、重构 ......
+
+
+
 # 特性
 
 1、可同时管理多个 zookeeper 连接
 
 2、节点数据实时同步
 
-3、<del>支持递归和非递归模式操作（默认非递归模式，只能删除或增加无子节点的节点）</del> (0.3.0 默认递归操作)
+3、支持节点增删改查
 
-4、支持节点搜索，高亮
+4、支持简单的 ACL，以及 ACL 语法检查
 
-5、支持简单的 ACL，以及 ACL 语法检查
+5、支持 SSH Tunnel
 
-6、支持 SSH Tunnel
+6、支持配置导入和导出
 
-7、支持配置导入和导出
+
 
 # 界面展示
 
+
+
+- 主页面
+
 ![](release/img/main.png)
+
+
+
+- server 配置
 
 ![](release/img/server.png)
 
+
+
+- 节点详情页面
+
 ![](release/img/node-list.png)
+
+
+
+- 创建节点
 
 ![](release/img/node-add.png)
 
 
-# 代码架构图
+
+- 节点搜索
+
+![](release/img/node-search.png)
 
 
-![prettyzoo-arch](release/img/prettyzoo-arch.jpg)
 
-![image-20191230163721866](release/img/prettyzoo-arch2.png)
+# 感谢
+
+- 感谢「芋道源码」对 PrettyZoo 的推荐: [ZooKeeper GUI 客户端](http://vip.iocoder.cn/Zookeeper/PrettyZoo/)
+
