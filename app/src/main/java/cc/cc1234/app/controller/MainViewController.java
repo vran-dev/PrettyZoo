@@ -1,6 +1,7 @@
 package cc.cc1234.app.controller;
 
 import cc.cc1234.app.cell.ZkServerListCell;
+import cc.cc1234.app.context.HostServiceContext;
 import cc.cc1234.app.context.PrimaryStageContext;
 import cc.cc1234.app.context.RootPaneContext;
 import cc.cc1234.app.util.FXMLs;
@@ -9,10 +10,7 @@ import cc.cc1234.app.vo.PrettyZooConfigVO;
 import cc.cc1234.app.vo.ServerConfigVO;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SplitPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -53,6 +51,9 @@ public class MainViewController {
     @FXML
     private Button importButton;
 
+    @FXML
+    private Label newVersionLabel;
+
     private ServerViewController serverViewController = FXMLs.getController("fxml/ServerView.fxml");
 
 
@@ -68,6 +69,7 @@ public class MainViewController {
         RootPaneContext.set(rootStackPane);
         exportButton.setOnMouseClicked(e -> onExportAction());
         importButton.setOnMouseClicked(e -> onImportAction());
+        newVersionLabel.setOnMouseClicked(e -> HostServiceContext.jumpToReleases());
     }
 
     private void onExportAction() {
@@ -97,7 +99,6 @@ public class MainViewController {
         });
     }
 
-
     private void showServerInfoView() {
         serverListView.itemsProperty().set(prettyZooConfigVO.getServers());
         serverListView.setCellFactory(cellCallback -> {
@@ -120,4 +121,12 @@ public class MainViewController {
         });
     }
 
+    public StackPane getRootStackPane() {
+        return rootStackPane;
+    }
+
+    public void showNewVersionLabel(String newVersion) {
+        newVersionLabel.setVisible(true);
+        newVersionLabel.setTooltip(new Tooltip("最新版 " + newVersion + "已发布"));
+    }
 }

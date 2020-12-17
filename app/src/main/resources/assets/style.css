@@ -246,7 +246,6 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-border-color: transparent;
-    -fx-background-radius: transparent;
     -fx-background-color: transparent;
     -fx-border-radius: 25;
     -fx-background-size: 22;
@@ -829,4 +828,18 @@
     -fx-border-color: #a0a0a0;
     -fx-border-radius: 0;
     -fx-background-radius: 0;
+}
+
+
+.new-version {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/new.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 30;
+    -fx-pref-height: 28;
+    -fx-pref-width: 40;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
 }
