@@ -33,6 +33,7 @@
                         <Insets left="10.0" top="1.0" />
                      </padding>
                   </HBox>
+                  <Label fx:id="newVersionLabel" layoutX="142.0" layoutY="14.0" styleClass="new-version" visible="false" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
                </children>
             </AnchorPane>
             <StackPane fx:id="mainRightPane" style="-fx-background-color: F4F8FB;">

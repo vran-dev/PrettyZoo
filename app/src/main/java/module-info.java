@@ -10,4 +10,7 @@ open module app.main {
     requires domain.main;
     requires spi.main;
     requires java.desktop;
+    requires java.net.http;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
 }
