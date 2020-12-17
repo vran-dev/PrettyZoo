@@ -65,6 +65,4 @@ public class PathUtils {
         }
         return path.substring(0, offset);
     }
-
-
 }

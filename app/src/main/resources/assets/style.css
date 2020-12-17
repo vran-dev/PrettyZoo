@@ -241,6 +241,37 @@
     -fx-border-color: #EEE;
 }
 
+.disconnect-button:hover {
+    -fx-background-image: url("img/disconnect-hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-radius: transparent;
+    -fx-background-color: transparent;
+    -fx-border-radius: 25;
+    -fx-background-size: 22;
+    -fx-pref-height: 25;
+    -fx-pref-width: 25;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.disconnect-button {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/disconnect.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-border-radius: 25;
+    -fx-background-size: 22;
+    -fx-pref-height: 25;
+    -fx-pref-width: 25;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
 .import-button {
     -fx-background-image: url("img/menu/import.png");
     -fx-background-color: transparent;

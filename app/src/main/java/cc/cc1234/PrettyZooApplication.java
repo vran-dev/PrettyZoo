@@ -28,7 +28,7 @@ public class PrettyZooApplication extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-        facade.close();
+        facade.closeAll();
     }
 
     public static void main(String[] args) {

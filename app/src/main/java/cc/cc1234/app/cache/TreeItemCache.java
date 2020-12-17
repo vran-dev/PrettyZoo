@@ -29,7 +29,6 @@ public class TreeItemCache {
         return treeItemCache.containsKey(server);
     }
 
-
     public boolean hasNode(String server, String path) {
         return hasServer(server) && get(server, path) != null;
     }

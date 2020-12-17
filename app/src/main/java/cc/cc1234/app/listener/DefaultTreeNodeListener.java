@@ -1,6 +1,7 @@
 package cc.cc1234.app.listener;
 
 import cc.cc1234.app.cache.TreeItemCache;
+import cc.cc1234.manager.ZookeeperConnectionManager;
 import cc.cc1234.spi.listener.NodeEvent;
 import cc.cc1234.spi.listener.ZookeeperNodeListener;
 import cc.cc1234.spi.node.ZkNode;
@@ -23,6 +24,8 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
 
     private TreeItemCache treeItemCache = TreeItemCache.getInstance();
 
+    private ZookeeperConnectionManager connectionManager = ZookeeperConnectionManager.instance();
+
     public Set<String> completed = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     // TODO
@@ -35,6 +38,10 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
     public DefaultTreeNodeListener() {
     }
 
+    @Override
+    public void disConnect(String server) {
+        log.warn(server + " is disconnected");
+    }
 
     @Override
     public void onNodeUpdate(NodeEvent event) {
@@ -88,7 +95,6 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
         });
     }
 
-
     private void increaseNumOfChildField(String node, NodeEvent event) {
         if (skip(node, event)) {
             return;
@@ -120,5 +126,4 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
     private boolean skip(String node, NodeEvent event) {
         return !completed.contains(event.getServer()) || Objects.equals(node, "/");
     }
-
 }

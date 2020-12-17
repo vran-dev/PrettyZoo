@@ -49,5 +49,4 @@ public class Checkers {
         // TODO check acl pattern
         return false;
     }
-
 }

@@ -26,5 +26,4 @@ public class FXMLs {
             throw new IllegalStateException(e);
         }
     }
-
 }
