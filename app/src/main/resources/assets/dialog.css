@@ -1,0 +1,66 @@
+.dialog {
+    -fx-background-color: #f7f7f7;
+    -fx-effect: dropshadow(three-pass-box, #777575, 20, 0.5, 1.2, 1.3);
+}
+
+.confirm-button {
+    -fx-background-color: #F27C7C;
+    -fx-border-color: transparent;
+    -fx-text-fill: #FFF;
+}
+
+.confirm-button:hover {
+    -fx-background-color: #ea9898;
+    -fx-border-color: transparent;
+    -fx-text-fill: #FFF;
+}
+
+.cancel-button {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #f5f4f4;
+    -fx-border-width: 1;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #EEE;
+    -fx-border-color: #DDD;
+    -fx-border-width: 1;
+}
+
+.close-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: #F27C7C;
+}
+
+.close-button:hover {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: red;
+}
+
+
+.content {
+    -fx-border-color: #f7f7f7;
+    -fx-background-insets: 0;
+    -fx-background-color: #f7f7f7;
+    -fx-border-width: 0;
+    -fx-padding: 5, 10, 5, 10;
+}
+
+.content .content {
+    -fx-background-color: #f7f7f7;
+}
+
+.content:focused .content {
+    -fx-background-color: #f7f7f7;
+}
+
+.title {
+    -fx-text-alignment: center;
+    -fx-text-fill: #F27C7C;
+    -fx-font-weight: bold;
+    -fx-font-size: 16;
+    -fx-background-color: #FFF;
+    -fx-border-color: #FFFFFF;
+}

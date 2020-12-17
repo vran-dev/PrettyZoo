@@ -3,6 +3,7 @@ package cc.cc1234.app.controller;
 import cc.cc1234.app.cache.TreeItemCache;
 import cc.cc1234.app.cell.ZkNodeTreeCell;
 import cc.cc1234.app.context.ActiveServerContext;
+import cc.cc1234.app.dialog.Dialog;
 import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.listener.DefaultTreeNodeListener;
 import cc.cc1234.app.util.FXMLs;
@@ -82,24 +83,19 @@ public class NodeViewController {
         disconnectButton.setOnAction(e -> {
             final String server = ActiveServerContext.get();
             prettyZooFacade.disconnect(server);
-            hideAndThen(() -> VToast.info("disconnect " + server +" success"));
+            hideAndThen(() -> VToast.info("disconnect " + server + " success"));
         });
 
         nodeDeleteButton.setOnMouseClicked(e -> {
-            Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
-            dialog.setHeaderText("确定要删除该节点吗？");
-            dialog.setContentText("该操作将删除该节点及其对应的子节点，操作不可恢复，请谨慎执行");
-            dialog.showAndWait()
-                    .filter(response -> response == ButtonType.OK)
-                    .ifPresent(response -> {
-                        final String path = zkNodeTreeView.getSelectionModel().getSelectedItem().getValue().getPath();
-                        try {
-                            prettyZooFacade.deleteNode(ActiveServerContext.get(), path, true);
-                            VToast.info("delete success");
-                        } catch (Exception exception) {
-                            VToast.error("delete failed:" + exception.getMessage());
-                        }
-                    });
+            final String path = zkNodeTreeView.getSelectionModel().getSelectedItem().getValue().getPath();
+            Dialog.confirm("删除节点", "该操作将删除 " + path + " 该节点及其对应的子节点，操作不可恢复，请谨慎执行", () -> {
+                try {
+                    prettyZooFacade.deleteNode(ActiveServerContext.get(), path, true);
+                    VToast.info("delete success");
+                } catch (Exception exception) {
+                    VToast.error("delete failed:" + exception.getMessage());
+                }
+            });
         });
     }
 
