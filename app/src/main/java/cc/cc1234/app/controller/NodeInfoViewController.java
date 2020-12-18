@@ -84,7 +84,6 @@ public class NodeInfoViewController {
         show(parent, null);
     }
 
-
     public void show(StackPane parent, ZkNode zkNode) {
 
         if (!parent.getChildren().contains(nodeInfoPane)) {
@@ -97,7 +96,6 @@ public class NodeInfoViewController {
             initTextField(zkNode);
         }
     }
-
 
     private void initTextField(ZkNode node) {
         dataField.setText(node.getData());
@@ -130,5 +128,4 @@ public class NodeInfoViewController {
         cVersionField.clear();
         pathField.clear();
     }
-
 }

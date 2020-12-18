@@ -60,8 +60,6 @@ public class PrettyZooConfigService {
                             .forEach(listener -> listener.onServerAdd(serverConfig));
                     return true;
                 });
-
-
     }
 
     public void add(ServerConfig zkServerConfig) {
@@ -90,17 +88,6 @@ public class PrettyZooConfigService {
                 ListenerManager.instance()
                         .getPrettyZooConfigChangeListeners()
                         .forEach(listener -> listener.onServerRemove(removedConfig)));
-    }
-
-    public void increaseConnectTimes(String host) {
-        final RootConfig config = load();
-        config.getServers()
-                .stream()
-                .filter(s -> s.getHost().equals(host))
-                .findFirst()
-                .ifPresent(exists -> {
-                    exists.setConnectTimes(exists.getConnectTimes() + 1);
-                });
     }
 
     public boolean contains(String host) {

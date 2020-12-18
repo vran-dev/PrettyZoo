@@ -20,5 +20,4 @@ public class PathConcat {
 
         return parent + "/" + child;
     }
-
 }

@@ -3,8 +3,8 @@ package cc.cc1234.app.facade;
 import cc.cc1234.app.cache.TreeItemCache;
 import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.util.Fills;
-import cc.cc1234.app.vo.ZkNodeSearchResult;
 import cc.cc1234.app.vo.ServerConfigVO;
+import cc.cc1234.app.vo.ZkNodeSearchResult;
 import cc.cc1234.manager.ListenerManager;
 import cc.cc1234.manager.SSHTunnelManager;
 import cc.cc1234.manager.ZookeeperConnectionManager;
@@ -14,9 +14,11 @@ import cc.cc1234.spi.config.model.SSHTunnelConfig;
 import cc.cc1234.spi.config.model.ServerConfig;
 import cc.cc1234.spi.connection.ZookeeperConnection;
 import cc.cc1234.spi.listener.PrettyZooConfigChangeListener;
+import cc.cc1234.spi.listener.ServerListener;
 import cc.cc1234.spi.listener.ZookeeperNodeListener;
 import cc.cc1234.spi.node.NodeMode;
 import com.google.common.base.Strings;
+import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -50,10 +52,6 @@ public class PrettyZooFacade {
         connectionManager.getConnection(server).create(path, data, recursive, mode.createMode());
     }
 
-    public void setData(String server, String path, String data) throws Exception {
-        connectionManager.getConnection(server).setData(path, data);
-    }
-
     public void deleteNode(String server, String path, boolean recursive) {
         try {
             connectionManager.getConnection(server).delete(path, recursive);
@@ -76,12 +74,7 @@ public class PrettyZooFacade {
         return CompletableFuture
                 .runAsync(() -> {
                     if (config.getSshTunnelEnabled()) {
-                        config.getSshTunnelConfig()
-                                .map(sshTunnelConfig -> {
-                                    sshTunnelManager.forwarding(sshTunnelConfig);
-                                    return true;
-                                })
-                                .orElse(false);
+                        config.getSshTunnelConfig().ifPresent(sshTunnelManager::forwarding);
                     }
                 })
                 .thenApply(res -> {
@@ -96,15 +89,17 @@ public class PrettyZooFacade {
                 .get();
     }
 
-    public void increaseConnectTimes(String host) {
-        configService.increaseConnectTimes(host);
+    public void disconnect(String host) {
+        final ServerConfig serverConfig = configService.get(host).orElseThrow();
+        Platform.runLater(() -> {
+            sshTunnelManager.close(serverConfig);
+            connectionManager.close(host);
+            treeItemCache.remove(host);
+            listenerManager.getServerListeners().forEach(listener -> listener.onClose(host));
+        });
     }
 
-    private void close(String server) {
-        connectionManager.getConnectionOpt(server).ifPresent(ZookeeperConnection::close);
-    }
-
-    public void close() {
+    public void closeAll() {
         connectionManager.closeAll();
         listenerManager.clear();
         sshTunnelManager.closeAll();
@@ -165,6 +160,10 @@ public class PrettyZooFacade {
         listenerManager.add(listener);
     }
 
+    public void registerServerListener(ServerListener listener) {
+        listenerManager.add(listener);
+    }
+
     public void exportConfig(File file) {
         configService.export(file);
     }
@@ -205,5 +204,9 @@ public class PrettyZooFacade {
         } catch (Exception e) {
             errorCallback.accept(e);
         }
+    }
+
+    public void removeServerListener(ServerListener serverListener) {
+        listenerManager.remove(serverListener);
     }
 }

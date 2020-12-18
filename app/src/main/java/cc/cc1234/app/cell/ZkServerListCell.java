@@ -6,7 +6,6 @@ import javafx.beans.binding.StringBinding;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 
-
 public class ZkServerListCell extends ListCell<ServerConfigVO> {
 
     @Override
@@ -31,5 +30,4 @@ public class ZkServerListCell extends ListCell<ServerConfigVO> {
         String server = item.getZkServer();
         return item.isConnected() ? "√ " + server : "× " + server;
     }
-
 }

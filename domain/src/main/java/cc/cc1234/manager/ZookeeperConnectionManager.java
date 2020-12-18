@@ -43,6 +43,13 @@ public class ZookeeperConnectionManager {
         connectionsMap.values().forEach(ZookeeperConnection::close);
     }
 
+    public void close(String server) {
+        final ZookeeperConnection conn = connectionsMap.remove(server);
+        if (conn != null) {
+            conn.close();
+        }
+    }
+
     public ZookeeperConnection connect(ServerConfig serverConfig) throws Exception {
         if (connectionsMap.containsKey(serverConfig.getHost())) {
             return connectionsMap.get(serverConfig.getHost());

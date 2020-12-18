@@ -75,3 +75,34 @@ dependencies {
 configJavafxRun {
     dependsOn classes
 }
+
+task updateVersion {
+    def versionFileDir = projectDir.getAbsolutePath() + '/src/main/java/cc/cc1234/version/Version.java'
+    def oldVersionStr = findOldVersionStr(versionFileDir)
+    def newVersionValue = version.toString().split("-")[0]
+    def newVersionStr = "    public static final String VERSION = \"" + newVersionValue + "\";"
+    //旧版本和新版本不一样, 进行替换
+    if (!oldVersionStr.toString().trim().equals(newVersionStr.trim())) {
+        def updatedContent = new File(versionFileDir).getText('UTF-8').replaceAll(oldVersionStr, newVersionStr)
+        new File(versionFileDir).write(updatedContent, 'UTF-8')
+    }
+}
+
+def findOldVersionStr(path) {
+    def readerString = ""
+    new File(path).withReader('UTF-8') { reader ->
+        reader.eachLine {
+            //读取一行，如果发现有"VERSION"字符，说明是我们要修改的那一行。
+            if (it.contains("VERSION")) {
+                //保存it到string，然后返回
+                readerString <<= it
+                return readerString
+            }
+        }
+        return readerString
+    }
+}
+
+compileJava {
+    dependsOn updateVersion
+}

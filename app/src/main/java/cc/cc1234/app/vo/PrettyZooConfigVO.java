@@ -125,7 +125,6 @@ public class PrettyZooConfigVO {
         prettyZooFacade.exportConfig(file);
     }
 
-
     public ObservableList<ServerConfigVO> getServers() {
         return servers;
     }
