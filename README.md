@@ -32,8 +32,9 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 1. support i18n
 2. <del> Disconnect function </del> v1.1.0
 3. <del> Remote update </del> v1.1.0
-4. Charset switch
-5. Refactor ing......
+4. support command operation 
+5. Charset switch
+6. Refactor ing......
 
 
 
