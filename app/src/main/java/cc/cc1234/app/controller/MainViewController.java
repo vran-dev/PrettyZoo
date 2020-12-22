@@ -4,25 +4,26 @@ import cc.cc1234.app.cell.ZkServerListCell;
 import cc.cc1234.app.context.HostServiceContext;
 import cc.cc1234.app.context.PrimaryStageContext;
 import cc.cc1234.app.context.RootPaneContext;
+import cc.cc1234.app.dialog.Dialog;
+import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.util.FXMLs;
 import cc.cc1234.app.util.VToast;
 import cc.cc1234.app.vo.PrettyZooConfigVO;
 import cc.cc1234.app.vo.ServerConfigVO;
+import cc.cc1234.version.Version;
+import cc.cc1234.version.VersionChecker;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
 public class MainViewController {
-
-    private static final Logger log = LoggerFactory.getLogger(MainViewController.class);
 
     @FXML
     private StackPane rootStackPane;
@@ -56,17 +57,14 @@ public class MainViewController {
 
     private ServerViewController serverViewController = FXMLs.getController("fxml/ServerView.fxml");
 
-
     private PrettyZooConfigVO prettyZooConfigVO = new PrettyZooConfigVO();
 
     @FXML
     private void initialize() {
-        showServerInfoView();
-        serverAddButton.setOnMouseClicked(event -> {
-            serverViewController.show(mainRightPane);
-        });
-
+        initServerListView();
         RootPaneContext.set(rootStackPane);
+        mainRightPane.setPadding(new Insets(30, 30, 30, 30));
+        serverAddButton.setOnMouseClicked(event -> serverViewController.show(mainRightPane));
         exportButton.setOnMouseClicked(e -> onExportAction());
         importButton.setOnMouseClicked(e -> onImportAction());
         newVersionLabel.setOnMouseClicked(e -> HostServiceContext.jumpToReleases());
@@ -77,46 +75,28 @@ public class MainViewController {
         fileChooser.setTitle("Choose your target directory");
         fileChooser.setInitialFileName("prettyZoo-config");
         var file = fileChooser.showSaveDialog(PrimaryStageContext.get());
-        Platform.runLater(() -> {
-            try {
-                prettyZooConfigVO.export(file);
-            } catch (Exception e) {
-                VToast.error(e.getMessage());
-            }
-        });
+        Platform.runLater(() -> Try.of(() -> prettyZooConfigVO.export(file))
+                .onFailure(e -> VToast.error(e.getMessage())));
     }
 
     private void onImportAction() {
         var fileChooser = new FileChooser();
         fileChooser.setTitle("Choose config file");
         File configFile = fileChooser.showOpenDialog(PrimaryStageContext.get());
-        Platform.runLater(() -> {
-            try {
-                prettyZooConfigVO.importConfig(configFile);
-            } catch (Exception e) {
-                VToast.error("Failed to load config, file is not support");
-            }
-        });
+        Try.of(() -> prettyZooConfigVO.importConfig(configFile))
+                .onFailure(e -> Platform.runLater(() -> VToast.error("Failed to load config, file is not support")));
     }
 
-    private void showServerInfoView() {
+    private void initServerListView() {
         serverListView.itemsProperty().set(prettyZooConfigVO.getServers());
-        serverListView.setCellFactory(cellCallback -> {
-            final ZkServerListCell cell = new ZkServerListCell();
-            cell.setOnMouseClicked(e -> {
-                final ListCell<ServerConfigVO> serverCell = ((ListCell<ServerConfigVO>) e.getSource());
-                var vo = serverCell.getItem();
-                if (vo != null) {
-                    serverViewController.show(mainRightPane, vo);
-                }
-                e.consume();
-            });
-            return cell;
-        });
+        serverListView.setCellFactory(cellCallback -> new ZkServerListCell());
         var selectedItemProperty = serverListView.getSelectionModel().selectedItemProperty();
         selectedItemProperty.addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
                 oldValue.unbind();
+            }
+            if (newValue != null) {
+                serverViewController.show(mainRightPane, newValue);
             }
         });
     }
@@ -125,8 +105,13 @@ public class MainViewController {
         return rootStackPane;
     }
 
-    public void showNewVersionLabel(String newVersion) {
-        newVersionLabel.setVisible(true);
-        newVersionLabel.setTooltip(new Tooltip("最新版 " + newVersion + "已发布"));
+    public void showNewVersionLabel() {
+        VersionChecker.hasNewVersion(latestVersion -> {
+            final String content = String.format("你当前使用的是 %s, 目前最新版本为 %s, 请前往 Github 下载",
+                    Version.VERSION, latestVersion);
+            newVersionLabel.setVisible(true);
+            newVersionLabel.setTooltip(new Tooltip("最新版 " + latestVersion + "已发布"));
+            Dialog.confirm("升级提醒", content, HostServiceContext::jumpToReleases);
+        });
     }
 }

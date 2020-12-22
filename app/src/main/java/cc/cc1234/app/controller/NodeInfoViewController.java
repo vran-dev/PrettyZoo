@@ -2,7 +2,6 @@ package cc.cc1234.app.controller;
 
 import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.facade.PrettyZooFacade;
-import cc.cc1234.app.util.Transitions;
 import cc.cc1234.app.util.VToast;
 import cc.cc1234.spi.node.ZkNode;
 import javafx.fxml.FXML;
@@ -85,7 +84,6 @@ public class NodeInfoViewController {
     }
 
     public void show(StackPane parent, ZkNode zkNode) {
-
         if (!parent.getChildren().contains(nodeInfoPane)) {
             parent.getChildren().add(nodeInfoPane);
         }

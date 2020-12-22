@@ -5,6 +5,7 @@ import cc.cc1234.app.cell.ZkNodeTreeCell;
 import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.dialog.Dialog;
 import cc.cc1234.app.facade.PrettyZooFacade;
+import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.listener.DefaultTreeNodeListener;
 import cc.cc1234.app.util.FXMLs;
 import cc.cc1234.app.util.Transitions;
@@ -67,7 +68,7 @@ public class NodeViewController {
 
         initSearchResultList();
         initSearchTextField();
-        registerTreeViewListener();
+        initNodeChangeListener();
 
         nodeAddButton.setOnMouseClicked(e -> {
             final TreeItem<ZkNode> selectedItem = zkNodeTreeView.getSelectionModel().getSelectedItem();
@@ -89,12 +90,9 @@ public class NodeViewController {
         nodeDeleteButton.setOnMouseClicked(e -> {
             final String path = zkNodeTreeView.getSelectionModel().getSelectedItem().getValue().getPath();
             Dialog.confirm("删除节点", "该操作将删除 " + path + " 该节点及其对应的子节点，操作不可恢复，请谨慎执行", () -> {
-                try {
-                    prettyZooFacade.deleteNode(ActiveServerContext.get(), path, true);
-                    VToast.info("delete success");
-                } catch (Exception exception) {
-                    VToast.error("delete failed:" + exception.getMessage());
-                }
+                Try.of(() -> prettyZooFacade.deleteNode(ActiveServerContext.get(), path, true))
+                        .onFailure(exception -> VToast.error("delete failed:" + exception.getMessage()))
+                        .onSuccess(t -> VToast.info("delete success"));
             });
         });
     }
@@ -168,7 +166,7 @@ public class NodeViewController {
         });
     }
 
-    private void registerTreeViewListener() {
+    private void initNodeChangeListener() {
         zkNodeTreeView.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
@@ -185,7 +183,7 @@ public class NodeViewController {
             prettyZooFacade.connect(host);
         } catch (Exception e) {
             log.debug("switch server {} failed: {}", host, e.getMessage());
-            throw new IllegalStateException(e);
+            throw new IllegalStateException("connect to " + host + " failed", e);
         }
 
         zkNodeTreeView.setCellFactory(view -> new ZkNodeTreeCell());
