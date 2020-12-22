@@ -2,6 +2,7 @@ package cc.cc1234.app.controller;
 
 import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.facade.PrettyZooFacade;
+import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.util.PathConcat;
 import cc.cc1234.app.util.Transitions;
 import cc.cc1234.app.util.VToast;
@@ -43,7 +44,6 @@ public class NodeAddViewController {
 
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
-
     @FXML
     private void initialize() {
         cancelButton.setOnMouseClicked(e -> hide());
@@ -64,14 +64,12 @@ public class NodeAddViewController {
     }
 
     public void hide() {
-        Transitions
-                .zoomOutY(nodeAddPane, event -> {
-                    final StackPane parent = (StackPane) nodeAddPane.getParent();
-                    if (parent != null && parent.getChildren().contains(nodeAddPane)) {
-                        parent.getChildren().remove(nodeAddPane);
-                    }
-                })
-                .playFromStart();
+        Transitions.zoomOutY(nodeAddPane, event -> {
+            final StackPane parent = (StackPane) nodeAddPane.getParent();
+            if (parent != null && parent.getChildren().contains(nodeAddPane)) {
+                parent.getChildren().remove(nodeAddPane);
+            }
+        }).playFromStart();
     }
 
     public void onSave() {
@@ -80,13 +78,12 @@ public class NodeAddViewController {
         boolean recursive = true;
         String path = PathConcat.concat(currentPathField.getText(), nodeNameTextField.getText());
         String data = nodeDataTextArea.getText();
-        try {
-            prettyZooFacade.addNode(server, path, data, recursive, mode);
-            hide();
-            VToast.info("success");
-        } catch (Exception e) {
-            VToast.error(e.getMessage());
-        }
+        Try.of(() -> prettyZooFacade.addNode(server, path, data, recursive, mode))
+                .onSuccess(r -> {
+                    hide();
+                    VToast.info("success");
+                })
+                .onFailure(e -> VToast.error(e.getMessage()));
     }
 
     private NodeMode createMode() {

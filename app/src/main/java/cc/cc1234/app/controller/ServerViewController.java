@@ -1,17 +1,16 @@
 package cc.cc1234.app.controller;
 
-import cc.cc1234.app.checker.Checkers;
+import cc.cc1234.app.checker.Asserts;
 import cc.cc1234.app.facade.PrettyZooFacade;
+import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.util.FXMLs;
 import cc.cc1234.app.util.Transitions;
 import cc.cc1234.app.util.VToast;
 import cc.cc1234.app.vo.ServerConfigVO;
 import cc.cc1234.spi.listener.ServerListener;
 import com.google.common.base.Strings;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
@@ -114,7 +113,6 @@ public class ServerViewController {
             Transitions.zoomInY(serverInfoPane).playFromStart();
         } else {
             nodeViewController.hideAndThen(() -> {
-                stackPane.setPadding(new Insets(30, 30, 30, 30));
                 stackPane.getChildren().add(serverInfoPane);
                 Transitions.zoomInY(serverInfoPane).playFromStart();
             });
@@ -151,12 +149,11 @@ public class ServerViewController {
         sshPassword.textProperty().setValue(config.getSshPassword());
         remoteServer.textProperty().setValue(config.getRemoteServer());
         sshTunnelCheckbox.selectedProperty().setValue(config.isSshEnabled());
-
         final String acl = String.join("\n", config.getAclList());
         aclTextArea.textProperty().setValue(acl);
     }
 
-    public void hide() {
+    public void onClose() {
         final StackPane parent = (StackPane) serverInfoPane.getParent();
         if (parent != null) {
             Transitions.zoomOut(serverInfoPane, e -> parent.getChildren().remove(serverInfoPane)).playFromStart();
@@ -166,10 +163,9 @@ public class ServerViewController {
     @FXML
     private void initialize() {
         sshTunnelViewPropertyBind();
-        closeButton.setOnMouseClicked(e -> hide());
+        closeButton.setOnMouseClicked(e -> onClose());
         saveButton.setOnMouseClicked(e -> onSave());
         deleteButton.setOnMouseClicked(e -> onDelete());
-
         serverInfoPane.setEffect(new DropShadow(15, 1, 1, Color.valueOf("#DDD")));
         sshTunnelPane.getChildren().forEach(node -> {
             node.setOnMouseClicked(e -> {
@@ -185,7 +181,6 @@ public class ServerViewController {
                 "digest:test:test\r" +
                 "auth:test:test\r" +
                 "\n");
-
     }
 
     private void sshTunnelViewPropertyBind() {
@@ -198,93 +193,67 @@ public class ServerViewController {
     }
 
     private void onSave() {
-        if (Checkers.isHostNotMatch(zkServer.textProperty().get())) {
-            VToast.error("server must match pattern: [host:port]");
-            return;
-        }
-        if (zkServer.isEditable()) {
-            if (prettyZooFacade.hasServerConfig(zkServer.getText())) {
-                VToast.error(zkServer.getText() + " already exists");
-                return;
+        Try.of(() -> {
+            Asserts.matchHost(zkServer.textProperty().get(), "server must match pattern: [host:port]");
+            Asserts.validAcl(aclTextArea.textProperty().get(), "ACL syntax not support");
+            if (zkServer.isEditable()) {
+                if (prettyZooFacade.hasServerConfig(zkServer.getText())) {
+                    throw new IllegalStateException(zkServer.getText() + " already exists");
+                }
             }
-        }
-
-        if (sshTunnelCheckbox.isSelected()) {
-            if (Checkers.isHostNotMatch(remoteServer.getText())) {
-                VToast.error("remoteServer must match pattern: [host:port]");
-                return;
+            if (sshTunnelCheckbox.isSelected()) {
+                Asserts.matchHost(remoteServer.textProperty().get(), "remoteServer must match pattern: [host:port]");
+                Asserts.notNull(sshUsername.textProperty().get(), "sshUsername cannot be null");
+                Asserts.notNull(sshPassword.textProperty().get(), "sshPassword cannot be null");
+                Asserts.matchHost(sshServer.textProperty().get(), "sshServer must match pattern: [host:port]");
             }
-            if (Checkers.isNull(sshUsername.textProperty().get())) {
-                VToast.error("sshUsername cannot be null");
-                return;
+        }).onSuccess(obj -> {
+            var serverConfigVO = new ServerConfigVO();
+            serverConfigVO.setZkServer(zkServer.textProperty().get());
+            serverConfigVO.setRemoteServer(remoteServer.textProperty().get());
+            serverConfigVO.setSshUsername(sshUsername.textProperty().get());
+            serverConfigVO.setSshPassword(sshPassword.textProperty().get());
+            serverConfigVO.setSshServer(sshServer.textProperty().get());
+            if (sshTunnelCheckbox.isSelected()) {
+                serverConfigVO.setSshEnabled(true);
             }
-            if (Checkers.isNull(sshPassword.textProperty().get())) {
-                VToast.error("sshPassword cannot be null");
-                return;
-            }
-            if (Checkers.isHostNotMatch(sshServer.getText())) {
-                VToast.error("sshServer must match pattern: [host:port]");
-                return;
-            }
-        }
-
-        var serverConfigVO = new ServerConfigVO();
-        serverConfigVO.setZkServer(zkServer.textProperty().get());
-        if (sshTunnelCheckbox.isSelected()) {
-            serverConfigVO.setSshEnabled(true);
-        }
-        serverConfigVO.setRemoteServer(remoteServer.getText());
-        serverConfigVO.setSshUsername(sshUsername.getText());
-        serverConfigVO.setSshPassword(sshPassword.getText());
-        serverConfigVO.setSshServer(sshServer.getText());
-
-        if (Checkers.aclIsInvalid(aclTextArea.getText())) {
-            VToast.error("ACL syntax not support");
-            return;
-        } else {
-            final List<String> acls = Arrays.stream(aclTextArea.getText().split("\n"))
+            List<String> acls = Arrays.stream(aclTextArea.textProperty().get().split("\n"))
                     .filter(acl -> !Strings.isNullOrEmpty(acl))
                     .collect(Collectors.toList());
             serverConfigVO.getAclList().addAll(acls);
-        }
-        prettyZooFacade.saveConfig(serverConfigVO);
-        if (zkServer.isEditable()) {
-            hide();
-        }
-        VToast.info("save success");
+            prettyZooFacade.saveConfig(serverConfigVO);
+            if (zkServer.isEditable()) {
+                onClose();
+            }
+            VToast.info("save success");
+        }).onFailure(ex -> VToast.error(ex.getMessage()));
     }
 
     private void onDelete() {
-        Checkers.ifBlank(zkServer.getText(), () -> {
-            throw new RuntimeException();
-        });
+        Asserts.notBlank(zkServer.getText(), "server can not be null");
         prettyZooFacade.removeConfig(zkServer.getText());
-        hide();
+        if (prettyZooFacade.loadConfig().getServers().isEmpty()) {
+            onClose();
+        }
     }
 
     private void onConnect(StackPane parent, ServerConfigVO serverConfigVO) {
-        if (serverConfigVO == null || !prettyZooFacade.hasServerConfig(serverConfigVO.getZkServer())) {
-            VToast.error("save config first");
-            return;
-        }
+        Try.of(() -> {
+            Asserts.notNull(serverConfigVO, "save config first");
+            Asserts.assertTrue(prettyZooFacade.hasServerConfig(serverConfigVO.getZkServer()), "save config first");
 
-        Platform.runLater(() -> {
-            try {
-                nodeViewController.show(parent, serverConfigVO.getZkServer());
-                parent.getChildren().remove(serverInfoPane);
-                serverConfigVO.setConnected(true);
-                prettyZooFacade.registerServerListener(new ServerListener() {
-                    @Override
-                    public void onClose(String serverHost) {
-                        if (serverHost.equals(serverConfigVO.getZkServer())) {
-                            serverConfigVO.setConnected(false);
-                            prettyZooFacade.removeServerListener(this);
-                        }
+            nodeViewController.show(parent, serverConfigVO.getZkServer());
+            parent.getChildren().remove(serverInfoPane);
+            serverConfigVO.setConnected(true);
+            prettyZooFacade.registerServerListener(new ServerListener() {
+                @Override
+                public void onClose(String serverHost) {
+                    if (serverHost.equals(serverConfigVO.getZkServer())) {
+                        serverConfigVO.setConnected(false);
+                        prettyZooFacade.removeServerListener(this);
                     }
-                });
-            } catch (Exception e) {
-                VToast.error("连接 " + serverConfigVO.getZkServer() + " 失败");
-            }
-        });
+                }
+            });
+        }).onFailure(e -> VToast.error(e.getMessage()));
     }
 }
