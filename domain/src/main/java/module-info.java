@@ -1,6 +1,5 @@
 open module domain.main {
-    exports cc.cc1234.manager;
-    exports cc.cc1234.service;
+    exports cc.cc1234.domain.service;
 
     requires static lombok;
     requires curator.framework;

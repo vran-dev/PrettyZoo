@@ -1,4 +1,4 @@
-package cc.cc1234.app.util;
+package cc.cc1234.app.view.transitions;
 
 import javafx.animation.*;
 import javafx.event.ActionEvent;

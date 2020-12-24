@@ -1,4 +1,4 @@
-package cc.cc1234.app.dialog;
+package cc.cc1234.app.view.dialog;
 
 import cc.cc1234.app.util.FXMLs;
 

@@ -1,4 +1,4 @@
-package cc.cc1234.app.dialog;
+package cc.cc1234.app.view.dialog;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;

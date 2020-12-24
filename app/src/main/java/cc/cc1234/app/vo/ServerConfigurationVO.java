@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class ServerConfigVO {
+public class ServerConfigurationVO {
 
     private SimpleStringProperty zkServer = new SimpleStringProperty("");
 

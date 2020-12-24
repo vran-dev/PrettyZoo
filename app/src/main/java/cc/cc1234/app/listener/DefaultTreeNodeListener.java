@@ -1,7 +1,6 @@
 package cc.cc1234.app.listener;
 
 import cc.cc1234.app.cache.TreeItemCache;
-import cc.cc1234.manager.ZookeeperConnectionManager;
 import cc.cc1234.spi.listener.NodeEvent;
 import cc.cc1234.spi.listener.ZookeeperNodeListener;
 import cc.cc1234.spi.node.ZkNode;
@@ -12,11 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class DefaultTreeNodeListener implements ZookeeperNodeListener {
 
@@ -24,16 +21,7 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
 
     private TreeItemCache treeItemCache = TreeItemCache.getInstance();
 
-    private ZookeeperConnectionManager connectionManager = ZookeeperConnectionManager.instance();
-
     public Set<String> completed = Collections.newSetFromMap(new ConcurrentHashMap<>());
-
-    // TODO
-    private Map<String, AtomicInteger> loadedNodeNum = new ConcurrentHashMap<>();
-
-    // TODO
-    private Map<String, AtomicInteger> totalNodeNum = new ConcurrentHashMap<>();
-
 
     public DefaultTreeNodeListener() {
     }

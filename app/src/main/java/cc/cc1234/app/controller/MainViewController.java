@@ -1,15 +1,17 @@
 package cc.cc1234.app.controller;
 
-import cc.cc1234.app.cell.ZkServerListCell;
+import cc.cc1234.app.view.cell.ZkServerListCell;
 import cc.cc1234.app.context.HostServiceContext;
 import cc.cc1234.app.context.PrimaryStageContext;
 import cc.cc1234.app.context.RootPaneContext;
-import cc.cc1234.app.dialog.Dialog;
+import cc.cc1234.app.view.dialog.Dialog;
+import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.fp.Try;
+import cc.cc1234.app.listener.DefaultConfigurationListener;
 import cc.cc1234.app.util.FXMLs;
-import cc.cc1234.app.util.VToast;
-import cc.cc1234.app.vo.PrettyZooConfigVO;
-import cc.cc1234.app.vo.ServerConfigVO;
+import cc.cc1234.app.view.toast.VToast;
+import cc.cc1234.app.vo.ConfigurationVO;
+import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.version.Version;
 import cc.cc1234.version.VersionChecker;
 import javafx.application.Platform;
@@ -22,6 +24,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.util.List;
 
 public class MainViewController {
 
@@ -38,7 +41,7 @@ public class MainViewController {
     private StackPane mainRightPane;
 
     @FXML
-    private ListView<ServerConfigVO> serverListView;
+    private ListView<ServerConfigurationVO> serverListView;
 
     @FXML
     private HBox serverButtons;
@@ -57,7 +60,7 @@ public class MainViewController {
 
     private ServerViewController serverViewController = FXMLs.getController("fxml/ServerView.fxml");
 
-    private PrettyZooConfigVO prettyZooConfigVO = new PrettyZooConfigVO();
+    private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
     @FXML
     private void initialize() {
@@ -75,7 +78,7 @@ public class MainViewController {
         fileChooser.setTitle("Choose your target directory");
         fileChooser.setInitialFileName("prettyZoo-config");
         var file = fileChooser.showSaveDialog(PrimaryStageContext.get());
-        Platform.runLater(() -> Try.of(() -> prettyZooConfigVO.export(file))
+        Platform.runLater(() -> Try.of(() -> prettyZooFacade.exportConfig(file))
                 .onFailure(e -> VToast.error(e.getMessage())));
     }
 
@@ -83,12 +86,16 @@ public class MainViewController {
         var fileChooser = new FileChooser();
         fileChooser.setTitle("Choose config file");
         File configFile = fileChooser.showOpenDialog(PrimaryStageContext.get());
-        Try.of(() -> prettyZooConfigVO.importConfig(configFile))
+        Try.of(() -> prettyZooFacade.importConfig(configFile))
                 .onFailure(e -> Platform.runLater(() -> VToast.error("Failed to load config, file is not support")));
     }
 
     private void initServerListView() {
-        serverListView.itemsProperty().set(prettyZooConfigVO.getServers());
+        final ConfigurationVO configurationVO = new ConfigurationVO();
+        final DefaultConfigurationListener configurationListener = new DefaultConfigurationListener(configurationVO);
+        final List<ServerConfigurationVO> serverConfigurations = prettyZooFacade.loadConfigs(configurationListener);
+        configurationVO.getServers().addAll(serverConfigurations);
+        serverListView.itemsProperty().set(configurationVO.getServers());
         serverListView.setCellFactory(cellCallback -> new ZkServerListCell());
         var selectedItemProperty = serverListView.getSelectionModel().selectedItemProperty();
         selectedItemProperty.addListener((observable, oldValue, newValue) -> {

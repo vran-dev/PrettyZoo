@@ -2,7 +2,7 @@ package cc.cc1234.app.controller;
 
 import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.facade.PrettyZooFacade;
-import cc.cc1234.app.util.VToast;
+import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.spi.node.ZkNode;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -74,7 +74,7 @@ public class NodeInfoViewController {
                 return;
             }
             final String data = dataField.getText();
-            prettyZooFacade.updateData(path, data, ex -> VToast.error(ex.getMessage()));
+            prettyZooFacade.updateData(ActiveServerContext.get(), path, data, ex -> VToast.error(ex.getMessage()));
             VToast.info("update success");
         });
     }

@@ -3,7 +3,9 @@ package cc.cc1234.spi.listener;
 
 import cc.cc1234.spi.config.model.ServerConfig;
 
-public interface PrettyZooConfigChangeListener {
+import java.util.List;
+
+public interface ConfigurationChangeListener {
 
     default void onServerAdd(ServerConfig serverConfig) {
 
@@ -14,6 +16,10 @@ public interface PrettyZooConfigChangeListener {
     }
 
     default void onServerChange(ServerConfig oldValue, ServerConfig newValue) {
+
+    }
+
+    default void onReload(List<ServerConfig> configs) {
 
     }
 
