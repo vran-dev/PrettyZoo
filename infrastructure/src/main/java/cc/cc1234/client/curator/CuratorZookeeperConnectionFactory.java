@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFactory<CuratorFramework> {
@@ -23,7 +22,7 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
     private static final Logger log = LoggerFactory.getLogger(CuratorZookeeperConnectionFactory.class);
 
     @Override
-    public ZookeeperConnection<CuratorFramework> create(ServerConfig config) throws Exception {
+    public ZookeeperConnection<CuratorFramework> create(ServerConfig config) {
         final RetryOneTime retryPolicy = new RetryOneTime(3000);
         final CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
                 .connectString(config.getHost())
@@ -49,9 +48,13 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
         client.start();
 
         // TODO use async
-        if (!client.blockUntilConnected(5, TimeUnit.SECONDS)) {
-            client.close();
-            throw new TimeoutException("连接超时");
+        try {
+            if (!client.blockUntilConnected(5, TimeUnit.SECONDS)) {
+                client.close();
+                throw new IllegalStateException("连接超时");
+            }
+        } catch (InterruptedException e) {
+            throw new IllegalStateException("连接失败", e);
         }
         return new CuratorZookeeperConnection(client);
     }

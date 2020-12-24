@@ -1,12 +1,12 @@
 package cc.cc1234.app.controller;
 
-import cc.cc1234.app.checker.Asserts;
+import cc.cc1234.app.util.Asserts;
 import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.util.FXMLs;
-import cc.cc1234.app.util.Transitions;
-import cc.cc1234.app.util.VToast;
-import cc.cc1234.app.vo.ServerConfigVO;
+import cc.cc1234.app.view.transitions.Transitions;
+import cc.cc1234.app.view.toast.VToast;
+import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.spi.listener.ServerListener;
 import com.google.common.base.Strings;
 import javafx.beans.binding.Bindings;
@@ -82,7 +82,7 @@ public class ServerViewController {
         show(stackPane, null);
     }
 
-    public void show(StackPane stackPane, ServerConfigVO config) {
+    public void show(StackPane stackPane, ServerConfigurationVO config) {
         if (config == null) {
             showNewServerView(stackPane);
         } else if (config.isConnected()) {
@@ -100,7 +100,7 @@ public class ServerViewController {
         switchIfNecessary(stackPane);
     }
 
-    private void showServerInfoView(StackPane stackPane, ServerConfigVO config) {
+    private void showServerInfoView(StackPane stackPane, ServerConfigurationVO config) {
         zkServer.setEditable(false);
         connectButton.setOnMouseClicked(e -> onConnect(stackPane, config));
         propertyBind(config);
@@ -119,7 +119,7 @@ public class ServerViewController {
         }
     }
 
-    private void showNodeListView(StackPane stackPane, ServerConfigVO config) {
+    private void showNodeListView(StackPane stackPane, ServerConfigurationVO config) {
         onConnect(stackPane, config);
     }
 
@@ -142,7 +142,7 @@ public class ServerViewController {
         aclTextArea.textProperty().setValue("");
     }
 
-    private void propertyBind(ServerConfigVO config) {
+    private void propertyBind(ServerConfigurationVO config) {
         zkServer.textProperty().setValue(config.getZkServer());
         sshServer.textProperty().setValue(config.getSshServer());
         sshUsername.textProperty().setValue(config.getSshUsername());
@@ -208,7 +208,7 @@ public class ServerViewController {
                 Asserts.matchHost(sshServer.textProperty().get(), "sshServer must match pattern: [host:port]");
             }
         }).onSuccess(obj -> {
-            var serverConfigVO = new ServerConfigVO();
+            var serverConfigVO = new ServerConfigurationVO();
             serverConfigVO.setZkServer(zkServer.textProperty().get());
             serverConfigVO.setRemoteServer(remoteServer.textProperty().get());
             serverConfigVO.setSshUsername(sshUsername.textProperty().get());
@@ -232,28 +232,25 @@ public class ServerViewController {
     private void onDelete() {
         Asserts.notBlank(zkServer.getText(), "server can not be null");
         prettyZooFacade.removeConfig(zkServer.getText());
-        if (prettyZooFacade.loadConfig().getServers().isEmpty()) {
+        if (prettyZooFacade.loadConfigs(null).isEmpty()) {
             onClose();
         }
     }
 
-    private void onConnect(StackPane parent, ServerConfigVO serverConfigVO) {
+    private void onConnect(StackPane parent, ServerConfigurationVO serverConfigurationVO) {
         Try.of(() -> {
-            Asserts.notNull(serverConfigVO, "save config first");
-            Asserts.assertTrue(prettyZooFacade.hasServerConfig(serverConfigVO.getZkServer()), "save config first");
-
-            nodeViewController.show(parent, serverConfigVO.getZkServer());
-            parent.getChildren().remove(serverInfoPane);
-            serverConfigVO.setConnected(true);
-            prettyZooFacade.registerServerListener(new ServerListener() {
+            Asserts.notNull(serverConfigurationVO, "save config first");
+            Asserts.assertTrue(prettyZooFacade.hasServerConfig(serverConfigurationVO.getZkServer()), "save config first");
+            nodeViewController.show(parent, serverConfigurationVO.getZkServer(), new ServerListener() {
                 @Override
                 public void onClose(String serverHost) {
-                    if (serverHost.equals(serverConfigVO.getZkServer())) {
-                        serverConfigVO.setConnected(false);
-                        prettyZooFacade.removeServerListener(this);
+                    if (serverHost.equals(serverConfigurationVO.getZkServer())) {
+                        serverConfigurationVO.setConnected(false);
                     }
                 }
             });
+            parent.getChildren().remove(serverInfoPane);
+            serverConfigurationVO.setConnected(true);
         }).onFailure(e -> VToast.error(e.getMessage()));
     }
 }

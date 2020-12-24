@@ -1,26 +1,28 @@
-package cc.cc1234.service;
+package cc.cc1234.domain.service;
 
 import cc.cc1234.config.JsonPrettyZooConfigRepository;
 import cc.cc1234.config.PrettyZooConfigRepositoryCacheWrapper;
-import cc.cc1234.manager.ListenerManager;
 import cc.cc1234.spi.config.PrettyZooConfigRepository;
 import cc.cc1234.spi.config.model.RootConfig;
 import cc.cc1234.spi.config.model.ServerConfig;
+import cc.cc1234.spi.listener.ConfigurationChangeListener;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class PrettyZooConfigService {
+public class ConfigurationDomainService {
 
-    private PrettyZooConfigRepository prettyZooConfigRepository =
-            new PrettyZooConfigRepositoryCacheWrapper(new JsonPrettyZooConfigRepository());
+    private PrettyZooConfigRepository prettyZooConfigRepository = new PrettyZooConfigRepositoryCacheWrapper(new JsonPrettyZooConfigRepository());
+
+    private static final List<ConfigurationChangeListener> CONFIGURATION_CHANGE_LISTENERS = new ArrayList<>();
+
+    public void addListener(ConfigurationChangeListener listener) {
+        CONFIGURATION_CHANGE_LISTENERS.add(listener);
+    }
 
     public RootConfig load() {
         return prettyZooConfigRepository.get();
@@ -49,15 +51,11 @@ public class PrettyZooConfigService {
         // multicast change event
         existsServerConfig
                 .map(oldValue -> {
-                    ListenerManager.instance()
-                            .getPrettyZooConfigChangeListeners()
-                            .forEach(listener -> listener.onServerChange(oldValue, serverConfig));
+                    CONFIGURATION_CHANGE_LISTENERS.forEach(l -> l.onServerChange(oldValue, serverConfig));
                     return true;
                 })
                 .orElseGet(() -> {
-                    ListenerManager.instance()
-                            .getPrettyZooConfigChangeListeners()
-                            .forEach(listener -> listener.onServerAdd(serverConfig));
+                    CONFIGURATION_CHANGE_LISTENERS.forEach(l -> l.onServerAdd(serverConfig));
                     return true;
                 });
     }
@@ -70,9 +68,7 @@ public class PrettyZooConfigService {
         }
         config.getServers().add(zkServerConfig);
         save(config);
-        ListenerManager.instance()
-                .getPrettyZooConfigChangeListeners()
-                .forEach(listener -> listener.onServerAdd(zkServerConfig));
+        CONFIGURATION_CHANGE_LISTENERS.forEach(l -> l.onServerAdd(zkServerConfig));
     }
 
     public void remove(String server) {
@@ -83,11 +79,7 @@ public class PrettyZooConfigService {
                 .collect(Collectors.toList());
         config.getServers().removeAll(removeConfig);
         save(config);
-
-        removeConfig.forEach(removedConfig ->
-                ListenerManager.instance()
-                        .getPrettyZooConfigChangeListeners()
-                        .forEach(listener -> listener.onServerRemove(removedConfig)));
+        removeConfig.forEach(removedConfig -> CONFIGURATION_CHANGE_LISTENERS.forEach(l -> l.onServerRemove(removedConfig)));
     }
 
     public boolean contains(String host) {
@@ -112,6 +104,8 @@ public class PrettyZooConfigService {
     public void importConfig(File configFile) {
         try (var stream = Files.newInputStream(configFile.toPath(), StandardOpenOption.READ)) {
             prettyZooConfigRepository.importConfig(stream);
+            final RootConfig rootConfig = load();
+            CONFIGURATION_CHANGE_LISTENERS.forEach(l -> l.onReload(rootConfig.getServers()));
         } catch (IOException e) {
             throw new IllegalStateException("import config failed", e);
         }

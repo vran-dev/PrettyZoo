@@ -15,16 +15,16 @@
                      filePattern="${sys:user.home}/.prettyZoo/prettyZoo.%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="[%d{yyyy-MM-dd 'at' HH:mm:ss z}] [%-5p] %l - %m%n"/>
             <policies>
-                <TimeBasedTriggeringPolicy />
-                <SizeBasedTriggeringPolicy size="25 MB" />
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="25 MB"/>
             </policies>
             <DefaultRolloverStrategy max="3">
                 <Delete basePath="${sys:user.home}/.prettyZoo/log/" maxDepth="1">
-                    <IfFileName glob="prettyZoo.*.log" />
+                    <IfFileName glob="prettyZoo.*.log"/>
                 </Delete>
                 <!-- 兼容旧的日志文件 -->
                 <Delete basePath="${sys:user.home}/.prettyZoo/" maxDepth="1">
-                    <IfFileName glob="prettyZoo.*.log" />
+                    <IfFileName glob="prettyZoo.*.log"/>
                 </Delete>
             </DefaultRolloverStrategy>
         </RollingFile>

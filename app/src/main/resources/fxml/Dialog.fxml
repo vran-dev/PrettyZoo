@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="dialogPane" prefHeight="180.0" prefWidth="320.0" styleClass="dialog" stylesheets="@../assets/dialog.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.dialog.DialogController">
+<AnchorPane fx:id="dialogPane" prefHeight="180.0" prefWidth="320.0" styleClass="dialog" stylesheets="@../assets/dialog.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.view.dialog.DialogController">
    <children>
       <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="35.0" minHeight="45.0" prefHeight="45.0" styleClass="title" text="确认" textAlignment="CENTER" textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <TextArea fx:id="contentTextArea" editable="false" focusTraversable="false" layoutX="43.0" layoutY="23.0" prefHeight="200.0" prefWidth="200.0" styleClass="content" text="确认执行该操作吗" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0" />

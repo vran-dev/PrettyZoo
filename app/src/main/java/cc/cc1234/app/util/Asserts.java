@@ -1,4 +1,4 @@
-package cc.cc1234.app.checker;
+package cc.cc1234.app.util;
 
 import java.util.Objects;
 import java.util.regex.Pattern;

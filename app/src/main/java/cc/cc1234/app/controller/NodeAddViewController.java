@@ -4,8 +4,8 @@ import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.util.PathConcat;
-import cc.cc1234.app.util.Transitions;
-import cc.cc1234.app.util.VToast;
+import cc.cc1234.app.view.transitions.Transitions;
+import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.spi.node.NodeMode;
 import cc.cc1234.spi.node.ZkNode;
 import javafx.fxml.FXML;
@@ -75,10 +75,9 @@ public class NodeAddViewController {
     public void onSave() {
         String server = ActiveServerContext.get();
         final NodeMode mode = createMode();
-        boolean recursive = true;
         String path = PathConcat.concat(currentPathField.getText(), nodeNameTextField.getText());
         String data = nodeDataTextArea.getText();
-        Try.of(() -> prettyZooFacade.addNode(server, path, data, recursive, mode))
+        Try.of(() -> prettyZooFacade.createNode(server, path, data, mode))
                 .onSuccess(r -> {
                     hide();
                     VToast.info("success");

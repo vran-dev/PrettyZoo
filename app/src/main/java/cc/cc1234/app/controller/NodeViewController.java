@@ -1,16 +1,17 @@
 package cc.cc1234.app.controller;
 
 import cc.cc1234.app.cache.TreeItemCache;
-import cc.cc1234.app.cell.ZkNodeTreeCell;
+import cc.cc1234.app.view.cell.ZkNodeTreeCell;
 import cc.cc1234.app.context.ActiveServerContext;
-import cc.cc1234.app.dialog.Dialog;
+import cc.cc1234.app.view.dialog.Dialog;
 import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.listener.DefaultTreeNodeListener;
 import cc.cc1234.app.util.FXMLs;
-import cc.cc1234.app.util.Transitions;
-import cc.cc1234.app.util.VToast;
+import cc.cc1234.app.view.transitions.Transitions;
+import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.vo.ZkNodeSearchResult;
+import cc.cc1234.spi.listener.ServerListener;
 import cc.cc1234.spi.node.ZkNode;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -64,7 +65,6 @@ public class NodeViewController {
     @FXML
     public void initialize() {
         nodeViewPane.setEffect(new DropShadow(BlurType.GAUSSIAN, Color.valueOf("#EEE"), 5, 0.1, 3, 5));
-        prettyZooFacade.registerNodeListener(new DefaultTreeNodeListener());
 
         initSearchResultList();
         initSearchTextField();
@@ -90,16 +90,18 @@ public class NodeViewController {
         nodeDeleteButton.setOnMouseClicked(e -> {
             final String path = zkNodeTreeView.getSelectionModel().getSelectedItem().getValue().getPath();
             Dialog.confirm("删除节点", "该操作将删除 " + path + " 该节点及其对应的子节点，操作不可恢复，请谨慎执行", () -> {
-                Try.of(() -> prettyZooFacade.deleteNode(ActiveServerContext.get(), path, true))
+                Try.of(() -> prettyZooFacade.deleteNode(ActiveServerContext.get(), path))
                         .onFailure(exception -> VToast.error("delete failed:" + exception.getMessage()))
                         .onSuccess(t -> VToast.info("delete success"));
             });
         });
     }
 
-    public void show(StackPane parent, String server) {
+    public void show(StackPane parent,
+                     String server,
+                     ServerListener serverListener) {
         if (server != null) {
-            switchServer(server);
+            switchServer(server, serverListener);
         }
         if (!parent.getChildren().contains(nodeViewPane)) {
             parent.getChildren().add(nodeViewPane);
@@ -177,10 +179,10 @@ public class NodeViewController {
                 });
     }
 
-    private void switchServer(String host) {
+    private void switchServer(String host, ServerListener serverListener) {
         try {
             log.debug("begin to switch server to {}", host);
-            prettyZooFacade.connect(host);
+            prettyZooFacade.connect(host, List.of(new DefaultTreeNodeListener()), List.of(serverListener));
         } catch (Exception e) {
             log.debug("switch server {} failed: {}", host, e.getMessage());
             throw new IllegalStateException("connect to " + host + " failed", e);
