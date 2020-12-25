@@ -1,8 +1,8 @@
 package cc.cc1234.client.curator;
 
-import cc.cc1234.spi.config.model.ServerConfig;
 import cc.cc1234.spi.connection.ZookeeperConnection;
 import cc.cc1234.spi.connection.ZookeeperConnectionFactory;
+import cc.cc1234.spi.connection.ZookeeperParams;
 import org.apache.curator.framework.AuthInfo;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -22,14 +22,14 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
     private static final Logger log = LoggerFactory.getLogger(CuratorZookeeperConnectionFactory.class);
 
     @Override
-    public ZookeeperConnection<CuratorFramework> create(ServerConfig config) {
+    public ZookeeperConnection<CuratorFramework> create(ZookeeperParams params) {
         final RetryOneTime retryPolicy = new RetryOneTime(3000);
         final CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
-                .connectString(config.getHost())
+                .connectString(params.getHost())
                 .retryPolicy(retryPolicy);
 
-        if (!config.getAclList().isEmpty()) {
-            final List<AuthInfo> acls = config.getAclList().stream().map(ACLs::parseDigest).collect(Collectors.toList());
+        if (!params.getAclList().isEmpty()) {
+            final List<AuthInfo> acls = params.getAclList().stream().map(ACLs::parseDigest).collect(Collectors.toList());
             builder.authorization(acls)
                     .aclProvider(new ACLProvider() {
                         @Override

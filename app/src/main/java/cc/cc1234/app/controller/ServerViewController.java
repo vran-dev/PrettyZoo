@@ -1,11 +1,11 @@
 package cc.cc1234.app.controller;
 
-import cc.cc1234.app.util.Asserts;
 import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.fp.Try;
+import cc.cc1234.app.util.Asserts;
 import cc.cc1234.app.util.FXMLs;
-import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.app.view.toast.VToast;
+import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.spi.listener.ServerListener;
 import com.google.common.base.Strings;
@@ -197,7 +197,7 @@ public class ServerViewController {
             Asserts.matchHost(zkServer.textProperty().get(), "server must match pattern: [host:port]");
             Asserts.validAcl(aclTextArea.textProperty().get(), "ACL syntax not support");
             if (zkServer.isEditable()) {
-                if (prettyZooFacade.hasServerConfig(zkServer.getText())) {
+                if (prettyZooFacade.hasServerConfiguration(zkServer.getText())) {
                     throw new IllegalStateException(zkServer.getText() + " already exists");
                 }
             }
@@ -221,7 +221,7 @@ public class ServerViewController {
                     .filter(acl -> !Strings.isNullOrEmpty(acl))
                     .collect(Collectors.toList());
             serverConfigVO.getAclList().addAll(acls);
-            prettyZooFacade.saveConfig(serverConfigVO);
+            prettyZooFacade.saveServerConfiguration(serverConfigVO);
             if (zkServer.isEditable()) {
                 onClose();
             }
@@ -231,8 +231,8 @@ public class ServerViewController {
 
     private void onDelete() {
         Asserts.notBlank(zkServer.getText(), "server can not be null");
-        prettyZooFacade.removeConfig(zkServer.getText());
-        if (prettyZooFacade.loadConfigs(null).isEmpty()) {
+        prettyZooFacade.deleteServerConfiguration(zkServer.getText());
+        if (prettyZooFacade.getServerConfigurations().isEmpty()) {
             onClose();
         }
     }
@@ -240,7 +240,7 @@ public class ServerViewController {
     private void onConnect(StackPane parent, ServerConfigurationVO serverConfigurationVO) {
         Try.of(() -> {
             Asserts.notNull(serverConfigurationVO, "save config first");
-            Asserts.assertTrue(prettyZooFacade.hasServerConfig(serverConfigurationVO.getZkServer()), "save config first");
+            Asserts.assertTrue(prettyZooFacade.hasServerConfiguration(serverConfigurationVO.getZkServer()), "save config first");
             nodeViewController.show(parent, serverConfigurationVO.getZkServer(), new ServerListener() {
                 @Override
                 public void onClose(String serverHost) {

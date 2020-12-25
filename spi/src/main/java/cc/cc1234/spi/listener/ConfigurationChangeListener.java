@@ -1,25 +1,25 @@
 package cc.cc1234.spi.listener;
 
 
-import cc.cc1234.spi.config.model.ServerConfig;
+import cc.cc1234.spi.config.model.ServerConfigData;
 
 import java.util.List;
 
 public interface ConfigurationChangeListener {
 
-    default void onServerAdd(ServerConfig serverConfig) {
+    default void onServerAdd(ServerConfigData serverConfig) {
 
     }
 
-    default void onServerRemove(ServerConfig serverConfig) {
+    default void onServerRemove(ServerConfigData serverConfig) {
 
     }
 
-    default void onServerChange(ServerConfig oldValue, ServerConfig newValue) {
+    default void onServerChange(ServerConfigData newValue) {
 
     }
 
-    default void onReload(List<ServerConfig> configs) {
+    default void onReload(List<ServerConfigData> configs) {
 
     }
 

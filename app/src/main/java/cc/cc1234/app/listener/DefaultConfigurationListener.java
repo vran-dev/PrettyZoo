@@ -5,7 +5,7 @@ import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.vo.ConfigurationVO;
 import cc.cc1234.app.vo.ConfigurationVOTransfer;
 import cc.cc1234.app.vo.ServerConfigurationVO;
-import cc.cc1234.spi.config.model.ServerConfig;
+import cc.cc1234.spi.config.model.ServerConfigData;
 import cc.cc1234.spi.listener.ConfigurationChangeListener;
 import javafx.collections.FXCollections;
 
@@ -22,12 +22,12 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
     }
 
     @Override
-    public void onServerAdd(ServerConfig serverConfig) {
+    public void onServerAdd(ServerConfigData serverConfig) {
         configurationVO.getServers().add(ConfigurationVOTransfer.to(serverConfig));
     }
 
     @Override
-    public void onServerRemove(ServerConfig removeServer) {
+    public void onServerRemove(ServerConfigData removeServer) {
         if (removeServer.getHost().equals(ActiveServerContext.get())) {
             ActiveServerContext.invalidate();
         }
@@ -40,11 +40,11 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
     }
 
     @Override
-    public void onServerChange(ServerConfig oldValue, ServerConfig newValue) {
+    public void onServerChange(ServerConfigData newValue) {
         final ServerConfigurationVO vo = ConfigurationVOTransfer.to(newValue);
         configurationVO.getServers()
                 .stream()
-                .filter(s -> Objects.equals(s.getZkServer(), oldValue.getHost()))
+                .filter(s -> Objects.equals(s.getZkServer(), newValue.getHost()))
                 .findFirst()
                 .map(old -> {
                     old.setAclList(FXCollections.observableList(newValue.getAclList()));
@@ -80,7 +80,7 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
     }
 
     @Override
-    public void onReload(List<ServerConfig> configs) {
+    public void onReload(List<ServerConfigData> configs) {
         final List<ServerConfigurationVO> configurations = configs.stream()
                 .map(ConfigurationVOTransfer::to)
                 .collect(Collectors.toList());

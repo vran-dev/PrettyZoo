@@ -1,4 +1,4 @@
-package cc.cc1234.domain.data.entity;
+package cc.cc1234.domain.zookeeper.entity;
 
 import cc.cc1234.spi.connection.ZookeeperConnection;
 import cc.cc1234.spi.listener.ServerListener;
