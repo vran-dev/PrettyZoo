@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class ServerConfig {
+public class ServerConfigData {
 
     private String host;
 
@@ -15,7 +15,7 @@ public class ServerConfig {
 
     private Boolean sshTunnelEnabled = false;
 
-    private Optional<SSHTunnelConfig> sshTunnelConfig = Optional.empty();
+    private Optional<SSHTunnelConfigData> sshTunnelConfig = Optional.empty();
 
     public Boolean getSshTunnelEnabled() {
         return sshTunnelEnabled;
@@ -49,11 +49,11 @@ public class ServerConfig {
         this.aclList = aclList;
     }
 
-    public Optional<SSHTunnelConfig> getSshTunnelConfig() {
+    public Optional<SSHTunnelConfigData> getSshTunnelConfig() {
         return sshTunnelConfig;
     }
 
-    public void setSshTunnelConfig(Optional<SSHTunnelConfig> sshTunnelConfig) {
+    public void setSshTunnelConfig(Optional<SSHTunnelConfigData> sshTunnelConfig) {
         this.sshTunnelConfig = sshTunnelConfig;
     }
 
@@ -61,7 +61,7 @@ public class ServerConfig {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ServerConfig that = (ServerConfig) o;
+        ServerConfigData that = (ServerConfigData) o;
         return connectTimes == that.connectTimes &&
                 host.equals(that.host) &&
                 aclList.equals(that.aclList) &&

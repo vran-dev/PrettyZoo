@@ -1,8 +1,8 @@
 package cc.cc1234.config;
 
 import cc.cc1234.spi.config.PrettyZooConfigRepository;
-import cc.cc1234.spi.config.model.RootConfig;
-import cc.cc1234.spi.config.model.ServerConfig;
+import cc.cc1234.spi.config.model.ConfigData;
+import cc.cc1234.spi.config.model.ServerConfigData;
 import cc.cc1234.util.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,15 +21,15 @@ public class JsonPrettyZooConfigRepository implements PrettyZooConfigRepository 
     private static final Logger logger = LoggerFactory.getLogger(JsonPrettyZooConfigRepository.class);
 
     @Override
-    public RootConfig get() {
+    public ConfigData get() {
         return doLoad();
     }
 
-    private RootConfig doLoad() {
-        final RootConfig config = JsonUtils.from(CONFIG_PATH, RootConfig.class);
-        final List<ServerConfig> sortedServers = config.getServers()
+    private ConfigData doLoad() {
+        final ConfigData config = JsonUtils.from(CONFIG_PATH, ConfigData.class);
+        final List<ServerConfigData> sortedServers = config.getServers()
                 .stream()
-                .sorted(Comparator.comparingInt(ServerConfig::getConnectTimes))
+                .sorted(Comparator.comparingInt(ServerConfigData::getConnectTimes))
                 .collect(Collectors.toList());
         // sort by connect times desc
         Collections.reverse(sortedServers);
@@ -38,7 +38,7 @@ public class JsonPrettyZooConfigRepository implements PrettyZooConfigRepository 
     }
 
     @Override
-    public void save(RootConfig config) {
+    public void save(ConfigData config) {
         try {
             final String json = JsonUtils.to(config);
             Files.write(Paths.get(CONFIG_PATH), json.getBytes());
@@ -65,17 +65,17 @@ public class JsonPrettyZooConfigRepository implements PrettyZooConfigRepository 
             }
         }
         String jsonConfig = builder.toString();
-        RootConfig newConfig = JsonUtils.fromJson(jsonConfig, RootConfig.class);
+        ConfigData newConfig = JsonUtils.fromJson(jsonConfig, ConfigData.class);
         merge(get(), newConfig);
     }
 
-    private void merge(RootConfig originConfig, RootConfig newConfig) {
+    private void merge(ConfigData originConfig, ConfigData newConfig) {
         // ignore exists server
         Set<String> originServers = originConfig.getServers()
                 .stream()
-                .map(ServerConfig::getHost)
+                .map(ServerConfigData::getHost)
                 .collect(Collectors.toSet());
-        List<ServerConfig> newServers = newConfig.getServers()
+        List<ServerConfigData> newServers = newConfig.getServers()
                 .stream()
                 .filter(server -> !originServers.contains(server.getHost()))
                 .collect(Collectors.toList());
@@ -88,8 +88,9 @@ public class JsonPrettyZooConfigRepository implements PrettyZooConfigRepository 
     }
 
     @Override
-    public void exportConfig(RootConfig config, OutputStream targetStream) {
+    public void exportConfig(OutputStream targetStream) {
         try {
+            final ConfigData config = get();
             final String json = JsonUtils.to(config);
             targetStream.write(json.getBytes());
         } catch (IOException e) {

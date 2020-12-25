@@ -1,19 +1,19 @@
 package cc.cc1234.app.facade;
 
 import cc.cc1234.app.cache.TreeItemCache;
-import cc.cc1234.app.util.Asserts;
 import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.fp.Try;
+import cc.cc1234.app.util.Asserts;
 import cc.cc1234.app.util.Fills;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.vo.ConfigurationVOTransfer;
 import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.app.vo.ZkNodeSearchResult;
-import cc.cc1234.domain.service.ConfigurationDomainService;
-import cc.cc1234.domain.service.ZookeeperDomainService;
-import cc.cc1234.spi.config.model.RootConfig;
-import cc.cc1234.spi.config.model.SSHTunnelConfig;
-import cc.cc1234.spi.config.model.ServerConfig;
+import cc.cc1234.domain.configuration.entity.Configuration;
+import cc.cc1234.domain.configuration.entity.ServerConfiguration;
+import cc.cc1234.domain.configuration.service.ConfigurationDomainService;
+import cc.cc1234.domain.configuration.value.SSHTunnelConfiguration;
+import cc.cc1234.domain.zookeeper.service.ZookeeperDomainService;
 import cc.cc1234.spi.listener.ConfigurationChangeListener;
 import cc.cc1234.spi.listener.ServerListener;
 import cc.cc1234.spi.listener.ZookeeperNodeListener;
@@ -27,7 +27,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -37,9 +40,9 @@ public class PrettyZooFacade {
 
     private TreeItemCache treeItemCache = TreeItemCache.getInstance();
 
-    private ConfigurationDomainService configService = new ConfigurationDomainService();
-
     private ZookeeperDomainService zookeeperDomainService = new ZookeeperDomainService();
+
+    private ConfigurationDomainService configurationDomainService = new ConfigurationDomainService();
 
     public void createNode(String server, String path, String data, NodeMode mode) throws Exception {
         zookeeperDomainService.create(server, path, data, mode.createMode());
@@ -57,7 +60,7 @@ public class PrettyZooFacade {
     public void connect(String host,
                         List<ZookeeperNodeListener> nodeListeners,
                         List<ServerListener> serverListeners) {
-        final ServerConfig serverConfig = configService.get(host).orElseThrow();
+        var serverConfig = configurationDomainService.get(host).orElseThrow();
         zookeeperDomainService.connect(serverConfig, nodeListeners, serverListeners);
     }
 
@@ -74,67 +77,6 @@ public class PrettyZooFacade {
 
     public void syncIfNecessary(String host) {
         zookeeperDomainService.sync(host);
-    }
-
-    public boolean hasServerConfig(String host) {
-        return configService.contains(host);
-    }
-
-    public void saveConfig(ServerConfigurationVO serverConfigurationVO) {
-        var serverConfig = new ServerConfig();
-        serverConfig.setHost(serverConfigurationVO.getZkServer());
-        serverConfig.setAclList(new ArrayList<>(serverConfigurationVO.getAclList()));
-        serverConfig.setSshTunnelEnabled(serverConfigurationVO.isSshEnabled());
-
-        var sshTunnelConfig = new SSHTunnelConfig();
-        if (serverConfigurationVO.getZkServer().trim().length() > 0) {
-            var localHostAndPort = serverConfigurationVO.getZkServer().split(":");
-            sshTunnelConfig.setLocalhost(localHostAndPort[0]);
-            sshTunnelConfig.setLocalPort(Integer.parseInt(localHostAndPort[1]));
-        }
-
-        if (serverConfigurationVO.getRemoteServer().trim().length() > 0) {
-            var remoteHostAndPort = serverConfigurationVO.getRemoteServer().split(":");
-            sshTunnelConfig.setRemoteHost(remoteHostAndPort[0]);
-            sshTunnelConfig.setRemotePort(Integer.parseInt(remoteHostAndPort[1]));
-        }
-
-        if (serverConfigurationVO.getSshServer().trim().length() > 0) {
-            var sshServerHostAndPort = serverConfigurationVO.getSshServer().split(":");
-            sshTunnelConfig.setSshHost(sshServerHostAndPort[0]);
-            sshTunnelConfig.setSshPort(Integer.parseInt(sshServerHostAndPort[1]));
-        }
-        sshTunnelConfig.setSshUsername(serverConfigurationVO.getSshUsername());
-        sshTunnelConfig.setPassword(serverConfigurationVO.getSshPassword());
-        serverConfig.setSshTunnelConfig(Optional.of(sshTunnelConfig));
-        serverConfig.setSshTunnelEnabled(serverConfigurationVO.isSshEnabled());
-        configService.save(serverConfig);
-    }
-
-    public void removeConfig(String server) {
-        configService.remove(server);
-    }
-
-    public List<ServerConfigurationVO> loadConfigs(ConfigurationChangeListener changeListener) {
-        if (changeListener != null) {
-            configService.addListener(changeListener);
-        }
-        final RootConfig rootConfig = configService.load();
-        return rootConfig.getServers().stream().map(ConfigurationVOTransfer::to).collect(Collectors.toList());
-    }
-
-    public void exportConfig(File file) {
-        Objects.requireNonNull(file);
-        configService.export(file);
-    }
-
-    public void importConfig(File configFile) {
-        Try.of(() -> {
-            Asserts.notNull(configFile, "文件不存在");
-            Asserts.assertTrue(configFile.isFile(), "请选择文件");
-        })
-                .onFailure(e -> VToast.error(e.getMessage()))
-                .onSuccess(e -> configService.importConfig(configFile));
     }
 
     public List<ZkNodeSearchResult> onSearch(String input) {
@@ -170,4 +112,69 @@ public class PrettyZooFacade {
         Try.of(() -> zookeeperDomainService.set(host, nodePath, data)).onFailure(errorCallback::accept);
     }
 
+    public boolean hasServerConfiguration(String host) {
+        return configurationDomainService.containServerConfig(host);
+    }
+
+    public void saveServerConfiguration(ServerConfigurationVO serverConfigurationVO) {
+        var tunnelConfigurationBuilder = SSHTunnelConfiguration.builder();
+        if (serverConfigurationVO.getZkServer().trim().length() > 0) {
+            var localHostAndPort = serverConfigurationVO.getZkServer().split(":");
+            tunnelConfigurationBuilder.localhost(localHostAndPort[0]).localPort(Integer.parseInt(localHostAndPort[1]));
+        }
+
+        if (serverConfigurationVO.getRemoteServer().trim().length() > 0) {
+            var remoteHostAndPort = serverConfigurationVO.getRemoteServer().split(":");
+            tunnelConfigurationBuilder.remoteHost(remoteHostAndPort[0]).remotePort(Integer.parseInt(remoteHostAndPort[1]));
+        }
+
+        if (serverConfigurationVO.getSshServer().trim().length() > 0) {
+            var sshServerHostAndPort = serverConfigurationVO.getSshServer().split(":");
+            tunnelConfigurationBuilder.sshHost(sshServerHostAndPort[0]).sshPort(Integer.parseInt(sshServerHostAndPort[1]));
+        }
+        tunnelConfigurationBuilder.sshUsername(serverConfigurationVO.getSshUsername())
+                .sshPassword(serverConfigurationVO.getSshPassword());
+
+        final ServerConfiguration serverConfiguration = ServerConfiguration.builder()
+                .host(serverConfigurationVO.getZkServer())
+                .aclList(new ArrayList<>(serverConfigurationVO.getAclList()))
+                .sshTunnelEnabled(serverConfigurationVO.isSshEnabled())
+                .sshTunnel(tunnelConfigurationBuilder.build())
+                .build();
+        configurationDomainService.save(serverConfiguration);
+    }
+
+    public void deleteServerConfiguration(String server) {
+        configurationDomainService.deleteServerConfiguration(server);
+    }
+
+    public List<ServerConfigurationVO> loadServerConfigurations(ConfigurationChangeListener changeListener) {
+        final Configuration configuration = configurationDomainService.load(List.of(changeListener));
+        return configuration.getServerConfigurations()
+                .stream()
+                .map(ConfigurationVOTransfer::to)
+                .collect(Collectors.toList());
+    }
+
+    public List<ServerConfigurationVO> getServerConfigurations() {
+        final Configuration configuration = configurationDomainService.get().orElseThrow();
+        return configuration.getServerConfigurations()
+                .stream()
+                .map(ConfigurationVOTransfer::to)
+                .collect(Collectors.toList());
+    }
+
+    public void exportConfig(File file) {
+        Objects.requireNonNull(file);
+        configurationDomainService.exportConfig(file);
+    }
+
+    public void importConfig(File configFile) {
+        Try.of(() -> {
+            Asserts.notNull(configFile, "文件不存在");
+            Asserts.assertTrue(configFile.isFile(), "请选择文件");
+        })
+                .onFailure(e -> VToast.error(e.getMessage()))
+                .onSuccess(e -> configurationDomainService.importConfig(configFile));
+    }
 }

@@ -1,5 +1,8 @@
 open module domain.main {
-    exports cc.cc1234.domain.service;
+    exports cc.cc1234.domain.configuration.entity;
+    exports cc.cc1234.domain.configuration.service;
+    exports cc.cc1234.domain.zookeeper.service;
+    exports cc.cc1234.domain.configuration.value;
 
     requires static lombok;
     requires curator.framework;

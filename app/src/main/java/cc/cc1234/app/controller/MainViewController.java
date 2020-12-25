@@ -1,14 +1,14 @@
 package cc.cc1234.app.controller;
 
-import cc.cc1234.app.view.cell.ZkServerListCell;
 import cc.cc1234.app.context.HostServiceContext;
 import cc.cc1234.app.context.PrimaryStageContext;
 import cc.cc1234.app.context.RootPaneContext;
-import cc.cc1234.app.view.dialog.Dialog;
 import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.listener.DefaultConfigurationListener;
 import cc.cc1234.app.util.FXMLs;
+import cc.cc1234.app.view.cell.ZkServerListCell;
+import cc.cc1234.app.view.dialog.Dialog;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.vo.ConfigurationVO;
 import cc.cc1234.app.vo.ServerConfigurationVO;
@@ -24,7 +24,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.util.List;
 
 public class MainViewController {
 
@@ -92,9 +91,7 @@ public class MainViewController {
 
     private void initServerListView() {
         final ConfigurationVO configurationVO = new ConfigurationVO();
-        final DefaultConfigurationListener configurationListener = new DefaultConfigurationListener(configurationVO);
-        final List<ServerConfigurationVO> serverConfigurations = prettyZooFacade.loadConfigs(configurationListener);
-        configurationVO.getServers().addAll(serverConfigurations);
+        prettyZooFacade.loadServerConfigurations(new DefaultConfigurationListener(configurationVO));
         serverListView.itemsProperty().set(configurationVO.getServers());
         serverListView.setCellFactory(cellCallback -> new ZkServerListCell());
         var selectedItemProperty = serverListView.getSelectionModel().selectedItemProperty();

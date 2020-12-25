@@ -1,8 +1,8 @@
-package cc.cc1234.domain.service;
+package cc.cc1234.domain.zookeeper.service;
 
-import cc.cc1234.domain.data.entity.Zookeeper;
-import cc.cc1234.domain.factory.ZookeeperFactory;
-import cc.cc1234.spi.config.model.ServerConfig;
+import cc.cc1234.domain.configuration.entity.ServerConfiguration;
+import cc.cc1234.domain.zookeeper.entity.Zookeeper;
+import cc.cc1234.domain.zookeeper.factory.ZookeeperFactory;
 import cc.cc1234.spi.listener.ServerListener;
 import cc.cc1234.spi.listener.ZookeeperNodeListener;
 import org.apache.zookeeper.CreateMode;
@@ -15,7 +15,7 @@ public class ZookeeperDomainService {
 
     private static final Map<String, Zookeeper> zookeeperMap = new ConcurrentHashMap<>();
 
-    public void connect(ServerConfig serverConfig,
+    public void connect(ServerConfiguration serverConfig,
                         List<ZookeeperNodeListener> nodeListeners,
                         List<ServerListener> serverListeners) {
         if (!zookeeperMap.containsKey(serverConfig.getHost())) {
