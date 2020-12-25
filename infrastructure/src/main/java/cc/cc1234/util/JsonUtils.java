@@ -39,7 +39,6 @@ public class JsonUtils {
         }
     }
 
-
     public static <T> String to(T t) {
         final ObjectMapper mapper = mapper();
         try {

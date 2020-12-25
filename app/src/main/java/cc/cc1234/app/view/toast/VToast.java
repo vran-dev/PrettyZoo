@@ -1,6 +1,7 @@
-package cc.cc1234.app.util;
+package cc.cc1234.app.view.toast;
 
 import cc.cc1234.app.context.RootPaneContext;
+import cc.cc1234.app.view.transitions.Transitions;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

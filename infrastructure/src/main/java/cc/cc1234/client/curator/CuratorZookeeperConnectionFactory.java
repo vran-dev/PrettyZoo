@@ -1,8 +1,8 @@
 package cc.cc1234.client.curator;
 
-import cc.cc1234.spi.config.model.ServerConfig;
 import cc.cc1234.spi.connection.ZookeeperConnection;
 import cc.cc1234.spi.connection.ZookeeperConnectionFactory;
+import cc.cc1234.spi.connection.ZookeeperParams;
 import org.apache.curator.framework.AuthInfo;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFactory<CuratorFramework> {
@@ -23,14 +22,14 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
     private static final Logger log = LoggerFactory.getLogger(CuratorZookeeperConnectionFactory.class);
 
     @Override
-    public ZookeeperConnection<CuratorFramework> create(ServerConfig config) throws Exception {
+    public ZookeeperConnection<CuratorFramework> create(ZookeeperParams params) {
         final RetryOneTime retryPolicy = new RetryOneTime(3000);
         final CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
-                .connectString(config.getHost())
+                .connectString(params.getHost())
                 .retryPolicy(retryPolicy);
 
-        if (!config.getAclList().isEmpty()) {
-            final List<AuthInfo> acls = config.getAclList().stream().map(ACLs::parseDigest).collect(Collectors.toList());
+        if (!params.getAclList().isEmpty()) {
+            final List<AuthInfo> acls = params.getAclList().stream().map(ACLs::parseDigest).collect(Collectors.toList());
             builder.authorization(acls)
                     .aclProvider(new ACLProvider() {
                         @Override
@@ -49,9 +48,13 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
         client.start();
 
         // TODO use async
-        if (!client.blockUntilConnected(5, TimeUnit.SECONDS)) {
-            client.close();
-            throw new TimeoutException("连接超时");
+        try {
+            if (!client.blockUntilConnected(5, TimeUnit.SECONDS)) {
+                client.close();
+                throw new IllegalStateException("连接超时");
+            }
+        } catch (InterruptedException e) {
+            throw new IllegalStateException("连接失败", e);
         }
         return new CuratorZookeeperConnection(client);
     }

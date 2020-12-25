@@ -1,4 +1,3 @@
-
 mainClassName = "app.main/cc.cc1234.PrettyZooApplication"
 
 compileJava {

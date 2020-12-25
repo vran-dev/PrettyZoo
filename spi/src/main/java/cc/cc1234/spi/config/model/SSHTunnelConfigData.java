@@ -1,6 +1,6 @@
 package cc.cc1234.spi.config.model;
 
-public class SSHTunnelConfig {
+public class SSHTunnelConfigData {
 
     private String localhost;
 

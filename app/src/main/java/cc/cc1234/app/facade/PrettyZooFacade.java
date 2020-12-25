@@ -2,18 +2,19 @@ package cc.cc1234.app.facade;
 
 import cc.cc1234.app.cache.TreeItemCache;
 import cc.cc1234.app.context.ActiveServerContext;
+import cc.cc1234.app.fp.Try;
+import cc.cc1234.app.util.Asserts;
 import cc.cc1234.app.util.Fills;
-import cc.cc1234.app.vo.ServerConfigVO;
+import cc.cc1234.app.view.toast.VToast;
+import cc.cc1234.app.vo.ConfigurationVOTransfer;
+import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.app.vo.ZkNodeSearchResult;
-import cc.cc1234.manager.ListenerManager;
-import cc.cc1234.manager.SSHTunnelManager;
-import cc.cc1234.manager.ZookeeperConnectionManager;
-import cc.cc1234.service.PrettyZooConfigService;
-import cc.cc1234.spi.config.model.RootConfig;
-import cc.cc1234.spi.config.model.SSHTunnelConfig;
-import cc.cc1234.spi.config.model.ServerConfig;
-import cc.cc1234.spi.connection.ZookeeperConnection;
-import cc.cc1234.spi.listener.PrettyZooConfigChangeListener;
+import cc.cc1234.domain.configuration.entity.Configuration;
+import cc.cc1234.domain.configuration.entity.ServerConfiguration;
+import cc.cc1234.domain.configuration.service.ConfigurationDomainService;
+import cc.cc1234.domain.configuration.value.SSHTunnelConfiguration;
+import cc.cc1234.domain.zookeeper.service.ZookeeperDomainService;
+import cc.cc1234.spi.listener.ConfigurationChangeListener;
 import cc.cc1234.spi.listener.ServerListener;
 import cc.cc1234.spi.listener.ZookeeperNodeListener;
 import cc.cc1234.spi.node.NodeMode;
@@ -29,8 +30,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -40,136 +40,43 @@ public class PrettyZooFacade {
 
     private TreeItemCache treeItemCache = TreeItemCache.getInstance();
 
-    private PrettyZooConfigService configService = new PrettyZooConfigService();
+    private ZookeeperDomainService zookeeperDomainService = new ZookeeperDomainService();
 
-    private ZookeeperConnectionManager connectionManager = ZookeeperConnectionManager.instance();
+    private ConfigurationDomainService configurationDomainService = new ConfigurationDomainService();
 
-    private ListenerManager listenerManager = ListenerManager.instance();
-
-    private SSHTunnelManager sshTunnelManager = SSHTunnelManager.instance();
-
-    public void addNode(String server, String path, String data, boolean recursive, NodeMode mode) throws Exception {
-        connectionManager.getConnection(server).create(path, data, recursive, mode.createMode());
+    public void createNode(String server, String path, String data, NodeMode mode) throws Exception {
+        zookeeperDomainService.create(server, path, data, mode.createMode());
     }
 
-    public void deleteNode(String server, String path, boolean recursive) {
+    public void deleteNode(String server, String path) {
         try {
-            connectionManager.getConnection(server).delete(path, recursive);
+            zookeeperDomainService.delete(server, path);
         } catch (Exception e) {
             log.error("delete node failed", e);
             throw new IllegalStateException(e);
         }
     }
 
-    public void connect(String host) throws Exception {
-        Optional<ServerConfig> config = configService.get(host);
-        connect(config.orElseThrow(() -> new IllegalStateException("server not exists")));
-    }
-
-    public ZookeeperConnection connect(ServerConfig config) throws Exception {
-        if (connectionManager.getConnection(config.getHost()) != null) {
-            return connectionManager.getConnection(config.getHost());
-        }
-        // if tunnel config exists, must be create ssh tunnel before connect server
-        return CompletableFuture
-                .runAsync(() -> {
-                    if (config.getSshTunnelEnabled()) {
-                        config.getSshTunnelConfig().ifPresent(sshTunnelManager::forwarding);
-                    }
-                })
-                .thenApply(res -> {
-                    try {
-                        var connection = connectionManager.connect(config);
-                        configService.add(config);
-                        return connection;
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .get();
+    public void connect(String host,
+                        List<ZookeeperNodeListener> nodeListeners,
+                        List<ServerListener> serverListeners) {
+        var serverConfig = configurationDomainService.get(host).orElseThrow();
+        zookeeperDomainService.connect(serverConfig, nodeListeners, serverListeners);
     }
 
     public void disconnect(String host) {
-        final ServerConfig serverConfig = configService.get(host).orElseThrow();
         Platform.runLater(() -> {
-            sshTunnelManager.close(serverConfig);
-            connectionManager.close(host);
+            zookeeperDomainService.disconnect(host);
             treeItemCache.remove(host);
-            listenerManager.getServerListeners().forEach(listener -> listener.onClose(host));
         });
     }
 
     public void closeAll() {
-        connectionManager.closeAll();
-        listenerManager.clear();
-        sshTunnelManager.closeAll();
+        zookeeperDomainService.disconnectAll();
     }
 
     public void syncIfNecessary(String host) {
-        connectionManager.getConnection(host).sync(listenerManager.getZookeeperNodeListeners());
-    }
-
-    public boolean hasServerConfig(String host) {
-        return configService.contains(host);
-    }
-
-    public void saveConfig(ServerConfigVO serverConfigVO) {
-        var serverConfig = new ServerConfig();
-        serverConfig.setHost(serverConfigVO.getZkServer());
-        serverConfig.setAclList(new ArrayList<>(serverConfigVO.getAclList()));
-        serverConfig.setSshTunnelEnabled(serverConfigVO.isSshEnabled());
-
-        var sshTunnelConfig = new SSHTunnelConfig();
-        if (serverConfigVO.getZkServer().trim().length() > 0) {
-            var localHostAndPort = serverConfigVO.getZkServer().split(":");
-            sshTunnelConfig.setLocalhost(localHostAndPort[0]);
-            sshTunnelConfig.setLocalPort(Integer.parseInt(localHostAndPort[1]));
-        }
-
-        if (serverConfigVO.getRemoteServer().trim().length() > 0) {
-            var remoteHostAndPort = serverConfigVO.getRemoteServer().split(":");
-            sshTunnelConfig.setRemoteHost(remoteHostAndPort[0]);
-            sshTunnelConfig.setRemotePort(Integer.parseInt(remoteHostAndPort[1]));
-        }
-
-        if (serverConfigVO.getSshServer().trim().length() > 0) {
-            var sshServerHostAndPort = serverConfigVO.getSshServer().split(":");
-            sshTunnelConfig.setSshHost(sshServerHostAndPort[0]);
-            sshTunnelConfig.setSshPort(Integer.parseInt(sshServerHostAndPort[1]));
-        }
-        sshTunnelConfig.setSshUsername(serverConfigVO.getSshUsername());
-        sshTunnelConfig.setPassword(serverConfigVO.getSshPassword());
-        serverConfig.setSshTunnelConfig(Optional.of(sshTunnelConfig));
-        serverConfig.setSshTunnelEnabled(serverConfigVO.isSshEnabled());
-        configService.save(serverConfig);
-    }
-
-    public void removeConfig(String server) {
-        configService.remove(server);
-    }
-
-    public RootConfig loadConfig() {
-        return configService.load();
-    }
-
-    public void registerConfigChangeListener(PrettyZooConfigChangeListener listener) {
-        listenerManager.add(listener);
-    }
-
-    public void registerNodeListener(ZookeeperNodeListener listener) {
-        listenerManager.add(listener);
-    }
-
-    public void registerServerListener(ServerListener listener) {
-        listenerManager.add(listener);
-    }
-
-    public void exportConfig(File file) {
-        configService.export(file);
-    }
-
-    public void importConfig(File configFile) {
-        configService.importConfig(configFile);
+        zookeeperDomainService.sync(host);
     }
 
     public List<ZkNodeSearchResult> onSearch(String input) {
@@ -198,15 +105,76 @@ public class PrettyZooFacade {
         return treeItemCache.hasNode(ActiveServerContext.get(), nodeAbsolutePath);
     }
 
-    public void updateData(String nodePath, String data, Consumer<Exception> errorCallback) {
-        try {
-            connectionManager.getConnection(ActiveServerContext.get()).setData(nodePath, data);
-        } catch (Exception e) {
-            errorCallback.accept(e);
-        }
+    public void updateData(String host,
+                           String nodePath,
+                           String data,
+                           Consumer<Throwable> errorCallback) {
+        Try.of(() -> zookeeperDomainService.set(host, nodePath, data)).onFailure(errorCallback::accept);
     }
 
-    public void removeServerListener(ServerListener serverListener) {
-        listenerManager.remove(serverListener);
+    public boolean hasServerConfiguration(String host) {
+        return configurationDomainService.containServerConfig(host);
+    }
+
+    public void saveServerConfiguration(ServerConfigurationVO serverConfigurationVO) {
+        var tunnelConfigurationBuilder = SSHTunnelConfiguration.builder();
+        if (serverConfigurationVO.getZkServer().trim().length() > 0) {
+            var localHostAndPort = serverConfigurationVO.getZkServer().split(":");
+            tunnelConfigurationBuilder.localhost(localHostAndPort[0]).localPort(Integer.parseInt(localHostAndPort[1]));
+        }
+
+        if (serverConfigurationVO.getRemoteServer().trim().length() > 0) {
+            var remoteHostAndPort = serverConfigurationVO.getRemoteServer().split(":");
+            tunnelConfigurationBuilder.remoteHost(remoteHostAndPort[0]).remotePort(Integer.parseInt(remoteHostAndPort[1]));
+        }
+
+        if (serverConfigurationVO.getSshServer().trim().length() > 0) {
+            var sshServerHostAndPort = serverConfigurationVO.getSshServer().split(":");
+            tunnelConfigurationBuilder.sshHost(sshServerHostAndPort[0]).sshPort(Integer.parseInt(sshServerHostAndPort[1]));
+        }
+        tunnelConfigurationBuilder.sshUsername(serverConfigurationVO.getSshUsername())
+                .sshPassword(serverConfigurationVO.getSshPassword());
+
+        final ServerConfiguration serverConfiguration = ServerConfiguration.builder()
+                .host(serverConfigurationVO.getZkServer())
+                .aclList(new ArrayList<>(serverConfigurationVO.getAclList()))
+                .sshTunnelEnabled(serverConfigurationVO.isSshEnabled())
+                .sshTunnel(tunnelConfigurationBuilder.build())
+                .build();
+        configurationDomainService.save(serverConfiguration);
+    }
+
+    public void deleteServerConfiguration(String server) {
+        configurationDomainService.deleteServerConfiguration(server);
+    }
+
+    public List<ServerConfigurationVO> loadServerConfigurations(ConfigurationChangeListener changeListener) {
+        final Configuration configuration = configurationDomainService.load(List.of(changeListener));
+        return configuration.getServerConfigurations()
+                .stream()
+                .map(ConfigurationVOTransfer::to)
+                .collect(Collectors.toList());
+    }
+
+    public List<ServerConfigurationVO> getServerConfigurations() {
+        final Configuration configuration = configurationDomainService.get().orElseThrow();
+        return configuration.getServerConfigurations()
+                .stream()
+                .map(ConfigurationVOTransfer::to)
+                .collect(Collectors.toList());
+    }
+
+    public void exportConfig(File file) {
+        Objects.requireNonNull(file);
+        configurationDomainService.exportConfig(file);
+    }
+
+    public void importConfig(File configFile) {
+        Try.of(() -> {
+            Asserts.notNull(configFile, "文件不存在");
+            Asserts.assertTrue(configFile.isFile(), "请选择文件");
+        })
+                .onFailure(e -> VToast.error(e.getMessage()))
+                .onSuccess(e -> configurationDomainService.importConfig(configFile));
     }
 }
