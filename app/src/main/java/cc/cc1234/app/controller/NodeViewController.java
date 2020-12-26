@@ -102,11 +102,7 @@ public class NodeViewController {
         if (server != null) {
             switchServer(server, serverListener);
         }
-        final List<Node> removeNodes = parent.getChildren()
-                .stream()
-                .filter(c -> c != nodeViewPane)
-                .collect(Collectors.toList());
-        parent.getChildren().removeAll(removeNodes);
+
         if (!parent.getChildren().contains(nodeViewPane)) {
             parent.getChildren().add(nodeViewPane);
             Transitions.zoomInY(nodeViewPane).play();
