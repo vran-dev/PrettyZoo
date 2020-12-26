@@ -11,6 +11,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class VersionChecker {
 
@@ -22,6 +23,14 @@ public class VersionChecker {
         var client = HttpClient.newHttpClient();
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenAccept(response -> {
+                    final String header = response.headers()
+                            .map()
+                            .entrySet()
+                            .stream()
+                            .map(entry -> entry.getKey() + ":" + entry.getValue())
+                            .collect(Collectors.joining("\r\n"));
+                    logger.info("[version check] " + header);
+                    logger.info("[version check] " + response.body());
                     try {
                         final JsonMapper mapper = new JsonMapper();
                         final ObjectNode node = mapper.readValue(response.body(), ObjectNode.class);

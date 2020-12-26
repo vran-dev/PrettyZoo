@@ -843,3 +843,81 @@
     -fx-alignment: center;
     -fx-content-display: center;
 }
+
+.tab-header-background {
+    -fx-background-color: #FFF;
+    -fx-border-color: #DEDEDE;
+    -fx-border-width: 0 0 1 0;
+}
+
+.tab {
+    -fx-background-color: #FFF;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: #000;
+    -fx-border-width: 0;
+}
+
+.tab:selected {
+    -fx-border-color: #3F51B5;
+    -fx-border-width: 0 0 2 0;
+}
+
+.tab:hover {
+    -fx-background-color: #EEE;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: #3F51B5;
+}
+
+.tab-pane:selected {
+    -fx-border-width: 0;
+}
+
+.tab-container {
+    -fx-border-width: 0;
+}
+
+.tab-container:selected {
+    -fx-border-width: 0;
+}
+
+.tab-container .focus-indicator {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.terminal-area {
+    -fx-background-color: #1c1f20;
+    -fx-border-width: 0;
+    -fx-background-insets: 0;
+    -fx-border-radius: 0;
+    -fx-opacity: 0.85;
+    -fx-text-fill: #FFF;
+    -fx-font-size: 15px;
+}
+
+.terminal-area .content {
+    -fx-background-color: #1c1f20;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+}
+
+.terminal-area:focused .content {
+    -fx-background-color: #1c1f20;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+}
+
+.terminal-input {
+    -fx-background-color: #1c1f20;
+    -fx-background-insets: 0;
+    -fx-opacity: 0.95;
+    -fx-text-fill: #FFF;
+    -fx-border-color: #FFF;
+    -fx-border-width: 2 0 0 0;
+}
+
+
+

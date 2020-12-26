@@ -2,6 +2,7 @@ package cc.cc1234.client.curator;
 
 import cc.cc1234.spi.connection.ZookeeperConnection;
 import cc.cc1234.spi.listener.ZookeeperNodeListener;
+import cc.cc1234.spi.node.NodeMode;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.api.CreateBuilder;
 import org.apache.curator.framework.api.DeleteBuilder;
@@ -29,14 +30,15 @@ public class CuratorZookeeperConnection implements ZookeeperConnection<CuratorFr
     }
 
     @Override
-    public void create(String path, String data, boolean recursive, CreateMode mode) throws Exception {
+    public void create(String path, String data, boolean recursive, NodeMode mode) throws Exception {
         final CreateBuilder createBuilder = getClient().create();
+        final CreateMode createMode = CreateMode.valueOf(mode.name());
         if (recursive) {
             createBuilder.creatingParentsIfNeeded()
-                    .withMode(mode)
+                    .withMode(createMode)
                     .forPath(path, data.getBytes());
         } else {
-            createBuilder.withMode(mode)
+            createBuilder.withMode(createMode)
                     .forPath(path, data.getBytes());
         }
     }

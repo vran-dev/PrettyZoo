@@ -50,8 +50,6 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
         Platform.runLater(() -> {
             parentItem.getChildren().remove(removeItem);
             treeItemCache.remove(event.getServer(), path);
-//        totalNodeNum.get(event.getServer()).decrementAndGet();
-//        loadedNodeNum.get(event.getServer()).decrementAndGet();
             decreaseNumOfChildFiled(path, event);
         });
     }
