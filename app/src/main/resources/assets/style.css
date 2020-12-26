@@ -742,6 +742,10 @@
     -fx-text-fill: #3F51B5;
 }
 
+.node-info-pane {
+    -fx-background-color: transparent;
+}
+
 .v-button {
     -fx-background-color: #FFF;
     -fx-border-color: #DDD;
