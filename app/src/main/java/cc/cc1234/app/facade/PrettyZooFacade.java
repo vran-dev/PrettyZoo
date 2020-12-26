@@ -18,6 +18,7 @@ import cc.cc1234.spi.listener.ConfigurationChangeListener;
 import cc.cc1234.spi.listener.ServerListener;
 import cc.cc1234.spi.listener.ZookeeperNodeListener;
 import cc.cc1234.spi.node.NodeMode;
+import cc.cc1234.spi.util.StringWriter;
 import com.google.common.base.Strings;
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
@@ -45,7 +46,7 @@ public class PrettyZooFacade {
     private ConfigurationDomainService configurationDomainService = new ConfigurationDomainService();
 
     public void createNode(String server, String path, String data, NodeMode mode) throws Exception {
-        zookeeperDomainService.create(server, path, data, mode.createMode());
+        zookeeperDomainService.create(server, path, data, mode);
     }
 
     public void deleteNode(String server, String path) {
@@ -73,6 +74,7 @@ public class PrettyZooFacade {
 
     public void closeAll() {
         zookeeperDomainService.disconnectAll();
+        zookeeperDomainService.closeAllTerminal();
     }
 
     public void syncIfNecessary(String host) {
@@ -176,5 +178,18 @@ public class PrettyZooFacade {
         })
                 .onFailure(e -> VToast.error(e.getMessage()))
                 .onSuccess(e -> configurationDomainService.importConfig(configFile));
+    }
+
+    public void startTerminal(String server, StringWriter stream) {
+        zookeeperDomainService.initTerminal(server, stream);
+    }
+
+    public void executeLine(String server, String command) {
+        try {
+            zookeeperDomainService.executeLine(server, command);
+        } catch (Exception e) {
+            log.error("execute command failed at  "+server+":"+command, e);
+            VToast.error("命令执行失败，请重试");
+        }
     }
 }

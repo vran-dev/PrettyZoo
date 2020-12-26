@@ -13,24 +13,29 @@ import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.app.vo.ZkNodeSearchResult;
 import cc.cc1234.spi.listener.ServerListener;
 import cc.cc1234.spi.node.ZkNode;
+import cc.cc1234.spi.util.StringWriter;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NodeViewController {
 
     private static final Logger log = LoggerFactory.getLogger(NodeViewController.class);
 
     @FXML
-    private AnchorPane nodeViewPane;
+    private TabPane nodeViewPane;
 
     @FXML
     private AnchorPane nodeViewLeftPane;
@@ -56,6 +61,15 @@ public class NodeViewController {
     @FXML
     private Button disconnectButton;
 
+    @FXML
+    private Tab terminalTab;
+
+    @FXML
+    private TextArea terminalArea;
+
+    @FXML
+    private TextField terminalInput;
+
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
     private NodeInfoViewController nodeInfoViewController = FXMLs.getController("fxml/NodeInfoView.fxml");
@@ -69,17 +83,10 @@ public class NodeViewController {
         initSearchResultList();
         initSearchTextField();
         initNodeChangeListener();
+        initTerminalArea();
 
-        nodeAddButton.setOnMouseClicked(e -> {
-            final TreeItem<ZkNode> selectedItem = zkNodeTreeView.getSelectionModel().getSelectedItem();
-            if (selectedItem == null) {
-                nodeAddViewController.show(nodeViewRightPane);
-            } else {
-                final ZkNode zkNode = selectedItem.getValue();
-                nodeAddViewController.show(nodeViewRightPane, zkNode);
-            }
-        });
-
+        nodeAddButton.setOnMouseClicked(e -> onNodeAdd());
+        nodeDeleteButton.setOnMouseClicked(e -> onNodeDelete());
         disconnectButton.setTooltip(new Tooltip("disconnect server"));
         disconnectButton.setOnAction(e -> {
             final String server = ActiveServerContext.get();
@@ -87,14 +94,6 @@ public class NodeViewController {
             hideAndThen(() -> VToast.info("disconnect " + server + " success"));
         });
 
-        nodeDeleteButton.setOnMouseClicked(e -> {
-            final String path = zkNodeTreeView.getSelectionModel().getSelectedItem().getValue().getPath();
-            Dialog.confirm("删除节点", "该操作将删除 " + path + " 该节点及其对应的子节点，操作不可恢复，请谨慎执行", () -> {
-                Try.of(() -> prettyZooFacade.deleteNode(ActiveServerContext.get(), path))
-                        .onFailure(exception -> VToast.error("delete failed:" + exception.getMessage()))
-                        .onSuccess(t -> VToast.info("delete success"));
-            });
-        });
     }
 
     public void show(StackPane parent,
@@ -103,10 +102,16 @@ public class NodeViewController {
         if (server != null) {
             switchServer(server, serverListener);
         }
+        final List<Node> removeNodes = parent.getChildren()
+                .stream()
+                .filter(c -> c != nodeViewPane)
+                .collect(Collectors.toList());
+        parent.getChildren().removeAll(removeNodes);
         if (!parent.getChildren().contains(nodeViewPane)) {
             parent.getChildren().add(nodeViewPane);
             Transitions.zoomInY(nodeViewPane).play();
         }
+        terminalTab.setText(server + " >_");
     }
 
     public void hideAndThen(Runnable runnable) {
@@ -117,6 +122,25 @@ public class NodeViewController {
         } else {
             runnable.run();
         }
+    }
+
+    private void onNodeAdd() {
+        final TreeItem<ZkNode> selectedItem = zkNodeTreeView.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            nodeAddViewController.show(nodeViewRightPane);
+        } else {
+            final ZkNode zkNode = selectedItem.getValue();
+            nodeAddViewController.show(nodeViewRightPane, zkNode);
+        }
+    }
+
+    private void onNodeDelete() {
+        final String path = zkNodeTreeView.getSelectionModel().getSelectedItem().getValue().getPath();
+        Dialog.confirm("删除节点", "该操作将删除 " + path + " 该节点及其对应的子节点，操作不可恢复，请谨慎执行", () -> {
+            Try.of(() -> prettyZooFacade.deleteNode(ActiveServerContext.get(), path))
+                    .onFailure(exception -> VToast.error("delete failed:" + exception.getMessage()))
+                    .onSuccess(t -> VToast.info("delete success"));
+        });
     }
 
     private void initSearchTextField() {
@@ -189,22 +213,67 @@ public class NodeViewController {
         }
 
         zkNodeTreeView.setCellFactory(view -> new ZkNodeTreeCell());
-        final TreeItem<ZkNode> root = getOrCreateTreeRoot(host);
-        zkNodeTreeView.setRoot(root);
+        initRootTreeNode(host);
         ActiveServerContext.set(host);
         prettyZooFacade.syncIfNecessary(host);
-        nodeInfoViewController.show(nodeViewRightPane);
+        final TreeItem<ZkNode> selectedItem = zkNodeTreeView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            nodeInfoViewController.show(nodeViewRightPane, selectedItem.getValue());
+        } else {
+            nodeInfoViewController.show(nodeViewRightPane);
+        }
         log.debug("switch server {} success", host);
     }
 
-    private TreeItem<ZkNode> getOrCreateTreeRoot(String host) {
+    private void initRootTreeNode(String host) {
         final String root = "/";
         final TreeItemCache treeItemCache = TreeItemCache.getInstance();
         if (!treeItemCache.hasNode(host, root)) {
             final ZkNode zkNode = new ZkNode(root, root);
             zkNode.resetStat();
-            treeItemCache.add(host, root, new TreeItem<>(zkNode));
+            final TreeItem<ZkNode> rootTreeItem = new TreeItem<>(zkNode);
+            treeItemCache.add(host, root, rootTreeItem);
+            zkNodeTreeView.setRoot(rootTreeItem);
         }
-        return treeItemCache.get(host, root);
     }
+
+    private void initTerminalArea() {
+        terminalTab.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                prettyZooFacade.startTerminal(ActiveServerContext.get(), new StringWriter() {
+                    @Override
+                    public void write(String str) throws IOException {
+                        terminalArea.appendText(str);
+                    }
+
+                    @Override
+                    public void write(byte[] bytes) throws IOException {
+                        terminalArea.appendText(new String(bytes));
+                    }
+                });
+            }
+        });
+
+        terminalArea.setEditable(false);
+        terminalArea.setWrapText(true);
+        terminalArea.textProperty().addListener((ob, old, newValue) -> terminalArea.setScrollTop(Double.MAX_VALUE));
+        terminalInput.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                final String currentServer = ActiveServerContext.get();
+                if ("clear".equals(terminalInput.getText())) {
+                    terminalInput.clear();
+                    terminalArea.clear();
+                    terminalArea.appendText(currentServer + "\t$\t" + terminalInput.getText());
+                } else {
+                    terminalArea.appendText(currentServer + "\t$\t" + terminalInput.getText() + "\r\n");
+                    prettyZooFacade.executeLine(currentServer, terminalInput.getText());
+                    terminalInput.clear();
+                }
+                terminalArea.appendText("\r\n");
+            } else if (e.getCode() == KeyCode.TAB) {
+                terminalInput.appendText("\t");
+            }
+        });
+    }
+
 }

@@ -12,4 +12,5 @@ open module infrastructure.main {
 
     exports cc.cc1234.client.curator;
     exports cc.cc1234.config;
+    exports cc.cc1234.zookeeper;
 }

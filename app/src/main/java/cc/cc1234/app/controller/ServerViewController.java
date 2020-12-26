@@ -22,6 +22,8 @@ import javafx.scene.text.FontWeight;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class ServerViewController {
@@ -76,7 +78,9 @@ public class ServerViewController {
 
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
-    private NodeViewController nodeViewController = FXMLs.getController("fxml/NodeListView.fxml");
+    private Map<String, NodeViewController> nodeViewControllerMap = new ConcurrentHashMap<>();
+
+    private volatile NodeViewController currentNodeViewController = null;
 
     public void show(StackPane stackPane) {
         show(stackPane, null);
@@ -112,10 +116,15 @@ public class ServerViewController {
         if (stackPane.getChildren().contains(serverInfoPane)) {
             Transitions.zoomInY(serverInfoPane).playFromStart();
         } else {
-            nodeViewController.hideAndThen(() -> {
+            if (currentNodeViewController == null) {
                 stackPane.getChildren().add(serverInfoPane);
                 Transitions.zoomInY(serverInfoPane).playFromStart();
-            });
+            } else {
+                currentNodeViewController.hideAndThen(() -> {
+                    stackPane.getChildren().add(serverInfoPane);
+                    Transitions.zoomInY(serverInfoPane).playFromStart();
+                });
+            }
         }
     }
 
@@ -241,6 +250,7 @@ public class ServerViewController {
         Try.of(() -> {
             Asserts.notNull(serverConfigurationVO, "save config first");
             Asserts.assertTrue(prettyZooFacade.hasServerConfiguration(serverConfigurationVO.getZkServer()), "save config first");
+            NodeViewController nodeViewController = retrieve(serverConfigurationVO.getZkServer());
             nodeViewController.show(parent, serverConfigurationVO.getZkServer(), new ServerListener() {
                 @Override
                 public void onClose(String serverHost) {
@@ -249,8 +259,19 @@ public class ServerViewController {
                     }
                 }
             });
+            currentNodeViewController = nodeViewController;
             parent.getChildren().remove(serverInfoPane);
             serverConfigurationVO.setConnected(true);
         }).onFailure(e -> VToast.error(e.getMessage()));
+    }
+
+    private NodeViewController retrieve(String server) {
+        if (nodeViewControllerMap.containsKey(server)) {
+            return nodeViewControllerMap.get(server);
+        } else {
+            NodeViewController nodeViewController = FXMLs.getController("fxml/NodeListView.fxml");
+            nodeViewControllerMap.put(server, nodeViewController);
+            return nodeViewController;
+        }
     }
 }

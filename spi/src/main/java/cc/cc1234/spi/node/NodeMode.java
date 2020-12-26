@@ -1,7 +1,5 @@
 package cc.cc1234.spi.node;
 
-import org.apache.zookeeper.CreateMode;
-
 public enum NodeMode {
 
     PERSISTENT,
@@ -10,9 +8,12 @@ public enum NodeMode {
 
     EPHEMERAL,
 
-    EPHEMERAL_SEQUENTIAL;
+    EPHEMERAL_SEQUENTIAL,
 
-    public CreateMode createMode() {
-        return CreateMode.valueOf(this.name());
-    }
+    PERSISTENT_WITH_TTL,
+
+    PERSISTENT_SEQUENTIAL_WITH_TTL,
+
+    CONTAINER;
+
 }
