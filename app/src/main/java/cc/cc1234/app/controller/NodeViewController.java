@@ -15,7 +15,6 @@ import cc.cc1234.spi.listener.ServerListener;
 import cc.cc1234.spi.node.ZkNode;
 import cc.cc1234.spi.util.StringWriter;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
@@ -28,7 +27,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class NodeViewController {
 
@@ -204,7 +202,7 @@ public class NodeViewController {
             log.debug("begin to switch server to {}", host);
             prettyZooFacade.connect(host, List.of(new DefaultTreeNodeListener()), List.of(serverListener));
         } catch (Exception e) {
-            log.debug("switch server {} failed: {}", host, e.getMessage());
+            log.error("switch server " + host + " failed: ", e);
             throw new IllegalStateException("connect to " + host + " failed", e);
         }
 
