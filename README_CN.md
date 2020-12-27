@@ -40,7 +40,7 @@ mac 安装提示：已损坏，无法打开
 
 3、<del>支持断开连接</del> v1.1.0
 
-4、支持命令行操作
+4、<del>支持命令行操作</del> v1.2.0-BETA
 
 5、支持数据字符集切换
 
@@ -61,6 +61,8 @@ mac 安装提示：已损坏，无法打开
 5、支持 SSH Tunnel
 
 6、支持配置导入和导出
+
+7、命令行操作
 
 
 
@@ -86,6 +88,10 @@ mac 安装提示：已损坏，无法打开
 
 
 
+![](release/img/time-format.gif)
+
+
+
 - 创建节点
 
 ![](release/img/node-add.png)
@@ -97,6 +103,14 @@ mac 安装提示：已损坏，无法打开
 ![](release/img/node-search.png)
 
 
+
+- 命令行
+
+![](release/img/terminal.png)
+
+
+
+![](release/img/terminal.gif)
 
 # 感谢
 

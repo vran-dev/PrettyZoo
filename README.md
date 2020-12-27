@@ -32,7 +32,7 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 1. support i18n
 2. <del> Disconnect function </del> v1.1.0
 3. <del> Remote update </del> v1.1.0
-4. support command operation 
+4. <del> support command operation  </del> v1.2.0-BETA
 5. Charset switch
 6. Refactor ing......
 
@@ -47,6 +47,7 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 5. Support simple ACL and ACL syntax check
 6. Support SSH tunnel
 7. Support Config export And import
+8. Support terminal operation
 
 
 
@@ -69,6 +70,8 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 ![](release/img/node-list.png)
 
 
+![](release/img/time-format.gif)
+
 
 - node add
 
@@ -79,6 +82,13 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 - node search
 
 ![](release/img/node-search.png)
+
+
+- terminal
+
+![](release/img/terminal.png)
+
+![](release/img/terminal.gif)
 
 
 
