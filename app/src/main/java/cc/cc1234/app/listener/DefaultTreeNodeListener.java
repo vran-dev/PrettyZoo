@@ -85,22 +85,12 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
         if (skip(node, event)) {
             return;
         }
-
-        final TreeItem<ZkNode> parentItem = treeItemCache.get(event.getServer(), PathUtils.getParent(node));
-        final int numChildren = parentItem.getValue().getNumChildren();
-        parentItem.getValue().setNumChildren(numChildren + 1);
     }
 
     private void decreaseNumOfChildFiled(String node, NodeEvent event) {
         if (skip(node, event)) {
             return;
         }
-        final TreeItem<ZkNode> parentItem = treeItemCache.get(event.getServer(), PathUtils.getParent(node));
-        final int numChildren = parentItem.getValue().getNumChildren();
-        if (numChildren == 0) {
-            return;
-        }
-        parentItem.getValue().setNumChildren(numChildren - 1);
     }
 
     @Override
