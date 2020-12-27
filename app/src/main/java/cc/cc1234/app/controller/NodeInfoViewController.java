@@ -5,11 +5,14 @@ import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.spi.node.ZkNode;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 public class NodeInfoViewController {
 
@@ -59,24 +62,23 @@ public class NodeInfoViewController {
     private Button nodeUpdateButton;
 
     @FXML
+    private Label mtimeLabel;
+
+    @FXML
+    private Label ctimeLabel;
+
+    @FXML
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
     @FXML
     private void initialize() {
-        nodeUpdateButton.setOnMouseClicked(e -> {
-            final String path = pathField.getText();
-            if (!ActiveServerContext.exists()) {
-                VToast.error("Error: connect zookeeper first");
-                return;
-            }
-            if (!prettyZooFacade.nodeExists(path)) {
-                VToast.error("Node not exists");
-                return;
-            }
-            final String data = dataField.getText();
-            prettyZooFacade.updateData(ActiveServerContext.get(), path, data, ex -> VToast.error(ex.getMessage()));
-            VToast.info("update success");
-        });
+        nodeUpdateButton.setOnMouseClicked(e -> onNodeUpdate());
+
+        final Tooltip timeLabelTooltip = new Tooltip("Click to change format");
+        mtimeLabel.setTooltip(timeLabelTooltip);
+        ctimeLabel.setTooltip(timeLabelTooltip);
+        mtimeLabel.setOnMouseClicked(e -> changeTimeFormat());
+        ctimeLabel.setOnMouseClicked(e -> changeTimeFormat());
     }
 
     public void show(StackPane parent) {
@@ -95,13 +97,26 @@ public class NodeInfoViewController {
         }
     }
 
+    private void onNodeUpdate() {
+        final String path = pathField.getText();
+        if (!ActiveServerContext.exists()) {
+            VToast.error("Error: connect zookeeper first");
+            return;
+        }
+        if (!prettyZooFacade.nodeExists(path)) {
+            VToast.error("Node not exists");
+            return;
+        }
+        final String data = dataField.getText();
+        prettyZooFacade.updateData(ActiveServerContext.get(), path, data, ex -> VToast.error(ex.getMessage()));
+        VToast.info("update success");
+    }
+
     private void initTextField(ZkNode node) {
         dataField.setText(node.getData());
         ephemeralOwnerField.setText(String.valueOf(node.getEphemeralOwner()));
         cZxidField.setText(String.valueOf(node.getCzxid()));
-        mtimeField.setText(String.valueOf(node.getMtime()));
         pZxidField.setText(String.valueOf(node.getPzxid()));
-        ctimeField.setText(String.valueOf(node.getCtime()));
         mZxidField.setText(String.valueOf(node.getMzxid()));
         dataLengthField.setText(String.valueOf(node.getDataLength()));
         numChildrenField.setText(String.valueOf(node.getNumChildren()));
@@ -109,6 +124,47 @@ public class NodeInfoViewController {
         aclVersionField.setText(String.valueOf(node.getAversion()));
         cVersionField.setText(String.valueOf(node.getCversion()));
         pathField.setText(node.getPath());
+
+        mtimeField.getProperties().put("timestamp", node.getMtime());
+        mtimeField.getProperties().put("dateTime", format(node.getMtime()));
+        ctimeField.getProperties().put("timestamp", node.getCtime());
+        ctimeField.getProperties().put("dateTime", format(node.getCtime()));
+        showDateTime();
+    }
+
+    private void changeTimeFormat() {
+        if ("timestamp".equals(mtimeLabel.getProperties().get("format"))) {
+            showDateTime();
+        } else {
+            showTimestamp();
+        }
+    }
+
+    private void showDateTime() {
+        final Object ctime = ctimeField.getProperties().getOrDefault("dateTime", "");
+        ctimeField.setText(ctime.toString());
+        final Object mtime = mtimeField.getProperties().getOrDefault("dateTime", "");
+        mtimeField.setText(mtime.toString());
+        ctimeLabel.getProperties().put("format", "dateTime");
+        mtimeLabel.getProperties().put("format", "dateTime");
+    }
+
+    private void showTimestamp() {
+        final Object ctime = ctimeField.getProperties().getOrDefault("timestamp", "");
+        ctimeField.setText(ctime.toString());
+        final Object mtime = mtimeField.getProperties().getOrDefault("timestamp", "");
+        mtimeField.setText(mtime.toString());
+        ctimeLabel.getProperties().put("format", "timestamp");
+        mtimeLabel.getProperties().put("format", "timestamp");
+    }
+
+    private String format(long timestamp) {
+        if (timestamp == 0) {
+            return "无";
+        } else {
+            return OffsetDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        }
     }
 
     private void resetTextField() {
