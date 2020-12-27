@@ -251,6 +251,10 @@ public class ServerViewController {
             Asserts.notNull(serverConfigurationVO, "save config first");
             Asserts.assertTrue(prettyZooFacade.hasServerConfiguration(serverConfigurationVO.getZkServer()), "save config first");
             NodeViewController nodeViewController = retrieve(serverConfigurationVO.getZkServer());
+            if (currentNodeViewController != null) {
+                currentNodeViewController.hideAndThen(() -> {
+                });
+            }
             nodeViewController.show(parent, serverConfigurationVO.getZkServer(), new ServerListener() {
                 @Override
                 public void onClose(String serverHost) {
