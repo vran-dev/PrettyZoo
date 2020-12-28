@@ -21,6 +21,10 @@ public class ZkNodeTreeCell extends TreeCell<ZkNode> {
                 node.setFill(Color.valueOf("#ffab00"));
             }
 
+            if (this.isSelected() && item.getEphemeralOwner() == 0) {
+                node.setFill(Color.valueOf("#FFF"));
+            }
+
             final HBox hbox = new HBox();
             hbox.getChildren().add(node);
             setGraphic(hbox);
