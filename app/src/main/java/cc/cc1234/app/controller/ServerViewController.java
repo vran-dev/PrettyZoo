@@ -19,6 +19,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +29,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class ServerViewController {
+
+    private static final Logger log = LoggerFactory.getLogger(ServerViewController.class);
 
     @FXML
     private AnchorPane serverInfoPane;
@@ -266,7 +270,10 @@ public class ServerViewController {
             currentNodeViewController = nodeViewController;
             parent.getChildren().remove(serverInfoPane);
             serverConfigurationVO.setConnected(true);
-        }).onFailure(e -> VToast.error(e.getMessage()));
+        }).onFailure(e -> {
+            log.error("connect server error", e);
+            VToast.error(e.getMessage());
+        });
     }
 
     private NodeViewController retrieve(String server) {

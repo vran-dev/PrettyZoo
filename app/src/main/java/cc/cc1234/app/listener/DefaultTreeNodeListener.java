@@ -47,11 +47,12 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
         final String parent = PathUtils.getParent(path);
         final TreeItem<ZkNode> parentItem = treeItemCache.get(event.getServer(), parent);
         final TreeItem<ZkNode> removeItem = treeItemCache.get(event.getServer(), path);
-        Platform.runLater(() -> {
-            parentItem.getChildren().remove(removeItem);
-            treeItemCache.remove(event.getServer(), path);
-            decreaseNumOfChildFiled(path, event);
-        });
+        if (parentItem != null && removeItem != null) {
+            Platform.runLater(() -> {
+                parentItem.getChildren().remove(removeItem);
+                treeItemCache.remove(event.getServer(), path);
+            });
+        }
     }
 
     @Override
@@ -76,21 +77,8 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
                 final String parent = PathUtils.getParent(path);
                 final TreeItem<ZkNode> parentItem = treeItemCache.get(event.getServer(), parent);
                 parentItem.getChildren().add(treeItem);
-                increaseNumOfChildField(path, event);
             }
         });
-    }
-
-    private void increaseNumOfChildField(String node, NodeEvent event) {
-        if (skip(node, event)) {
-            return;
-        }
-    }
-
-    private void decreaseNumOfChildFiled(String node, NodeEvent event) {
-        if (skip(node, event)) {
-            return;
-        }
     }
 
     @Override
