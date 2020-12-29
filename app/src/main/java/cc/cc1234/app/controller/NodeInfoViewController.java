@@ -2,17 +2,21 @@ package cc.cc1234.app.controller;
 
 import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.facade.PrettyZooFacade;
+import cc.cc1234.app.util.Formatters;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.spi.node.ZkNode;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class NodeInfoViewController {
 
@@ -68,7 +72,18 @@ public class NodeInfoViewController {
     private Label ctimeLabel;
 
     @FXML
+    private Button jsonFormatButton;
+
+    @FXML
+    private Button rawFormatButton;
+
+    @FXML
+    private Button xmlFormatButton;
+
+    @FXML
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
+
+    private List<Button> formatButtons = List.of();
 
     @FXML
     private void initialize() {
@@ -79,6 +94,10 @@ public class NodeInfoViewController {
         ctimeLabel.setTooltip(timeLabelTooltip);
         mtimeLabel.setOnMouseClicked(e -> changeTimeFormat());
         ctimeLabel.setOnMouseClicked(e -> changeTimeFormat());
+        jsonFormatButton.setOnAction(e -> dataJsonFormat());
+        rawFormatButton.setOnAction(e -> dataRawFormat());
+        xmlFormatButton.setOnAction(e -> dataXmlFormat());
+        formatButtons = List.of(jsonFormatButton, xmlFormatButton, rawFormatButton);
     }
 
     public void show(StackPane parent) {
@@ -95,6 +114,7 @@ public class NodeInfoViewController {
         } else {
             initTextField(zkNode);
         }
+        formatButtons.forEach(e -> e.setTextFill(Color.valueOf("#000")));
     }
 
     private void onNodeUpdate() {
@@ -109,11 +129,14 @@ public class NodeInfoViewController {
         }
         final String data = dataField.getText();
         prettyZooFacade.updateData(ActiveServerContext.get(), path, data, ex -> VToast.error(ex.getMessage()));
+        dataField.getProperties().put("raw", data);
         VToast.info("update success");
     }
 
     private void initTextField(ZkNode node) {
         dataField.setText(node.getData());
+        dataField.getProperties().put("raw", node.getData());
+
         ephemeralOwnerField.setText(String.valueOf(node.getEphemeralOwner()));
         cZxidField.setText(String.valueOf(node.getCzxid()));
         pZxidField.setText(String.valueOf(node.getPzxid()));
@@ -181,5 +204,49 @@ public class NodeInfoViewController {
         aclVersionField.clear();
         cVersionField.clear();
         pathField.clear();
+    }
+
+    private void dataJsonFormat() {
+        final Object data = dataField.getProperties().get("raw");
+        if (data == null) {
+            return;
+        }
+        final String prettyJson;
+        try {
+            prettyJson = Formatters.prettyJson(data.toString());
+            dataField.setText(prettyJson);
+            switchFormatButton(jsonFormatButton);
+        } catch (JsonProcessingException e) {
+            VToast.error("JSON 格式错误");
+        }
+    }
+
+    private void dataXmlFormat() {
+        final Object data = dataField.getProperties().get("raw");
+        if (data == null) {
+            return;
+        }
+        final String prettyXML;
+        try {
+            prettyXML = Formatters.prettyXml(data.toString());
+            dataField.setText(prettyXML);
+            switchFormatButton(xmlFormatButton);
+        } catch (JsonProcessingException e) {
+            VToast.error("XML 格式错误");
+        }
+    }
+
+    private void dataRawFormat() {
+        final Object data = dataField.getProperties().get("raw");
+        if (data == null) {
+            return;
+        }
+        dataField.setText(data.toString());
+        switchFormatButton(rawFormatButton);
+    }
+
+    private void switchFormatButton(Button button) {
+        button.setTextFill(Color.valueOf("#3F51B5"));
+        formatButtons.stream().filter(b -> b != button).forEach(b -> b.setTextFill(Color.valueOf("#000")));
     }
 }
