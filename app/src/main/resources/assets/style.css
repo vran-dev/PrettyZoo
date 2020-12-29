@@ -923,5 +923,35 @@
     -fx-border-width: 2 0 0 0;
 }
 
+.xmlButton {
+    -fx-border-color: #DDD;
+    -fx-background-color: #FFF;
+}
 
+.xmlButton:hover {
+    -fx-background-color:#EEE;
+}
 
+.xmlButton:pressed {
+    -fx-background-color: #b5b5b5;
+}
+
+.button-group {
+    -fx-border-width: 0 0 0 1;
+    -fx-border-color: #DDD;
+    -fx-padding: 0 15 0 5;
+    -fx-spacing: 0;
+    -fx-fill-height: true;
+}
+
+.button-group .button {
+    -fx-background-color: #FFF;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-border-width: 0 0 0 0;
+    -fx-border-color: #EEE;
+}
+
+.button-group .button:hover {
+    -fx-background-color: #EEE;
+}

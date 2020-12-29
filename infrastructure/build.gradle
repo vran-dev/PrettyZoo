@@ -18,6 +18,8 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.0'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.10.1'
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: '2.10.3'
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.12.0'
+
     compile('com.fasterxml.jackson.core:jackson-databind:2.10.0') {
         exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
     }
