@@ -11,7 +11,7 @@
 
 # Language
 
-[中文页面](README_CN.md)
+English |  [中文](README_CN.md)
 
 
 
@@ -29,27 +29,22 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 
 # TODO
 
-1. support i18n
-2. <del> Disconnect function </del> v1.1.0
-3. <del> Remote update </del> v1.1.0
-4. <del> support command operation  </del> v1.2.0-BETA
-5. Charset switch
-6. Refactor ing......
+1. Support i18n
+2. Redesign node serach
+3. Node data charset switch 
 
 
 
 # Feature
 
 1. Multi zookeeper server manage
-2. Auto sync node data 
-3. Support recursive add / delete node
-4. Support node search
-5. Support simple ACL and ACL syntax check
-6. Support SSH tunnel
-7. Support Config export And import
-8. Support terminal operation
-
-
+2. Support real-time node synchronize
+3. Support ACL
+4. Support SSH tunnel
+5. Support config export /  import
+6. Support node create / search / update / delete
+7. Support terminal operation (**v1.2.0-BETA**)
+8. Support **JSON** / **XML** data pretty format (**v1.2.0**)
 
 # Show
 
@@ -81,7 +76,7 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 
 - node search
 
-![](release/img/node-search.png)
+![](release/img/node-search.gif)
 
 
 - terminal
