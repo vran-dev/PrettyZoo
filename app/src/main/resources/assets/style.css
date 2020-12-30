@@ -827,12 +827,7 @@
     -fx-content-display: center;
 }
 
-.v-primary-background {
-    -fx-background-color: transparent;
-    -fx-border-color: #a0a0a0;
-    -fx-border-radius: 0;
-    -fx-background-radius: 0;
-}
+
 
 
 .new-version {
@@ -929,7 +924,7 @@
 }
 
 .xmlButton:hover {
-    -fx-background-color:#EEE;
+    -fx-background-color: #EEE;
 }
 
 .xmlButton:pressed {
@@ -954,4 +949,38 @@
 
 .button-group .button:hover {
     -fx-background-color: #EEE;
+}
+
+.data-save-button {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/update.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 20;
+    -fx-pref-height: 20;
+    -fx-pref-width: 20;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.data-save-button:hover {
+    -fx-background-color: #DDD;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.data-save-button .tooltip {
+    -fx-font-size: 10px;
+    -fx-opacity: 0.9;
+    -fx-text-alignment: center;
+}
+
+.data-menu-bar {
+    -fx-background-color: transparent;
+    -fx-border-color: #a0a0a0;
+    -fx-border-width: 1 1 0 1;
+    -fx-background-radius: 0;
+    -fx-padding: 6 10 6 10;
+    -fx-border-radius: 6 6 0 0;
 }

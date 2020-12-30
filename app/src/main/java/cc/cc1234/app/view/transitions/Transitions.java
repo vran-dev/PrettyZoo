@@ -164,4 +164,13 @@ public class Transitions {
         return zoom(node, Duration.millis(500), 1, 1, 1.2, 1.2, 2, true, e -> {
         });
     }
+
+    public static void rotate(Node node, Runnable runnable) {
+        RotateTransition transition = new RotateTransition(Duration.millis(400), node);
+        transition.setFromAngle(0);
+        transition.setToAngle(360);
+        transition.setAutoReverse(true);
+        transition.setOnFinished(e -> runnable.run());
+        transition.playFromStart();
+    }
 }
