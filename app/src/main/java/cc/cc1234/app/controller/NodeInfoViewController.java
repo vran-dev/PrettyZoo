@@ -234,7 +234,7 @@ public class NodeInfoViewController {
             prettyXML = Formatters.prettyXml(data.toString());
             dataField.setText(prettyXML);
             switchFormatButton(xmlFormatButton);
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             VToast.error("XML 格式错误");
         }
     }
