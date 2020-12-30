@@ -6,10 +6,9 @@ open module infrastructure.main {
     requires org.slf4j;
     requires zookeeper;
     requires curator.client;
-    requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.datatype.jdk8;
-    requires com.fasterxml.jackson.dataformat.xml;
 
     exports cc.cc1234.client.curator;
     exports cc.cc1234.config;

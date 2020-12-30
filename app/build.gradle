@@ -28,7 +28,7 @@ jlink {
                 '--name', 'PrettyZoo',
                 '--app-version', "${project.version}",
                 '--description', 'Pretty nice Zookeeper GUI',
-                '--copyright', 'Copyrigth',
+                '--copyright', 'Apache License',
                 '--vendor', 'vran'
         ]
         if (os.windows) {
