@@ -4,6 +4,7 @@ import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.util.Formatters;
 import cc.cc1234.app.view.toast.VToast;
+import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.spi.node.ZkNode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.fxml.FXML;
@@ -114,7 +115,7 @@ public class NodeInfoViewController {
         } else {
             initTextField(zkNode);
         }
-        formatButtons.forEach(e -> e.setTextFill(Color.valueOf("#000")));
+        switchFormatButton(rawFormatButton);
     }
 
     private void onNodeUpdate() {
@@ -128,9 +129,11 @@ public class NodeInfoViewController {
             return;
         }
         final String data = dataField.getText();
-        prettyZooFacade.updateData(ActiveServerContext.get(), path, data, ex -> VToast.error(ex.getMessage()));
-        dataField.getProperties().put("raw", data);
-        VToast.info("update success");
+        Transitions.rotate(nodeUpdateButton, () -> {
+            prettyZooFacade.updateData(ActiveServerContext.get(), path, data, ex -> VToast.error(ex.getMessage()));
+            dataField.getProperties().put("raw", data);
+            VToast.info("update success");
+        });
     }
 
     private void initTextField(ZkNode node) {
