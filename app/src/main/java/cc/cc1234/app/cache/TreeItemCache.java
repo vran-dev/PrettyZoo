@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 public class TreeItemCache {
 
@@ -18,7 +17,7 @@ public class TreeItemCache {
     private static final Map<String, Map<String, TreeItem<ZkNode>>> treeItemCache = new ConcurrentHashMap<>();
 
     // TODO combine pathTreeCache and treeItemCache
-    private static final Map<String, PathTrie> pathTreeCache = new ConcurrentHashMap<>();
+    private static final Map<String, PathTrie<TreeItem<ZkNode>>> pathTreeCache = new ConcurrentHashMap<>();
 
     private static final TreeItemCache INSTANCE = new TreeItemCache();
 
@@ -38,8 +37,8 @@ public class TreeItemCache {
     }
 
     public void add(String server, String path, TreeItem<ZkNode> item) {
-        final Map<String, TreeItem<ZkNode>> map = treeItemCache.computeIfAbsent(server, key -> new ConcurrentHashMap<>());
-        final PathTrie pathTrie = pathTreeCache.computeIfAbsent(server, key -> new PathTrie());
+        var map = treeItemCache.computeIfAbsent(server, key -> new ConcurrentHashMap<>());
+        var pathTrie = pathTreeCache.computeIfAbsent(server, key -> new PathTrie<>());
         map.put(path, item);
         pathTrie.add(path, item);
     }
