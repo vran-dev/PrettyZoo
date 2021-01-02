@@ -172,6 +172,7 @@ public class NodeViewController {
                             zkNodeTreeView.getSelectionModel().select(clickedRow.getItem().getItem());
                             zkNodeTreeView.scrollTo(zkNodeTreeView.getSelectionModel().getSelectedIndex());
                             if (searchResultList.isVisible()) {
+                                searchResultList.getItems().clear();
                                 searchResultList.setVisible(false);
                             }
                         }
@@ -179,11 +180,11 @@ public class NodeViewController {
                 }
             }
         });
-        searchResultList.setOnMouseExited(e -> {
-            if (searchResultList.isVisible()) {
-                searchResultList.setVisible(false);
-            }
-        });
+//        searchResultList.setOnMouseExited(e -> {
+//            if (searchResultList.isVisible()) {
+//                searchResultList.setVisible(false);
+//            }
+//        });
     }
 
     private void initNodeChangeListener() {
