@@ -18,10 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultTreeNodeListener implements ZookeeperNodeListener {
 
     private static final Logger log = LoggerFactory.getLogger(DefaultTreeNodeListener.class);
-
-    private TreeItemCache treeItemCache = TreeItemCache.getInstance();
-
     public Set<String> completed = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private TreeItemCache treeItemCache = TreeItemCache.getInstance();
 
     public DefaultTreeNodeListener() {
     }

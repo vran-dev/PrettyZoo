@@ -15,39 +15,9 @@ import javafx.scene.text.TextAlignment;
 
 public class VToast {
 
-    public enum ToastType {
-        ERROR {
-            @Override
-            String getIcon() {
-                return "assets/img/notification/error.png";
-            }
-
-            @Override
-            String getColor() {
-                return "#BB401E";
-            }
-        },
-        INFO {
-            @Override
-            String getIcon() {
-                return "assets/img/notification/ok.png";
-            }
-
-            @Override
-            String getColor() {
-                return "#469F95";
-            }
-        };
-
-        abstract String getIcon();
-
-        abstract String getColor();
-    }
-
     public static void error(String message) {
         error(RootPaneContext.get(), message);
     }
-
 
     public static void error(StackPane pane, String message) {
         notification(pane, message, ToastType.ERROR);
@@ -102,5 +72,34 @@ public class VToast {
 
         hBox.setAlignment(Pos.CENTER_LEFT);
         return hBox;
+    }
+
+    public enum ToastType {
+        ERROR {
+            @Override
+            String getIcon() {
+                return "assets/img/notification/error.png";
+            }
+
+            @Override
+            String getColor() {
+                return "#BB401E";
+            }
+        },
+        INFO {
+            @Override
+            String getIcon() {
+                return "assets/img/notification/ok.png";
+            }
+
+            @Override
+            String getColor() {
+                return "#469F95";
+            }
+        };
+
+        abstract String getIcon();
+
+        abstract String getColor();
     }
 }

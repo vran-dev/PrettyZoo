@@ -41,96 +41,95 @@ public class ServerConfigurationVO {
         return zkServer.get();
     }
 
-    public SimpleStringProperty zkServerProperty() {
-        return zkServer;
-    }
-
     public void setZkServer(String zkServer) {
         this.zkServer.set(zkServer);
+    }
+
+    public SimpleStringProperty zkServerProperty() {
+        return zkServer;
     }
 
     public ObservableList<String> getAclList() {
         return aclList.get();
     }
 
-    public ObjectProperty<ObservableList<String>> aclListProperty() {
-        return aclList;
-    }
-
     public void setAclList(ObservableList<String> aclList) {
         this.aclList.set(aclList);
+    }
+
+    public ObjectProperty<ObservableList<String>> aclListProperty() {
+        return aclList;
     }
 
     public boolean isConnected() {
         return connected.get();
     }
 
-    public SimpleBooleanProperty connectedProperty() {
-        return connected;
-    }
-
     public void setConnected(boolean connected) {
         this.connected.set(connected);
     }
 
+    public SimpleBooleanProperty connectedProperty() {
+        return connected;
+    }
 
     public boolean isSshEnabled() {
         return sshEnabled.get();
-    }
-
-    public SimpleBooleanProperty sshEnabledProperty() {
-        return sshEnabled;
     }
 
     public void setSshEnabled(boolean sshEnabled) {
         this.sshEnabled.set(sshEnabled);
     }
 
-    public String getSshServer() {
-        return sshServer.get();
+    public SimpleBooleanProperty sshEnabledProperty() {
+        return sshEnabled;
     }
 
-    public SimpleStringProperty sshServerProperty() {
-        return sshServer;
+    public String getSshServer() {
+        return sshServer.get();
     }
 
     public void setSshServer(String sshServer) {
         this.sshServer.set(sshServer);
     }
 
-    public String getSshUsername() {
-        return sshUsername.get();
+    public SimpleStringProperty sshServerProperty() {
+        return sshServer;
     }
 
-    public SimpleStringProperty sshUsernameProperty() {
-        return sshUsername;
+    public String getSshUsername() {
+        return sshUsername.get();
     }
 
     public void setSshUsername(String sshUsername) {
         this.sshUsername.set(sshUsername);
     }
 
-    public String getSshPassword() {
-        return sshPassword.get();
+    public SimpleStringProperty sshUsernameProperty() {
+        return sshUsername;
     }
 
-    public SimpleStringProperty sshPasswordProperty() {
-        return sshPassword;
+    public String getSshPassword() {
+        return sshPassword.get();
     }
 
     public void setSshPassword(String sshPassword) {
         this.sshPassword.set(sshPassword);
     }
 
+    public SimpleStringProperty sshPasswordProperty() {
+        return sshPassword;
+    }
+
     public String getRemoteServer() {
         return remoteServer.get();
     }
 
-    public SimpleStringProperty remoteServerProperty() {
-        return remoteServer;
-    }
-
     public void setRemoteServer(String remoteServer) {
         this.remoteServer.set(remoteServer);
+    }
+
+    public SimpleStringProperty remoteServerProperty() {
+        return remoteServer;
     }
 }
