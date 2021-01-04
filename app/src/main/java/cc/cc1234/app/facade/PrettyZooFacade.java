@@ -188,7 +188,7 @@ public class PrettyZooFacade {
         try {
             zookeeperDomainService.executeLine(server, command);
         } catch (Exception e) {
-            log.error("execute command failed at  "+server+":"+command, e);
+            log.error("execute command failed at  " + server + ":" + command, e);
             VToast.error("命令执行失败，请重试");
         }
     }

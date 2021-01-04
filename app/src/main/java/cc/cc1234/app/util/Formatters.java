@@ -14,9 +14,8 @@ import java.io.StringWriter;
 
 public class Formatters {
 
-    private static final ObjectMapper jsonMapper = new ObjectMapper();
-
     public static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private static final ObjectMapper jsonMapper = new ObjectMapper();
 
     static {
         transformerFactory.setAttribute("indent-number", 2);

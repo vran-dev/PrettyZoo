@@ -21,20 +21,6 @@ public class ConfigurationDomainService {
 
     private PrettyZooConfigRepository prettyZooConfigRepository = new JsonPrettyZooConfigRepository();
 
-    private static class Cache<T> {
-
-        private T val;
-
-        public T getVal() {
-            return val;
-        }
-
-        public void setVal(T val) {
-            this.val = val;
-        }
-
-    }
-
     public Configuration load(List<ConfigurationChangeListener> listeners) {
         final Configuration configuration = new ConfigurationFactory().create(listeners);
         configurationCache.setVal(configuration);
@@ -92,5 +78,19 @@ public class ConfigurationDomainService {
         } catch (IOException e) {
             throw new IllegalStateException("export config failed", e);
         }
+    }
+
+    private static class Cache<T> {
+
+        private T val;
+
+        public T getVal() {
+            return val;
+        }
+
+        public void setVal(T val) {
+            this.val = val;
+        }
+
     }
 }

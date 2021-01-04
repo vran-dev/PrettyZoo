@@ -6,22 +6,6 @@ public class PathTrie<T> {
 
     private Entry<T> root;
 
-    private static class Entry<T> {
-
-        private String name;
-
-        private Entry<T> parent;
-
-        private T data;
-
-        private List<Entry<T>> subEntries = new ArrayList<>();
-
-        @Override
-        public String toString() {
-            return parent == null ? name : parent.name + "/" + name;
-        }
-    }
-
     public PathTrie() {
         final Entry<T> rootEntry = new Entry<>();
         rootEntry.name = "/";
@@ -60,6 +44,14 @@ public class PathTrie<T> {
         temp.name = name;
         temp.subEntries = new LinkedList<>();
         return temp;
+    }
+
+    private static String[] paths(String path) {
+        if (path.startsWith("/")) {
+            return path.substring(1).split("/");
+        } else {
+            return path.split("/");
+        }
     }
 
     public boolean contains(String path) {
@@ -119,11 +111,19 @@ public class PathTrie<T> {
         isMatch(root.subEntries, 0, pathArray).ifPresent(e -> e.parent.subEntries.remove(e));
     }
 
-    private static String[] paths(String path) {
-        if (path.startsWith("/")) {
-            return path.substring(1).split("/");
-        } else {
-            return path.split("/");
+    private static class Entry<T> {
+
+        private String name;
+
+        private Entry<T> parent;
+
+        private T data;
+
+        private List<Entry<T>> subEntries = new ArrayList<>();
+
+        @Override
+        public String toString() {
+            return parent == null ? name : parent.name + "/" + name;
         }
     }
 

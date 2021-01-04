@@ -36,22 +36,8 @@ import java.util.*;
  * The command line client to ZooKeeper.
  */
 public class ZooKeeperMain {
-    private static final Logger LOG = LoggerFactory.getLogger(ZooKeeperMain.class);
     protected static final Map<String, String> commandMap = new HashMap<String, String>();
-
-    protected MyCommandOptions cl;
-    protected HashMap<Integer, String> history = new HashMap<Integer, String>();
-    protected int commandCount = 0;
-    protected boolean printWatches = true;
-
-    private StringWriter outputStream;
-
-    protected ZooKeeper zk;
-    protected String host = "";
-
-    public boolean getPrintWatches() {
-        return printWatches;
-    }
+    private static final Logger LOG = LoggerFactory.getLogger(ZooKeeperMain.class);
 
     static {
 //        commandMap.put("connect", "host:port");
@@ -78,203 +64,13 @@ public class ZooKeeperMain {
         commandMap.put("addauth", "scheme auth");
     }
 
-    void usage() {
-        try {
-            outputStream.write("ZooKeeper -server host:port cmd args\r\n".getBytes());
-            for (String cmd : commandMap.keySet()) {
-                outputStream.write(("\t" + cmd + " " + commandMap.get(cmd) + "\r\n").getBytes());
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    private class MyWatcher implements Watcher {
-        public void process(WatchedEvent event) {
-            if (getPrintWatches()) {
-                ZooKeeperMain.printMessage("WATCHER::");
-                ZooKeeperMain.printMessage(event.toString());
-            }
-        }
-    }
-
-    private int getPermFromString(String permString) throws IOException {
-        int perm = 0;
-        for (int i = 0; i < permString.length(); i++) {
-            switch (permString.charAt(i)) {
-                case 'r':
-                    perm |= ZooDefs.Perms.READ;
-                    break;
-                case 'w':
-                    perm |= ZooDefs.Perms.WRITE;
-                    break;
-                case 'c':
-                    perm |= ZooDefs.Perms.CREATE;
-                    break;
-                case 'd':
-                    perm |= ZooDefs.Perms.DELETE;
-                    break;
-                case 'a':
-                    perm |= ZooDefs.Perms.ADMIN;
-                    break;
-                default:
-                    outputStream.write(("Unknown perm type: " + permString.charAt(i)).getBytes());
-            }
-        }
-        return perm;
-    }
-
-    private void printStat(Stat stat, StringWriter stream) {
-        try {
-            stream.write(("cZxid = 0x" + Long.toHexString(stat.getCzxid()) + "\r\n").getBytes());
-            stream.write(("ctime = " + new Date(stat.getCtime()).toString() + "\r\n").getBytes());
-            stream.write(("mZxid = 0x" + Long.toHexString(stat.getMzxid()) + "\r\n").getBytes());
-            stream.write(("mtime = " + new Date(stat.getMtime()).toString() + "\r\n").getBytes());
-            stream.write(("pZxid = 0x" + Long.toHexString(stat.getPzxid()) + "\r\n").getBytes());
-            stream.write(("cversion = " + stat.getCversion() + "\r\n").getBytes());
-            stream.write(("dataVersion = " + stat.getVersion() + "\r\n").getBytes());
-            stream.write(("aclVersion = " + stat.getAversion() + "\r\n").getBytes());
-            stream.write(("ephemeralOwner = 0x" + Long.toHexString(stat.getEphemeralOwner()) + "\r\n").getBytes());
-            stream.write(("dataLength = " + stat.getDataLength() + "\r\n").getBytes());
-            stream.write(("numChildren = " + stat.getNumChildren() + "\r\n").getBytes());
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    /**
-     * A storage class for both command line options and shell commands.
-     */
-    static class MyCommandOptions {
-
-        private Map<String, String> options = new HashMap<String, String>();
-        private List<String> cmdArgs = null;
-        private String command = null;
-        private StringWriter outputStream;
-
-        public MyCommandOptions(StringWriter outputStream) {
-            options.put("server", "localhost:2181");
-            options.put("timeout", "30000");
-            this.outputStream = outputStream;
-        }
-
-        public String getOption(String opt) {
-            return options.get(opt);
-        }
-
-        public String getCommand() {
-            return command;
-        }
-
-        public String getCmdArgument(int index) {
-            return cmdArgs.get(index);
-        }
-
-        public int getNumArguments() {
-            return cmdArgs.size();
-        }
-
-        public String[] getArgArray() {
-            return cmdArgs.toArray(new String[0]);
-        }
-
-        /**
-         * Parses a command line that may contain one or more flags
-         * before an optional command string
-         *
-         * @param args command line arguments
-         * @return true if parsing succeeded, false otherwise.
-         */
-        public boolean parseOptions(String[] args) {
-            List<String> argList = Arrays.asList(args);
-            Iterator<String> it = argList.iterator();
-
-            while (it.hasNext()) {
-                String opt = it.next();
-                try {
-                    if (opt.equals("-server")) {
-                        options.put("server", it.next());
-                    } else if (opt.equals("-timeout")) {
-                        options.put("timeout", it.next());
-                    } else if (opt.equals("-r")) {
-                        options.put("readonly", "true");
-                    }
-                } catch (NoSuchElementException e) {
-                    try {
-                        outputStream.write(("Error: no argument found for option " + opt).getBytes());
-                    } catch (IOException ioException) {
-                        throw new IllegalStateException(ioException);
-                    }
-                    return false;
-                }
-
-                if (!opt.startsWith("-")) {
-                    command = opt;
-                    cmdArgs = new ArrayList<String>();
-                    cmdArgs.add(command);
-                    while (it.hasNext()) {
-                        cmdArgs.add(it.next());
-                    }
-                    return true;
-                }
-            }
-            return true;
-        }
-
-        /**
-         * Breaks a string into command + arguments.
-         *
-         * @param cmdstring string of form "cmd arg1 arg2..etc"
-         * @return true if parsing succeeded.
-         */
-        public boolean parseCommand(String cmdstring) {
-            StringTokenizer cmdTokens = new StringTokenizer(cmdstring, " ");
-            String[] args = new String[cmdTokens.countTokens()];
-            int tokenIndex = 0;
-            while (cmdTokens.hasMoreTokens()) {
-                args[tokenIndex] = cmdTokens.nextToken();
-                tokenIndex++;
-            }
-            if (args.length == 0) {
-                return false;
-            }
-            command = args[0];
-            cmdArgs = Arrays.asList(args);
-            return true;
-        }
-    }
-
-
-    /**
-     * Makes a list of possible completions, either for commands
-     * or for zk nodes if the token to complete begins with /
-     */
-    protected void addToHistory(int i, String cmd) {
-        history.put(i, cmd);
-    }
-
-    public static List<String> getCommands() {
-        return new LinkedList<String>(commandMap.keySet());
-    }
-
-    protected String getPrompt() {
-        return "[zk: " + host + "(" + zk.getState() + ")" + " " + commandCount + "] ";
-    }
-
-    public static void printMessage(String msg) {
-        System.out.println("\n" + msg);
-    }
-
-    protected void connectToZK(String newHost) throws InterruptedException, IOException {
-        if (zk != null && zk.getState().isAlive()) {
-            zk.close();
-        }
-        host = newHost;
-        boolean readOnly = cl.getOption("readonly") != null;
-        zk = new ZooKeeper(host,
-                Integer.parseInt(cl.getOption("timeout")),
-                new MyWatcher(), readOnly);
-    }
+    protected MyCommandOptions cl;
+    protected HashMap<Integer, String> history = new HashMap<Integer, String>();
+    protected int commandCount = 0;
+    protected boolean printWatches = true;
+    protected ZooKeeper zk;
+    protected String host = "";
+    private StringWriter outputStream;
 
     public ZooKeeperMain(String args[]) throws IOException, InterruptedException {
         cl.parseOptions(args);
@@ -288,14 +84,12 @@ public class ZooKeeperMain {
         cl = new MyCommandOptions(outputStream);
     }
 
-    public void executeLine(String line)
-            throws InterruptedException, IOException, KeeperException {
-        if (!line.equals("")) {
-            cl.parseCommand(line);
-            addToHistory(commandCount, line);
-            processCmd(cl);
-            commandCount++;
-        }
+    public static List<String> getCommands() {
+        return new LinkedList<String>(commandMap.keySet());
+    }
+
+    public static void printMessage(String msg) {
+        System.out.println("\n" + msg);
     }
 
     /**
@@ -505,6 +299,118 @@ public class ZooKeeperMain {
         return true;
     }
 
+    private static String getPermString(int perms) {
+        StringBuilder p = new StringBuilder();
+        if ((perms & ZooDefs.Perms.CREATE) != 0) {
+            p.append('c');
+        }
+        if ((perms & ZooDefs.Perms.DELETE) != 0) {
+            p.append('d');
+        }
+        if ((perms & ZooDefs.Perms.READ) != 0) {
+            p.append('r');
+        }
+        if ((perms & ZooDefs.Perms.WRITE) != 0) {
+            p.append('w');
+        }
+        if ((perms & ZooDefs.Perms.ADMIN) != 0) {
+            p.append('a');
+        }
+        return p.toString();
+    }
+
+    public boolean getPrintWatches() {
+        return printWatches;
+    }
+
+    void usage() {
+        try {
+            outputStream.write("ZooKeeper -server host:port cmd args\r\n".getBytes());
+            for (String cmd : commandMap.keySet()) {
+                outputStream.write(("\t" + cmd + " " + commandMap.get(cmd) + "\r\n").getBytes());
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private int getPermFromString(String permString) throws IOException {
+        int perm = 0;
+        for (int i = 0; i < permString.length(); i++) {
+            switch (permString.charAt(i)) {
+                case 'r':
+                    perm |= ZooDefs.Perms.READ;
+                    break;
+                case 'w':
+                    perm |= ZooDefs.Perms.WRITE;
+                    break;
+                case 'c':
+                    perm |= ZooDefs.Perms.CREATE;
+                    break;
+                case 'd':
+                    perm |= ZooDefs.Perms.DELETE;
+                    break;
+                case 'a':
+                    perm |= ZooDefs.Perms.ADMIN;
+                    break;
+                default:
+                    outputStream.write(("Unknown perm type: " + permString.charAt(i)).getBytes());
+            }
+        }
+        return perm;
+    }
+
+    private void printStat(Stat stat, StringWriter stream) {
+        try {
+            stream.write(("cZxid = 0x" + Long.toHexString(stat.getCzxid()) + "\r\n").getBytes());
+            stream.write(("ctime = " + new Date(stat.getCtime()).toString() + "\r\n").getBytes());
+            stream.write(("mZxid = 0x" + Long.toHexString(stat.getMzxid()) + "\r\n").getBytes());
+            stream.write(("mtime = " + new Date(stat.getMtime()).toString() + "\r\n").getBytes());
+            stream.write(("pZxid = 0x" + Long.toHexString(stat.getPzxid()) + "\r\n").getBytes());
+            stream.write(("cversion = " + stat.getCversion() + "\r\n").getBytes());
+            stream.write(("dataVersion = " + stat.getVersion() + "\r\n").getBytes());
+            stream.write(("aclVersion = " + stat.getAversion() + "\r\n").getBytes());
+            stream.write(("ephemeralOwner = 0x" + Long.toHexString(stat.getEphemeralOwner()) + "\r\n").getBytes());
+            stream.write(("dataLength = " + stat.getDataLength() + "\r\n").getBytes());
+            stream.write(("numChildren = " + stat.getNumChildren() + "\r\n").getBytes());
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    /**
+     * Makes a list of possible completions, either for commands
+     * or for zk nodes if the token to complete begins with /
+     */
+    protected void addToHistory(int i, String cmd) {
+        history.put(i, cmd);
+    }
+
+    protected String getPrompt() {
+        return "[zk: " + host + "(" + zk.getState() + ")" + " " + commandCount + "] ";
+    }
+
+    protected void connectToZK(String newHost) throws InterruptedException, IOException {
+        if (zk != null && zk.getState().isAlive()) {
+            zk.close();
+        }
+        host = newHost;
+        boolean readOnly = cl.getOption("readonly") != null;
+        zk = new ZooKeeper(host,
+                Integer.parseInt(cl.getOption("timeout")),
+                new MyWatcher(), readOnly);
+    }
+
+    public void executeLine(String line)
+            throws InterruptedException, IOException, KeeperException {
+        if (!line.equals("")) {
+            cl.parseCommand(line);
+            addToHistory(commandCount, line);
+            processCmd(cl);
+            commandCount++;
+        }
+    }
+
     protected boolean processCmd(MyCommandOptions co)
             throws KeeperException, IOException, InterruptedException {
         try {
@@ -663,7 +569,7 @@ public class ZooKeeperMain {
             path = args[1];
             acl = zk.getACL(path, stat);
             for (ACL a : acl) {
-                outputStream.write((a.getId() + ": " + getPermString(a.getPerms())+"\r\n").getBytes());
+                outputStream.write((a.getId() + ": " + getPermString(a.getPerms()) + "\r\n").getBytes());
             }
         } else if (cmd.equals("setAcl") && args.length >= 3) {
             path = args[1];
@@ -682,10 +588,10 @@ public class ZooKeeperMain {
             String absolutePath = Quotas.quotaZookeeper + path + "/" + Quotas.limitNode;
             byte[] data = null;
             try {
-                outputStream.write(("absolute path is " + absolutePath +"\r\n").getBytes());
+                outputStream.write(("absolute path is " + absolutePath + "\r\n").getBytes());
                 data = zk.getData(absolutePath, false, stat);
                 StatsTrack st = new StatsTrack(new String(data));
-                outputStream.write(("Output quota for " + path + " " + st.toString()+"\r\n").getBytes());
+                outputStream.write(("Output quota for " + path + " " + st.toString() + "\r\n").getBytes());
 
                 data = zk.getData(Quotas.quotaZookeeper + path + "/" +
                         Quotas.statNode, false, stat);
@@ -754,26 +660,6 @@ public class ZooKeeperMain {
         return watch;
     }
 
-    private static String getPermString(int perms) {
-        StringBuilder p = new StringBuilder();
-        if ((perms & ZooDefs.Perms.CREATE) != 0) {
-            p.append('c');
-        }
-        if ((perms & ZooDefs.Perms.DELETE) != 0) {
-            p.append('d');
-        }
-        if ((perms & ZooDefs.Perms.READ) != 0) {
-            p.append('r');
-        }
-        if ((perms & ZooDefs.Perms.WRITE) != 0) {
-            p.append('w');
-        }
-        if ((perms & ZooDefs.Perms.ADMIN) != 0) {
-            p.append('a');
-        }
-        return p.toString();
-    }
-
     private List<ACL> parseACLs(String aclString) throws IOException {
         List<ACL> acl;
         String acls[] = aclString.split(",");
@@ -792,5 +678,116 @@ public class ZooKeeperMain {
             acl.add(newAcl);
         }
         return acl;
+    }
+
+    /**
+     * A storage class for both command line options and shell commands.
+     */
+    static class MyCommandOptions {
+
+        private Map<String, String> options = new HashMap<String, String>();
+        private List<String> cmdArgs = null;
+        private String command = null;
+        private StringWriter outputStream;
+
+        public MyCommandOptions(StringWriter outputStream) {
+            options.put("server", "localhost:2181");
+            options.put("timeout", "30000");
+            this.outputStream = outputStream;
+        }
+
+        public String getOption(String opt) {
+            return options.get(opt);
+        }
+
+        public String getCommand() {
+            return command;
+        }
+
+        public String getCmdArgument(int index) {
+            return cmdArgs.get(index);
+        }
+
+        public int getNumArguments() {
+            return cmdArgs.size();
+        }
+
+        public String[] getArgArray() {
+            return cmdArgs.toArray(new String[0]);
+        }
+
+        /**
+         * Parses a command line that may contain one or more flags
+         * before an optional command string
+         *
+         * @param args command line arguments
+         * @return true if parsing succeeded, false otherwise.
+         */
+        public boolean parseOptions(String[] args) {
+            List<String> argList = Arrays.asList(args);
+            Iterator<String> it = argList.iterator();
+
+            while (it.hasNext()) {
+                String opt = it.next();
+                try {
+                    if (opt.equals("-server")) {
+                        options.put("server", it.next());
+                    } else if (opt.equals("-timeout")) {
+                        options.put("timeout", it.next());
+                    } else if (opt.equals("-r")) {
+                        options.put("readonly", "true");
+                    }
+                } catch (NoSuchElementException e) {
+                    try {
+                        outputStream.write(("Error: no argument found for option " + opt).getBytes());
+                    } catch (IOException ioException) {
+                        throw new IllegalStateException(ioException);
+                    }
+                    return false;
+                }
+
+                if (!opt.startsWith("-")) {
+                    command = opt;
+                    cmdArgs = new ArrayList<String>();
+                    cmdArgs.add(command);
+                    while (it.hasNext()) {
+                        cmdArgs.add(it.next());
+                    }
+                    return true;
+                }
+            }
+            return true;
+        }
+
+        /**
+         * Breaks a string into command + arguments.
+         *
+         * @param cmdstring string of form "cmd arg1 arg2..etc"
+         * @return true if parsing succeeded.
+         */
+        public boolean parseCommand(String cmdstring) {
+            StringTokenizer cmdTokens = new StringTokenizer(cmdstring, " ");
+            String[] args = new String[cmdTokens.countTokens()];
+            int tokenIndex = 0;
+            while (cmdTokens.hasMoreTokens()) {
+                args[tokenIndex] = cmdTokens.nextToken();
+                tokenIndex++;
+            }
+            if (args.length == 0) {
+                return false;
+            }
+            command = args[0];
+            cmdArgs = Arrays.asList(args);
+            return true;
+        }
+    }
+
+    private class MyWatcher implements Watcher {
+        public void process(WatchedEvent event) {
+            if (getPrintWatches()) {
+                ZooKeeperMain.printMessage("WATCHER::");
+                ZooKeeperMain.printMessage(event.toString());
+            }
+        }
     }
 }
