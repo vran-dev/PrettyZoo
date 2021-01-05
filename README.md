@@ -30,7 +30,7 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 # TODO
 
 1. Support i18n
-2. Redesign node serach
+2. <del>Redesign node search</del>
 3. Node data charset switch 
 
 
