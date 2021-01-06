@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
+import java.io.UnsupportedEncodingException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -82,6 +83,9 @@ public class NodeInfoViewController {
     private Button xmlFormatButton;
 
     @FXML
+    private ChoiceBox<String> charsetChoice;
+
+    @FXML
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
     private List<Button> formatButtons = List.of();
@@ -99,6 +103,22 @@ public class NodeInfoViewController {
         rawFormatButton.setOnAction(e -> dataRawFormat());
         xmlFormatButton.setOnAction(e -> dataXmlFormat());
         formatButtons = List.of(jsonFormatButton, xmlFormatButton, rawFormatButton);
+        charsetChoice.getItems().addAll("UTF-8", "GBK", "GB2312", "ISO-8859-1", "UTF-16");
+        charsetChoice.getSelectionModel().select("UTF-8");
+        charsetChoice.getSelectionModel().selectedItemProperty().addListener((event, ov, nv) -> {
+            if (nv == null) {
+                return;
+            }
+            byte[] rawBytes = (byte[]) dataField.getProperties().get("rawBytes");
+            if (rawBytes == null) {
+                return;
+            }
+            try {
+                dataField.setText(new String(rawBytes, nv));
+            } catch (UnsupportedEncodingException unsupportedEncodingException) {
+                VToast.error("Not supported Charset:"+nv);
+            }
+        });
     }
 
     public void show(StackPane parent) {
@@ -137,8 +157,9 @@ public class NodeInfoViewController {
     }
 
     private void initTextField(ZkNode node) {
-        dataField.setText(node.getData());
-        dataField.getProperties().put("raw", node.getData());
+        dataField.setText(transformData(node));
+        dataField.getProperties().put("raw", transformData(node));
+        dataField.getProperties().put("rawBytes", node.getDataBytes());
 
         ephemeralOwnerField.setText(String.valueOf(node.getEphemeralOwner()));
         cZxidField.setText(String.valueOf(node.getCzxid()));
@@ -156,6 +177,15 @@ public class NodeInfoViewController {
         ctimeField.getProperties().put("timestamp", node.getCtime());
         ctimeField.getProperties().put("dateTime", format(node.getCtime()));
         showDateTime();
+    }
+
+    private String transformData(ZkNode node) {
+        final String charset = charsetChoice.getSelectionModel().getSelectedItem();
+        try {
+            return new String(node.getDataBytes(), charset);
+        } catch (UnsupportedEncodingException e) {
+            return node.getData();
+        }
     }
 
     private void changeTimeFormat() {

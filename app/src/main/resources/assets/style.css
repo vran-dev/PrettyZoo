@@ -933,10 +933,12 @@
 
 .button-group {
     -fx-border-width: 0 0 0 1;
-    -fx-border-color: #DDD;
-    -fx-padding: 0 15 0 5;
+    -fx-border-color: #8d8d8d;
+    -fx-padding: 0 15 0 10;
     -fx-spacing: 0;
     -fx-fill-height: true;
+    -fx-pref-width: -1;
+    -fx-min-width: 200;
 }
 
 .button-group .button {
@@ -983,4 +985,16 @@
     -fx-background-radius: 0;
     -fx-padding: 6 10 6 10;
     -fx-border-radius: 6 6 0 0;
+    -fx-spacing: 10;
+}
+
+.choice-box {
+    -fx-background-color: transparent;
+    -fx-border-color: #8d8d8d;
+    -fx-border-width: 0 0 0 0;
+    -fx-pref-width: 80;
+}
+
+.choice-box:hover {
+    -fx-background-color: #DDD;
 }

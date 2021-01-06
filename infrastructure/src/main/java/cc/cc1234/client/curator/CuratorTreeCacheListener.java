@@ -10,6 +10,7 @@ import org.apache.curator.framework.recipes.cache.TreeCacheListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class CuratorTreeCacheListener implements TreeCacheListener {
@@ -48,8 +49,10 @@ public class CuratorTreeCacheListener implements TreeCacheListener {
         if (event.getData().getData() == null) {
             // TODO check null
             node.setData("");
+            node.setDataBytes(new byte[0]);
         } else {
-            node.setData(new String(event.getData().getData()));
+            node.setData(new String(event.getData().getData(), StandardCharsets.UTF_8));
+            node.setDataBytes(event.getData().getData());
         }
 
         node.setName(PathUtils.getLastPath(path));
