@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
@@ -163,6 +164,7 @@
                               <Button mnemonicParsing="false" text="XML" fx:id="xmlFormatButton" />
                            </children>
                         </HBox>
+                        <ChoiceBox fx:id="charsetChoice" prefWidth="150.0" />
                      </children>
                      <padding>
                         <Insets left="5.0" right="5.0" />

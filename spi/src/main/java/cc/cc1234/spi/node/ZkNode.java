@@ -29,6 +29,8 @@ public class ZkNode {
 
     private String data;
 
+    private byte[] dataBytes;
+
     public ZkNode() {
     }
 
@@ -167,6 +169,14 @@ public class ZkNode {
         this.data = data;
     }
 
+    public byte[] getDataBytes() {
+        return dataBytes;
+    }
+
+    public void setDataBytes(byte[] dataBytes) {
+        this.dataBytes = dataBytes;
+    }
+
     public void copyField(ZkNode node) {
         setName(node.getName());
         setPath(node.getPath());
@@ -182,5 +192,6 @@ public class ZkNode {
         setNumChildren(node.getNumChildren());
         setPzxid(node.getPzxid());
         setData(node.getData());
+        setDataBytes(node.getDataBytes());
     }
 }
