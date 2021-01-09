@@ -242,15 +242,15 @@
 }
 
 .disconnect-button:hover {
-    -fx-background-image: url("img/disconnect-hover.png");
+    -fx-background-image: url("img/shut-down-hover.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-border-color: transparent;
     -fx-background-color: transparent;
-    -fx-border-radius: 25;
-    -fx-background-size: 22;
-    -fx-pref-height: 25;
-    -fx-pref-width: 25;
+    -fx-border-radius: 22;
+    -fx-background-size: 18;
+    -fx-pref-height: 22;
+    -fx-pref-width: 22;
     -fx-text-alignment: center;
     -fx-alignment: center;
     -fx-content-display: center;
@@ -258,14 +258,14 @@
 
 .disconnect-button {
     -fx-background-color: transparent;
-    -fx-background-image: url("img/disconnect.png");
+    -fx-background-image: url("img/shut-down.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-border-color: transparent;
-    -fx-border-radius: 25;
-    -fx-background-size: 22;
-    -fx-pref-height: 25;
-    -fx-pref-width: 25;
+    -fx-border-radius: 22;
+    -fx-background-size: 18;
+    -fx-pref-height: 22;
+    -fx-pref-width: 22;
     -fx-text-alignment: center;
     -fx-alignment: center;
     -fx-content-display: center;
