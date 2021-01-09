@@ -48,7 +48,7 @@
                         </StackPane>
                      </items>
                   </SplitPane>
-                  <Button fx:id="disconnectButton" mnemonicParsing="false" styleClass="disconnect-button" text="Button" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="10.0" />
+                  <Button fx:id="disconnectButton" mnemonicParsing="false" styleClass="disconnect-button" text="" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="10.0" />
                </children>
             </AnchorPane>
          </content>
