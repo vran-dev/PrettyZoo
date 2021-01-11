@@ -19,6 +19,7 @@ public class JsonUtils {
         final ObjectMapper mapper = mapper();
         try {
             final Path path = Paths.get(jsonFile);
+            path.getParent().toFile().mkdirs();
             if (!Files.exists(path)) {
                 Files.createFile(path);
                 // TODO customize deserializer?
