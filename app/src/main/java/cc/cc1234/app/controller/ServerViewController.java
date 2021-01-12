@@ -86,6 +86,8 @@ public class ServerViewController {
 
     private volatile NodeViewController currentNodeViewController = null;
 
+    private Runnable closeHook;
+
     public void show(StackPane stackPane) {
         show(stackPane, null);
     }
@@ -169,7 +171,12 @@ public class ServerViewController {
     public void onClose() {
         final StackPane parent = (StackPane) serverInfoPane.getParent();
         if (parent != null) {
-            Transitions.zoomOut(serverInfoPane, e -> parent.getChildren().remove(serverInfoPane)).playFromStart();
+            Transitions.zoomOut(serverInfoPane, e -> {
+                parent.getChildren().remove(serverInfoPane);
+                if (closeHook != null) {
+                    closeHook.run();
+                }
+            }).playFromStart();
         }
     }
 
@@ -284,5 +291,9 @@ public class ServerViewController {
             nodeViewControllerMap.put(server, nodeViewController);
             return nodeViewController;
         }
+    }
+
+    public void setOnClose(Runnable runnable) {
+        this.closeHook = runnable;
     }
 }
