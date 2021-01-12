@@ -70,6 +70,7 @@ public class MainViewController {
         exportButton.setOnMouseClicked(e -> onExportAction());
         importButton.setOnMouseClicked(e -> onImportAction());
         newVersionLabel.setOnMouseClicked(e -> HostServiceContext.jumpToReleases());
+        serverViewController.setOnClose(() -> this.serverListView.selectionModelProperty().get().clearSelection());
     }
 
     private void onExportAction() {
