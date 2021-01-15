@@ -82,7 +82,7 @@ task updateVersion {
     def newVersionValue = version.toString().split("-")[0]
     def newVersionStr = "    public static final String VERSION = \"" + newVersionValue + "\";"
     //旧版本和新版本不一样, 进行替换
-    if (!oldVersionStr.toString().trim().equals(newVersionStr.trim())) {
+    if (oldVersionStr.toString().trim() != newVersionStr.trim()) {
         def updatedContent = new File(versionFileDir).getText('UTF-8').replaceAll(oldVersionStr, newVersionStr)
         new File(versionFileDir).write(updatedContent, 'UTF-8')
     }
