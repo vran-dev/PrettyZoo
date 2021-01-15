@@ -78,6 +78,10 @@ public class MainViewController {
         fileChooser.setTitle("Choose your target directory");
         fileChooser.setInitialFileName("prettyZoo-config");
         var file = fileChooser.showSaveDialog(PrimaryStageContext.get());
+        // configFile is null means click cancel
+        if (file == null) {
+            return;
+        }
         Platform.runLater(() -> Try.of(() -> prettyZooFacade.exportConfig(file))
                 .onFailure(e -> VToast.error(e.getMessage())));
     }
@@ -86,6 +90,10 @@ public class MainViewController {
         var fileChooser = new FileChooser();
         fileChooser.setTitle("Choose config file");
         File configFile = fileChooser.showOpenDialog(PrimaryStageContext.get());
+        // configFile is null means click cancel
+        if (configFile == null) {
+            return;
+        }
         Try.of(() -> prettyZooFacade.importConfig(configFile))
                 .onFailure(e -> Platform.runLater(() -> VToast.error("Failed to load config, file is not support")));
     }
