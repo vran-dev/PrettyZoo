@@ -10,14 +10,14 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 public class VersionChecker {
 
     private static final Logger logger = LoggerFactory.getLogger(VersionChecker.class);
 
-    public static void hasNewVersion(Consumer<String> runnable) {
+    public static void hasNewVersion(BiConsumer<String, String> runnable) {
         var request = HttpRequest.newBuilder(URI.create("https://api.github.com/repos/vran-dev/PrettyZoo/releases/latest"))
                 .build();
         var client = HttpClient.newHttpClient();
@@ -34,17 +34,18 @@ public class VersionChecker {
                     try {
                         final JsonMapper mapper = new JsonMapper();
                         final ObjectNode node = mapper.readValue(response.body(), ObjectNode.class);
-                        final String latestVersion = node.get("tag_name").asText();
-                        compareAndRun(latestVersion, runnable);
+                        final String latestVersion = node.get("tag_name").asText("");
+                        final String features = node.get("body").asText("");
+                        compareAndRun(latestVersion, features, runnable);
                     } catch (Exception exception) {
                         logger.error("check update failed", exception);
                     }
                 });
     }
 
-    private static void compareAndRun(String latestVersion, Consumer<String> runnable) {
+    private static void compareAndRun(String latestVersion, String features, BiConsumer<String, String> runnable) {
         if (isLargerThanCurrent(latestVersion)) {
-            Platform.runLater(() -> runnable.accept(latestVersion));
+            Platform.runLater(() -> runnable.accept(latestVersion, features));
         }
     }
 

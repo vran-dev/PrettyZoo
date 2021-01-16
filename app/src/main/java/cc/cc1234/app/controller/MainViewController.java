@@ -119,12 +119,16 @@ public class MainViewController {
     }
 
     public void showNewVersionLabel() {
-        VersionChecker.hasNewVersion(latestVersion -> {
-            final String content = String.format("你当前使用的是 %s, 目前最新版本为 %s, 请前往 Github 下载",
-                    Version.VERSION, latestVersion);
-            newVersionLabel.setVisible(true);
+        VersionChecker.hasNewVersion((latestVersion, features) -> {
+            String title = "发现新版本";
+            final String content = new StringBuilder()
+                    .append("最新版本: ").append(latestVersion).append("\r\n")
+                    .append("当前版本: v").append(Version.VERSION).append("\r\n")
+                    .append("新特性: \r\n").append(features)
+                    .toString();
             newVersionLabel.setTooltip(new Tooltip("最新版 " + latestVersion + "已发布"));
-            Dialog.confirm("升级提醒", content, HostServiceContext::jumpToReleases);
+            newVersionLabel.setVisible(true);
+            Dialog.confirm(title, content, HostServiceContext::jumpToReleases);
         });
     }
 }
