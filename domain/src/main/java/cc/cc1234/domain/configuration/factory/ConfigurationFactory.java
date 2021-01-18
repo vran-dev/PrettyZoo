@@ -35,6 +35,7 @@ public class ConfigurationFactory {
                     return ServerConfiguration.builder()
                             .host(serverConfig.getHost())
                             .aclList(serverConfig.getAclList())
+                            .connectTimes(serverConfig.getConnectTimes())
                             .sshTunnelEnabled(serverConfig.getSshTunnelEnabled())
                             .sshTunnel(tunnelConfiguration)
                             .build();

@@ -74,6 +74,12 @@ public class Configuration {
         configurationChangeListeners.forEach(listener -> listener.onServerRemove(toServerConfig(existsServer)));
     }
 
+    public void incrementConnectTimes(String server) {
+        serverConfigurations.stream()
+                .filter(config -> config.getHost().equals(server))
+                .forEach(ServerConfiguration::incrementConnectTimes);
+    }
+
     private void serverConfigurationPrecondition(ServerConfiguration serverConfig) {
         Objects.requireNonNull(serverConfig);
         Objects.requireNonNull(serverConfig.getHost());
@@ -111,8 +117,7 @@ public class Configuration {
         }
 
         final ServerConfigData serverData = new ServerConfigData();
-        // TODO @vran 需要计算连接次数
-        serverData.setConnectTimes(0);
+        serverData.setConnectTimes(serverConfiguration.getConnectTimes());
         serverData.setAclList(new ArrayList<>(serverConfiguration.getAclList()));
         serverData.setHost(serverConfiguration.getHost());
         serverData.setSshTunnelEnabled(serverConfiguration.getSshTunnelEnabled());

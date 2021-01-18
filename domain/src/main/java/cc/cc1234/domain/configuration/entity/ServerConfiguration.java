@@ -15,6 +15,8 @@ public class ServerConfiguration {
 
     private List<String> aclList;
 
+    private int connectTimes;
+
     private Boolean sshTunnelEnabled;
 
     private SSHTunnelConfiguration sshTunnel;
@@ -26,5 +28,10 @@ public class ServerConfiguration {
         this.aclList = serverConfiguration.getAclList();
         this.sshTunnelEnabled = serverConfiguration.getSshTunnelEnabled();
         this.sshTunnel = serverConfiguration.getSshTunnel();
+        this.connectTimes = serverConfiguration.getConnectTimes();
+    }
+
+    public void incrementConnectTimes() {
+        this.connectTimes += 1;
     }
 }
