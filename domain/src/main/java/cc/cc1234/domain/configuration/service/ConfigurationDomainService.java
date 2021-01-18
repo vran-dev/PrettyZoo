@@ -80,6 +80,13 @@ public class ConfigurationDomainService {
         }
     }
 
+    public void incrementConnectTimes(String server) {
+        get().ifPresent(config -> {
+            config.incrementConnectTimes(server);
+            prettyZooConfigRepository.save(config.toPersistModel());
+        });
+    }
+
     private static class Cache<T> {
 
         private T val;

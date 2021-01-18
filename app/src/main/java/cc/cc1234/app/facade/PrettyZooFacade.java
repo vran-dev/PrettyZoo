@@ -63,6 +63,7 @@ public class PrettyZooFacade {
                         List<ServerListener> serverListeners) {
         var serverConfig = configurationDomainService.get(host).orElseThrow();
         zookeeperDomainService.connect(serverConfig, nodeListeners, serverListeners);
+        configurationDomainService.incrementConnectTimes(host);
     }
 
     public void disconnect(String host) {
