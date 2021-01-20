@@ -41,7 +41,7 @@
                   <AnchorPane StackPane.alignment="CENTER">
                      <children>
                         <Label fx:id="prettyZooLabel1" alignment="CENTER" contentDisplay="CENTER" prefHeight="160.0" prefWidth="199.0" style="-fx-background-color: transparent;" styleClass="prettyZoo" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
-                        <Hyperlink alignment="CENTER" contentDisplay="CENTER" layoutX="232.0" layoutY="303.0" text="https://github.com/vran-dev/PrettyZoo" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="250.0">
+                        <Hyperlink fx:id="prettyZooLink" alignment="CENTER" contentDisplay="CENTER" layoutX="232.0" layoutY="303.0" text="https://github.com/vran-dev/PrettyZoo" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="250.0">
                            <font>
                               <Font size="17.0" />
                            </font>

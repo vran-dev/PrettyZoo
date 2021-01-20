@@ -57,6 +57,9 @@ public class MainViewController {
     @FXML
     private Label newVersionLabel;
 
+    @FXML
+    private Hyperlink prettyZooLink;
+
     private ServerViewController serverViewController = FXMLs.getController("fxml/ServerView.fxml");
 
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
@@ -71,6 +74,7 @@ public class MainViewController {
         importButton.setOnMouseClicked(e -> onImportAction());
         newVersionLabel.setOnMouseClicked(e -> HostServiceContext.jumpToReleases());
         serverViewController.setOnClose(() -> this.serverListView.selectionModelProperty().get().clearSelection());
+        prettyZooLink.setOnMouseClicked(e -> HostServiceContext.get().showDocument(prettyZooLink.getText()));
     }
 
     private void onExportAction() {
