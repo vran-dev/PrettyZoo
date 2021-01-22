@@ -271,6 +271,9 @@ public class ServerViewController {
                 public void onClose(String serverHost) {
                     if (serverHost.equals(serverConfigurationVO.getZkServer())) {
                         serverConfigurationVO.setConnected(false);
+                        if (closeHook != null) {
+                            closeHook.run();
+                        }
                     }
                 }
             });
