@@ -93,8 +93,8 @@ public class ZookeeperDomainService {
         terminals.forEach(this::closeTerminal);
     }
 
-    public void executeLine(String host, String command) throws Exception {
+    public void execute(String host, String command) throws Exception {
         final Terminal terminal = terminalMap.get(host);
-        terminal.executeLine(command);
+        terminal.execute(command);
     }
 }

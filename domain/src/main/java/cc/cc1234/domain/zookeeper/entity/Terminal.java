@@ -28,7 +28,7 @@ public class Terminal {
         connection.close();
     }
 
-    public void executeLine(String command) throws InterruptedException, IOException, KeeperException {
+    public void execute(String command) throws InterruptedException, IOException, KeeperException {
         zooKeeperMain.executeLine(command);
     }
 }
