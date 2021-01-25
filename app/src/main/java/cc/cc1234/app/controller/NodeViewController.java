@@ -266,7 +266,7 @@ public class NodeViewController {
                     terminalArea.appendText(currentServer + "\t$\t" + terminalInput.getText());
                 } else {
                     terminalArea.appendText(currentServer + "\t$\t" + terminalInput.getText() + "\r\n");
-                    prettyZooFacade.executeLine(currentServer, terminalInput.getText());
+                    prettyZooFacade.executeCommand(currentServer, terminalInput.getText());
                     terminalInput.clear();
                 }
                 terminalArea.appendText("\r\n");

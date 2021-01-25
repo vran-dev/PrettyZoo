@@ -185,9 +185,9 @@ public class PrettyZooFacade {
         zookeeperDomainService.initTerminal(server, stream);
     }
 
-    public void executeLine(String server, String command) {
+    public void executeCommand(String server, String command) {
         try {
-            zookeeperDomainService.executeLine(server, command);
+            zookeeperDomainService.execute(server, command);
         } catch (Exception e) {
             log.error("execute command failed at  " + server + ":" + command, e);
             VToast.error("命令执行失败，请重试");
