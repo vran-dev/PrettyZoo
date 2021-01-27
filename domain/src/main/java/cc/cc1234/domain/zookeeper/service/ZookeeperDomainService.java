@@ -1,6 +1,7 @@
 package cc.cc1234.domain.zookeeper.service;
 
 import cc.cc1234.domain.configuration.entity.ServerConfiguration;
+import cc.cc1234.domain.zookeeper.entity.FourLetterCommand;
 import cc.cc1234.domain.zookeeper.entity.Terminal;
 import cc.cc1234.domain.zookeeper.entity.Zookeeper;
 import cc.cc1234.domain.zookeeper.factory.ZookeeperFactory;
@@ -96,5 +97,10 @@ public class ZookeeperDomainService {
     public void execute(String host, String command) throws Exception {
         final Terminal terminal = terminalMap.get(host);
         terminal.execute(command);
+    }
+
+    public String execute4LetterCommand(String host, String command) {
+        final String[] hostAndPort = host.split(":");
+        return new FourLetterCommand(hostAndPort[0], Integer.parseInt(hostAndPort[1])).request(command);
     }
 }
