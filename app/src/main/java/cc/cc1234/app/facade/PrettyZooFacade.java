@@ -193,4 +193,8 @@ public class PrettyZooFacade {
             VToast.error("命令执行失败，请重试");
         }
     }
+
+    public String executeFourLetterCommand(String server, String fourLetter) {
+        return zookeeperDomainService.execute4LetterCommand(server, fourLetter);
+    }
 }

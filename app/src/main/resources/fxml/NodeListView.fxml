@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 
-<TabPane fx:id="nodeViewPane" prefHeight="540.0" prefWidth="815.0" stylesheets="@../assets/style.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.NodeViewController">
+<TabPane fx:id="nodeViewPane" prefHeight="540.0" prefWidth="815.0" stylesheets="@../assets/style.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.NodeViewController">
    <tabs>
-      <Tab text="Home">
+      <Tab fx:id="homeTab" text="Home">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -61,6 +61,16 @@
                   <TextField fx:id="terminalInput" layoutY="466.0" prefHeight="50.0" promptText="\$ 输入命令按回车执行" styleClass="terminal-input" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                </children></AnchorPane>
          </content>
+      </Tab>
+      <Tab fx:id="fourLetterCommandTab" text="LetterCommand">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #FFF;">
+               <children>
+                  <TextField fx:id="fourLetterCommandRequestArea" alignment="CENTER" layoutX="231.0" layoutY="75.0" prefHeight="30.0" prefWidth="364.0" styleClass="v-line-textField" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="30.0" />
+                  <TextArea fx:id="fourLetterCommandResponseArea" editable="false" layoutX="108.0" layoutY="153.0" prefHeight="328.0" prefWidth="592.0" style="-fx-background-color: transparent;" styleClass="vTextArea" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="80.0" />
+               </children>
+            </AnchorPane>
+        </content>
       </Tab>
    </tabs>
 </TabPane>
