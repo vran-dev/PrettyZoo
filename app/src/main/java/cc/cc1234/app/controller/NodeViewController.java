@@ -18,6 +18,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -60,7 +62,19 @@ public class NodeViewController {
     private Button disconnectButton;
 
     @FXML
+    private Tab homeTab;
+
+    @FXML
     private Tab terminalTab;
+
+    @FXML
+    private Tab fourLetterCommandTab;
+
+    @FXML
+    private TextArea fourLetterCommandResponseArea;
+
+    @FXML
+    private TextField fourLetterCommandRequestArea;
 
     @FXML
     private TextArea terminalArea;
@@ -81,7 +95,9 @@ public class NodeViewController {
         initSearchResultList();
         initSearchTextField();
         initNodeChangeListener();
+        initHomeTab();
         initTerminalArea();
+        initFourLetterTab();
 
         nodeAddButton.setOnMouseClicked(e -> onNodeAdd());
         nodeDeleteButton.setOnMouseClicked(e -> onNodeDelete());
@@ -105,7 +121,7 @@ public class NodeViewController {
             parent.getChildren().add(nodeViewPane);
             Transitions.zoomInY(nodeViewPane).play();
         }
-        terminalTab.setText(server + " >_");
+        terminalTab.setText(server);
     }
 
     public void hideAndThen(Runnable runnable) {
@@ -185,11 +201,6 @@ public class NodeViewController {
                 }
             }
         });
-//        searchResultList.setOnMouseExited(e -> {
-//            if (searchResultList.isVisible()) {
-//                searchResultList.setVisible(false);
-//            }
-//        });
     }
 
     private void initNodeChangeListener() {
@@ -237,7 +248,18 @@ public class NodeViewController {
         }
     }
 
+    private void initHomeTab() {
+        final ImageView imageView = new ImageView("assets/img/tab/home.png");
+        imageView.setFitWidth(18);
+        imageView.setFitHeight(18);
+        homeTab.setGraphic(imageView);
+    }
+
     private void initTerminalArea() {
+        final ImageView imageView = new ImageView("assets/img/tab/terminal.png");
+        imageView.setFitWidth(18);
+        imageView.setFitHeight(18);
+        terminalTab.setGraphic(imageView);
         terminalTab.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 prettyZooFacade.startTerminal(ActiveServerContext.get(), new StringWriter() {
@@ -272,6 +294,23 @@ public class NodeViewController {
                 terminalArea.appendText("\r\n");
             } else if (e.getCode() == KeyCode.TAB) {
                 terminalInput.appendText("\t");
+            }
+        });
+    }
+
+    private void initFourLetterTab() {
+        final ImageView graphic = new ImageView("assets/img/tab/fourLetter.png");
+        graphic.setFitHeight(20);
+        graphic.setFitWidth(20);
+        fourLetterCommandTab.setGraphic(graphic);
+        fourLetterCommandRequestArea.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                String command = fourLetterCommandRequestArea.getText();
+                fourLetterCommandRequestArea.clear();
+                String currentServer = ActiveServerContext.get();
+                String response = prettyZooFacade.executeFourLetterCommand(currentServer, command);
+                fourLetterCommandResponseArea.clear();
+                fourLetterCommandResponseArea.setText(response);
             }
         });
     }
