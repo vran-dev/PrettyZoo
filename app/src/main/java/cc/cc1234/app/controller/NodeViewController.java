@@ -306,11 +306,15 @@ public class NodeViewController {
         fourLetterCommandRequestArea.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
                 String command = fourLetterCommandRequestArea.getText();
-                fourLetterCommandRequestArea.clear();
-                String currentServer = ActiveServerContext.get();
-                String response = prettyZooFacade.executeFourLetterCommand(currentServer, command);
-                fourLetterCommandResponseArea.clear();
-                fourLetterCommandResponseArea.setText(response);
+                if (command == null || command.trim().equals("") || command.length() != 4) {
+                    VToast.error("command is invalid: must be 4 words!");
+                } else {
+                    fourLetterCommandRequestArea.clear();
+                    String currentServer = ActiveServerContext.get();
+                    String response = prettyZooFacade.executeFourLetterCommand(currentServer, command);
+                    fourLetterCommandResponseArea.clear();
+                    fourLetterCommandResponseArea.setText(response);
+                }
             }
         });
     }
