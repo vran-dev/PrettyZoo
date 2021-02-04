@@ -100,6 +100,9 @@ public class ZookeeperDomainService {
     }
 
     public String execute4LetterCommand(String host, String command) {
+        if (command == null || "".equals(command)) {
+            throw new IllegalArgumentException();
+        }
         final String[] hostAndPort = host.split(":");
         return new FourLetterCommand(hostAndPort[0], Integer.parseInt(hostAndPort[1])).request(command);
     }
