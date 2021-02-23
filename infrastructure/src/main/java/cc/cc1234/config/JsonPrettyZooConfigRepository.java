@@ -26,6 +26,7 @@ public class JsonPrettyZooConfigRepository implements PrettyZooConfigRepository 
     }
 
     private ConfigData doLoad() {
+        migrateIfNecessary();
         final ConfigData config = JsonUtils.from(CONFIG_PATH, ConfigData.class);
         final List<ServerConfigData> sortedServers = config.getServers()
                 .stream()
@@ -35,6 +36,17 @@ public class JsonPrettyZooConfigRepository implements PrettyZooConfigRepository 
         Collections.reverse(sortedServers);
         config.setServers(sortedServers);
         return config;
+    }
+
+    /**
+     * compatibility function
+     * since: v1.5.0
+     */
+    private void migrateIfNecessary() {
+        if (!Files.exists(Paths.get(CONFIG_PATH)) && Files.exists(Paths.get(OLD_CONFIG_PATH))) {
+            var config = JsonUtils.from(OLD_CONFIG_PATH, ConfigData.class);
+            save(config);
+        }
     }
 
     @Override
