@@ -33,6 +33,7 @@ public class ConfigurationFactory {
                                     .build())
                             .orElse(null);
                     return ServerConfiguration.builder()
+                            .alias(serverConfig.getAlias())
                             .host(serverConfig.getHost())
                             .aclList(serverConfig.getAclList())
                             .connectTimes(serverConfig.getConnectTimes())

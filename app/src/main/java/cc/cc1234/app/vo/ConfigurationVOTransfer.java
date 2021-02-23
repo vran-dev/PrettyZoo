@@ -61,6 +61,7 @@ public class ConfigurationVOTransfer {
         vo.setZkServer(serverConfig.getHost());
         vo.getAclList().addAll(serverConfig.getAclList());
         vo.setConnected(false);
+        vo.setZkAlias(serverConfig.getAlias());
         serverConfig.getSshTunnelConfig().ifPresent(sshTunnelConfig -> {
             if (sshTunnelConfig.getRemoteHost() == null || sshTunnelConfig.getRemotePort() == null) {
                 vo.setRemoteServer("");
