@@ -139,6 +139,7 @@ public class PrettyZooFacade {
                 .sshPassword(serverConfigurationVO.getSshPassword());
 
         final ServerConfiguration serverConfiguration = ServerConfiguration.builder()
+                .alias(serverConfigurationVO.getZkAlias())
                 .host(serverConfigurationVO.getZkServer())
                 .aclList(new ArrayList<>(serverConfigurationVO.getAclList()))
                 .sshTunnelEnabled(serverConfigurationVO.isSshEnabled())

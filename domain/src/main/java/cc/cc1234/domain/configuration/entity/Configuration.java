@@ -87,6 +87,10 @@ public class Configuration {
         if (serverConfig.getSshTunnelEnabled() && serverConfig.getSshTunnel() == null) {
             throw new IllegalStateException("add SSHTunnel before save");
         }
+        final String alias = serverConfig.getAlias();
+        if (alias != null && !alias.isEmpty() && alias.isBlank()) {
+            throw new IllegalStateException("Alias must not be all blank");
+        }
     }
 
     /**
@@ -122,6 +126,7 @@ public class Configuration {
         serverData.setHost(serverConfiguration.getHost());
         serverData.setSshTunnelEnabled(serverConfiguration.getSshTunnelEnabled());
         serverData.setSshTunnelConfig(Optional.ofNullable(sshTunnelData));
+        serverData.setAlias(serverConfiguration.getAlias());
         return serverData;
     }
 }

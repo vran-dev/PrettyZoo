@@ -13,6 +13,8 @@ public class ServerConfiguration {
     // entity id
     private String host;
 
+    private String alias;
+
     private List<String> aclList;
 
     private int connectTimes;
@@ -29,6 +31,7 @@ public class ServerConfiguration {
         this.sshTunnelEnabled = serverConfiguration.getSshTunnelEnabled();
         this.sshTunnel = serverConfiguration.getSshTunnel();
         this.connectTimes = serverConfiguration.getConnectTimes();
+        this.alias = serverConfiguration.getAlias();
     }
 
     public void incrementConnectTimes() {

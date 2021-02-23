@@ -48,6 +48,7 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
                 .findFirst()
                 .map(old -> {
                     old.setAclList(FXCollections.observableList(newValue.getAclList()));
+                    old.setZkAlias(newValue.getAlias());
                     newValue.getSshTunnelConfig()
                             .map(sshTunnelConfig -> {
                                 old.setSshEnabled(newValue.getSshTunnelEnabled());

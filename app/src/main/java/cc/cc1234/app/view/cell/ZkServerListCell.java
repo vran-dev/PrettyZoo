@@ -23,11 +23,16 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
     }
 
     private StringBinding connectBinding(ServerConfigurationVO item) {
-        return Bindings.createStringBinding(() -> connectSymbol(item), item.zkServerProperty(), item.connectedProperty());
+        return Bindings.createStringBinding(() -> connectSymbol(item), item.zkServerProperty(), item.zkAliasProperty(), item.connectedProperty());
     }
 
     private String connectSymbol(ServerConfigurationVO item) {
         String server = item.getZkServer();
-        return item.isConnected() ? "√ " + server : "× " + server;
+        String alias = item.getZkAlias();
+        if (alias != null && !alias.isBlank()) {
+            return item.isConnected() ? "√ " + alias : "× " + alias;
+        } else {
+            return item.isConnected() ? "√ " + server : "× " + server;
+        }
     }
 }
