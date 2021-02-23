@@ -8,7 +8,13 @@ import java.io.OutputStream;
 
 public interface PrettyZooConfigRepository {
 
-    String CONFIG_PATH = System.getProperty("user.home") + "/.prettyZoo/server-input.history";
+    /**
+     * will be remove in future
+     */
+    @Deprecated
+    String OLD_CONFIG_PATH = System.getProperty("user.home") + "/.prettyZoo/server-input.history";
+
+    String CONFIG_PATH = System.getProperty("user.home") + "/.prettyZoo/prettyZoo.cfg";
 
     ConfigData get();
 
