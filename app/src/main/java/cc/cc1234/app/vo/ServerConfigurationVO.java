@@ -11,6 +11,8 @@ public class ServerConfigurationVO {
 
     private SimpleStringProperty zkServer = new SimpleStringProperty("");
 
+    private SimpleStringProperty zkAlias= new SimpleStringProperty("");
+
     private ObjectProperty<ObservableList<String>> aclList = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 
     private SimpleBooleanProperty connected = new SimpleBooleanProperty(false);
@@ -27,6 +29,7 @@ public class ServerConfigurationVO {
 
     public void unbind() {
         zkServer.unbind();
+        zkAlias.unbind();
         aclList.unbind();
         connected.unbind();
         sshEnabled.unbind();
@@ -131,5 +134,17 @@ public class ServerConfigurationVO {
 
     public SimpleStringProperty remoteServerProperty() {
         return remoteServer;
+    }
+
+    public String getZkAlias() {
+        return zkAlias.get();
+    }
+
+    public SimpleStringProperty zkAliasProperty() {
+        return zkAlias;
+    }
+
+    public void setZkAlias(String zkAlias) {
+        this.zkAlias.set(zkAlias);
     }
 }

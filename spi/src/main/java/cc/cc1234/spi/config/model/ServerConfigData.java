@@ -9,6 +9,8 @@ public class ServerConfigData {
 
     private String host;
 
+    private String alias;
+
     private int connectTimes = 0;
 
     private List<String> aclList = new ArrayList<>();
@@ -57,19 +59,24 @@ public class ServerConfigData {
         this.sshTunnelConfig = sshTunnelConfig;
     }
 
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ServerConfigData that = (ServerConfigData) o;
-        return connectTimes == that.connectTimes &&
-                host.equals(that.host) &&
-                aclList.equals(that.aclList) &&
-                sshTunnelConfig.equals(that.sshTunnelConfig);
+        return connectTimes == that.connectTimes && Objects.equals(host, that.host) && Objects.equals(alias, that.alias) && Objects.equals(aclList, that.aclList) && Objects.equals(sshTunnelEnabled, that.sshTunnelEnabled) && Objects.equals(sshTunnelConfig, that.sshTunnelConfig);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(host, connectTimes, aclList, sshTunnelConfig);
+        return Objects.hash(host, alias, connectTimes, aclList, sshTunnelEnabled, sshTunnelConfig);
     }
 }

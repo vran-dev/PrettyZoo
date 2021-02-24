@@ -54,6 +54,9 @@ public class ServerViewController {
     private TextField zkServer;
 
     @FXML
+    private TextField zkAlias;
+
+    @FXML
     private TextField sshServer;
 
     @FXML
@@ -150,6 +153,7 @@ public class ServerViewController {
     private void propertyReset() {
         zkServer.textProperty().unbind();
         zkServer.textProperty().setValue("");
+        zkAlias.textProperty().setValue("");
         sshServer.textProperty().setValue("");
         sshUsername.textProperty().setValue("");
         sshPassword.textProperty().setValue("");
@@ -159,6 +163,7 @@ public class ServerViewController {
 
     private void propertyBind(ServerConfigurationVO config) {
         zkServer.textProperty().setValue(config.getZkServer());
+        zkAlias.textProperty().setValue(config.getZkAlias());
         sshServer.textProperty().setValue(config.getSshServer());
         sshUsername.textProperty().setValue(config.getSshUsername());
         sshPassword.textProperty().setValue(config.getSshPassword());
@@ -234,6 +239,7 @@ public class ServerViewController {
             serverConfigVO.setSshUsername(sshUsername.textProperty().get());
             serverConfigVO.setSshPassword(sshPassword.textProperty().get());
             serverConfigVO.setSshServer(sshServer.textProperty().get());
+            serverConfigVO.setZkAlias(zkAlias.textProperty().get());
             if (sshTunnelCheckbox.isSelected()) {
                 serverConfigVO.setSshEnabled(true);
             }

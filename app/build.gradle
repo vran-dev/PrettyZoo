@@ -20,7 +20,7 @@ jlink {
     forceMerge("jackson", "log4j-api")
     launcher {
         name = 'prettyZoo'
-        jvmArgs = ['-Djdk.gtk.version=2']
+        jvmArgs = ['-Djdk.gtk.version=2', '-Dfile.encoding=utf-8']
     }
     jpackage {
         def os = org.gradle.internal.os.OperatingSystem.current()
