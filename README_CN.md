@@ -20,6 +20,8 @@
 
 目前已提供了 mac（dmg 文件）、Linux（deb 和 rpm 文件）、windows（msi 文件） 的安装包，[下载地址](https://github.com/vran-dev/PrettyZoo/releases)。
 
+更多内容可以查看：https://mp.weixin.qq.com/s/TkFirILto_moEv_kjBBPFw
+
 
 
 # MAC 安装问题
@@ -35,8 +37,8 @@ mac 安装提示：已损坏，无法打开
 # 规划
 
 1. 国际化支持
-2. <del>重构节点搜索功能</del>
-3. <del>节点数据支持编码切换</del>
+2. 命令高亮支持
+3. 全局字体大小配置
 
 
 
@@ -57,47 +59,48 @@ mac 安装提示：已损坏，无法打开
 
 
 
-- 主页面
+- over view
 
 ![](release/img/main.png)
 
 
 
-- server 配置
+- server info
 
-![](release/img/server.png)
+![](release/img/server.gif)
 
 
 
-- 节点详情页面
+![](release/img/connect.gif)
 
-![](release/img/node-list.png)
+
+
+- node info
+
 
 
 
 ![](release/img/time-format.gif)
 
 
+- node add
 
-- 创建节点
-
-![](release/img/node-add.png)
-
-
-
-- 节点搜索
-
-![](release/img/node-search.gif)
+![](release/img/create-node.gif)
 
 
 
-- 命令行
+- node search
 
-![](release/img/terminal.png)
+![](release/img/search.gif)
 
 
+- terminal
 
 ![](release/img/terminal.gif)
+
+- 4-letter
+
+![](release/img/4-letter.gif)
 
 # 感谢
 

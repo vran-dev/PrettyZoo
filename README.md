@@ -29,9 +29,9 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 
 # TODO
 
-1. Support i18n
-2. <del>Redesign node search</del>
-3. <del>Node data charset switch</del> 
+1. - [ ] Support i18n
+2. - [ ] command highlight
+3. - [ ] global font size change
 
 
 
@@ -48,7 +48,7 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 
 # Show
 
-- main view
+- over view
 
 ![](release/img/main.png)
 
@@ -56,13 +56,17 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 
 - server info
 
-![](release/img/server.png)
+![](release/img/server.gif)
+
+
+
+![](release/img/connect.gif)
 
 
 
 - node info
 
-![](release/img/node-list.png)
+
 
 
 ![](release/img/time-format.gif)
@@ -70,22 +74,22 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 
 - node add
 
-![](release/img/node-add.png)
+![](release/img/create-node.gif)
 
 
 
 - node search
 
-![](release/img/node-search.gif)
+![](release/img/search.gif)
 
 
 - terminal
 
-![](release/img/terminal.png)
-
 ![](release/img/terminal.gif)
 
+- 4-letter
 
+![](release/img/4-letter.gif)
 
 ## Thanks
 
