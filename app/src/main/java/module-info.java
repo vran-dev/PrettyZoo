@@ -7,8 +7,8 @@ open module app.main {
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
     requires com.google.common;
-    requires domain.main;
-    requires spi.main;
+    requires core.main;
+    requires specification.main;
     requires java.desktop;
     requires java.net.http;
     requires com.fasterxml.jackson.core;

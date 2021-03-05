@@ -1,6 +1,6 @@
 package cc.cc1234.app.vo;
 
-import cc.cc1234.spi.node.ZkNode;
+import cc.cc1234.specification.node.ZkNode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.text.TextFlow;
 

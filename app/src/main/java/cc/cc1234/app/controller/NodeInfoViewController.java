@@ -5,7 +5,7 @@ import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.util.Formatters;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.view.transitions.Transitions;
-import cc.cc1234.spi.node.ZkNode;
+import cc.cc1234.specification.node.ZkNode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

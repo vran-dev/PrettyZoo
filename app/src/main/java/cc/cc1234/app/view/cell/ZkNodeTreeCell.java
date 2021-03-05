@@ -1,6 +1,6 @@
 package cc.cc1234.app.view.cell;
 
-import cc.cc1234.spi.node.ZkNode;
+import cc.cc1234.specification.node.ZkNode;
 import javafx.scene.control.TreeCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;

@@ -66,8 +66,8 @@ jpackage {
 }
 
 dependencies {
-    compile project(':domain')
-    compile project(':spi')
+    compile project(':core')
+    compile project(':specification')
     testCompile group: 'junit', name: 'junit', version: '4.12'
 //    compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.2'
 }
