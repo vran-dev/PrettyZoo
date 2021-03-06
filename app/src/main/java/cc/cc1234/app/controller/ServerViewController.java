@@ -7,7 +7,7 @@ import cc.cc1234.app.util.FXMLs;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.app.vo.ServerConfigurationVO;
-import cc.cc1234.spi.listener.ServerListener;
+import cc.cc1234.specification.listener.ServerListener;
 import com.google.common.base.Strings;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;

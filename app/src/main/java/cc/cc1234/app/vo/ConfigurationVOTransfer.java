@@ -1,10 +1,10 @@
 package cc.cc1234.app.vo;
 
-import cc.cc1234.domain.configuration.entity.Configuration;
-import cc.cc1234.domain.configuration.entity.ServerConfiguration;
-import cc.cc1234.domain.configuration.value.SSHTunnelConfiguration;
-import cc.cc1234.spi.config.model.ConfigData;
-import cc.cc1234.spi.config.model.ServerConfigData;
+import cc.cc1234.core.configuration.entity.Configuration;
+import cc.cc1234.core.configuration.entity.ServerConfiguration;
+import cc.cc1234.core.configuration.value.SSHTunnelConfiguration;
+import cc.cc1234.specification.config.model.ConfigData;
+import cc.cc1234.specification.config.model.ServerConfigData;
 
 import java.util.List;
 import java.util.stream.Collectors;

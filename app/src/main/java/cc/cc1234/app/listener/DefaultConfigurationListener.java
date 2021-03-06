@@ -5,8 +5,8 @@ import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.vo.ConfigurationVO;
 import cc.cc1234.app.vo.ConfigurationVOTransfer;
 import cc.cc1234.app.vo.ServerConfigurationVO;
-import cc.cc1234.spi.config.model.ServerConfigData;
-import cc.cc1234.spi.listener.ConfigurationChangeListener;
+import cc.cc1234.specification.config.model.ServerConfigData;
+import cc.cc1234.specification.listener.ConfigurationChangeListener;
 import javafx.collections.FXCollections;
 
 import java.util.List;
