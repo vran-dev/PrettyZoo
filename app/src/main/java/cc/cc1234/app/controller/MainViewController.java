@@ -7,6 +7,7 @@ import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.listener.DefaultConfigurationListener;
 import cc.cc1234.app.util.FXMLs;
+import cc.cc1234.app.util.ShortcutKeys;
 import cc.cc1234.app.view.cell.ZkServerListCell;
 import cc.cc1234.app.view.dialog.Dialog;
 import cc.cc1234.app.view.toast.VToast;
@@ -17,11 +18,14 @@ import cc.cc1234.version.VersionChecker;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
 
@@ -75,6 +79,13 @@ public class MainViewController {
         newVersionLabel.setOnMouseClicked(e -> HostServiceContext.jumpToReleases());
         serverViewController.setOnClose(() -> this.serverListView.selectionModelProperty().get().clearSelection());
         prettyZooLink.setOnMouseClicked(e -> HostServiceContext.get().showDocument(prettyZooLink.getText()));
+    }
+
+    public void bindShortcutKey() {
+        serverAddButton.setTooltip(new Tooltip(ShortcutKeys.NEW_SERVER.key().getDisplayText()));
+        rootStackPane.getScene()
+                .getAccelerators()
+                .put(ShortcutKeys.NEW_SERVER.key(), () -> serverViewController.show(mainRightPane));
     }
 
     private void onExportAction() {
