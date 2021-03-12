@@ -105,6 +105,10 @@ public class ServerViewController {
         }
     }
 
+    public void connect(StackPane stackPane, ServerConfigurationVO configurationVO) {
+        onConnect(stackPane, configurationVO);
+    }
+
     private void showNewServerView(StackPane stackPane) {
         zkServer.setEditable(true);
         buttonHBox.getChildren().remove(deleteButton);
