@@ -26,7 +26,7 @@
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="240.0" prefWidth="240.0" />
               </columnConstraints>
               <rowConstraints>
-                  <RowConstraints minHeight="40.0" prefHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="35.0" prefHeight="45.0" valignment="CENTER" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="0.0" prefHeight="150.0" valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
@@ -55,7 +55,7 @@
       </AnchorPane>
       <Button fx:id="closeButton" layoutX="620.0" layoutY="14.0" mnemonicParsing="false" styleClass="v-button" text="X" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0" />
       <TextArea fx:id="aclTextArea" layoutX="353.0" layoutY="51.0" prefHeight="90.0" prefWidth="240.0" styleClass="vTextArea" AnchorPane.rightAnchor="81.0" AnchorPane.topAnchor="20.0" />
-      <HBox fx:id="buttonHBox" alignment="CENTER" layoutX="444.0" layoutY="432.0" prefHeight="30.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="30.0">
+      <HBox fx:id="buttonHBox" alignment="CENTER" layoutX="444.0" layoutY="432.0" minHeight="30.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="30.0">
          <children>
             <Button fx:id="saveButton" mnemonicParsing="false" styleClass="v-button" text="save" />
             <Button fx:id="connectButton" mnemonicParsing="false" styleClass="v-button" text="connect" />
