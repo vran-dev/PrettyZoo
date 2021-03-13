@@ -5,8 +5,7 @@ import cc.cc1234.specification.config.model.ConfigData;
 import cc.cc1234.specification.config.model.SSHTunnelConfigData;
 import cc.cc1234.specification.config.model.ServerConfigData;
 import cc.cc1234.specification.listener.ConfigurationChangeListener;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +21,32 @@ public class Configuration {
 
     private List<ConfigurationChangeListener> configurationChangeListeners;
 
+    private FontConfiguration fontConfiguration;
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class FontConfiguration {
+        private Integer size;
+
+        public void checkIsValid() {
+            if (size == null) {
+                throw new IllegalArgumentException("font size is invalid");
+            }
+            if (size < 8 || size > 50) {
+                throw new IllegalArgumentException("font size is invalid");
+            }
+        }
+    }
+
     public Configuration(List<ServerConfiguration> serverConfigs,
-                         List<ConfigurationChangeListener> listeners) {
+                         List<ConfigurationChangeListener> listeners,
+                         FontConfiguration fontConfiguration) {
         Objects.requireNonNull(listeners);
         Objects.requireNonNull(serverConfigs);
         this.serverConfigurations = serverConfigs;
         this.configurationChangeListeners = listeners;
+        this.fontConfiguration = fontConfiguration;
 
         final List<ServerConfigData> servers = this.serverConfigurations.stream()
                 .map(this::toServerConfig)
@@ -55,6 +74,10 @@ public class Configuration {
                 .orElseThrow();
         server.update(serverConfiguration);
         configurationChangeListeners.forEach(listener -> listener.onServerChange(toServerConfig(serverConfiguration)));
+    }
+
+    public void updateFont(FontConfiguration fontConfiguration) {
+        this.fontConfiguration = fontConfiguration;
     }
 
     public Optional<ServerConfiguration> get(String host) {
@@ -97,11 +120,13 @@ public class Configuration {
      * FIXME 实体不应该和数据模型强耦合
      */
     public ConfigData toPersistModel() {
-        final ConfigData configData = new ConfigData();
-        final List<ServerConfigData> servers = getServerConfigurations().stream()
+        var configData = new ConfigData();
+        var servers = getServerConfigurations().stream()
                 .map(this::toServerConfig)
                 .collect(Collectors.toList());
+        var fontConfig = new ConfigData.FontConfigData(this.getFontConfiguration().getSize());
         configData.setServers(servers);
+        configData.setFontConfig(fontConfig);
         return configData;
     }
 

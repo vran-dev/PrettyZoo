@@ -148,6 +148,14 @@ public class PrettyZooFacade {
         configurationDomainService.save(serverConfiguration);
     }
 
+    public Integer getFontSize() {
+        return configurationDomainService.get().orElseThrow().getFontConfiguration().getSize();
+    }
+
+    public void changeFontSize(Integer newSize) {
+        configurationDomainService.save(new Configuration.FontConfiguration(newSize));
+    }
+
     public void deleteServerConfiguration(String server) {
         configurationDomainService.deleteServerConfiguration(server);
     }

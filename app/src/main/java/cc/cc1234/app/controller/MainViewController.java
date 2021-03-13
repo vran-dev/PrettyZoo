@@ -91,14 +91,16 @@ public class MainViewController {
     }
 
     private void initFontChangeButton() {
-        rootStackPane.setStyle("-fx-font-size:13px;");
-        var svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(8, 25, 13);
+        Integer fontSize = prettyZooFacade.getFontSize();
+        rootStackPane.setStyle("-fx-font-size: " + fontSize);
+        var svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(8, 25, fontSize);
         var sp = new Spinner<Integer>();
         sp.setValueFactory(svf);
         sp.setPrefWidth(100d);
         sp.valueProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 rootStackPane.setStyle("-fx-font-size: " + ((Integer) newValue));
+                prettyZooFacade.changeFontSize(newValue);
             }
         }));
         fontMenuButton.getItems().add(new MenuItem("", sp));
