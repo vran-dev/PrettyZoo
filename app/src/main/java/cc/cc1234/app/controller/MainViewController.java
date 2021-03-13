@@ -117,7 +117,15 @@ public class MainViewController {
         final ConfigurationVO configurationVO = new ConfigurationVO();
         prettyZooFacade.loadServerConfigurations(new DefaultConfigurationListener(configurationVO));
         serverListView.itemsProperty().set(configurationVO.getServers());
-        serverListView.setCellFactory(cellCallback -> new ZkServerListCell());
+        serverListView.setCellFactory(cellCallback -> {
+            ZkServerListCell cell = new ZkServerListCell();
+            cell.setOnMouseClicked(event -> {
+                if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+                    serverViewController.connect(mainRightPane, cell.getItem());
+                }
+            });
+            return cell;
+        });
         var selectedItemProperty = serverListView.getSelectionModel().selectedItemProperty();
         selectedItemProperty.addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
