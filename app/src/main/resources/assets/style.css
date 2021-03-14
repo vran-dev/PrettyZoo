@@ -12,12 +12,6 @@
     -fx-content-display: center;
 }
 
-.menu-bar {
-    -fx-background-color: #FFF;
-    -fx-border-width: 0 0 1 0;
-    -fx-border-color: #000;
-}
-
 .disconnect-button:hover {
     -fx-background-image: url("img/shut-down-hover.png");
     -fx-background-repeat: no-repeat;
@@ -93,7 +87,7 @@
     -fx-background-radius: 0;
     -fx-padding: 0 3 0 10;
     -fx-cell-size: 36;
-    -fx-font-size: 14;
+    /*-fx-font-size: 14;*/
     -fx-text-fill: #000;
 }
 
@@ -249,18 +243,6 @@
 
 .vTextArea:focused .content {
     -fx-background-color: #fff;
-}
-
-.vTextField {
-    -fx-border-color: #3F51B5;
-    -fx-border-width: 0 0 2 0;
-    -fx-background-color: transparent;
-    -fx-font-size: 14;
-}
-
-.vTextField:focused {
-    -fx-border-color: #7986CB;
-    -fx-font-size: 16;
 }
 
 .prettyZoo {
@@ -430,7 +412,6 @@
     -fx-border-radius: 0;
     -fx-opacity: 0.85;
     -fx-text-fill: #FFF;
-    -fx-font-size: 15px;
 }
 
 .terminal-area .content {
@@ -521,4 +502,30 @@
 
 .choice-box:hover {
     -fx-background-color: #DDD;
+}
+
+.menu-bar {
+    -fx-opacity: 0.8;
+}
+
+.main-menu-bar {
+    -fx-background-color: #FFF;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #454444;
+}
+
+.menu-button {
+    -fx-background-color: #FFF;
+    -fx-min-height: 18;
+    -fx-padding: 3px;
+}
+
+.menu-button:hover {
+    -fx-background-color: #EEE;
+    -fx-min-height: 18;
+}
+
+.menu-button:hover:pressed {
+    -fx-background-color: #E2E2E2;
+    -fx-min-height: 18;
 }
