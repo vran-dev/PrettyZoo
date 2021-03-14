@@ -42,9 +42,19 @@ public class ConfigurationFactory {
                             .build();
                 })
                 .collect(Collectors.toList());
+        var fontConfiguration = getOrDefaultFontConfiguration(configData.getFontConfig());
         return Configuration.builder()
+                .fontConfiguration(fontConfiguration)
                 .configurationChangeListeners(listeners)
                 .serverConfigurations(serverConfigurations)
                 .build();
+    }
+
+    private Configuration.FontConfiguration getOrDefaultFontConfiguration(ConfigData.FontConfigData data) {
+        if (data == null) {
+            return new Configuration.FontConfiguration(14);
+        } else {
+            return new Configuration.FontConfiguration(data.getFontSize());
+        }
     }
 }

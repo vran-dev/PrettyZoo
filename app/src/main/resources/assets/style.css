@@ -261,6 +261,7 @@
     -fx-border-color: transparent transparent transparent transparent;
     -fx-background-color: transparent;
     -fx-text-fill: #3F51B5;
+    -fx-pref-width: 200px;
 }
 
 .node-info-pane {

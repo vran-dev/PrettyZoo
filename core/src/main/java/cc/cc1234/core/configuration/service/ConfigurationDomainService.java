@@ -39,6 +39,13 @@ public class ConfigurationDomainService {
         prettyZooConfigRepository.save(configuration.toPersistModel());
     }
 
+    public void save(Configuration.FontConfiguration fontConfiguration) {
+        fontConfiguration.checkIsValid();
+        var configuration = get().orElseThrow();
+        configuration.updateFont(fontConfiguration);
+        prettyZooConfigRepository.save(configuration.toPersistModel());
+    }
+
     public Optional<Configuration> get() {
         return Optional.ofNullable(configurationCache.getVal());
     }
