@@ -18,14 +18,12 @@ import cc.cc1234.version.VersionChecker;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 
@@ -53,10 +51,13 @@ public class MainViewController {
     private Button serverAddButton;
 
     @FXML
-    private Button exportButton;
+    private MenuItem exportMenuItem;
 
     @FXML
-    private Button importButton;
+    private MenuItem importMenuItem;
+
+    @FXML
+    private MenuButton fontMenuButton;
 
     @FXML
     private Label newVersionLabel;
@@ -74,11 +75,12 @@ public class MainViewController {
         RootPaneContext.set(rootStackPane);
         mainRightPane.setPadding(new Insets(30, 30, 30, 30));
         serverAddButton.setOnMouseClicked(event -> serverViewController.show(mainRightPane));
-        exportButton.setOnMouseClicked(e -> onExportAction());
-        importButton.setOnMouseClicked(e -> onImportAction());
+        exportMenuItem.setOnAction(e -> onExportAction());
+        importMenuItem.setOnAction(e -> onImportAction());
         newVersionLabel.setOnMouseClicked(e -> HostServiceContext.jumpToReleases());
         serverViewController.setOnClose(() -> this.serverListView.selectionModelProperty().get().clearSelection());
         prettyZooLink.setOnMouseClicked(e -> HostServiceContext.get().showDocument(prettyZooLink.getText()));
+        initFontChangeButton();
     }
 
     public void bindShortcutKey() {
@@ -86,6 +88,22 @@ public class MainViewController {
         rootStackPane.getScene()
                 .getAccelerators()
                 .put(ShortcutKeys.NEW_SERVER.key(), () -> serverViewController.show(mainRightPane));
+    }
+
+    private void initFontChangeButton() {
+        Integer fontSize = prettyZooFacade.getFontSize();
+        rootStackPane.setStyle("-fx-font-size: " + fontSize);
+        var svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(8, 25, fontSize);
+        var sp = new Spinner<Integer>();
+        sp.setValueFactory(svf);
+        sp.setPrefWidth(100d);
+        sp.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                rootStackPane.setStyle("-fx-font-size: " + ((Integer) newValue));
+                prettyZooFacade.changeFontSize(newValue);
+            }
+        }));
+        fontMenuButton.getItems().add(new MenuItem("", sp));
     }
 
     private void onExportAction() {
