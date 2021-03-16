@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -58,12 +59,14 @@ public class PrettyZooFacade {
         }
     }
 
-    public void connect(String host,
-                        List<ZookeeperNodeListener> nodeListeners,
-                        List<ServerListener> serverListeners) {
-        var serverConfig = configurationDomainService.get(host).orElseThrow();
-        zookeeperDomainService.connect(serverConfig, nodeListeners, serverListeners);
-        configurationDomainService.incrementConnectTimes(host);
+    public CompletableFuture<Void> connect(String host,
+                                     List<ZookeeperNodeListener> nodeListeners,
+                                     List<ServerListener> serverListeners) {
+        return CompletableFuture.runAsync(() -> {
+            var serverConfig = configurationDomainService.get(host).orElseThrow();
+            zookeeperDomainService.connect(serverConfig, nodeListeners, serverListeners);
+            configurationDomainService.incrementConnectTimes(host);
+        });
     }
 
     public void disconnect(String host) {

@@ -15,6 +15,8 @@ public class ServerConfigurationVO {
 
     private ObjectProperty<ObservableList<String>> aclList = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 
+    private SimpleObjectProperty<ServerStatus> status = new SimpleObjectProperty<>(ServerStatus.DISCONNECTED);
+
     private SimpleBooleanProperty connected = new SimpleBooleanProperty(false);
 
     private SimpleBooleanProperty sshEnabled = new SimpleBooleanProperty(false);
@@ -31,7 +33,6 @@ public class ServerConfigurationVO {
         zkServer.unbind();
         zkAlias.unbind();
         aclList.unbind();
-        connected.unbind();
         sshEnabled.unbind();
         sshServer.unbind();
         sshUsername.unbind();
@@ -39,6 +40,17 @@ public class ServerConfigurationVO {
         remoteServer.unbind();
     }
 
+    public ServerStatus getStatus() {
+        return status.get();
+    }
+
+    public SimpleObjectProperty<ServerStatus> statusProperty() {
+        return status;
+    }
+
+    public void setStatus(ServerStatus status) {
+        this.status.set(status);
+    }
 
     public String getZkServer() {
         return zkServer.get();

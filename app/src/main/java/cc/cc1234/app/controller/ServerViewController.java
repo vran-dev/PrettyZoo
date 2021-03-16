@@ -2,13 +2,16 @@ package cc.cc1234.app.controller;
 
 import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.fp.Try;
+import cc.cc1234.app.listener.DefaultTreeNodeListener;
 import cc.cc1234.app.util.Asserts;
 import cc.cc1234.app.util.FXMLs;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.app.vo.ServerConfigurationVO;
+import cc.cc1234.app.vo.ServerStatus;
 import cc.cc1234.specification.listener.ServerListener;
 import com.google.common.base.Strings;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -118,6 +121,11 @@ public class ServerViewController {
     }
 
     private void showServerInfoView(StackPane stackPane, ServerConfigurationVO config) {
+        if (config.getStatus() == ServerStatus.CONNECTING) {
+            buttonHBox.setDisable(true);
+        } else if (config.getStatus() == ServerStatus.DISCONNECTED) {
+            buttonHBox.setDisable(false);
+        }
         zkServer.setEditable(false);
         connectButton.setOnMouseClicked(e -> onConnect(stackPane, config));
         propertyBind(config);
@@ -268,35 +276,54 @@ public class ServerViewController {
     }
 
     private void onConnect(StackPane parent, ServerConfigurationVO serverConfigurationVO) {
+        if (serverConfigurationVO.getStatus() == ServerStatus.CONNECTING) {
+            return;
+        }
         Try.of(() -> {
             Asserts.notNull(serverConfigurationVO, "save config first");
             Asserts.assertTrue(prettyZooFacade.hasServerConfiguration(serverConfigurationVO.getZkServer()), "save config first");
-            NodeViewController nodeViewController = retrieve(serverConfigurationVO.getZkServer());
             if (currentNodeViewController != null) {
-                currentNodeViewController.hideAndThen(() -> {
-                });
+                currentNodeViewController.hide();
             }
-            nodeViewController.show(parent, serverConfigurationVO.getZkServer(), new ServerListener() {
+        }).onSuccess(o -> {
+            serverConfigurationVO.setStatus(ServerStatus.CONNECTING);
+            buttonHBox.setDisable(true);
+            NodeViewController nodeViewController = retrieveNodeViewController(serverConfigurationVO.getZkServer());
+            prettyZooFacade.connect(serverConfigurationVO.getZkServer(), List.of(new DefaultTreeNodeListener()), List.of(new ServerListener() {
                 @Override
                 public void onClose(String serverHost) {
                     if (serverHost.equals(serverConfigurationVO.getZkServer())) {
-                        serverConfigurationVO.setConnected(false);
-                        if (closeHook != null) {
-                            closeHook.run();
-                        }
+                        Platform.runLater(() -> {
+                            serverConfigurationVO.setConnected(false);
+                            if (closeHook != null) {
+                                closeHook.run();
+                            }
+                        });
                     }
                 }
+            })).thenAccept(v -> Platform.runLater(() -> {
+                nodeViewController.show(parent, serverConfigurationVO.getZkServer());
+                currentNodeViewController = nodeViewController;
+                parent.getChildren().remove(serverInfoPane);
+                serverConfigurationVO.setStatus(ServerStatus.CONNECTED);
+                serverConfigurationVO.setConnected(true);
+                buttonHBox.setDisable(false);
+            })).exceptionally(e -> {
+                log.error("connect server error", e);
+                Platform.runLater(() -> {
+                    buttonHBox.setDisable(false);
+                    serverConfigurationVO.setStatus(ServerStatus.DISCONNECTED);
+                    VToast.error(e.getCause().getMessage());
+                });
+                return null;
             });
-            currentNodeViewController = nodeViewController;
-            parent.getChildren().remove(serverInfoPane);
-            serverConfigurationVO.setConnected(true);
         }).onFailure(e -> {
             log.error("connect server error", e);
             VToast.error(e.getMessage());
         });
     }
 
-    private NodeViewController retrieve(String server) {
+    private NodeViewController retrieveNodeViewController(String server) {
         if (nodeViewControllerMap.containsKey(server)) {
             return nodeViewControllerMap.get(server);
         } else {
