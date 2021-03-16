@@ -21,7 +21,7 @@ subprojects {
 
     sourceCompatibility = 11
     group 'cc.c1234'
-    version '1.5.0'
+    version '1.6.0'
 
     idea {
         module {
