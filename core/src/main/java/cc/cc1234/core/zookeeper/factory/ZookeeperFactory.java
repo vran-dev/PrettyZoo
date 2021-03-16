@@ -37,10 +37,11 @@ public class ZookeeperFactory {
                     .remotePort(tunnelConfig.getRemotePort())
                     .build();
         }
-        ZookeeperConnectionFactory factory = new CuratorZookeeperConnectionFactory();
+        var factory = new CuratorZookeeperConnectionFactory();
         var params = new ZookeeperParams(serverConfig.getHost(), serverConfig.getAclList());
-        return new Zookeeper(serverConfig.getHost(), () -> factory.create(params), tunnel, nodeListeners, serverListeners);
+        return new Zookeeper(serverConfig.getHost(), () -> factory.createAsync(params, serverListeners), tunnel, nodeListeners, serverListeners);
     }
+
 
     public Terminal createTerminal(String host, StringWriter writer) throws Exception {
         writer.write("connecting to " + host + "...\n");

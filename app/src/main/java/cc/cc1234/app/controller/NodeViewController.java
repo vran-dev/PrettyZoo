@@ -4,14 +4,12 @@ import cc.cc1234.app.cache.TreeItemCache;
 import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.fp.Try;
-import cc.cc1234.app.listener.DefaultTreeNodeListener;
 import cc.cc1234.app.util.FXMLs;
 import cc.cc1234.app.view.cell.ZkNodeTreeCell;
 import cc.cc1234.app.view.dialog.Dialog;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.app.vo.ZkNodeSearchResult;
-import cc.cc1234.specification.listener.ServerListener;
 import cc.cc1234.specification.node.ZkNode;
 import cc.cc1234.specification.util.StringWriter;
 import javafx.fxml.FXML;
@@ -110,10 +108,9 @@ public class NodeViewController {
     }
 
     public void show(StackPane parent,
-                     String server,
-                     ServerListener serverListener) {
+                     String server) {
         if (server != null) {
-            switchServer(server, serverListener);
+            switchServer(server);
         }
 
         if (!parent.getChildren().contains(nodeViewPane)) {
@@ -121,6 +118,11 @@ public class NodeViewController {
             Transitions.zoomInY(nodeViewPane).play();
         }
         terminalTab.setText(server);
+    }
+
+    public void hide() {
+        hideAndThen(() -> {
+        });
     }
 
     public void hideAndThen(Runnable runnable) {
@@ -213,15 +215,7 @@ public class NodeViewController {
                 });
     }
 
-    private void switchServer(String host, ServerListener serverListener) {
-        try {
-            log.debug("begin to switch server to {}", host);
-            prettyZooFacade.connect(host, List.of(new DefaultTreeNodeListener()), List.of(serverListener));
-        } catch (Exception e) {
-            log.error("switch server " + host + " failed: ", e);
-            throw new IllegalStateException("connect to " + host + " failed", e);
-        }
-
+    private void switchServer(String host) {
         zkNodeTreeView.setCellFactory(view -> new ZkNodeTreeCell());
         initRootTreeNode(host);
         ActiveServerContext.set(host);

@@ -39,7 +39,6 @@ public class Zookeeper {
         this.connection = connectionSupplier.get();
         this.nodeListeners = nodeListeners;
         this.serverListeners = serverListeners;
-        serverListeners.forEach(serverListener -> serverListener.onConnected(host));
     }
 
     public void disconnect() {

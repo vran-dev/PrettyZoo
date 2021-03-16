@@ -3,11 +3,16 @@ package cc.cc1234.client.curator;
 import cc.cc1234.specification.connection.ZookeeperConnection;
 import cc.cc1234.specification.connection.ZookeeperConnectionFactory;
 import cc.cc1234.specification.connection.ZookeeperParams;
+import cc.cc1234.specification.listener.ServerListener;
+import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.AuthInfo;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.api.ACLProvider;
-import org.apache.curator.retry.RetryOneTime;
+import org.apache.curator.framework.api.CuratorEventType;
+import org.apache.curator.framework.state.ConnectionState;
+import org.apache.curator.framework.state.ConnectionStateListener;
+import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.data.ACL;
 import org.slf4j.Logger;
@@ -23,9 +28,62 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
 
     @Override
     public ZookeeperConnection<CuratorFramework> create(ZookeeperParams params) {
-        final RetryOneTime retryPolicy = new RetryOneTime(3000);
+        final CuratorFramework client = curatorFramework(params);
+        client.start();
+
+        try {
+            if (!client.blockUntilConnected(5, TimeUnit.SECONDS)) {
+                client.close();
+                throw new IllegalStateException("连接超时");
+            }
+        } catch (InterruptedException e) {
+            throw new IllegalStateException("连接失败", e);
+        }
+        return new CuratorZookeeperConnection(client);
+    }
+
+    @Override
+    public ZookeeperConnection<CuratorFramework> createAsync(ZookeeperParams params, List<ServerListener> listener) {
+        final CuratorFramework client = curatorFramework(params);
+        client.getConnectionStateListenable().addListener(new ConnectionStateListener() {
+            @Override
+            public void stateChanged(CuratorFramework client, ConnectionState newState) {
+                switch (newState) {
+                    case RECONNECTED:
+                    case CONNECTED:
+                        listener.forEach(l -> l.onConnected(params.getHost()));
+                        break;
+                    default:
+                        client.close();
+                }
+            }
+        });
+        client.getCuratorListenable().addListener((client1, event) -> {
+            if (event.getType() == CuratorEventType.CLOSING) {
+                listener.forEach(l -> l.onClose(params.getHost()));
+            }
+        });
+
+        client.start();
+        try {
+            if (!client.blockUntilConnected(3, TimeUnit.SECONDS)) {
+                client.close();
+                throw new IllegalStateException("connect " + params.getHost() + " failed");
+            }
+        } catch (InterruptedException e) {
+            client.close();
+            throw new IllegalStateException("connect " + params.getHost() + " failed", e);
+        }
+        return new CuratorZookeeperConnection(client);
+    }
+
+
+    private CuratorFramework curatorFramework(ZookeeperParams params) {
+        final RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 2);
         final CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
                 .connectString(params.getHost())
+                .connectionTimeoutMs(3000)
+                .sessionTimeoutMs(3000)
                 .retryPolicy(retryPolicy);
 
         if (!params.getAclList().isEmpty()) {
@@ -44,18 +102,6 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
                     });
         }
 
-        final CuratorFramework client = builder.build();
-        client.start();
-
-        // TODO use async
-        try {
-            if (!client.blockUntilConnected(5, TimeUnit.SECONDS)) {
-                client.close();
-                throw new IllegalStateException("连接超时");
-            }
-        } catch (InterruptedException e) {
-            throw new IllegalStateException("连接失败", e);
-        }
-        return new CuratorZookeeperConnection(client);
+        return builder.build();
     }
 }
