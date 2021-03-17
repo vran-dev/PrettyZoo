@@ -36,9 +36,9 @@ mac 安装提示：已损坏，无法打开
 
 # 规划
 
-1. 国际化支持
-2. 命令高亮支持
-3. 全局字体大小配置
+1. - [ ] 国际化支持
+2. - [ ] 命令高亮支持
+3. - [x] 全局字体大小配置
 
 
 
@@ -105,4 +105,6 @@ mac 安装提示：已损坏，无法打开
 # 感谢
 
 - 感谢「芋道源码」对 PrettyZoo 的推荐: [ZooKeeper GUI 客户端](http://vip.iocoder.cn/Zookeeper/PrettyZoo/)
+
+-  [PrettyZoo, 颜值与功能双在线的 Zookeeper 可视化工具](https://mp.weixin.qq.com/s/TkFirILto_moEv_kjBBPFw)
 
