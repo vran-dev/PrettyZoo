@@ -31,7 +31,7 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 
 1. - [ ] Support i18n
 2. - [ ] command highlight
-3. - [ ] global font size change
+3. - [x] global font size change
 
 
 
@@ -95,3 +95,4 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 
 - [ZooKeeper GUI 客户端](http://vip.iocoder.cn/Zookeeper/PrettyZoo/)  by 「芋道源码」
 
+- [PrettyZoo, 颜值与功能双在线的 Zookeeper 可视化工具](https://mp.weixin.qq.com/s/TkFirILto_moEv_kjBBPFw)
