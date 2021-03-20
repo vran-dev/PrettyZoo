@@ -32,11 +32,7 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
             ActiveServerContext.invalidate();
         }
         TreeItemCache.getInstance().remove(removeServer.getHost());
-        final List<ServerConfigurationVO> removeServers = configurationVO.getServers()
-                .stream()
-                .filter(z -> z.getZkServer().equals(removeServer.getHost()))
-                .collect(Collectors.toList());
-        configurationVO.getServers().removeAll(removeServers);
+        configurationVO.getServers().removeIf(vo -> vo.getZkServer().equals(removeServer.getHost()));
     }
 
     @Override

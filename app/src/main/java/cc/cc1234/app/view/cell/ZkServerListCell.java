@@ -1,6 +1,7 @@
 package cc.cc1234.app.view.cell;
 
 import cc.cc1234.app.vo.ServerConfigurationVO;
+import cc.cc1234.app.vo.ServerStatus;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
@@ -38,30 +39,14 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
             hBox.setAlignment(Pos.CENTER_LEFT);
             item.statusProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
-                    Platform.runLater(() -> {
-                        switch (newValue) {
-                            case CONNECTING:
-                                addIfNecessary(hBox.getChildren(), progressIndicator);
-                                break;
-                            case DISCONNECTED:
-                            case CONNECTED:
-                                removeIfNecessary(hBox.getChildren(), progressIndicator);
-                                break;
-                        }
-                    });
+                    onServerStatusChange(newValue, hBox, progressIndicator);
                 }
             });
             item.connectedProperty().addListener(((observable, oldValue, newValue) -> {
-                Platform.runLater(() -> {
-                    if (newValue != null) {
-                        if (newValue) {
-                            hBox.getChildren().add(0, symbolImage);
-                        } else {
-                            hBox.getChildren().remove(symbolImage);
-                        }
-                    }
-                });
+                onServerStatusChange(newValue, hBox, symbolImage);
             }));
+            onServerStatusChange(item.getStatus(), hBox, progressIndicator);
+            onServerStatusChange(item.isConnected(), hBox, symbolImage);
             setGraphic(hBox);
         }
     }
@@ -78,6 +63,30 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
         } else {
             return server;
         }
+    }
+
+    private void onServerStatusChange(ServerStatus newValue, HBox hBox, ProgressIndicator child) {
+        Platform.runLater(() -> {
+            switch (newValue) {
+                case CONNECTING:
+                    addIfNecessary(hBox.getChildren(), child);
+                    break;
+                case DISCONNECTED:
+                case CONNECTED:
+                    removeIfNecessary(hBox.getChildren(), child);
+                    break;
+            }
+        });
+    }
+
+    private void onServerStatusChange(Boolean newValue, HBox hBox, ImageView child) {
+        Platform.runLater(() -> {
+            if (newValue) {
+                hBox.getChildren().add(0, child);
+            } else {
+                hBox.getChildren().remove(child);
+            }
+        });
     }
 
     private <T> void addIfNecessary(Collection<T> collection, T value) {
