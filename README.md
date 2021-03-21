@@ -43,8 +43,8 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 4. Support SSH tunnel
 5. Support config export /  import
 6. Support node create / search / update / delete
-7. Support terminal operation (**v1.2.0-BETA**)
-8. Support **JSON** / **XML** data pretty format (**v1.2.0**)
+7. Support terminal operation
+8. Support **JSON** / **XML** data pretty format
 
 # Show
 
