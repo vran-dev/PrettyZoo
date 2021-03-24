@@ -160,6 +160,16 @@
     -fx-background-insets: 0;
 }
 
+.split-pane-divider:hover {
+    -fx-padding: 0 5 0 0;
+    -fx-background-color: #f1f2f6;
+}
+
+.split-pane-divider:pressed {
+    -fx-padding: 0 5 0 0;
+    -fx-background-color: #f1f2f6;
+}
+
 .scroll-bar {
     -fx-background-color: #FFF;
     -fx-pref-width: 4;
