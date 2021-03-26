@@ -13,4 +13,6 @@ open module app.main {
     requires java.net.http;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
+    requires org.fxmisc.richtext;
+    requires flowless;
 }
