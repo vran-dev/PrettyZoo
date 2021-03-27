@@ -540,3 +540,52 @@
     -fx-background-color: #E2E2E2;
     -fx-min-height: 18;
 }
+
+/* xml data highlights */
+
+.xml-tag-mark {
+    -fx-fill: gray;
+}
+
+.xml-any-tag {
+    -fx-fill: crimson;
+}
+
+.xml-paren {
+    -fx-fill: firebrick;
+    -fx-font-weight: bold;
+}
+
+.xml-attribute {
+    -fx-fill: darkviolet;
+}
+
+.xml-value {
+    -fx-fill: black;
+}
+
+.xml-comment {
+    -fx-fill: teal;
+}
+
+/* json data highlights*/
+
+.json-key {
+    -fx-fill: #92278f;
+}
+
+.json-boolean-value {
+    -fx-fill: #f98280;
+}
+
+.json-null-value {
+    -fx-fill: #ff0000;
+}
+
+.json-number-value {
+    -fx-fill: #25aae2;
+}
+
+.json-string-value {
+    -fx-fill: #3ab54a;
+}

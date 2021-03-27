@@ -144,7 +144,7 @@
                   <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
                </padding>
             </AnchorPane>
-            <AnchorPane prefHeight="180.0" prefWidth="200.0">
+            <AnchorPane fx:id="nodeDataPane" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <HBox alignment="CENTER_LEFT" layoutX="42.0" layoutY="14.0" minHeight="40.0" prefHeight="40.0" spacing="10.0" styleClass="data-menu-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -167,7 +167,6 @@
                         <Insets left="5.0" right="5.0" />
                      </padding>
                   </HBox>
-                  <TextArea fx:id="dataField" layoutX="31.0" layoutY="-20.0" styleClass="vTextArea" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
                </children>
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="5.0" />

@@ -1,6 +1,8 @@
 plugins {
     id 'org.openjfx.javafxplugin' version '0.0.9'
     id 'org.beryx.jlink' version '2.22.3'
+    id 'antlr'
+    id 'idea'
 }
 
 javafx {
@@ -11,7 +13,8 @@ javafx {
 mainClassName = "app.main/cc.cc1234.PrettyZooApplication"
 
 run {
-    jvmArgs = ['-Djdk.gtk.version=2'] // required due to a bug in Java: https://github.com/javafxports/openjdk-jfx/issues/175
+    jvmArgs = ['-Djdk.gtk.version=2']
+    // required due to a bug in Java: https://github.com/javafxports/openjdk-jfx/issues/175
 }
 
 jlink {
@@ -69,7 +72,9 @@ dependencies {
     compile project(':core')
     compile project(':specification')
     testCompile group: 'junit', name: 'junit', version: '4.12'
-//    compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.2'
+    compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.6'
+    antlr "org.antlr:antlr4:4.9" // use ANTLR version 4
+    compile group: 'org.antlr', name: 'antlr4-runtime', version: '4.9.2'
 }
 
 configJavafxRun {
@@ -105,4 +110,33 @@ def findOldVersionStr(path) {
 
 compileJava {
     dependsOn updateVersion
+}
+
+
+sourceSets {
+    orgtest {
+        java.srcDir file('src/test/java')
+        resources.srcDir file('src/test/resources')
+        compileClasspath += sourceSets.test.compileClasspath
+        runtimeClasspath += sourceSets.test.runtimeClasspath
+        annotationProcessorPath += sourceSets.test.annotationProcessorPath
+    }
+    main {
+        java.srcDir 'gen/main/java'
+        resources.srcDir file('gen/main/resources')
+    }
+    orgmain {
+        java.srcDir file('src/main/java')
+        resources.srcDir file('src/main/resources')
+        compileClasspath += sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.runtimeClasspath
+        annotationProcessorPath += sourceSets.main.annotationProcessorPath
+    }
+}
+
+generateGrammarSource {
+    source("src/main/resources/grammars")
+    outputDirectory = file("gen/main/java/cc/cc1234/antlr4/json")
+    arguments += ["-visitor",
+                  "-long-messages"]
 }
