@@ -4,11 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
-import org.xml.sax.InputSource;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.StringReader;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.regex.Matcher;
@@ -24,20 +21,18 @@ public class Highlights {
         if (text == null || text.isBlank()) {
             return StyleSpans.singleton(Collections.singleton(""), 0);
         }
-        if (isXml(text)) {
-            return XmlHighlights.computeHighlighting(text);
-        }
         if (isJson(text)) {
             return JsonHighlights.computeHighlighting(text);
+        }
+        if (isXml(text)) {
+            return XmlHighlights.computeHighlighting(text);
         }
         return StyleSpans.singleton(Collections.singleton(""), text.length());
     }
 
     private static boolean isXml(String xml) {
         try {
-            DocumentBuilder dBuilder = documentBuilderFactory.newDocumentBuilder();
-            InputSource src = new InputSource(new StringReader(xml));
-            dBuilder.parse(src);
+            Formatters.xmlFormat(xml);
             return true;
         } catch (Exception e) {
             return false;
