@@ -579,7 +579,7 @@
 }
 
 .json-null-value {
-    -fx-fill: #ec0202;
+    -fx-fill: #ff0000;
 }
 
 .json-number-value {
