@@ -22,6 +22,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 
 public class NodeInfoViewController {
 
@@ -160,6 +161,9 @@ public class NodeInfoViewController {
     }
 
     private void setCodeAreaData(String data) {
+        if (Objects.equals(data, dataCodeArea.getText())) {
+            dataCodeArea.clear();
+        }
         dataCodeArea.replaceText(data);
     }
 
