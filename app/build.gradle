@@ -135,8 +135,8 @@ sourceSets {
 }
 
 generateGrammarSource {
-    source("src/main/resources/grammars")
-    outputDirectory = file("gen/main/java/cc/cc1234/antlr4/json")
+    source("src/main/resources/grammars/properties.g4")
+    outputDirectory = file("gen/main/java/cc/cc1234/antlr4/properties")
     arguments += ["-visitor",
                   "-long-messages"]
 }

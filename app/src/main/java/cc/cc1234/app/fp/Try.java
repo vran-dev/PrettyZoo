@@ -41,6 +41,18 @@ public interface Try<T> {
         return this;
     }
 
+    default <X extends Throwable> Try<T> onFailureMap(Function<X, T> function) {
+        Objects.requireNonNull(function);
+        try {
+            if (isFailure()) {
+                return new Success<>(function.apply((X) getCause()));
+            }
+            return this;
+        } catch (Exception e) {
+            return new Failure<>(e);
+        }
+    }
+
     default Throwable getCause() {
         throw new UnsupportedOperationException();
     }

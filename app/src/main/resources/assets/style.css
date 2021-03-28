@@ -589,3 +589,16 @@
 .json-string-value {
     -fx-fill: #3ab54a;
 }
+
+/* properties highlights*/
+.property-comment {
+    -fx-fill: #949494;
+}
+
+.property-key {
+    -fx-fill: #067eb0;
+}
+
+.property-value {
+    -fx-fill: #25852e;
+}
