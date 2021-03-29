@@ -69,7 +69,7 @@
 
 /*   ==================================  List view ==================================*/
 .list-view {
-    /*-fx-base: #1d1d1d;*/
+    -fx-base: #1d1d1d;
     -fx-control-inner-background: white;
     -fx-background-color: white;
     -fx-table-cell-border-color: white;
@@ -87,7 +87,6 @@
     -fx-background-radius: 0;
     -fx-padding: 0 3 0 10;
     -fx-cell-size: 36;
-    /*-fx-font-size: 14;*/
     -fx-text-fill: #000;
 }
 
@@ -104,23 +103,28 @@
     -fx-font-weight: bold;
 }
 
-/*.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:selected:hover {*/
-/*    -fx-background-color: #303F9F;*/
-/*    -fx-text-fill: #FFF;*/
-/*}*/
 
-/*.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:selected:hover:pressed {*/
-/*    -fx-background-color: #7986CB;*/
-/*    -fx-text-fill: #FFF;*/
-/*}*/
-
-.list-view .list-cell:filled:selected {
-    -fx-background-color: #F4F8FB;
+.list-view .virtual-flow .clipped-container .sheet .list-cell:filled {
+    -fx-fill: #000;
+    -fx-text-fill: #000;
 }
 
-.list-view .virtual-flow .clipped-container .sheet .list-cell:selected .text {
+.list-view .virtual-flow .clipped-container .sheet .list-cell:filled .text {
+    -fx-fill: #000;
+    -fx-text-fill: #000;
+}
+
+.list-view .virtual-flow .clipped-container .sheet .list-cell:focused:filled {
     -fx-fill: #2C6DD2;
+    -fx-text-fill: #2C6DD2;
 }
+
+.list-view .virtual-flow .clipped-container .sheet .list-cell:focused:filled .text {
+    -fx-fill: #2C6DD2;
+    -fx-text-fill: #2C6DD2;
+}
+
+
 
 /*   ==================================  Tree view ==================================*/
 .tree-view {
