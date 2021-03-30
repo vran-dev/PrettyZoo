@@ -30,6 +30,9 @@ public class NodeInfoViewController {
     private AnchorPane nodeInfoPane;
 
     @FXML
+    private SplitPane nodeInfoSplitPane;
+
+    @FXML
     private AnchorPane nodeDataPane;
 
     @FXML
@@ -87,6 +90,9 @@ public class NodeInfoViewController {
     private Button xmlFormatButton;
 
     @FXML
+    private Button zoomButton;
+
+    @FXML
     private ChoiceBox<String> charsetChoice;
 
     private CodeArea dataCodeArea = new CodeArea("");
@@ -125,6 +131,17 @@ public class NodeInfoViewController {
                 setCodeAreaData(new String(rawBytes, nv));
             } catch (UnsupportedEncodingException unsupportedEncodingException) {
                 VToast.error("Not supported Charset:" + nv);
+            }
+        });
+        zoomButton.setOnAction(e -> {
+            StackPane parent = (StackPane) nodeInfoPane.getParent();
+            if (!parent.getChildren().contains(nodeDataPane)) {
+                nodeInfoSplitPane.getItems().remove(nodeDataPane);
+                parent.getChildren().add(nodeDataPane);
+                Transitions.zoomIn(nodeDataPane).play();
+            } else {
+                parent.getChildren().remove(nodeDataPane);
+                nodeInfoSplitPane.getItems().add(nodeDataPane);
             }
         });
     }
