@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,9 +15,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="nodeInfoPane" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #FFF;" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.NodeInfoViewController">
+<AnchorPane fx:id="nodeInfoPane" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #FFF;" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.NodeInfoViewController">
    <children>
-      <SplitPane dividerPositions="0.6" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" styleClass="node-info-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane fx:id="nodeInfoSplitPane" dividerPositions="0.6" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" styleClass="node-info-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
             <AnchorPane prefHeight="250.0" prefWidth="200.0">
                <children>
@@ -146,7 +145,7 @@
             </AnchorPane>
             <AnchorPane fx:id="nodeDataPane" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" layoutX="42.0" layoutY="14.0" minHeight="40.0" prefHeight="40.0" spacing="10.0" styleClass="data-menu-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox fx:id="dataMenuBar" alignment="CENTER_LEFT" layoutX="42.0" layoutY="14.0" minHeight="40.0" prefHeight="40.0" spacing="10.0" styleClass="data-menu-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <Button fx:id="nodeUpdateButton" mnemonicParsing="false" styleClass="data-save-button">
                             <tooltip><Tooltip anchorLocation="WINDOW_TOP_LEFT" text="更新" /></tooltip>
