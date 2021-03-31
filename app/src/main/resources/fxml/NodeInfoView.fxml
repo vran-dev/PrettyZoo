@@ -145,7 +145,7 @@
             </AnchorPane>
             <AnchorPane fx:id="nodeDataPane" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" layoutX="42.0" layoutY="14.0" minHeight="40.0" prefHeight="40.0" spacing="10.0" styleClass="data-menu-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox fx:id="dataMenuBar" alignment="CENTER_LEFT" layoutX="42.0" layoutY="14.0" minHeight="40.0" prefHeight="40.0" spacing="10.0" styleClass="data-menu-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <Button fx:id="nodeUpdateButton" mnemonicParsing="false" styleClass="data-save-button">
                             <tooltip><Tooltip anchorLocation="WINDOW_TOP_LEFT" text="更新" /></tooltip>
@@ -158,7 +158,6 @@
                               <Button fx:id="rawFormatButton" mnemonicParsing="false" text="RAW" />
                               <Button fx:id="jsonFormatButton" mnemonicParsing="false" text="JSON" />
                               <Button mnemonicParsing="false" text="XML" fx:id="xmlFormatButton" />
-                              <Button fx:id="zoomButton" layoutX="118.0" layoutY="10.0" mnemonicParsing="false" text="ZOOM" />
                            </children>
                         </HBox>
                         <ChoiceBox fx:id="charsetChoice" prefWidth="150.0" />

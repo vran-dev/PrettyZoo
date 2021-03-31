@@ -10,7 +10,9 @@ import cc.cc1234.specification.node.ZkNode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.fxmisc.flowless.VirtualizedScrollPane;
@@ -90,7 +92,7 @@ public class NodeInfoViewController {
     private Button xmlFormatButton;
 
     @FXML
-    private Button zoomButton;
+    private HBox dataMenuBar;
 
     @FXML
     private ChoiceBox<String> charsetChoice;
@@ -133,15 +135,20 @@ public class NodeInfoViewController {
                 VToast.error("Not supported Charset:" + nv);
             }
         });
-        zoomButton.setOnAction(e -> {
-            StackPane parent = (StackPane) nodeInfoPane.getParent();
-            if (!parent.getChildren().contains(nodeDataPane)) {
-                nodeInfoSplitPane.getItems().remove(nodeDataPane);
-                parent.getChildren().add(nodeDataPane);
-                Transitions.zoomIn(nodeDataPane).play();
-            } else {
-                parent.getChildren().remove(nodeDataPane);
-                nodeInfoSplitPane.getItems().add(nodeDataPane);
+
+        Tooltip tooltip = new Tooltip("Double click");
+        Tooltip.install(dataMenuBar, tooltip);
+        dataMenuBar.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2 && e.getButton() == MouseButton.PRIMARY) {
+                StackPane parent = (StackPane) nodeInfoPane.getParent();
+                if (!parent.getChildren().contains(nodeDataPane)) {
+                    nodeInfoSplitPane.getItems().remove(nodeDataPane);
+                    parent.getChildren().add(nodeDataPane);
+                    Transitions.zoomIn(nodeDataPane).play();
+                } else {
+                    parent.getChildren().remove(nodeDataPane);
+                    nodeInfoSplitPane.getItems().add(nodeDataPane);
+                }
             }
         });
     }

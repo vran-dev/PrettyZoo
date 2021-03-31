@@ -507,6 +507,10 @@
     -fx-spacing: 10;
 }
 
+.data-menu-bar:hover {
+    -fx-border-color: #2C6DD2;
+}
+
 /** ======================== charset switch choice ========================*/
 .choice-box {
     -fx-background-color: transparent;
