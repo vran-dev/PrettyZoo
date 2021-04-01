@@ -4,6 +4,7 @@ import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.util.PathConcat;
+import cc.cc1234.app.view.NodeDataArea;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.specification.node.NodeMode;
@@ -11,10 +12,10 @@ import cc.cc1234.specification.node.ZkNode;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import org.fxmisc.flowless.VirtualizedScrollPane;
 
 public class NodeAddViewController {
 
@@ -28,9 +29,6 @@ public class NodeAddViewController {
     private CheckBox isNodeEph;
 
     @FXML
-    private TextArea nodeDataTextArea;
-
-    @FXML
     private TextField currentPathField;
 
     @FXML
@@ -42,12 +40,21 @@ public class NodeAddViewController {
     @FXML
     private Button confirmButton;
 
+    private NodeDataArea dataCodeArea = new NodeDataArea();
+
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
     @FXML
     private void initialize() {
         cancelButton.setOnMouseClicked(e -> hide());
         confirmButton.setOnMouseClicked(e -> onSave());
+
+        var pane = new VirtualizedScrollPane<>(dataCodeArea);
+        AnchorPane.setTopAnchor(pane, 155d);
+        AnchorPane.setLeftAnchor(pane, 70d);
+        AnchorPane.setRightAnchor(pane, 70d);
+        AnchorPane.setBottomAnchor(pane, 55d);
+        nodeAddPane.getChildren().add(pane);
     }
 
     public void show(StackPane parent) {
@@ -76,7 +83,7 @@ public class NodeAddViewController {
         String server = ActiveServerContext.get();
         final NodeMode mode = createMode();
         String path = PathConcat.concat(currentPathField.getText(), nodeNameTextField.getText());
-        String data = nodeDataTextArea.getText();
+        String data = dataCodeArea.getText();
         Try.of(() -> prettyZooFacade.createNode(server, path, data, mode))
                 .onSuccess(r -> {
                     hide();

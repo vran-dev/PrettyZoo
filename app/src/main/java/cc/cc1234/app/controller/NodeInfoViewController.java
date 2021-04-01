@@ -3,7 +3,7 @@ package cc.cc1234.app.controller;
 import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.util.Formatters;
-import cc.cc1234.app.util.Highlights;
+import cc.cc1234.app.view.NodeDataArea;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.specification.node.ZkNode;
@@ -16,7 +16,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.fxmisc.flowless.VirtualizedScrollPane;
-import org.fxmisc.richtext.CodeArea;
 
 import java.io.UnsupportedEncodingException;
 import java.time.Instant;
@@ -24,7 +23,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 
 public class NodeInfoViewController {
 
@@ -97,7 +95,7 @@ public class NodeInfoViewController {
     @FXML
     private ChoiceBox<String> charsetChoice;
 
-    private CodeArea dataCodeArea = new CodeArea("");
+    private NodeDataArea dataCodeArea = new NodeDataArea();
 
     @FXML
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
@@ -107,9 +105,7 @@ public class NodeInfoViewController {
     @FXML
     private void initialize() {
         nodeUpdateButton.setOnMouseClicked(e -> onNodeUpdate());
-
         initCodeArea();
-
         final Tooltip timeLabelTooltip = new Tooltip("Click to change format");
         mtimeLabel.setTooltip(timeLabelTooltip);
         ctimeLabel.setTooltip(timeLabelTooltip);
@@ -171,24 +167,16 @@ public class NodeInfoViewController {
     }
 
     private void initCodeArea() {
-        dataCodeArea.setEditable(true);
-        dataCodeArea.getStyleClass().add("vTextArea");
         var pane = new VirtualizedScrollPane<>(dataCodeArea);
         AnchorPane.setTopAnchor(pane, 40d);
         AnchorPane.setLeftAnchor(pane, 0d);
         AnchorPane.setRightAnchor(pane, 0d);
         AnchorPane.setBottomAnchor(pane, 5d);
         nodeDataPane.getChildren().add(pane);
-        dataCodeArea.textProperty().addListener((obs, oldText, newText) -> {
-            dataCodeArea.setStyleSpans(0, Highlights.computeHighlighting(newText));
-        });
     }
 
     private void setCodeAreaData(String data) {
-        if (Objects.equals(data, dataCodeArea.getText())) {
-            dataCodeArea.clear();
-        }
-        dataCodeArea.replaceText(data);
+        dataCodeArea.setText(data);
     }
 
     private void onNodeUpdate() {
