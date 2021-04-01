@@ -17,7 +17,6 @@
       </TextField>
       <CheckBox fx:id="isNodeSeq" layoutX="180.0" layoutY="109.0" mnemonicParsing="false" styleClass="v-checkbox" text="Sequence" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="110.0" />
       <CheckBox fx:id="isNodeEph" layoutX="345.0" layoutY="109.0" mnemonicParsing="false" styleClass="v-checkbox" text="Ephemeral" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="110.0" />
-      <TextArea fx:id="nodeDataTextArea" layoutX="180.0" layoutY="154.0" promptText="Input node data here" styleClass="vTextArea" wrapText="true" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="155.0" />
       <Button fx:id="confirmButton" contentDisplay="CENTER" layoutX="174.0" layoutY="367.0" mnemonicParsing="false" styleClass="v-button" text="Add" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="150.0" />
       <Label layoutX="171.0" layoutY="24.0" style="-fx-font-weight: bold;" text="Path" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="25.0" />
       <Button fx:id="cancelButton" layoutX="219.0" layoutY="367.0" mnemonicParsing="false" styleClass="v-button" text="Cancel" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="70.0" />
