@@ -17,4 +17,5 @@ open module app.main {
     requires flowless;
     requires org.antlr.antlr4.runtime;
     requires zookeeper;
+    requires com.jfoenix;
 }
