@@ -75,6 +75,7 @@ dependencies {
     compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.6'
     antlr "org.antlr:antlr4:4.9" // use ANTLR version 4
     compile group: 'org.antlr', name: 'antlr4-runtime', version: '4.9.2'
+    compile 'com.jfoenix:jfoenix:9.0.8'
 }
 
 configJavafxRun {
