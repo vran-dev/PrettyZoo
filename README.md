@@ -32,6 +32,7 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 1. - [ ] Support i18n
 2. - [ ] command highlight
 3. - [x] global font size change
+4. - [x] node data highlight
 
 
 
@@ -45,6 +46,15 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 6. Support node create / search / update / delete
 7. Support terminal operation
 8. Support **JSON** / **XML** data pretty format
+9. Support node data hightlight ( Json / Xml / Properties )
+
+
+
+## Build
+
+See wiki: [build yourself](https://github.com/vran-dev/PrettyZoo/wiki/build-yourself)
+
+
 
 # Show
 
