@@ -38,8 +38,8 @@ mac 安装提示：已损坏，无法打开
 
 1. - [ ] 国际化支持
 2. - [ ] 命令高亮支持
-3. - [x] 全局字体大小配置
-4. - [x] 节点数据高亮
+3. - [x] 全局字体大小配置（v1.6.0+）
+4. - [x] 节点数据高亮（V1.7.0+）
 
 
 
@@ -53,6 +53,7 @@ mac 安装提示：已损坏，无法打开
 6. 支持节点增删改查操作
 7. 支持 command line 操作模式
 8. 支持节点数据格式化 JSON、XML
+9. 支持节点数据高亮（JSON、XML、Properties）
 
 
 
@@ -88,6 +89,11 @@ mac 安装提示：已损坏，无法打开
 
 
 ![](release/img/time-format.gif)
+
+
+- node data highlight
+
+![](release/img/highlight.gif)
 
 
 - node add

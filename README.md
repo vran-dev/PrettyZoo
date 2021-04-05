@@ -31,8 +31,8 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 
 1. - [ ] Support i18n
 2. - [ ] command highlight
-3. - [x] global font size change
-4. - [x] node data highlight
+3. - [x] global font size change (v1.6.0+)
+4. - [x] node data highlight (V1.7.0+)
 
 
 
@@ -72,7 +72,9 @@ See wiki: [build yourself](https://github.com/vran-dev/PrettyZoo/wiki/build-your
 
 ![](release/img/connect.gif)
 
+- node data highlight
 
+![](release/img/highlight.gif)
 
 - node info
 
