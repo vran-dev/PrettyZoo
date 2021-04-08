@@ -9,6 +9,7 @@ import cc.cc1234.specification.listener.ServerListener;
 import cc.cc1234.specification.listener.ZookeeperNodeListener;
 import cc.cc1234.specification.node.NodeMode;
 import cc.cc1234.specification.util.StringWriter;
+import org.apache.zookeeper.data.Stat;
 
 import java.util.HashSet;
 import java.util.List;
@@ -50,9 +51,9 @@ public class ZookeeperDomainService {
         zookeeperMap.get(host).sync();
     }
 
-    public void set(String host, String path, String data) throws Exception {
+    public Stat set(String host, String path, String data) throws Exception {
         assertZookeeperExists(host);
-        zookeeperMap.get(host).set(path, data);
+        return zookeeperMap.get(host).set(path, data);
     }
 
     public void delete(String host, String path) throws Exception {

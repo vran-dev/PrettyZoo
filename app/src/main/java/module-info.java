@@ -16,4 +16,5 @@ open module app.main {
     requires org.fxmisc.richtext;
     requires flowless;
     requires org.antlr.antlr4.runtime;
+    requires zookeeper;
 }

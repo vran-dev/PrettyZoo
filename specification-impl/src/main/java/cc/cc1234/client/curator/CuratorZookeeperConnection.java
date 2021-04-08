@@ -8,6 +8,7 @@ import org.apache.curator.framework.api.CreateBuilder;
 import org.apache.curator.framework.api.DeleteBuilder;
 import org.apache.curator.framework.recipes.cache.TreeCache;
 import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,8 +55,8 @@ public class CuratorZookeeperConnection implements ZookeeperConnection<CuratorFr
     }
 
     @Override
-    public void setData(String path, String data) throws Exception {
-        getClient().setData().forPath(path, data.getBytes());
+    public Stat setData(String path, String data) throws Exception {
+        return getClient().setData().forPath(path, data.getBytes());
     }
 
     @Override

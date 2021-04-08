@@ -24,6 +24,7 @@ import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,11 +112,13 @@ public class PrettyZooFacade {
         return treeItemCache.hasNode(ActiveServerContext.get(), nodeAbsolutePath);
     }
 
-    public void updateData(String host,
+    public Stat updateData(String host,
                            String nodePath,
                            String data,
                            Consumer<Throwable> errorCallback) {
-        Try.of(() -> zookeeperDomainService.set(host, nodePath, data)).onFailure(errorCallback::accept);
+        return Try.of(() -> zookeeperDomainService.set(host, nodePath, data))
+                .onFailure(errorCallback::accept)
+                .get();
     }
 
     public boolean hasServerConfiguration(String host) {

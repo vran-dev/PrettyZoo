@@ -5,6 +5,7 @@ import cc.cc1234.specification.listener.ServerListener;
 import cc.cc1234.specification.listener.ZookeeperNodeListener;
 import cc.cc1234.specification.node.NodeMode;
 import lombok.Getter;
+import org.apache.zookeeper.data.Stat;
 
 import java.util.List;
 import java.util.Objects;
@@ -53,8 +54,8 @@ public class Zookeeper {
         connection.sync(nodeListeners);
     }
 
-    public void set(String path, String data) throws Exception {
-        connection.setData(path, data);
+    public Stat set(String path, String data) throws Exception {
+        return connection.setData(path, data);
     }
 
     public void delete(String path) throws Exception {
