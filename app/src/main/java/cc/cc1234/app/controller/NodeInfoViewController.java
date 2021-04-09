@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import org.apache.zookeeper.data.Stat;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 
 import java.io.UnsupportedEncodingException;
@@ -191,10 +192,32 @@ public class NodeInfoViewController {
         }
         final String data = dataCodeArea.getText();
         Transitions.rotate(nodeUpdateButton, () -> {
-            prettyZooFacade.updateData(ActiveServerContext.get(), path, data, ex -> VToast.error(ex.getMessage()));
+            Stat stat = prettyZooFacade.updateData(ActiveServerContext.get(), path, data, ex -> VToast.error(ex.getMessage()));
             dataCodeArea.getProperties().put("raw", data);
+            dataCodeArea.getProperties().put("rawBytes", data.getBytes());
+            updateField(stat);
             VToast.info("update success");
         });
+    }
+
+    /**
+     * TODO use data bind to instead of manual bind
+     */
+    private void updateField(Stat node) {
+        ephemeralOwnerField.setText(String.valueOf(node.getEphemeralOwner()));
+        cZxidField.setText(String.valueOf(node.getCzxid()));
+        pZxidField.setText(String.valueOf(node.getPzxid()));
+        mZxidField.setText(String.valueOf(node.getMzxid()));
+        dataLengthField.setText(String.valueOf(node.getDataLength()));
+        numChildrenField.setText(String.valueOf(node.getNumChildren()));
+        dataVersionField.setText(String.valueOf(node.getVersion()));
+        aclVersionField.setText(String.valueOf(node.getAversion()));
+        cVersionField.setText(String.valueOf(node.getCversion()));
+        mtimeField.getProperties().put("timestamp", node.getMtime());
+        mtimeField.getProperties().put("dateTime", format(node.getMtime()));
+        ctimeField.getProperties().put("timestamp", node.getCtime());
+        ctimeField.getProperties().put("dateTime", format(node.getCtime()));
+        showDateTime();
     }
 
     private void initTextField(ZkNode node) {
