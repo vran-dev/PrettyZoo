@@ -11,6 +11,7 @@ import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.app.vo.ServerStatus;
 import cc.cc1234.specification.listener.ServerListener;
 import com.google.common.base.Strings;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -24,8 +25,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,10 +57,10 @@ public class ServerViewController {
     private TextArea aclTextArea;
 
     @FXML
-    private TextField zkServer;
+    private JFXTextField zkServer;
 
     @FXML
-    private TextField zkAlias;
+    private JFXTextField zkAlias;
 
     @FXML
     private TextField sshServer;
@@ -217,7 +216,7 @@ public class ServerViewController {
             });
         });
 
-        zkServer.setFont(Font.font("", FontWeight.BOLD, 14));
+//        zkServer.setFont(Font.font("", FontWeight.BOLD, 14));
         aclTextArea.setPromptText("ACL:\r" +
                 "digest:test:test\r" +
                 "auth:test:test\r" +
