@@ -25,7 +25,9 @@ def runArgsValue =  [
         "--add-exports=javafx.controls/com.sun.javafx.scene.control.inputmap=com.jfoenix",
         "--add-exports=javafx.graphics/com.sun.javafx.scene.traversal=com.jfoenix",
         "--add-exports=javafx.controls/com.sun.javafx.scene.control=com.jfoenix",
-        "--add-exports=javafx.graphics/com.sun.javafx.util=com.jfoenix"
+        "--add-exports=javafx.graphics/com.sun.javafx.util=com.jfoenix",
+        "--add-exports=javafx.graphics/com.sun.javafx.util=com.jfoenix",
+        "--add-opens=java.base/java.lang.reflect=com.jfoenix"
 ]
 
 run {
@@ -91,7 +93,7 @@ dependencies {
     compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.6'
     antlr "org.antlr:antlr4:4.9" // use ANTLR version 4
     compile group: 'org.antlr', name: 'antlr4-runtime', version: '4.9.2'
-    compile 'com.jfoenix:jfoenix:9.0.8'
+    compile 'com.jfoenix:jfoenix:9.0.10'
 }
 
 configJavafxRun {
