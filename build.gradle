@@ -23,14 +23,6 @@ subprojects {
     group 'cc.c1234'
     version '1.7.0'
 
-    idea {
-        module {
-            inheritOutputDirs = false
-            outputDir = compileJava.destinationDir
-            testOutputDir = compileTestJava.destinationDir
-        }
-    }
-
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
     }

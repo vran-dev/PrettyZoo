@@ -8,7 +8,7 @@ lombok {
 
 mainClassName = "app.main/cc.cc1234.PrettyZooApplication"
 compileJava {
-    inputs.property("moduleName", "domain.main")
+    inputs.property("moduleName", "core.main")
     doFirst {
         options.compilerArgs = [
                 '--module-path', classpath.asPath,

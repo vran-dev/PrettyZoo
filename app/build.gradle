@@ -1,6 +1,6 @@
 plugins {
     id 'org.openjfx.javafxplugin' version '0.0.9'
-    id 'org.beryx.jlink' version '2.22.3'
+    id 'org.beryx.jlink' version '2.23.6'
     id 'antlr'
     id 'idea'
 }
@@ -12,8 +12,24 @@ javafx {
 
 mainClassName = "app.main/cc.cc1234.PrettyZooApplication"
 
+def runArgsValue =  [
+        "-Djdk.gtk.version=2",
+        "-Dfile.encoding=utf-8",
+        "--add-exports=javafx.controls/com.sun.javafx.scene.control.behavior=com.jfoenix",
+        "--add-exports=javafx.base/com.sun.javafx.binding=com.jfoenix",
+        "--add-exports=javafx.base/com.sun.javafx.event=com.jfoenix",
+        "--add-exports=javafx.graphics/com.sun.javafx.stage=com.jfoenix",
+        "--add-exports=javafx.graphics/com.sun.javafx.scene=com.jfoenix",
+        "--add-exports=javafx.graphics/com.sun.javafx.geom=com.jfoenix",
+        "--add-exports=javafx.graphics/com.sun.javafx.scene.text=com.jfoenix",
+        "--add-exports=javafx.controls/com.sun.javafx.scene.control.inputmap=com.jfoenix",
+        "--add-exports=javafx.graphics/com.sun.javafx.scene.traversal=com.jfoenix",
+        "--add-exports=javafx.controls/com.sun.javafx.scene.control=com.jfoenix",
+        "--add-exports=javafx.graphics/com.sun.javafx.util=com.jfoenix"
+]
+
 run {
-    jvmArgs = ['-Djdk.gtk.version=2']
+    jvmArgs = runArgsValue
     // required due to a bug in Java: https://github.com/javafxports/openjdk-jfx/issues/175
 }
 
@@ -23,7 +39,7 @@ jlink {
     forceMerge("jackson", "log4j-api")
     launcher {
         name = 'prettyZoo'
-        jvmArgs = ['-Djdk.gtk.version=2', '-Dfile.encoding=utf-8']
+        jvmArgs = runArgsValue
     }
     jpackage {
         def os = org.gradle.internal.os.OperatingSystem.current()
@@ -113,25 +129,10 @@ compileJava {
     dependsOn updateVersion
 }
 
-
 sourceSets {
-    orgtest {
-        java.srcDir file('src/test/java')
-        resources.srcDir file('src/test/resources')
-        compileClasspath += sourceSets.test.compileClasspath
-        runtimeClasspath += sourceSets.test.runtimeClasspath
-        annotationProcessorPath += sourceSets.test.annotationProcessorPath
-    }
     main {
-        java.srcDir 'gen/main/java'
-        resources.srcDir file('gen/main/resources')
-    }
-    orgmain {
-        java.srcDir file('src/main/java')
-        resources.srcDir file('src/main/resources')
-        compileClasspath += sourceSets.main.compileClasspath
-        runtimeClasspath += sourceSets.main.runtimeClasspath
-        annotationProcessorPath += sourceSets.main.annotationProcessorPath
+        java.srcDirs +='gen/main/java'
+        resources.srcDirs += 'gen/main/resources'
     }
 }
 
