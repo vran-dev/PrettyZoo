@@ -151,7 +151,7 @@ public class NodeViewController {
             VToast.error("select node first");
         } else {
             final String path = selectedItem.getValue().getPath();
-            Dialog.confirm("删除节点", "该操作将删除 " + path + " 该节点及其对应的子节点，操作不可恢复，请谨慎执行", () -> {
+            Dialog.confirm("Delete Node Confirm", "Delete " + path + " and include children", () -> {
                 Try.of(() -> prettyZooFacade.deleteNode(ActiveServerContext.get(), path))
                         .onFailure(exception -> VToast.error("delete failed:" + exception.getMessage()))
                         .onSuccess(t -> VToast.info("delete success"));

@@ -15,6 +15,7 @@ import cc.cc1234.app.vo.ConfigurationVO;
 import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.version.Version;
 import cc.cc1234.version.VersionChecker;
+import com.jfoenix.controls.JFXListView;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -42,7 +43,7 @@ public class MainViewController {
     private StackPane mainRightPane;
 
     @FXML
-    private ListView<ServerConfigurationVO> serverListView;
+    private JFXListView<ServerConfigurationVO> serverListView;
 
     @FXML
     private HBox serverButtons;
