@@ -146,7 +146,7 @@
 }
 
 .tree-view:focused .tree-cell:selected {
-    -fx-background-color: #2C6DD2;
+    -fx-background-color: #6093e7;
     -fx-text-fill: #FFF;
     -fx-border-width: 0 0 0 0;
 }
@@ -609,4 +609,9 @@
 
 .property-value {
     -fx-fill: #25852e;
+}
+
+.jfx-check-box {
+    -jfx-checked-color: #2C6DD2;
+    -jfx-unchecked-color: #a0a0a0;
 }

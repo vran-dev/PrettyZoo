@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
+<?import com.jfoenix.controls.JFXTreeView?>
 <TabPane fx:id="nodeViewPane" prefHeight="540.0" prefWidth="815.0" stylesheets="@../assets/style.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.NodeViewController">
    <tabs>
       <Tab fx:id="homeTab" text="Home">
@@ -38,7 +39,7 @@
                                     <Insets left="10.0" right="10.0" />
                                  </padding>
                               </HBox>
-                              <TreeView fx:id="zkNodeTreeView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0" />
+                              <JFXTreeView fx:id="zkNodeTreeView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0" />
                               <ListView fx:id="searchResultList" maxHeight="1.7976931348623157E308" minHeight="300.0" prefHeight="0.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0" />
                            </children>
                         </AnchorPane>

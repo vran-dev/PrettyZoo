@@ -2,19 +2,19 @@ package cc.cc1234.app.view.cell;
 
 import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.app.vo.ServerStatus;
+import com.jfoenix.controls.JFXListCell;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 import java.util.Collection;
 
-public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
+public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
 
     @Override
     protected void updateItem(ServerConfigurationVO item, boolean empty) {

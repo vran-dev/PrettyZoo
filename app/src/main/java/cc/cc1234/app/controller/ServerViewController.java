@@ -11,10 +11,14 @@ import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.app.vo.ServerStatus;
 import cc.cc1234.specification.listener.ServerListener;
 import com.google.common.base.Strings;
+import com.jfoenix.controls.JFXToggleButton;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -39,7 +43,7 @@ public class ServerViewController {
     private AnchorPane serverInfoPane;
 
     @FXML
-    private CheckBox sshTunnelCheckbox;
+    private JFXToggleButton sshTunnelCheckbox;
 
     @FXML
     private AnchorPane sshTunnelPane;

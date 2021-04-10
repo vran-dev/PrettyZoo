@@ -8,6 +8,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <AnchorPane fx:id="nodeAddPane" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #FFF;" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.NodeAddViewController">
    <children>
       <TextField fx:id="nodeNameTextField" layoutX="180.0" layoutY="63.0" prefHeight="27.0" prefWidth="251.0" promptText="input node name here" styleClass="v-line-textField" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="60.0">
@@ -15,11 +17,11 @@
             <Font size="17.0" />
          </font>
       </TextField>
-      <CheckBox fx:id="isNodeSeq" layoutX="180.0" layoutY="109.0" mnemonicParsing="false" styleClass="v-checkbox" text="Sequence" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="110.0" />
-      <CheckBox fx:id="isNodeEph" layoutX="345.0" layoutY="109.0" mnemonicParsing="false" styleClass="v-checkbox" text="Ephemeral" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="110.0" />
-      <Button fx:id="confirmButton" contentDisplay="CENTER" layoutX="174.0" layoutY="367.0" mnemonicParsing="false" styleClass="v-button" text="Add" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="150.0" />
+      <JFXCheckBox fx:id="isNodeSeq" layoutX="180.0" layoutY="109.0" mnemonicParsing="false" text="Sequence" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="110.0" />
+      <JFXCheckBox fx:id="isNodeEph" layoutX="345.0" layoutY="109.0" mnemonicParsing="false" text="Ephemeral" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="110.0" />
+      <JFXButton fx:id="confirmButton" contentDisplay="CENTER" layoutX="174.0" layoutY="367.0" mnemonicParsing="false" styleClass="v-button" text="Add" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="150.0" />
       <Label layoutX="171.0" layoutY="24.0" style="-fx-font-weight: bold;" text="Path" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="25.0" />
-      <Button fx:id="cancelButton" layoutX="219.0" layoutY="367.0" mnemonicParsing="false" styleClass="v-button" text="Cancel" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="70.0" />
+      <JFXButton fx:id="cancelButton" layoutX="219.0" layoutY="367.0" mnemonicParsing="false" styleClass="v-button" text="Cancel" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="70.0" />
       <TextField fx:id="currentPathField" editable="false" style="-fx-background-color: transparent;" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="25.0" />
    </children>
 </AnchorPane>

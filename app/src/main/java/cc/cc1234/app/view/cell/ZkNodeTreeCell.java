@@ -1,12 +1,12 @@
 package cc.cc1234.app.view.cell;
 
 import cc.cc1234.specification.node.ZkNode;
-import javafx.scene.control.TreeCell;
+import com.jfoenix.controls.JFXTreeCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class ZkNodeTreeCell extends TreeCell<ZkNode> {
+public class ZkNodeTreeCell extends JFXTreeCell<ZkNode> {
 
     @Override
     protected void updateItem(ZkNode item, boolean empty) {
