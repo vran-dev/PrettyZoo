@@ -1,7 +1,7 @@
 mainClassName = "app.main/cc.cc1234.PrettyZooApplication"
 
 compileJava {
-    inputs.property("moduleName", "infrastructure.main")
+    inputs.property("moduleName", "specification-impl.main")
     doFirst {
         options.compilerArgs = [
                 '--module-path', classpath.asPath,
