@@ -42,16 +42,6 @@
     -fx-content-display: center;
 }
 
-/* ====================== Button/ ======================*/
-
-.line-textField {
-    -fx-border-color: transparent transparent #2C6DD2 transparent;
-    -fx-min-width: 30px;
-    -fx-border-width: 2px;
-    -fx-background-color: transparent;
-    -fx-padding: 1;
-    -fx-text-fill: #000;
-}
 
 /* ====================== background color ======================*/
 
@@ -614,4 +604,16 @@
 .jfx-check-box {
     -jfx-checked-color: #2C6DD2;
     -jfx-unchecked-color: #a0a0a0;
+}
+
+.jfx-snackbar-content {
+    -fx-background-color: #212121;
+}
+
+.jfx-snackbar-toast {
+    -fx-text-fill: WHITE;
+}
+
+.jfx-snackbar-action {
+    -fx-text-fill: #ff4081;
 }
