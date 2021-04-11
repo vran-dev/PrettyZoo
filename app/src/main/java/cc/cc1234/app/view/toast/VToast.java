@@ -1,13 +1,13 @@
 package cc.cc1234.app.view.toast;
 
 import cc.cc1234.app.context.RootPaneContext;
-import cc.cc1234.app.view.transitions.Transitions;
+import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXSnackbar;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -15,29 +15,28 @@ import javafx.scene.text.TextAlignment;
 
 public class VToast {
 
+    private static final JFXSnackbar bar = new JFXSnackbar();
+
     public static void error(String message) {
-        error(RootPaneContext.get(), message);
-    }
-
-    public static void error(StackPane pane, String message) {
-        notification(pane, message, ToastType.ERROR);
-
+        notification(message, ToastType.ERROR);
     }
 
     public static void info(String message) {
-        info(RootPaneContext.get(), message);
+        notification(message, ToastType.INFO);
     }
 
-    public static void info(StackPane pane, String message) {
-        notification(pane, message, ToastType.INFO);
-    }
-
-    private static void notification(StackPane pane, String message, ToastType type) {
+    private static void notification(String message, ToastType type) {
         final Region notification = createNotification(message, type);
-        pane.getChildren().add(notification);
-        Transitions.fade(notification, 1000, 3000, fadeEvent -> {
-            pane.getChildren().remove(notification);
-        });
+        if (bar.getPopupContainer() == null) {
+            bar.registerSnackbarContainer(RootPaneContext.get());
+        }
+        bar.enqueue(new JFXSnackbar.SnackbarEvent(notification));
+    }
+
+    private static void notification2(String message, ToastType type) {
+        final Region notification = createNotification(message, type);
+        JFXPopup popup = new JFXPopup(notification);
+        popup.show(RootPaneContext.get(), JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, -6, 10);
     }
 
     private static Region createNotification(String message, ToastType type) {
@@ -57,10 +56,7 @@ public class VToast {
         text.setFill(Color.WHITE);
 
         HBox hBox = new HBox(2, label, text);
-        hBox.setStyle("-fx-background-radius: 3; " +
-                "-fx-background-color: " + type.getColor() + ";" +
-                "-fx-opacity: 0.7");
-        hBox.setPrefHeight(20);
+        hBox.setPrefHeight(50);
         hBox.setMinHeight(20);
         hBox.setMaxHeight(60);
         hBox.setPadding(new Insets(3, 3, 3, 6));
@@ -102,4 +98,5 @@ public class VToast {
 
         abstract String getColor();
     }
+
 }

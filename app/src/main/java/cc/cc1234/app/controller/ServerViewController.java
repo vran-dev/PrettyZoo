@@ -25,6 +25,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -216,7 +218,7 @@ public class ServerViewController {
             });
         });
 
-//        zkServer.setFont(Font.font("", FontWeight.BOLD, 14));
+        zkServer.setFont(Font.font("", FontWeight.BOLD, 14));
         aclTextArea.setPromptText("ACL:\r" +
                 "digest:test:test\r" +
                 "auth:test:test\r" +
