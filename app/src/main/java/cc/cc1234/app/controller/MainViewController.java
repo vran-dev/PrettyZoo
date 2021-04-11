@@ -162,13 +162,13 @@ public class MainViewController {
 
     public void showNewVersionLabel() {
         VersionChecker.hasNewVersion((latestVersion, features) -> {
-            String title = "发现新版本";
+            String title = "New version";
             final String content = new StringBuilder()
-                    .append("最新版本: ").append(latestVersion).append("\r\n")
-                    .append("当前版本: v").append(Version.VERSION).append("\r\n")
-                    .append("新特性: \r\n").append(features)
+                    .append("current: ").append(latestVersion).append("\r\n")
+                    .append("release: v").append(Version.VERSION).append("\r\n")
+                    .append("features: \r\n").append(features)
                     .toString();
-            newVersionLabel.setTooltip(new Tooltip("最新版 " + latestVersion + "已发布"));
+            newVersionLabel.setTooltip(new Tooltip("New version " + latestVersion + " released"));
             newVersionLabel.setVisible(true);
             Dialog.confirm(title, content, HostServiceContext::jumpToReleases);
         });
