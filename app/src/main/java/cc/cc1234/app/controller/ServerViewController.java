@@ -144,16 +144,12 @@ public class ServerViewController {
     }
 
     private void switchIfNecessary(StackPane stackPane) {
-        if (stackPane.getChildren().contains(serverInfoPane)) {
-            Transitions.zoomInY(serverInfoPane).playFromStart();
-        } else {
+        if (!stackPane.getChildren().contains(serverInfoPane)) {
             if (currentNodeViewController == null) {
                 stackPane.getChildren().add(serverInfoPane);
-                Transitions.zoomInY(serverInfoPane).playFromStart();
             } else {
                 currentNodeViewController.hideAndThen(() -> {
                     stackPane.getChildren().add(serverInfoPane);
-                    Transitions.zoomInY(serverInfoPane).playFromStart();
                 });
             }
         }
@@ -198,12 +194,10 @@ public class ServerViewController {
     public void onClose() {
         final StackPane parent = (StackPane) serverInfoPane.getParent();
         if (parent != null) {
-            Transitions.zoomOut(serverInfoPane, e -> {
-                parent.getChildren().remove(serverInfoPane);
-                if (closeHook != null) {
-                    closeHook.run();
-                }
-            }).playFromStart();
+            parent.getChildren().remove(serverInfoPane);
+            if (closeHook != null) {
+                closeHook.run();
+            }
         }
     }
 
@@ -311,6 +305,7 @@ public class ServerViewController {
         if (prettyZooFacade.getServerConfigurations().isEmpty()) {
             onClose();
         }
+        VToast.info("Delete success");
     }
 
     private void onConnect(StackPane parent, ServerConfigurationVO serverConfigurationVO) {
@@ -320,9 +315,6 @@ public class ServerViewController {
         Try.of(() -> {
             Asserts.notNull(serverConfigurationVO, "save config first");
             Asserts.assertTrue(prettyZooFacade.hasServerConfiguration(serverConfigurationVO.getZkServer()), "save config first");
-            if (currentNodeViewController != null) {
-                currentNodeViewController.hide();
-            }
         }).onSuccess(o -> {
             serverConfigurationVO.setStatus(ServerStatus.CONNECTING);
             buttonHBox.setDisable(true);
@@ -341,6 +333,9 @@ public class ServerViewController {
                 }
             })).thenAccept(v -> Platform.runLater(() -> {
                 nodeViewController.show(parent, serverConfigurationVO.getZkServer());
+                if (currentNodeViewController != null) {
+                    currentNodeViewController.hideIfNotActive();
+                }
                 currentNodeViewController = nodeViewController;
                 parent.getChildren().remove(serverInfoPane);
                 serverConfigurationVO.setStatus(ServerStatus.CONNECTED);

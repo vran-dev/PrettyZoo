@@ -6,13 +6,10 @@ import cc.cc1234.app.highlights.properties.PropertiesHighlights;
 import cc.cc1234.app.highlights.xml.XmlHighlights;
 import org.fxmisc.richtext.model.StyleSpans;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.Collection;
 import java.util.Collections;
 
 public class Highlights {
-
-    private static final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 
     public static StyleSpans<Collection<String>> computeHighlighting(String text) {
         if (text == null || text.isBlank()) {

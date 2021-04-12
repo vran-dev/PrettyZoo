@@ -33,12 +33,6 @@ public class VToast {
         bar.enqueue(new JFXSnackbar.SnackbarEvent(notification));
     }
 
-    private static void notification2(String message, ToastType type) {
-        final Region notification = createNotification(message, type);
-        JFXPopup popup = new JFXPopup(notification);
-        popup.show(RootPaneContext.get(), JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, -6, 10);
-    }
-
     private static Region createNotification(String message, ToastType type) {
         Label label = new Label();
         label.setStyle("-fx-background-image: url('" + type.getIcon() + "');" +
