@@ -5,6 +5,9 @@ import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.listener.DefaultTreeNodeListener;
 import cc.cc1234.app.util.Asserts;
 import cc.cc1234.app.util.FXMLs;
+import cc.cc1234.app.validator.NotNullValidator;
+import cc.cc1234.app.validator.StringNotEmptyValidator;
+import cc.cc1234.app.validator.ZkServerIdentityValidator;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.app.vo.ServerConfigurationVO;
@@ -13,13 +16,13 @@ import cc.cc1234.specification.listener.ServerListener;
 import com.google.common.base.Strings;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
+import com.jfoenix.validation.RegexValidator;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -35,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ServerViewController {
 
@@ -65,16 +69,16 @@ public class ServerViewController {
     private JFXTextField zkAlias;
 
     @FXML
-    private TextField sshServer;
+    private JFXTextField sshServer;
 
     @FXML
-    private TextField sshUsername;
+    private JFXTextField sshUsername;
 
     @FXML
-    private TextField sshPassword;
+    private JFXTextField sshPassword;
 
     @FXML
-    private TextField remoteServer;
+    private JFXTextField remoteServer;
 
     @FXML
     private Button closeButton;
@@ -104,6 +108,7 @@ public class ServerViewController {
     }
 
     public void show(StackPane stackPane, ServerConfigurationVO config) {
+        resetValidate();
         if (config == null) {
             showNewServerView(stackPane);
         } else if (config.isConnected()) {
@@ -223,6 +228,34 @@ public class ServerViewController {
                 "digest:test:test\r" +
                 "auth:test:test\r" +
                 "\n");
+        initValidator();
+    }
+
+    private void initValidator() {
+        var serverMatchPattern = new RegexValidator("must match pattern: [host:port]");
+        serverMatchPattern.setRegexPattern(".*\\:\\d+$");
+        var identityValidator = new ZkServerIdentityValidator();
+        zkServer.setValidators(serverMatchPattern, identityValidator);
+        zkAlias.setValidators(new StringNotEmptyValidator());
+
+        var remoteServerMatchPattern = new RegexValidator("should be [host:port]");
+        remoteServerMatchPattern.setRegexPattern(".*\\:\\d+$");
+        remoteServer.setValidators(remoteServerMatchPattern);
+        sshUsername.setValidators(new NotNullValidator());
+        sshPassword.setValidators(new NotNullValidator());
+
+        var sshServerMatchPattern = new RegexValidator("should be [host:port]");
+        sshServerMatchPattern.setRegexPattern(".*\\:\\d+$");
+        sshServer.setValidators(sshServerMatchPattern);
+    }
+
+    private void resetValidate() {
+        zkServer.resetValidation();
+        zkAlias.resetValidation();
+        remoteServer.resetValidation();
+        sshUsername.resetValidation();
+        sshPassword.resetValidation();
+        sshServer.resetValidation();
     }
 
     private void sshTunnelViewPropertyBind() {
@@ -235,21 +268,23 @@ public class ServerViewController {
     }
 
     private void onSave() {
-        Try.of(() -> {
-            Asserts.matchHost(zkServer.textProperty().get(), "server must match pattern: [host:port]");
-            Asserts.validAcl(aclTextArea.textProperty().get(), "ACL syntax not support");
-            if (zkServer.isEditable()) {
-                if (prettyZooFacade.hasServerConfiguration(zkServer.getText())) {
-                    throw new IllegalStateException(zkServer.getText() + " already exists");
-                }
-            }
-            if (sshTunnelCheckbox.isSelected()) {
-                Asserts.matchHost(remoteServer.textProperty().get(), "remoteServer must match pattern: [host:port]");
-                Asserts.notNull(sshUsername.textProperty().get(), "sshUsername cannot be null");
-                Asserts.notNull(sshPassword.textProperty().get(), "sshPassword cannot be null");
-                Asserts.matchHost(sshServer.textProperty().get(), "sshServer must match pattern: [host:port]");
-            }
-        }).onSuccess(obj -> {
+        resetValidate();
+
+        boolean passed;
+        if (sshTunnelCheckbox.isSelected()) {
+            passed = Stream.of(
+                    zkServer.validate(),
+                    zkAlias.validate(),
+                    remoteServer.validate(),
+                    sshUsername.validate(),
+                    sshPassword.validate(),
+                    sshServer.validate()
+            ).allMatch(t -> t);
+        } else {
+            passed = Stream.of(zkServer.validate(), zkAlias.validate()).allMatch(t -> t);
+        }
+
+        if (passed) {
             var serverConfigVO = new ServerConfigurationVO();
             serverConfigVO.setZkServer(zkServer.textProperty().get());
             serverConfigVO.setRemoteServer(remoteServer.textProperty().get());
@@ -257,9 +292,7 @@ public class ServerViewController {
             serverConfigVO.setSshPassword(sshPassword.textProperty().get());
             serverConfigVO.setSshServer(sshServer.textProperty().get());
             serverConfigVO.setZkAlias(zkAlias.textProperty().get());
-            if (sshTunnelCheckbox.isSelected()) {
-                serverConfigVO.setSshEnabled(true);
-            }
+            serverConfigVO.setSshEnabled(sshTunnelCheckbox.isSelected());
             List<String> acls = Arrays.stream(aclTextArea.textProperty().get().split("\n"))
                     .filter(acl -> !Strings.isNullOrEmpty(acl))
                     .collect(Collectors.toList());
@@ -269,7 +302,7 @@ public class ServerViewController {
                 onClose();
             }
             VToast.info("save success");
-        }).onFailure(ex -> VToast.error(ex.getMessage()));
+        }
     }
 
     private void onDelete() {
