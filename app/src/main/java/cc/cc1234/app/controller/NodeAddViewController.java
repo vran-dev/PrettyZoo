@@ -9,6 +9,8 @@ import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.specification.node.NodeMode;
 import cc.cc1234.specification.node.ZkNode;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -20,7 +22,7 @@ import org.fxmisc.flowless.VirtualizedScrollPane;
 public class NodeAddViewController {
 
     @FXML
-    private TextField nodeNameTextField;
+    private JFXTextField nodeNameTextField;
 
     @FXML
     private CheckBox isNodeSeq;
@@ -50,11 +52,13 @@ public class NodeAddViewController {
         confirmButton.setOnMouseClicked(e -> onSave());
 
         var pane = new VirtualizedScrollPane<>(dataCodeArea);
-        AnchorPane.setTopAnchor(pane, 155d);
+        AnchorPane.setTopAnchor(pane, 175d);
         AnchorPane.setLeftAnchor(pane, 70d);
         AnchorPane.setRightAnchor(pane, 70d);
         AnchorPane.setBottomAnchor(pane, 55d);
         nodeAddPane.getChildren().add(pane);
+
+        nodeNameTextField.setValidators(new RequiredFieldValidator("Required and must be Empty"));
     }
 
     public void show(StackPane parent) {
@@ -62,6 +66,7 @@ public class NodeAddViewController {
     }
 
     public void show(StackPane parent, ZkNode zkNode) {
+        nodeNameTextField.resetValidation();
         if (!parent.getChildren().contains(nodeAddPane)) {
             parent.getChildren().add(nodeAddPane);
             Transitions.zoomInY(nodeAddPane).playFromStart();
@@ -80,16 +85,18 @@ public class NodeAddViewController {
     }
 
     public void onSave() {
-        String server = ActiveServerContext.get();
-        final NodeMode mode = createMode();
-        String path = PathConcat.concat(currentPathField.getText(), nodeNameTextField.getText());
-        String data = dataCodeArea.getText();
-        Try.of(() -> prettyZooFacade.createNode(server, path, data, mode))
-                .onSuccess(r -> {
-                    hide();
-                    VToast.info("success");
-                })
-                .onFailure(e -> VToast.error(e.getMessage()));
+        if (nodeNameTextField.validate()) {
+            String server = ActiveServerContext.get();
+            final NodeMode mode = createMode();
+            String path = PathConcat.concat(currentPathField.getText(), nodeNameTextField.getText());
+            String data = dataCodeArea.getText();
+            Try.of(() -> prettyZooFacade.createNode(server, path, data, mode))
+                    .onSuccess(r -> {
+                        hide();
+                        VToast.info("success");
+                    })
+                    .onFailure(e -> VToast.error(e.getMessage()));
+        }
     }
 
     private NodeMode createMode() {

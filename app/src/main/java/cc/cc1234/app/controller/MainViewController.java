@@ -75,7 +75,10 @@ public class MainViewController {
         initServerListView();
         RootPaneContext.set(rootStackPane);
         mainRightPane.setPadding(new Insets(30, 30, 30, 30));
-        serverAddButton.setOnMouseClicked(event -> serverViewController.show(mainRightPane));
+        serverAddButton.setOnMouseClicked(event -> {
+            serverListView.getSelectionModel().clearSelection();
+            serverViewController.show(mainRightPane);
+        });
         exportMenuItem.setOnAction(e -> onExportAction());
         importMenuItem.setOnAction(e -> onImportAction());
         newVersionLabel.setOnMouseClicked(e -> HostServiceContext.jumpToReleases());
