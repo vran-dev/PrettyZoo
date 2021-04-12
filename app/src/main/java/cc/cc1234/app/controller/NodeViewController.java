@@ -8,7 +8,6 @@ import cc.cc1234.app.util.FXMLs;
 import cc.cc1234.app.view.cell.ZkNodeTreeCell;
 import cc.cc1234.app.view.dialog.Dialog;
 import cc.cc1234.app.view.toast.VToast;
-import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.app.vo.ZkNodeSearchResult;
 import cc.cc1234.specification.node.ZkNode;
 import cc.cc1234.specification.util.StringWriter;
@@ -81,6 +80,8 @@ public class NodeViewController {
 
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
+    private String server;
+
     private NodeInfoViewController nodeInfoViewController = FXMLs.getController("fxml/NodeInfoView.fxml");
 
     private NodeAddViewController nodeAddViewController = FXMLs.getController("fxml/NodeAddView.fxml");
@@ -115,14 +116,20 @@ public class NodeViewController {
 
         if (!parent.getChildren().contains(nodeViewPane)) {
             parent.getChildren().add(nodeViewPane);
-            Transitions.zoomInY(nodeViewPane).play();
         }
         terminalTab.setText(server);
+        this.server = server;
     }
 
     public void hide() {
         hideAndThen(() -> {
         });
+    }
+
+    public void hideIfNotActive() {
+        if (!ActiveServerContext.isSame(server)) {
+            hide();
+        }
     }
 
     public void hideAndThen(Runnable runnable) {
