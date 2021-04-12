@@ -33,6 +33,7 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 2. - [ ] command highlight
 3. - [x] global font size change (v1.6.0+)
 4. - [x] node data highlight (V1.7.0+)
+5. - [ ] migration UI library to  Jfoenix (In progress)
 
 
 
@@ -64,7 +65,7 @@ See wiki: [build yourself](https://github.com/vran-dev/PrettyZoo/wiki/build-your
 
 
 
-- server info
+- server info (Next version)
 
 ![](release/img/server.gif)
 
@@ -84,7 +85,7 @@ See wiki: [build yourself](https://github.com/vran-dev/PrettyZoo/wiki/build-your
 ![](release/img/time-format.gif)
 
 
-- node add
+- node add (Next version)
 
 ![](release/img/create-node.gif)
 
