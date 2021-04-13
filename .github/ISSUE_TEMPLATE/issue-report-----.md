@@ -1,6 +1,6 @@
 ---
-name: issue report
-about: 
+name: 'issue report'
+about: ''
 title: 'Title'
 labels: ''
 assignees: 'vran-dev'
