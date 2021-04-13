@@ -1,25 +1,31 @@
 ---
-name: issue report [中文]
-about: 应用问题反馈
-title: ''
+name: issue report
+about: 
+title: 'Title'
 labels: ''
-assignees: ''
+assignees: 'vran-dev'
 
 ---
 
-## PrettyZoo 版本
-version: v1.0.0
-type: msi / exe
+## ISSUE
 
-## 操作系统版本
-windows 10
+version: latest
 
-## 本地 JDK 版本
-无
+platform: 
 
-## 问题描述
-无
+- [ ] windows
+- [ ] mac
+- [ ] Linux
 
-## 日志信息
-```java
-```
+package type: platform default
+
+OS version: Windows10 / Ubuntu1804
+
+
+description:
+
+what happened ? your expected ?
+
+log:
+
+> you can find log in {user.home}/.prettyZoo/log
