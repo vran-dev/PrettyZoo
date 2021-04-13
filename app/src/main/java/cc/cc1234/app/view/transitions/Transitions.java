@@ -9,33 +9,6 @@ import javafx.util.Duration;
 
 public class Transitions {
 
-    public static ScaleTransition zoomInY(Node node) {
-        return zoom(node,
-                Duration.millis(300),
-                0.6,
-                1,
-                1,
-                1,
-                1,
-                false,
-                e -> {
-                }
-        );
-    }
-
-    public static ScaleTransition zoomOutY(Node node, EventHandler<ActionEvent> finishedEvent) {
-        return zoom(node,
-                Duration.millis(500),
-                1,
-                1,
-                0,
-                1,
-                1,
-                false,
-                finishedEvent
-        );
-    }
-
     public static ScaleTransition zoomIn(Node node) {
         return zoomIn(node, e -> {
         });

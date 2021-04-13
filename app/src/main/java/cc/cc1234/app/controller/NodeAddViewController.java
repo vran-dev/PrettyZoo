@@ -6,7 +6,6 @@ import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.util.PathConcat;
 import cc.cc1234.app.view.NodeDataArea;
 import cc.cc1234.app.view.toast.VToast;
-import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.specification.node.NodeMode;
 import cc.cc1234.specification.node.ZkNode;
 import com.jfoenix.controls.JFXTextField;
@@ -58,7 +57,7 @@ public class NodeAddViewController {
         AnchorPane.setBottomAnchor(pane, 55d);
         nodeAddPane.getChildren().add(pane);
 
-        nodeNameTextField.setValidators(new RequiredFieldValidator("Required and must be Empty"));
+        nodeNameTextField.setValidators(new RequiredFieldValidator("Required and must not be Empty"));
     }
 
     public void show(StackPane parent) {
@@ -69,19 +68,16 @@ public class NodeAddViewController {
         nodeNameTextField.resetValidation();
         if (!parent.getChildren().contains(nodeAddPane)) {
             parent.getChildren().add(nodeAddPane);
-            Transitions.zoomInY(nodeAddPane).playFromStart();
         }
         String parentPath = zkNode == null ? "/" : zkNode.getPath();
         currentPathField.setText(parentPath);
     }
 
     public void hide() {
-        Transitions.zoomOutY(nodeAddPane, event -> {
-            final StackPane parent = (StackPane) nodeAddPane.getParent();
-            if (parent != null && parent.getChildren().contains(nodeAddPane)) {
-                parent.getChildren().remove(nodeAddPane);
-            }
-        }).playFromStart();
+        final StackPane parent = (StackPane) nodeAddPane.getParent();
+        if (parent != null && parent.getChildren().contains(nodeAddPane)) {
+            parent.getChildren().remove(nodeAddPane);
+        }
     }
 
     public void onSave() {
