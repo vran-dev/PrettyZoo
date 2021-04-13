@@ -1,6 +1,6 @@
 ---
 name: 'issue report'
-about: ''
+about: 'prettyZoo issue report'
 title: 'Title'
 labels: ''
 assignees: 'vran-dev'
