@@ -40,6 +40,9 @@ mac 安装提示：已损坏，无法打开
 2. - [ ] 命令高亮支持
 3. - [x] 全局字体大小配置（v1.6.0+）
 4. - [x] 节点数据高亮（V1.7.0+）
+5. - [x] 迁移到 [Jfoenix](https://github.com/sshahine/JFoenix)  UI 库 (V1.8.0+)
+6. - [ ] Zookeeper 监控
+7. - [ ] 日志看板
 
 
 
@@ -78,8 +81,6 @@ mac 安装提示：已损坏，无法打开
 ![](release/img/server.gif)
 
 
-
-![](release/img/connect.gif)
 
 
 
