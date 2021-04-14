@@ -111,7 +111,7 @@ public class ServerViewController {
         resetValidate();
         if (config == null) {
             showNewServerView(stackPane);
-        } else if (config.isConnected()) {
+        } else if (config.getStatus() == ServerStatus.CONNECTED || config.getStatus() == ServerStatus.RECONNECTING) {
             showNodeListView(stackPane, config);
         } else {
             showServerInfoView(stackPane, config);
@@ -316,7 +316,9 @@ public class ServerViewController {
             Asserts.notNull(serverConfigurationVO, "save config first");
             Asserts.assertTrue(prettyZooFacade.hasServerConfiguration(serverConfigurationVO.getZkServer()), "save config first");
         }).onSuccess(o -> {
-            serverConfigurationVO.setStatus(ServerStatus.CONNECTING);
+            if (serverConfigurationVO.getStatus() == ServerStatus.DISCONNECTED) {
+                serverConfigurationVO.setStatus(ServerStatus.CONNECTING);
+            }
             buttonHBox.setDisable(true);
             NodeViewController nodeViewController = retrieveNodeViewController(serverConfigurationVO.getZkServer());
             prettyZooFacade.connect(serverConfigurationVO.getZkServer(), List.of(new DefaultTreeNodeListener()), List.of(new ServerListener() {
@@ -324,10 +326,32 @@ public class ServerViewController {
                 public void onClose(String serverHost) {
                     if (serverHost.equals(serverConfigurationVO.getZkServer())) {
                         Platform.runLater(() -> {
-                            serverConfigurationVO.setConnected(false);
+                            serverConfigurationVO.setStatus(ServerStatus.DISCONNECTED);
                             if (closeHook != null) {
                                 closeHook.run();
                             }
+                        });
+                    }
+                }
+
+                @Override
+                public void onReconnecting(String serverHost) {
+                    if (serverHost.equals(serverConfigurationVO.getZkServer())) {
+                        Platform.runLater(() -> {
+                            serverConfigurationVO.setStatus(ServerStatus.RECONNECTING);
+                            VToast.error(serverHost +" lost connection");
+                        });
+                    }
+                }
+
+                @Override
+                public void onConnected(String serverHost) {
+                    if (serverHost.equals(serverConfigurationVO.getZkServer())) {
+                        Platform.runLater(() -> {
+                            if (serverConfigurationVO.getStatus() == ServerStatus.RECONNECTING) {
+                                VToast.info("reconnect " + serverHost + " success");
+                            }
+                            serverConfigurationVO.setStatus(ServerStatus.CONNECTED);
                         });
                     }
                 }
@@ -338,8 +362,9 @@ public class ServerViewController {
                 }
                 currentNodeViewController = nodeViewController;
                 parent.getChildren().remove(serverInfoPane);
-                serverConfigurationVO.setStatus(ServerStatus.CONNECTED);
-                serverConfigurationVO.setConnected(true);
+                if (serverConfigurationVO.getStatus() == ServerStatus.CONNECTING) {
+                    serverConfigurationVO.setStatus(ServerStatus.CONNECTED);
+                }
                 buttonHBox.setDisable(false);
             })).exceptionally(e -> {
                 log.error("connect server error", e);

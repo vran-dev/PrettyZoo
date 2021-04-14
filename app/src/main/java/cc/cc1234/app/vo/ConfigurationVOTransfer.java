@@ -25,7 +25,6 @@ public class ConfigurationVOTransfer {
         final ServerConfigurationVO vo = new ServerConfigurationVO();
         vo.setZkServer(serverConfiguration.getHost());
         vo.getAclList().addAll(serverConfiguration.getAclList());
-        vo.setConnected(false);
         if (serverConfiguration.getSshTunnel() != null) {
             final SSHTunnelConfiguration sshTunnelConfig = serverConfiguration.getSshTunnel();
             if (sshTunnelConfig.getRemoteHost() == null) {
@@ -60,7 +59,6 @@ public class ConfigurationVOTransfer {
         final ServerConfigurationVO vo = new ServerConfigurationVO();
         vo.setZkServer(serverConfig.getHost());
         vo.getAclList().addAll(serverConfig.getAclList());
-        vo.setConnected(false);
         vo.setZkAlias(serverConfig.getAlias());
         serverConfig.getSshTunnelConfig().ifPresent(sshTunnelConfig -> {
             if (sshTunnelConfig.getRemoteHost() == null || sshTunnelConfig.getRemotePort() == null) {

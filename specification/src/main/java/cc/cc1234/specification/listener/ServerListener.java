@@ -9,4 +9,8 @@ public interface ServerListener {
     default void onClose(String serverHost) {
 
     }
+
+    default void onReconnecting(String serverHost) {
+
+    }
 }

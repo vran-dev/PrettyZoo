@@ -53,6 +53,10 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
                     case CONNECTED:
                         listener.forEach(l -> l.onConnected(params.getHost()));
                         break;
+                    case SUSPENDED:
+                    case LOST:
+                        listener.forEach(l -> l.onReconnecting(params.getHost()));
+                        break;
                     default:
                         client.close();
                 }

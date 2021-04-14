@@ -6,6 +6,11 @@ public enum ServerStatus {
 
     DISCONNECTED,
 
-    CONNECTING;
+    CONNECTING,
 
+    RECONNECTING;
+
+    public boolean isConnecting() {
+        return this == CONNECTING || this == RECONNECTING;
+    }
 }

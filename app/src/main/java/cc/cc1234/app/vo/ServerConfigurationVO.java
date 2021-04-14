@@ -17,8 +17,6 @@ public class ServerConfigurationVO {
 
     private SimpleObjectProperty<ServerStatus> status = new SimpleObjectProperty<>(ServerStatus.DISCONNECTED);
 
-    private SimpleBooleanProperty connected = new SimpleBooleanProperty(false);
-
     private SimpleBooleanProperty sshEnabled = new SimpleBooleanProperty(false);
 
     private SimpleStringProperty sshServer = new SimpleStringProperty("");
@@ -74,18 +72,6 @@ public class ServerConfigurationVO {
 
     public ObjectProperty<ObservableList<String>> aclListProperty() {
         return aclList;
-    }
-
-    public boolean isConnected() {
-        return connected.get();
-    }
-
-    public void setConnected(boolean connected) {
-        this.connected.set(connected);
-    }
-
-    public SimpleBooleanProperty connectedProperty() {
-        return connected;
     }
 
     public boolean isSshEnabled() {
