@@ -21,7 +21,7 @@ subprojects {
 
     sourceCompatibility = 11
     group 'cc.c1234'
-    version '1.7.0'
+    version '1.8.0'
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
