@@ -40,19 +40,17 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
             item.statusProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
                     onServerStatusChange(newValue, hBox, progressIndicator);
+                    onServerStatusChange(newValue, hBox, symbolImage);
                 }
             });
-            item.connectedProperty().addListener(((observable, oldValue, newValue) -> {
-                onServerStatusChange(newValue, hBox, symbolImage);
-            }));
             onServerStatusChange(item.getStatus(), hBox, progressIndicator);
-            onServerStatusChange(item.isConnected(), hBox, symbolImage);
+            onServerStatusChange(item.getStatus(), hBox, symbolImage);
             setGraphic(hBox);
         }
     }
 
     private StringBinding serverNameBinding(ServerConfigurationVO item) {
-        return Bindings.createStringBinding(() -> serverNameFormat(item), item.zkServerProperty(), item.zkAliasProperty(), item.connectedProperty());
+        return Bindings.createStringBinding(() -> serverNameFormat(item), item.zkServerProperty(), item.zkAliasProperty());
     }
 
     private String serverNameFormat(ServerConfigurationVO item) {
@@ -65,26 +63,32 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
         }
     }
 
+    private void onServerStatusChange(ServerStatus newValue, HBox hBox, ImageView child) {
+        Platform.runLater(() -> {
+            switch (newValue) {
+                case CONNECTING:
+                case RECONNECTING:
+                case DISCONNECTED:
+                    hBox.getChildren().remove(child);
+                    break;
+                case CONNECTED:
+                    hBox.getChildren().add(0, child);
+                    break;
+            }
+        });
+    }
+
     private void onServerStatusChange(ServerStatus newValue, HBox hBox, ProgressIndicator child) {
         Platform.runLater(() -> {
             switch (newValue) {
                 case CONNECTING:
+                case RECONNECTING:
                     addIfNecessary(hBox.getChildren(), child);
                     break;
                 case DISCONNECTED:
                 case CONNECTED:
                     removeIfNecessary(hBox.getChildren(), child);
                     break;
-            }
-        });
-    }
-
-    private void onServerStatusChange(Boolean newValue, HBox hBox, ImageView child) {
-        Platform.runLater(() -> {
-            if (newValue) {
-                hBox.getChildren().add(0, child);
-            } else {
-                hBox.getChildren().remove(child);
             }
         });
     }
