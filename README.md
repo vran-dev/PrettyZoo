@@ -29,11 +29,13 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 
 # TODO
 
-1. - [ ] Support i18n
-2. - [ ] command highlight
+1. - [ ] Support i18n 
+2. - [ ] terminal highlight
 3. - [x] global font size change (v1.6.0+)
 4. - [x] node data highlight (V1.7.0+)
-5. - [ ] migration UI library to  Jfoenix (In progress)
+5. - [x] migration UI library to   [Jfoenix](https://github.com/sshahine/JFoenix) ( V1.8.0+)
+6. - [ ] zookeeper monitor
+7. - [ ] log dashboard
 
 
 
@@ -48,6 +50,7 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 7. Support terminal operation
 8. Support **JSON** / **XML** data pretty format
 9. Support node data hightlight ( Json / Xml / Properties )
+10. Support reconnet zookeeper automatic
 
 
 
@@ -65,13 +68,11 @@ See wiki: [build yourself](https://github.com/vran-dev/PrettyZoo/wiki/build-your
 
 
 
-- server info (Next version)
+- server info 
 
 ![](release/img/server.gif)
 
 
-
-![](release/img/connect.gif)
 
 - node data highlight
 
@@ -85,7 +86,7 @@ See wiki: [build yourself](https://github.com/vran-dev/PrettyZoo/wiki/build-your
 ![](release/img/time-format.gif)
 
 
-- node add (Next version)
+- node add 
 
 ![](release/img/create-node.gif)
 
