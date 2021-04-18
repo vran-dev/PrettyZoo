@@ -1,5 +1,6 @@
 package cc.cc1234.app.controller;
 
+import cc.cc1234.PrettyZooApplication;
 import cc.cc1234.app.context.HostServiceContext;
 import cc.cc1234.app.context.PrimaryStageContext;
 import cc.cc1234.app.context.RootPaneContext;
@@ -26,8 +27,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.ResourceBundle;
 
 public class MainViewController {
 
@@ -126,6 +129,14 @@ public class MainViewController {
                 var item = (RadioMenuItem) newValue;
                 final ConfigData.Lang newLang = ConfigData.Lang.valueOf(item.getId());
                 prettyZooFacade.updateLocale(newLang);
+
+                ResourceBundle rb = ResourceBundle.getBundle("i18n", newLang.getLocale());
+                String title = rb.getString("lang.change.confirm.title");
+                String content = rb.getString("lang.change.confirm.content");
+                Dialog.confirm(title, content, () -> {
+                    PrimaryStageContext.get().close();
+                    Platform.runLater(() -> new PrettyZooApplication().start(new Stage()));
+                });
             }
         });
         fontMenuButton.getItems().add(new MenuItem("", sp));

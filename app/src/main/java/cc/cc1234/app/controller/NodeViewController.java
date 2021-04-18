@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class NodeViewController {
 
@@ -158,7 +159,11 @@ public class NodeViewController {
             VToast.error("select node first");
         } else {
             final String path = selectedItem.getValue().getPath();
-            Dialog.confirm("Delete Node Confirm", "Delete " + path + " and include children", () -> {
+
+            ResourceBundle rb = ResourceBundle.getBundle("i18n", prettyZooFacade.getLocale());
+            String title = rb.getString("nodeDelete.action.confirm.title");
+            String content = String.format(rb.getString("nodeDelete.action.confirm.content"), path);
+            Dialog.confirm(title, content, () -> {
                 Try.of(() -> prettyZooFacade.deleteNode(ActiveServerContext.get(), path))
                         .onFailure(exception -> VToast.error("delete failed:" + exception.getMessage()))
                         .onSuccess(t -> VToast.info("delete success"));
