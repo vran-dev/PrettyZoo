@@ -12,7 +12,7 @@ public class StringNotEmptyValidator extends ValidatorBase {
             String alias = textField.getText();
             if (alias != null && !alias.isEmpty() && alias.isBlank()) {
                 hasErrors.set(true);
-                setMessage("must be all blank");
+                setMessage("must not be all blank");
             } else {
                 hasErrors.set(false);
             }

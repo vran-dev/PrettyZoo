@@ -45,6 +45,7 @@ public class ConfigurationFactory {
         var fontConfiguration = getOrDefaultFontConfiguration(configData.getFontConfig());
         return Configuration.builder()
                 .fontConfiguration(fontConfiguration)
+                .localeConfiguration(new Configuration.LocaleConfiguration(configData.getLocalConfig().getLang().getLocale()))
                 .configurationChangeListeners(listeners)
                 .serverConfigurations(serverConfigurations)
                 .build();

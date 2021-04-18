@@ -7,10 +7,7 @@ import cc.cc1234.specification.config.model.ServerConfigData;
 import cc.cc1234.specification.listener.ConfigurationChangeListener;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Builder
@@ -22,6 +19,8 @@ public class Configuration {
     private List<ConfigurationChangeListener> configurationChangeListeners;
 
     private FontConfiguration fontConfiguration;
+
+    private LocaleConfiguration localeConfiguration;
 
     @Data
     @AllArgsConstructor
@@ -39,14 +38,23 @@ public class Configuration {
         }
     }
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class LocaleConfiguration {
+        private Locale locale;
+    }
+
     public Configuration(List<ServerConfiguration> serverConfigs,
                          List<ConfigurationChangeListener> listeners,
-                         FontConfiguration fontConfiguration) {
+                         FontConfiguration fontConfiguration,
+                         LocaleConfiguration localeConfiguration) {
         Objects.requireNonNull(listeners);
         Objects.requireNonNull(serverConfigs);
         this.serverConfigurations = serverConfigs;
         this.configurationChangeListeners = listeners;
         this.fontConfiguration = fontConfiguration;
+        this.localeConfiguration = localeConfiguration;
 
         final List<ServerConfigData> servers = this.serverConfigurations.stream()
                 .map(this::toServerConfig)
@@ -78,6 +86,11 @@ public class Configuration {
 
     public void updateFont(FontConfiguration fontConfiguration) {
         this.fontConfiguration = fontConfiguration;
+    }
+
+    public void updateLocale(LocaleConfiguration localeConfiguration) {
+        Objects.requireNonNull(localeConfiguration.getLocale());
+        this.localeConfiguration = localeConfiguration;
     }
 
     public Optional<ServerConfiguration> get(String host) {
@@ -125,8 +138,10 @@ public class Configuration {
                 .map(this::toServerConfig)
                 .collect(Collectors.toList());
         var fontConfig = new ConfigData.FontConfigData(this.getFontConfiguration().getSize());
+        var langConfig = new ConfigData.LocalConfigData(ConfigData.Lang.valueOf((this.localeConfiguration.getLocale())));
         configData.setServers(servers);
         configData.setFontConfig(fontConfig);
+        configData.setLocalConfig(langConfig);
         return configData;
     }
 

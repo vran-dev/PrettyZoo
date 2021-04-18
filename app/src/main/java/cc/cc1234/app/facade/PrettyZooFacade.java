@@ -14,6 +14,7 @@ import cc.cc1234.core.configuration.entity.ServerConfiguration;
 import cc.cc1234.core.configuration.service.ConfigurationDomainService;
 import cc.cc1234.core.configuration.value.SSHTunnelConfiguration;
 import cc.cc1234.core.zookeeper.service.ZookeeperDomainService;
+import cc.cc1234.specification.config.model.ConfigData;
 import cc.cc1234.specification.listener.ConfigurationChangeListener;
 import cc.cc1234.specification.listener.ServerListener;
 import cc.cc1234.specification.listener.ZookeeperNodeListener;
@@ -29,10 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -61,8 +59,8 @@ public class PrettyZooFacade {
     }
 
     public CompletableFuture<Void> connect(String host,
-                                     List<ZookeeperNodeListener> nodeListeners,
-                                     List<ServerListener> serverListeners) {
+                                           List<ZookeeperNodeListener> nodeListeners,
+                                           List<ServerListener> serverListeners) {
         return CompletableFuture.runAsync(() -> {
             var serverConfig = configurationDomainService.get(host).orElseThrow();
             zookeeperDomainService.connect(serverConfig, nodeListeners, serverListeners);
@@ -164,6 +162,14 @@ public class PrettyZooFacade {
 
     public void deleteServerConfiguration(String server) {
         configurationDomainService.deleteServerConfiguration(server);
+    }
+
+    public Locale getLocale() {
+        return configurationDomainService.getLocale();
+    }
+
+    public void updateLocale(ConfigData.Lang lang) {
+        configurationDomainService.save(new Configuration.LocaleConfiguration(lang.getLocale()));
     }
 
     public List<ServerConfigurationVO> loadServerConfigurations(ConfigurationChangeListener changeListener) {
