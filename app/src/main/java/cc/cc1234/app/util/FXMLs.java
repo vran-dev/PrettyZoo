@@ -1,15 +1,19 @@
 package cc.cc1234.app.util;
 
+import cc.cc1234.app.facade.PrettyZooFacade;
 import javafx.fxml.FXMLLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ResourceBundle;
 
 public class FXMLs {
 
     private static final Logger log = LoggerFactory.getLogger(FXMLs.class);
+
+    private static final PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
     public static URL loadFXML(String path) {
         return Thread.currentThread().getContextClassLoader().getResource(path);
@@ -18,6 +22,7 @@ public class FXMLs {
     public static <T> T getController(String path) {
         try {
             final FXMLLoader loader = new FXMLLoader();
+            loader.setResources(ResourceBundle.getBundle("i18n", prettyZooFacade.getLocale()));
             loader.setLocation(FXMLs.loadFXML(path));
             loader.load();
             return loader.getController();
@@ -26,4 +31,5 @@ public class FXMLs {
             throw new IllegalStateException(e);
         }
     }
+
 }

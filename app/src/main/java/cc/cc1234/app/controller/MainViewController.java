@@ -13,6 +13,7 @@ import cc.cc1234.app.view.dialog.Dialog;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.vo.ConfigurationVO;
 import cc.cc1234.app.vo.ServerConfigurationVO;
+import cc.cc1234.specification.config.model.ConfigData;
 import cc.cc1234.version.Version;
 import cc.cc1234.version.VersionChecker;
 import com.jfoenix.controls.JFXListView;
@@ -56,6 +57,9 @@ public class MainViewController {
 
     @FXML
     private MenuItem importMenuItem;
+
+    @FXML
+    private Menu langMenu;
 
     @FXML
     private MenuButton fontMenuButton;
@@ -107,6 +111,23 @@ public class MainViewController {
                 prettyZooFacade.changeFontSize(newValue);
             }
         }));
+        var langToggleGroup = new ToggleGroup();
+        for (ConfigData.Lang value : ConfigData.Lang.values()) {
+            var radioMenuItem = new RadioMenuItem(value.getLocale().toLanguageTag());
+            radioMenuItem.setId(value.name());
+            radioMenuItem.setToggleGroup(langToggleGroup);
+            if (prettyZooFacade.getLocale().equals(value.getLocale())) {
+                radioMenuItem.setSelected(true);
+            }
+            langMenu.getItems().add(radioMenuItem);
+        }
+        langToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                var item = (RadioMenuItem) newValue;
+                final ConfigData.Lang newLang = ConfigData.Lang.valueOf(item.getId());
+                prettyZooFacade.updateLocale(newLang);
+            }
+        });
         fontMenuButton.getItems().add(new MenuItem("", sp));
     }
 

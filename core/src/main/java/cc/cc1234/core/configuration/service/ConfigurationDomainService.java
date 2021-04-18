@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -46,6 +47,13 @@ public class ConfigurationDomainService {
         prettyZooConfigRepository.save(configuration.toPersistModel());
     }
 
+    public void save(Configuration.LocaleConfiguration localeConfiguration) {
+        Objects.requireNonNull(localeConfiguration);
+        var configuration = get().orElseThrow();
+        configuration.updateLocale(localeConfiguration);
+        prettyZooConfigRepository.save(configuration.toPersistModel());
+    }
+
     public Optional<Configuration> get() {
         return Optional.ofNullable(configurationCache.getVal());
     }
@@ -56,6 +64,11 @@ public class ConfigurationDomainService {
                 .stream()
                 .filter(s -> s.getHost().equals(host))
                 .findFirst();
+    }
+
+    public Locale getLocale() {
+        final Configuration configuration = new ConfigurationFactory().create(List.of());
+        return configuration.getLocaleConfiguration().getLocale();
     }
 
     public void deleteServerConfiguration(String server) {

@@ -32,8 +32,8 @@
                   <AnchorPane prefHeight="140.0" prefWidth="200.0" style="-fx-border-color: #ddd;">
                      <children>
                         <JFXTextField fx:id="sshServer" disable="true" layoutX="15.0" layoutY="14.0" prefHeight="20.0" promptText="ssh server : port" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
-                        <JFXTextField fx:id="sshUsername" disable="true" layoutX="15.0" layoutY="54.0" prefHeight="20.0" promptText="username" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="85.0" />
-                        <JFXTextField fx:id="sshPassword" disable="true" layoutX="15.0" layoutY="93.0" prefHeight="20.0" promptText="password" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="130.0" />
+                        <JFXTextField fx:id="sshUsername" disable="true" layoutX="15.0" layoutY="54.0" prefHeight="20.0" promptText="%server.input.ssh.username.prompt" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="85.0" />
+                        <JFXTextField fx:id="sshPassword" disable="true" layoutX="15.0" layoutY="93.0" prefHeight="20.0" promptText="%server.input.ssh.password.prompt" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="130.0" />
                         <Text layoutX="92.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SSH Server" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="10.0" />
                      </children>
                   </AnchorPane>
@@ -55,11 +55,11 @@
       <JFXTextArea fx:id="aclTextArea" layoutX="353.0" layoutY="51.0" prefHeight="90.0" prefWidth="240.0" AnchorPane.rightAnchor="81.0" AnchorPane.topAnchor="20.0" />
       <HBox fx:id="buttonHBox" alignment="CENTER" layoutX="444.0" layoutY="432.0" minHeight="30.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="30.0">
          <children>
-            <JFXButton fx:id="saveButton" mnemonicParsing="false" styleClass="v-button" text="save" />
-            <JFXButton fx:id="connectButton" mnemonicParsing="false" styleClass="v-button" text="connect" />
-            <JFXButton fx:id="deleteButton" mnemonicParsing="false" styleClass="v-button" text="delete" />
+            <JFXButton fx:id="saveButton" mnemonicParsing="false" styleClass="v-button" text="%server.button.save" />
+            <JFXButton fx:id="connectButton" mnemonicParsing="false" styleClass="v-button" text="%server.button.connect" />
+            <JFXButton fx:id="deleteButton" mnemonicParsing="false" styleClass="v-button" text="%server.button.delete" />
          </children>
       </HBox>
-      <JFXTextField fx:id="zkAlias" layoutX="30.0" layoutY="84.0" prefHeight="25.0" prefWidth="260.0" promptText="Alias name (Option)" />
+      <JFXTextField fx:id="zkAlias" layoutX="30.0" layoutY="84.0" prefHeight="25.0" prefWidth="260.0" promptText="%server.input.alias.prompt" />
    </children>
 </AnchorPane>
