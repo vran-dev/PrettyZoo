@@ -27,8 +27,6 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="10.0" styleClass="head" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Button fx:id="nodeAddButton" alignment="CENTER" mnemonicParsing="false" styleClass="add-button" textFill="WHITE" HBox.hgrow="ALWAYS" />
-                                    <Button fx:id="nodeDeleteButton" alignment="CENTER" layoutX="20.0" layoutY="10.0" mnemonicParsing="false" styleClass="delete-button" textFill="WHITE" />
                                     <JFXTextField fx:id="searchTextField" prefHeight="28.0" promptText="%nodeList.button.search.prompt" HBox.hgrow="ALWAYS">
                                        <HBox.margin>
                                           <Insets right="5.0" />

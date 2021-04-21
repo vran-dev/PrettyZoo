@@ -50,12 +50,6 @@ public class NodeViewController {
     private StackPane nodeViewRightPane;
 
     @FXML
-    private Button nodeAddButton;
-
-    @FXML
-    private Button nodeDeleteButton;
-
-    @FXML
     private Button disconnectButton;
 
     @FXML
@@ -98,8 +92,6 @@ public class NodeViewController {
         initTerminalArea();
         initFourLetterTab();
 
-        nodeAddButton.setOnMouseClicked(e -> onNodeAdd());
-        nodeDeleteButton.setOnMouseClicked(e -> onNodeDelete());
         disconnectButton.setTooltip(new Tooltip("disconnect server"));
         disconnectButton.setOnAction(e -> {
             final String server = ActiveServerContext.get();
@@ -228,7 +220,7 @@ public class NodeViewController {
     }
 
     private void switchServer(String host) {
-        zkNodeTreeView.setCellFactory(view -> new ZkNodeTreeCell());
+        zkNodeTreeView.setCellFactory(view -> new ZkNodeTreeCell(this::onNodeAdd, this::onNodeDelete));
         initRootTreeNode(host);
         ActiveServerContext.set(host);
         prettyZooFacade.syncIfNecessary(host);
