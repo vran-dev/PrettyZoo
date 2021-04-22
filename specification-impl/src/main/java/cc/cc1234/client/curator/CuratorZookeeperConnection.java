@@ -55,6 +55,17 @@ public class CuratorZookeeperConnection implements ZookeeperConnection<CuratorFr
     }
 
     @Override
+    public void deleteAsync(List<String> pathList) throws Exception {
+        for (String s : pathList) {
+            getClient()
+                    .delete()
+                    .deletingChildrenIfNeeded()
+                    .inBackground()
+                    .forPath(s);
+        }
+    }
+
+    @Override
     public Stat setData(String path, String data) throws Exception {
         return getClient().setData().forPath(path, data.getBytes());
     }

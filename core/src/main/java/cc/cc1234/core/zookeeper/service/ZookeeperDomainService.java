@@ -11,10 +11,7 @@ import cc.cc1234.specification.node.NodeMode;
 import cc.cc1234.specification.util.StringWriter;
 import org.apache.zookeeper.data.Stat;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ZookeeperDomainService {
@@ -56,9 +53,16 @@ public class ZookeeperDomainService {
         return zookeeperMap.get(host).set(path, data);
     }
 
-    public void delete(String host, String path) throws Exception {
+    public void delete(String host, List<String> pathList) throws Exception {
+        Objects.requireNonNull(pathList);
         assertZookeeperExists(host);
-        zookeeperMap.get(host).delete(path);
+        if (pathList.size() < 20) {
+            for (String path : pathList) {
+                zookeeperMap.get(host).delete(path);
+            }
+        } else {
+            zookeeperMap.get(host).deleteAsync(pathList);
+        }
     }
 
     public void create(String host, String path, String data, NodeMode mode) throws Exception {

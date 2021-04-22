@@ -49,9 +49,9 @@ public class PrettyZooFacade {
         zookeeperDomainService.create(server, path, data, mode);
     }
 
-    public void deleteNode(String server, String path) {
+    public void deleteNode(String server, List<String> pathList) {
         try {
-            zookeeperDomainService.delete(server, path);
+            zookeeperDomainService.delete(server, pathList);
         } catch (Exception e) {
             log.error("delete node failed", e);
             throw new IllegalStateException(e);

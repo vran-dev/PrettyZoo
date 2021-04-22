@@ -62,6 +62,10 @@ public class Zookeeper {
         connection.delete(path, true);
     }
 
+    public void deleteAsync(List<String> pathList) throws Exception {
+        connection.deleteAsync(pathList);
+    }
+
     public void create(String path, String data, NodeMode mode) throws Exception {
         connection.create(path, data, true, mode);
     }

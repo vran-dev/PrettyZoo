@@ -11,6 +11,7 @@ import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.vo.ZkNodeSearchResult;
 import cc.cc1234.specification.node.ZkNode;
 import cc.cc1234.specification.util.StringWriter;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.effect.BlurType;
@@ -26,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class NodeViewController {
 
@@ -87,7 +89,7 @@ public class NodeViewController {
 
         initSearchResultList();
         initSearchTextField();
-        initNodeChangeListener();
+        initZkNodeTreeView();
         initHomeTab();
         initTerminalArea();
         initFourLetterTab();
@@ -146,19 +148,19 @@ public class NodeViewController {
     }
 
     private void onNodeDelete() {
-        final TreeItem<ZkNode> selectedItem = zkNodeTreeView.getSelectionModel().getSelectedItem();
-        if (selectedItem == null) {
+        final ObservableList<TreeItem<ZkNode>> selectedItems = zkNodeTreeView.getSelectionModel().getSelectedItems();
+        if (selectedItems.isEmpty()) {
             VToast.error("select node first");
         } else {
-            final String path = selectedItem.getValue().getPath();
-
+            var pathList = selectedItems.stream().map(item -> item.getValue().getPath()).collect(Collectors.toList());
+            var nodes = String.join("\n", pathList);
             ResourceBundle rb = ResourceBundle.getBundle("i18n", prettyZooFacade.getLocale());
             String title = rb.getString("nodeDelete.action.confirm.title");
-            String content = String.format(rb.getString("nodeDelete.action.confirm.content"), path);
+            String content = String.format(rb.getString("nodeDelete.action.confirm.content"), nodes);
             Dialog.confirm(title, content, () -> {
-                Try.of(() -> prettyZooFacade.deleteNode(ActiveServerContext.get(), path))
+                Try.of(() -> prettyZooFacade.deleteNode(ActiveServerContext.get(), pathList))
                         .onFailure(exception -> VToast.error("delete failed:" + exception.getMessage()))
-                        .onSuccess(t -> VToast.info("delete success"));
+                        .onSuccess(t -> VToast.info("Request success"));
             });
         }
     }
@@ -208,7 +210,8 @@ public class NodeViewController {
         });
     }
 
-    private void initNodeChangeListener() {
+    private void initZkNodeTreeView() {
+        zkNodeTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         zkNodeTreeView.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
