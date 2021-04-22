@@ -12,6 +12,8 @@ public interface ZookeeperConnection<T> {
 
     void delete(String path, boolean recursive) throws Exception;
 
+    void deleteAsync(List<String> pathList) throws Exception;
+
     Stat setData(String path, String data) throws Exception;
 
     void close();
