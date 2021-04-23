@@ -122,6 +122,14 @@ public class ServerViewController {
         onConnect(stackPane, configurationVO);
     }
 
+    public void delete(String zkServer) {
+        prettyZooFacade.deleteServerConfiguration(zkServer);
+        if (prettyZooFacade.getServerConfigurations().isEmpty()) {
+            onClose();
+        }
+        VToast.info("Delete success");
+    }
+
     private void showNewServerView(StackPane stackPane) {
         zkServer.setEditable(true);
         buttonHBox.getChildren().remove(deleteButton);
@@ -339,7 +347,7 @@ public class ServerViewController {
                     if (serverHost.equals(serverConfigurationVO.getZkServer())) {
                         Platform.runLater(() -> {
                             serverConfigurationVO.setStatus(ServerStatus.RECONNECTING);
-                            VToast.error(serverHost +" lost connection");
+                            VToast.error(serverHost + " lost connection");
                         });
                     }
                 }
