@@ -116,6 +116,11 @@ public class NodeViewController {
         this.server = server;
     }
 
+    public void disconnect(String server) {
+        prettyZooFacade.disconnect(server);
+        hideAndThen(() -> VToast.info("disconnect " + server + " success"));
+    }
+
     public void hide() {
         hideAndThen(() -> {
         });

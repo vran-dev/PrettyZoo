@@ -130,6 +130,13 @@ public class ServerViewController {
         VToast.info("Delete success");
     }
 
+    public void disconnect(String zkServer) {
+        if (nodeViewControllerMap.containsKey(zkServer)) {
+            NodeViewController nodeViewController = nodeViewControllerMap.remove(zkServer);
+            nodeViewController.disconnect(zkServer);
+        }
+    }
+
     private void showNewServerView(StackPane stackPane) {
         zkServer.setEditable(true);
         buttonHBox.getChildren().remove(deleteButton);

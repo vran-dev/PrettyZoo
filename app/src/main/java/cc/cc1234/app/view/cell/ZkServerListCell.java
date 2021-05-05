@@ -31,7 +31,8 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
     private CustomMenuItem deleteMenu;
 
     public ZkServerListCell(Consumer<ServerConfigurationVO> connectAction,
-                            Consumer<ServerConfigurationVO> deleteAction) {
+                            Consumer<ServerConfigurationVO> deleteAction,
+                            Consumer<ServerConfigurationVO> disconnectAction) {
         ResourceBundle rb = ResourceBundle.getBundle("i18n", prettyZooFacade.getLocale());
         String connectText = rb.getString("server.button.connect");
         String deleteText = rb.getString("server.button.delete");
@@ -57,7 +58,7 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
 
         deleteButton.setOnAction(e -> deleteAction.accept(getItem()));
         connectButton.setOnAction(e -> connectAction.accept(getItem()));
-        disconnectButton.setOnAction(e -> prettyZooFacade.disconnect(getItem().getZkServer()));
+        disconnectButton.setOnAction(e -> disconnectAction.accept(getItem()));
 
         deleteMenu = new CustomMenuItem(deleteButton);
         connectMenu = new CustomMenuItem(connectButton);
@@ -125,6 +126,7 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
                     if (!getContextMenu().getItems().contains(deleteMenu)) {
                         getContextMenu().getItems().add( deleteMenu);
                     }
+                    getContextMenu().getItems().remove(disConnectMenu);
                     break;
                 case CONNECTING:
                 case RECONNECTING:
