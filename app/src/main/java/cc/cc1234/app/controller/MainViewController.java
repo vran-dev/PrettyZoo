@@ -172,7 +172,11 @@ public class MainViewController {
         prettyZooFacade.loadServerConfigurations(new DefaultConfigurationListener(configurationVO));
         serverListView.itemsProperty().set(configurationVO.getServers());
         serverListView.setCellFactory(cellCallback -> {
-            ZkServerListCell cell = new ZkServerListCell(server -> serverViewController.show(mainRightPane, server), server -> serverViewController.delete(server.getZkServer()));
+            var cell = new ZkServerListCell(
+                    server -> serverViewController.connect(mainRightPane, server),
+                    server -> serverViewController.delete(server.getZkServer()),
+                    server -> serverViewController.disconnect(server.getZkServer())
+            );
             cell.setOnMouseClicked(event -> {
                 if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                     serverViewController.connect(mainRightPane, cell.getItem());
