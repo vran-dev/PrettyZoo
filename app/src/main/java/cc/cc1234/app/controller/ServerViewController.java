@@ -143,6 +143,7 @@ public class ServerViewController {
         buttonHBox.getChildren().remove(connectButton);
         propertyReset();
         switchIfNecessary(stackPane);
+        zkServer.requestFocus();
     }
 
     private void showServerInfoView(StackPane stackPane, ServerConfigurationVO config) {
