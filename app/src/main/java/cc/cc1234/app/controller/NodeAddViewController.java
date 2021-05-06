@@ -71,6 +71,7 @@ public class NodeAddViewController {
         }
         String parentPath = zkNode == null ? "/" : zkNode.getPath();
         currentPathField.setText(parentPath);
+        nodeNameTextField.requestFocus();
     }
 
     public void hide() {
