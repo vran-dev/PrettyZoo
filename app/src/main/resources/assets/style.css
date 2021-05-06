@@ -29,6 +29,20 @@
     -fx-content-display: center;
 }
 
+.search-label {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/search.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-border-radius: 22;
+    -fx-background-size: 22;
+    -fx-pref-height: 22;
+    -fx-pref-width: 22;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
 
 /* ====================== background color ======================*/
 
@@ -283,13 +297,6 @@
     -fx-min-height: 18;
 }
 
-.v-checkbox .box {
-    -fx-background-color: #FFF;
-    -fx-border-color: #a0a0a0;
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
-    -fx-min-height: 18;
-}
 
 .v-line-textField {
     -fx-border-color: transparent transparent #a0a0a0 transparent;
