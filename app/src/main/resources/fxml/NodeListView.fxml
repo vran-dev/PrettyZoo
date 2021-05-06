@@ -15,6 +15,7 @@
 <?import javafx.scene.text.Font?>
 
 <?import javafx.scene.control.TreeView?>
+<?import javafx.scene.control.Label?>
 <TabPane fx:id="nodeViewPane" prefHeight="540.0" prefWidth="815.0" stylesheets="@../assets/style.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.NodeViewController">
    <tabs>
       <Tab fx:id="homeTab" text="Home">
@@ -27,6 +28,7 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="10.0" styleClass="head" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
+                                    <Label styleClass="search-label"></Label>
                                     <JFXTextField fx:id="searchTextField" prefHeight="28.0" promptText="%nodeList.button.search.prompt" HBox.hgrow="ALWAYS">
                                        <HBox.margin>
                                           <Insets right="5.0" />
