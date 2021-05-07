@@ -35,10 +35,9 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-border-color: transparent;
-    -fx-border-radius: 22;
-    -fx-background-size: 22;
-    -fx-pref-height: 22;
-    -fx-pref-width: 22;
+    -fx-background-size: 18;
+    -fx-pref-height: 26;
+    -fx-pref-width: 26;
     -fx-text-alignment: center;
     -fx-alignment: center;
     -fx-content-display: center;
