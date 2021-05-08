@@ -202,8 +202,10 @@ public class NodeViewController {
                     setOnMouseClicked(mouseEvent -> {
                         if (mouseEvent.getClickCount() == 2) {
                             ListCell<ZkNodeSearchResult> clickedRow = (ListCell<ZkNodeSearchResult>) mouseEvent.getSource();
+                            zkNodeTreeView.getSelectionModel().clearSelection();
                             zkNodeTreeView.getSelectionModel().select(clickedRow.getItem().getItem());
                             zkNodeTreeView.scrollTo(zkNodeTreeView.getSelectionModel().getSelectedIndex());
+                            zkNodeTreeView.requestFocus();
                             if (searchResultList.isVisible()) {
                                 searchResultList.getItems().clear();
                                 searchResultList.setVisible(false);
