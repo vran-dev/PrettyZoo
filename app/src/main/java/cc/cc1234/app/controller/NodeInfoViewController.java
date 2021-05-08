@@ -280,7 +280,7 @@ public class NodeInfoViewController {
 
     private String format(long timestamp) {
         if (timestamp == 0) {
-            return "无";
+            return "-";
         } else {
             return OffsetDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault())
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
