@@ -29,7 +29,7 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 
 # TODO
 
-1. - [ ] Support i18n (In progress)
+1. - [x] Support i18n (V1.9.0+)
 2. - [ ] terminal highlight
 3. - [x] global font size change (v1.6.0+)
 4. - [x] node data highlight (V1.7.0+)
