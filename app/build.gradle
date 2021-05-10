@@ -44,6 +44,8 @@ jlink {
         jvmArgs = runArgsValue
     }
     jpackage {
+        resourceDir = file("$buildDir/resources")
+        println(resourceDir)
         def os = org.gradle.internal.os.OperatingSystem.current()
         installerOptions = [
                 '--name', 'PrettyZoo',
