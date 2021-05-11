@@ -33,7 +33,7 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
     public ZkServerListCell(Consumer<ServerConfigurationVO> connectAction,
                             Consumer<ServerConfigurationVO> deleteAction,
                             Consumer<ServerConfigurationVO> disconnectAction) {
-        ResourceBundle rb = ResourceBundle.getBundle("i18n", prettyZooFacade.getLocale());
+        ResourceBundle rb = ResourceBundle.getBundle("cc.cc1234.i18n.lang", prettyZooFacade.getLocale());
         String connectText = rb.getString("server.button.connect");
         String deleteText = rb.getString("server.button.delete");
         String disconnectText = rb.getString("server.button.disconnect");

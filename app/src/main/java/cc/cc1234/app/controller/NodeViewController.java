@@ -159,7 +159,7 @@ public class NodeViewController {
         } else {
             var pathList = selectedItems.stream().map(item -> item.getValue().getPath()).collect(Collectors.toList());
             var nodes = String.join("\n", pathList);
-            ResourceBundle rb = ResourceBundle.getBundle("i18n", prettyZooFacade.getLocale());
+            ResourceBundle rb = ResourceBundle.getBundle("cc.cc1234.i18n.lang", prettyZooFacade.getLocale());
             String title = rb.getString("nodeDelete.action.confirm.title");
             String content = String.format(rb.getString("nodeDelete.action.confirm.content"), nodes);
             Dialog.confirm(title, content, () -> {

@@ -18,7 +18,7 @@ public class ZkNodeTreeCell extends JFXTreeCell<ZkNode> {
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
     public ZkNodeTreeCell(Runnable createAction, Runnable deleteAction) {
-        ResourceBundle rb = ResourceBundle.getBundle("i18n", prettyZooFacade.getLocale());
+        ResourceBundle rb = ResourceBundle.getBundle("cc.cc1234.i18n.lang", prettyZooFacade.getLocale());
         String addButtonText = rb.getString("nodeList.button.add");
         String deleteButtonText = rb.getString("nodeList.button.delete");
         JFXButton add = new JFXButton(addButtonText);
