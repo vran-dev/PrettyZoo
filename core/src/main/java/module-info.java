@@ -14,13 +14,13 @@ open module core.main {
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
     requires com.google.common;
-
-    requires specificationImpl.main;
-    requires specification.main;
     requires sshj;
-
 
     uses org.apache.logging.log4j.message.ThreadDumpMessage.ThreadInfoFactory;
     uses org.apache.logging.log4j.spi.Provider;
     uses org.apache.logging.log4j.util.PropertySource;
+
+    //internal module
+    requires specificationImpl.main;
+    requires specification.main;
 }

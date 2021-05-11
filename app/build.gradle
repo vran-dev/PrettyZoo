@@ -1,16 +1,17 @@
 plugins {
-    id 'org.openjfx.javafxplugin' version '0.0.9'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
     id 'org.beryx.jlink' version '2.23.6'
     id 'antlr'
     id 'idea'
+    id 'java-library'
 }
 
 javafx {
-    version = "14"
+    version = "16"
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.base']
 }
 
-mainClassName = "app.main/cc.cc1234.PrettyZooApplication"
+mainClassName = "cc.cc1234.PrettyZooApplication"
 
 def runArgsValue =  [
         "-Djdk.gtk.version=2",
@@ -44,8 +45,6 @@ jlink {
         jvmArgs = runArgsValue
     }
     jpackage {
-        resourceDir = file("$buildDir/resources")
-        println(resourceDir)
         def os = org.gradle.internal.os.OperatingSystem.current()
         installerOptions = [
                 '--name', 'PrettyZoo',
@@ -89,13 +88,13 @@ jpackage {
 }
 
 dependencies {
-    compile project(':core')
-    compile project(':specification')
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.6'
+    api project(':core')
+    api project(':specification')
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    implementation group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.6'
     antlr "org.antlr:antlr4:4.9" // use ANTLR version 4
-    compile group: 'org.antlr', name: 'antlr4-runtime', version: '4.9.2'
-    compile 'com.jfoenix:jfoenix:9.0.10'
+    implementation group: 'org.antlr', name: 'antlr4-runtime', version: '4.9.2'
+    implementation 'com.jfoenix:jfoenix:9.0.10'
 }
 
 configJavafxRun {
