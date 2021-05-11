@@ -130,7 +130,7 @@ public class MainViewController {
                 final ConfigData.Lang newLang = ConfigData.Lang.valueOf(item.getId());
                 prettyZooFacade.updateLocale(newLang);
 
-                ResourceBundle rb = ResourceBundle.getBundle("i18n", newLang.getLocale());
+                ResourceBundle rb = ResourceBundle.getBundle("cc.cc1234.i18n.lang", newLang.getLocale());
                 String title = rb.getString("lang.change.confirm.title");
                 String content = rb.getString("lang.change.confirm.content");
                 Dialog.confirm(title, content, () -> {
