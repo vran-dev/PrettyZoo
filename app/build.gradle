@@ -47,6 +47,7 @@ jlink {
     jpackage {
         def os = org.gradle.internal.os.OperatingSystem.current()
         installerOptions = [
+                '--resource-dir', 'src/main/resources',
                 '--name', 'PrettyZoo',
                 '--app-version', "${project.version}",
                 '--description', 'Pretty nice Zookeeper GUI',
