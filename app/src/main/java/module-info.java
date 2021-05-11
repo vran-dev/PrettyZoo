@@ -7,8 +7,6 @@ open module app.main {
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
     requires com.google.common;
-    requires core.main;
-    requires specification.main;
     requires java.desktop;
     requires java.net.http;
     requires com.fasterxml.jackson.core;
@@ -18,4 +16,8 @@ open module app.main {
     requires org.antlr.antlr4.runtime;
     requires zookeeper;
     requires com.jfoenix;
+
+    // internal module
+    requires core.main;
+    requires specification.main;
 }
