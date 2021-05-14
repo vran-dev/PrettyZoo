@@ -86,8 +86,8 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
         final RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 2);
         final CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
                 .connectString(params.getHost())
-                .connectionTimeoutMs(3000)
-                .sessionTimeoutMs(3000)
+                .connectionTimeoutMs(5000)
+                .sessionTimeoutMs(6000)
                 .retryPolicy(retryPolicy);
 
         if (!params.getAclList().isEmpty()) {
