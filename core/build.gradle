@@ -11,9 +11,9 @@ compileJava {
 dependencies {
     api project(':specification-impl')
     api project(':specification')
-    implementation group: 'com.hierynomus', name: 'sshj', version: '0.27.0'
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
 
-    api 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    implementation 'com.google.guava:guava'
+    implementation group: 'com.hierynomus', name: 'sshj'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }

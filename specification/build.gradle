@@ -1,7 +1,3 @@
-plugins {
-    id 'java-library'
-}
-
 compileJava {
     inputs.property("moduleName", "specification.main")
     doFirst {
@@ -13,18 +9,14 @@ compileJava {
 }
 
 dependencies {
-    api group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
-    api group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.12.1'
-    api group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.12.1'
-    api group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
-    api('org.apache.zookeeper:zookeeper:3.4.6') {
+    api('org.apache.zookeeper:zookeeper') {
         exclude group: 'junit', module: 'junit'
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'
         exclude group: 'io.netty', module: 'netty'
         exclude group: 'log4j', module: 'log4j'
     }
 
-    api 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }
 

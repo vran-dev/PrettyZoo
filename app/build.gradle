@@ -13,7 +13,7 @@ javafx {
 
 mainClassName = "cc.cc1234.PrettyZooApplication"
 
-def runArgsValue =  [
+def runArgsValue = [
         "-Djdk.gtk.version=2",
         "-Dfile.encoding=utf-8",
         "--add-exports=javafx.controls/com.sun.javafx.scene.control.behavior=com.jfoenix",
@@ -91,11 +91,12 @@ jpackage {
 dependencies {
     api project(':core')
     api project(':specification')
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
-    implementation group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.6'
     antlr "org.antlr:antlr4:4.9" // use ANTLR version 4
-    implementation group: 'org.antlr', name: 'antlr4-runtime', version: '4.9.2'
-    implementation 'com.jfoenix:jfoenix:9.0.10'
+
+    implementation 'com.google.guava:guava'
+    implementation 'org.fxmisc.richtext:richtextfx'
+    implementation 'org.antlr:antlr4-runtime'
+    implementation 'com.jfoenix:jfoenix'
 }
 
 configJavafxRun {
@@ -135,7 +136,7 @@ compileJava {
 
 sourceSets {
     main {
-        java.srcDirs +='gen/main/java'
+        java.srcDirs += 'gen/main/java'
         resources.srcDirs += 'gen/main/resources'
     }
 }
