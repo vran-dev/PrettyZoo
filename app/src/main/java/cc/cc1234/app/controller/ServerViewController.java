@@ -307,11 +307,16 @@ public class ServerViewController {
                     .filter(acl -> !Strings.isNullOrEmpty(acl))
                     .collect(Collectors.toList());
             serverConfigVO.getAclList().addAll(acls);
-            prettyZooFacade.saveServerConfiguration(serverConfigVO);
-            if (zkServer.isEditable()) {
-                onClose();
-            }
-            VToast.info("save success");
+            Try.of(() -> prettyZooFacade.saveServerConfiguration(serverConfigVO))
+                    .onSuccess(e -> {
+                        if (zkServer.isEditable()) {
+                            onClose();
+                        }
+                        VToast.info("save success");
+                    })
+                    .onFailure(e -> {
+                        VToast.error(e.getMessage());
+                    });
         }
     }
 
