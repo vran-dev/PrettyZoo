@@ -8,6 +8,7 @@ import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.listener.DefaultConfigurationListener;
 import cc.cc1234.app.util.FXMLs;
+import cc.cc1234.app.util.ResourceBundleUtils;
 import cc.cc1234.app.util.ShortcutKeys;
 import cc.cc1234.app.view.cell.ZkServerListCell;
 import cc.cc1234.app.view.dialog.Dialog;
@@ -130,7 +131,7 @@ public class MainViewController {
                 final ConfigData.Lang newLang = ConfigData.Lang.valueOf(item.getId());
                 prettyZooFacade.updateLocale(newLang);
 
-                ResourceBundle rb = ResourceBundle.getBundle("cc.cc1234.i18n.lang", newLang.getLocale());
+                ResourceBundle rb = ResourceBundleUtils.get(newLang.getLocale());
                 String title = rb.getString("lang.change.confirm.title");
                 String content = rb.getString("lang.change.confirm.content");
                 Dialog.confirm(title, content, () -> {

@@ -1,6 +1,7 @@
 package cc.cc1234.app.view.cell;
 
 import cc.cc1234.app.facade.PrettyZooFacade;
+import cc.cc1234.app.util.ResourceBundleUtils;
 import cc.cc1234.specification.node.ZkNode;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeCell;
@@ -18,7 +19,7 @@ public class ZkNodeTreeCell extends JFXTreeCell<ZkNode> {
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
     public ZkNodeTreeCell(Runnable createAction, Runnable deleteAction) {
-        ResourceBundle rb = ResourceBundle.getBundle("cc.cc1234.i18n.lang", prettyZooFacade.getLocale());
+        ResourceBundle rb = ResourceBundleUtils.get(prettyZooFacade.getLocale());
         String addButtonText = rb.getString("nodeList.button.add");
         String deleteButtonText = rb.getString("nodeList.button.delete");
         JFXButton add = new JFXButton(addButtonText);
