@@ -1,9 +1,12 @@
 package cc.cc1234.app.controller;
 
+import cc.cc1234.app.cache.TreeItemCache;
 import cc.cc1234.app.context.ActiveServerContext;
 import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.util.Formatters;
+import cc.cc1234.app.util.ResourceBundleUtils;
 import cc.cc1234.app.view.NodeDataArea;
+import cc.cc1234.app.view.dialog.Dialog;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.specification.node.ZkNode;
@@ -24,6 +27,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class NodeInfoViewController {
 
@@ -191,13 +196,26 @@ public class NodeInfoViewController {
             return;
         }
         final String data = dataCodeArea.getText();
-        Transitions.rotate(nodeUpdateButton, () -> {
-            Stat stat = prettyZooFacade.updateData(ActiveServerContext.get(), path, data, ex -> VToast.error(ex.getMessage()));
-            dataCodeArea.getProperties().put("raw", data);
-            dataCodeArea.getProperties().put("rawBytes", data.getBytes());
-            updateField(stat);
-            VToast.info("update success");
-        });
+        TreeItem<ZkNode> currentData = TreeItemCache.getInstance().get(ActiveServerContext.get(), path);
+
+        Runnable action = () -> {
+            Transitions.rotate(nodeUpdateButton, () -> {
+                Stat stat = prettyZooFacade.updateData(ActiveServerContext.get(), path, data, ex -> VToast.error(ex.getMessage()));
+                dataCodeArea.getProperties().put("raw", data);
+                dataCodeArea.getProperties().put("rawBytes", data.getBytes());
+                updateField(stat);
+                VToast.info("update success");
+            });
+        };
+
+        ResourceBundle bundle = ResourceBundleUtils.get(prettyZooFacade.getLocale());
+        String title = bundle.getString("nodeData.refresh.conflict.title");
+        String content = bundle.getString("nodeData.refresh.conflict.content");
+        if (!Objects.equals(currentData.getValue().getData(), data)) {
+            Dialog.confirm(title, String.format(content, currentData.getValue().getData()), action);
+        } else {
+            action.run();
+        }
     }
 
     /**

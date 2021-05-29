@@ -22,7 +22,7 @@ public class FXMLs {
     public static <T> T getController(String path) {
         try {
             final FXMLLoader loader = new FXMLLoader();
-            loader.setResources(ResourceBundle.getBundle("cc.cc1234.i18n.lang", prettyZooFacade.getLocale()));
+            loader.setResources(ResourceBundleUtils.get(prettyZooFacade.getLocale()));
             loader.setLocation(FXMLs.loadFXML(path));
             loader.load();
             return loader.getController();

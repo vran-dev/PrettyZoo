@@ -1,6 +1,7 @@
 package cc.cc1234.app.view.cell;
 
 import cc.cc1234.app.facade.PrettyZooFacade;
+import cc.cc1234.app.util.ResourceBundleUtils;
 import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.app.vo.ServerStatus;
 import com.jfoenix.controls.JFXButton;
@@ -33,7 +34,7 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
     public ZkServerListCell(Consumer<ServerConfigurationVO> connectAction,
                             Consumer<ServerConfigurationVO> deleteAction,
                             Consumer<ServerConfigurationVO> disconnectAction) {
-        ResourceBundle rb = ResourceBundle.getBundle("cc.cc1234.i18n.lang", prettyZooFacade.getLocale());
+        ResourceBundle rb = ResourceBundleUtils.get(prettyZooFacade.getLocale());
         String connectText = rb.getString("server.button.connect");
         String deleteText = rb.getString("server.button.delete");
         String disconnectText = rb.getString("server.button.disconnect");
