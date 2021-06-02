@@ -19,7 +19,9 @@ import cc.cc1234.specification.config.model.ConfigData;
 import cc.cc1234.version.Version;
 import cc.cc1234.version.VersionChecker;
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXSlider;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -105,16 +107,18 @@ public class MainViewController {
     private void initFontChangeButton() {
         Integer fontSize = prettyZooFacade.getFontSize();
         rootStackPane.setStyle("-fx-font-size: " + fontSize);
-        var svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(8, 25, fontSize);
-        var sp = new Spinner<Integer>();
-        sp.setValueFactory(svf);
-        sp.setPrefWidth(100d);
-        sp.valueProperty().addListener(((observable, oldValue, newValue) -> {
+        var jfxSlider = new JFXSlider(8, 25, fontSize);
+        jfxSlider.valueProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                rootStackPane.setStyle("-fx-font-size: " + ((Integer) newValue));
-                prettyZooFacade.changeFontSize(newValue);
+                rootStackPane.setStyle("-fx-font-size: " + newValue);
+                prettyZooFacade.changeFontSize(newValue.intValue());
             }
         }));
+        var jfxSliderItem = new MenuItem("", jfxSlider);
+        var valueTextBinding = Bindings.createStringBinding(() -> jfxSlider.valueProperty().intValue() + "", jfxSlider.valueProperty());
+        jfxSliderItem.textProperty().bind(valueTextBinding);
+        fontMenuButton.getItems().add(jfxSliderItem);
+
         var langToggleGroup = new ToggleGroup();
         for (ConfigData.Lang value : ConfigData.Lang.values()) {
             var radioMenuItem = new RadioMenuItem(value.getLocale().toLanguageTag());
@@ -130,7 +134,6 @@ public class MainViewController {
                 var item = (RadioMenuItem) newValue;
                 final ConfigData.Lang newLang = ConfigData.Lang.valueOf(item.getId());
                 prettyZooFacade.updateLocale(newLang);
-
                 ResourceBundle rb = ResourceBundleUtils.get(newLang.getLocale());
                 String title = rb.getString("lang.change.confirm.title");
                 String content = rb.getString("lang.change.confirm.content");
@@ -140,7 +143,6 @@ public class MainViewController {
                 });
             }
         });
-        fontMenuButton.getItems().add(new MenuItem("", sp));
     }
 
     private void onExportAction() {
