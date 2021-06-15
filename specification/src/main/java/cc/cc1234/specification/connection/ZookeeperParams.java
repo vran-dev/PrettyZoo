@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ZookeeperParams {
 
-    private String host;
+    private String url;
 
     private List<String> aclList;
 

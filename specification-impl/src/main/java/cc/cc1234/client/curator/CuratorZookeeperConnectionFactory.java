@@ -51,11 +51,11 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
                 switch (newState) {
                     case RECONNECTED:
                     case CONNECTED:
-                        listener.forEach(l -> l.onConnected(params.getHost()));
+                        listener.forEach(l -> l.onConnected(params.getUrl()));
                         break;
                     case SUSPENDED:
                     case LOST:
-                        listener.forEach(l -> l.onReconnecting(params.getHost()));
+                        listener.forEach(l -> l.onReconnecting(params.getUrl()));
                         break;
                     default:
                         client.close();
@@ -64,7 +64,7 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
         });
         client.getCuratorListenable().addListener((client1, event) -> {
             if (event.getType() == CuratorEventType.CLOSING) {
-                listener.forEach(l -> l.onClose(params.getHost()));
+                listener.forEach(l -> l.onClose(params.getUrl()));
             }
         });
 
@@ -72,11 +72,11 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
         try {
             if (!client.blockUntilConnected(3, TimeUnit.SECONDS)) {
                 client.close();
-                throw new IllegalStateException("connect " + params.getHost() + " failed");
+                throw new IllegalStateException("connect " + params.getUrl() + " failed");
             }
         } catch (InterruptedException e) {
             client.close();
-            throw new IllegalStateException("connect " + params.getHost() + " failed", e);
+            throw new IllegalStateException("connect " + params.getUrl() + " failed", e);
         }
         return new CuratorZookeeperConnection(client);
     }
@@ -85,7 +85,7 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
     private CuratorFramework curatorFramework(ZookeeperParams params) {
         final RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 2);
         final CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
-                .connectString(params.getHost())
+                .connectString(params.getUrl())
                 .connectionTimeoutMs(5000)
                 .sessionTimeoutMs(6000)
                 .retryPolicy(retryPolicy);

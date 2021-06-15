@@ -10,8 +10,14 @@ import java.util.List;
 @Builder
 public class ServerConfiguration {
 
-    // entity id
+    /**
+     * host:port
+     */
+    private String url;
+
     private String host;
+
+    private Integer port;
 
     private String alias;
 
@@ -37,4 +43,5 @@ public class ServerConfiguration {
     public void incrementConnectTimes() {
         this.connectTimes += 1;
     }
+
 }

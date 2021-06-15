@@ -82,14 +82,18 @@ public class JsonPrettyZooConfigRepository implements PrettyZooConfigRepository 
     }
 
     private void merge(ConfigData originConfig, ConfigData newConfig) {
+        var conflict = newConfig.getServers().stream().anyMatch(s -> s.getUrl() == null);
+        if (conflict) {
+            throw new IllegalStateException("Import failed, because imported config is out-of-date");
+        }
         // ignore exists server
         Set<String> originServers = originConfig.getServers()
                 .stream()
-                .map(ServerConfigData::getHost)
+                .map(ServerConfigData::getUrl)
                 .collect(Collectors.toSet());
         List<ServerConfigData> newServers = newConfig.getServers()
                 .stream()
-                .filter(server -> !originServers.contains(server.getHost()))
+                .filter(server -> !originServers.contains(server.getUrl()))
                 .collect(Collectors.toList());
 
         // add new Server

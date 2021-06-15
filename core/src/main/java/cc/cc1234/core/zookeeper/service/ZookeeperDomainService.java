@@ -9,11 +9,13 @@ import cc.cc1234.specification.listener.ServerListener;
 import cc.cc1234.specification.listener.ZookeeperNodeListener;
 import cc.cc1234.specification.node.NodeMode;
 import cc.cc1234.specification.util.StringWriter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.data.Stat;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 public class ZookeeperDomainService {
 
     private static final Map<String, Zookeeper> zookeeperMap = new ConcurrentHashMap<>();
@@ -23,19 +25,19 @@ public class ZookeeperDomainService {
     public void connect(ServerConfiguration serverConfig,
                         List<ZookeeperNodeListener> nodeListeners,
                         List<ServerListener> serverListeners) {
-        if (!zookeeperMap.containsKey(serverConfig.getHost())) {
+        if (!zookeeperMap.containsKey(serverConfig.getUrl())) {
             Zookeeper zookeeper = new ZookeeperFactory().create(serverConfig, nodeListeners, serverListeners);
-            zookeeperMap.put(serverConfig.getHost(), zookeeper);
+            zookeeperMap.put(serverConfig.getUrl(), zookeeper);
         }
     }
 
-    public void disconnect(String host) {
-        if (zookeeperMap.containsKey(host)) {
-            zookeeperMap.get(host).disconnect();
-            zookeeperMap.remove(host);
+    public void disconnect(String url) {
+        if (zookeeperMap.containsKey(url)) {
+            zookeeperMap.get(url).disconnect();
+            zookeeperMap.remove(url);
         }
         // TODO 考虑将终端独立化
-        closeTerminal(host);
+        closeTerminal(url);
     }
 
     public void disconnectAll() {
@@ -43,52 +45,56 @@ public class ZookeeperDomainService {
         zookeeperMap.clear();
     }
 
-    public void sync(String host) {
-        assertZookeeperExists(host);
-        zookeeperMap.get(host).sync();
+    public void sync(String url) {
+        assertZookeeperExists(url);
+        zookeeperMap.get(url).sync();
     }
 
-    public Stat set(String host, String path, String data) throws Exception {
-        assertZookeeperExists(host);
-        return zookeeperMap.get(host).set(path, data);
+    public Stat set(String url, String path, String data) {
+        assertZookeeperExists(url);
+        try {
+            return zookeeperMap.get(url).set(path, data);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 
-    public void delete(String host, List<String> pathList) throws Exception {
+    public void delete(String url, List<String> pathList) throws Exception {
         Objects.requireNonNull(pathList);
-        assertZookeeperExists(host);
+        assertZookeeperExists(url);
         if (pathList.size() < 20) {
             for (String path : pathList) {
-                zookeeperMap.get(host).delete(path);
+                zookeeperMap.get(url).delete(path);
             }
         } else {
-            zookeeperMap.get(host).deleteAsync(pathList);
+            zookeeperMap.get(url).deleteAsync(pathList);
         }
     }
 
-    public void create(String host, String path, String data, NodeMode mode) throws Exception {
-        assertZookeeperExists(host);
-        zookeeperMap.get(host).create(path, data, mode);
+    public void create(String url, String path, String data, NodeMode mode) throws Exception {
+        assertZookeeperExists(url);
+        zookeeperMap.get(url).create(path, data, mode);
     }
 
-    private void assertZookeeperExists(String host) {
-        if (!zookeeperMap.containsKey(host)) {
-            throw new IllegalStateException("connect zookeeper first " + host);
+    private void assertZookeeperExists(String url) {
+        if (!zookeeperMap.containsKey(url)) {
+            throw new IllegalStateException("connect zookeeper first " + url);
         }
     }
 
-    public void initTerminal(String host, StringWriter writer) {
-        if (!terminalMap.containsKey(host)) {
+    public void initTerminal(String url, StringWriter writer) {
+        if (!terminalMap.containsKey(url)) {
             try {
-                final Terminal terminal = new ZookeeperFactory().createTerminal(host, writer);
-                terminalMap.put(host, terminal);
+                final Terminal terminal = new ZookeeperFactory().createTerminal(url, writer);
+                terminalMap.put(url, terminal);
             } catch (Exception e) {
                 throw new IllegalStateException(e);
             }
         }
     }
 
-    public void closeTerminal(String host) {
-        final Terminal terminal = terminalMap.remove(host);
+    public void closeTerminal(String url) {
+        final Terminal terminal = terminalMap.remove(url);
         if (terminal != null) {
             terminal.close();
         }
@@ -99,16 +105,16 @@ public class ZookeeperDomainService {
         terminals.forEach(this::closeTerminal);
     }
 
-    public void execute(String host, String command) throws Exception {
-        final Terminal terminal = terminalMap.get(host);
+    public void execute(String url, String command) throws Exception {
+        final Terminal terminal = terminalMap.get(url);
         terminal.execute(command);
     }
 
-    public String execute4LetterCommand(String host, String command) {
+    public String execute4LetterCommand(String url, String command) {
         if (command == null || "".equals(command)) {
             throw new IllegalArgumentException();
         }
-        final String[] hostAndPort = host.split(":");
+        final String[] hostAndPort = url.split(":");
         return new FourLetterCommand(hostAndPort[0], Integer.parseInt(hostAndPort[1])).request(command);
     }
 }

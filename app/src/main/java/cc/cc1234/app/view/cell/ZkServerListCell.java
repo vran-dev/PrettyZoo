@@ -103,11 +103,11 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
     }
 
     private StringBinding serverNameBinding(ServerConfigurationVO item) {
-        return Bindings.createStringBinding(() -> serverNameFormat(item), item.zkServerProperty(), item.zkAliasProperty());
+        return Bindings.createStringBinding(() -> serverNameFormat(item), item.zkUrlProperty(), item.zkAliasProperty());
     }
 
     private String serverNameFormat(ServerConfigurationVO item) {
-        String server = item.getZkServer();
+        String server = item.getZkUrl();
         String alias = item.getZkAlias();
         if (alias != null && !alias.isBlank()) {
             return alias;
@@ -125,7 +125,7 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
                         getContextMenu().getItems().add(0, connectMenu);
                     }
                     if (!getContextMenu().getItems().contains(deleteMenu)) {
-                        getContextMenu().getItems().add( deleteMenu);
+                        getContextMenu().getItems().add(deleteMenu);
                     }
                     getContextMenu().getItems().remove(disConnectMenu);
                     break;

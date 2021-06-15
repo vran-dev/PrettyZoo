@@ -20,7 +20,6 @@ public class ConfigData {
 
     private LocalConfigData localConfig = new LocalConfigData();
 
-
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -29,7 +28,6 @@ public class ConfigData {
         private Integer fontSize;
 
     }
-
 
     @Data
     @AllArgsConstructor

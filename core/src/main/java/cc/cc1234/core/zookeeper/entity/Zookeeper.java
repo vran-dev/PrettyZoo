@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 public class Zookeeper {
 
     @Getter
-    private final String host;
+    private final String url;
 
     @Getter
     private final ZookeeperConnection connection;
@@ -25,14 +25,14 @@ public class Zookeeper {
 
     private List<ServerListener> serverListeners = List.of();
 
-    public Zookeeper(String host,
+    public Zookeeper(String url,
                      Supplier<ZookeeperConnection> connectionSupplier,
                      SSHTunnel sshTunnel,
                      List<ZookeeperNodeListener> nodeListeners,
                      List<ServerListener> serverListeners) {
-        Objects.requireNonNull(host);
+        Objects.requireNonNull(url);
         Objects.requireNonNull(connectionSupplier);
-        this.host = host;
+        this.url = url;
         this.sshTunnel = sshTunnel;
         if (sshTunnel != null) {
             sshTunnel.create();
@@ -47,7 +47,7 @@ public class Zookeeper {
             sshTunnel.close();
         }
         connection.close();
-        serverListeners.forEach(l -> l.onClose(host));
+        serverListeners.forEach(l -> l.onClose(url));
     }
 
     public void sync() {
