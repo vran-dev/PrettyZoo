@@ -32,9 +32,18 @@ public class ConfigurationFactory {
                                     .remotePort(tunnelConfig.getRemotePort())
                                     .build())
                             .orElse(null);
+                    var hostAndPort = serverConfig.getHost().split(":");
+                    // compatible: before v1.9.2 host is [xxx:port]
+                    var host = serverConfig.getPort().map(p -> serverConfig.getHost())
+                            .orElse(hostAndPort[0]);
+                    var port = serverConfig.getPort()
+                            .orElseGet(() -> Integer.parseInt(hostAndPort[1]));
+                    var url = host + ":" + port;
                     return ServerConfiguration.builder()
                             .alias(serverConfig.getAlias())
-                            .host(serverConfig.getHost())
+                            .url(url)
+                            .host(host)
+                            .port(port)
                             .aclList(serverConfig.getAclList())
                             .connectTimes(serverConfig.getConnectTimes())
                             .sshTunnelEnabled(serverConfig.getSshTunnelEnabled())

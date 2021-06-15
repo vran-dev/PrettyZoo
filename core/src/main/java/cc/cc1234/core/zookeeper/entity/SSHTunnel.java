@@ -47,7 +47,7 @@ public class SSHTunnel {
             proxySocket.bind(new InetSocketAddress(localhost, localPort));
             sshClient.newLocalPortForwarder(param, proxySocket).listen();
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage(), e);
         }
     }
 

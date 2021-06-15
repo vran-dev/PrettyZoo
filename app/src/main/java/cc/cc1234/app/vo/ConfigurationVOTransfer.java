@@ -23,7 +23,9 @@ public class ConfigurationVOTransfer {
 
     public static ServerConfigurationVO to(ServerConfiguration serverConfiguration) {
         final ServerConfigurationVO vo = new ServerConfigurationVO();
-        vo.setZkServer(serverConfiguration.getHost());
+        vo.setZkUrl(serverConfiguration.getUrl());
+        vo.setZkHost(serverConfiguration.getHost());
+        vo.setZkPort(serverConfiguration.getPort());
         vo.getAclList().addAll(serverConfiguration.getAclList());
         if (serverConfiguration.getSshTunnel() != null) {
             final SSHTunnelConfiguration sshTunnelConfig = serverConfiguration.getSshTunnel();
@@ -57,7 +59,9 @@ public class ConfigurationVOTransfer {
 
     public static ServerConfigurationVO to(ServerConfigData serverConfig) {
         final ServerConfigurationVO vo = new ServerConfigurationVO();
-        vo.setZkServer(serverConfig.getHost());
+        vo.setZkUrl(serverConfig.getUrl());
+        vo.setZkHost(serverConfig.getHost());
+        vo.setZkPort(serverConfig.getPort().get());
         vo.getAclList().addAll(serverConfig.getAclList());
         vo.setZkAlias(serverConfig.getAlias());
         serverConfig.getSshTunnelConfig().ifPresent(sshTunnelConfig -> {

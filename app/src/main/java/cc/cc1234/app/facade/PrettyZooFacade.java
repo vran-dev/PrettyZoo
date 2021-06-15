@@ -58,13 +58,13 @@ public class PrettyZooFacade {
         }
     }
 
-    public CompletableFuture<Void> connect(String host,
+    public CompletableFuture<Void> connect(String url,
                                            List<ZookeeperNodeListener> nodeListeners,
                                            List<ServerListener> serverListeners) {
         return CompletableFuture.runAsync(() -> {
-            var serverConfig = configurationDomainService.get(host).orElseThrow();
+            var serverConfig = configurationDomainService.get(url).orElseThrow();
             zookeeperDomainService.connect(serverConfig, nodeListeners, serverListeners);
-            configurationDomainService.incrementConnectTimes(host);
+            configurationDomainService.incrementConnectTimes(url);
         });
     }
 
@@ -93,13 +93,13 @@ public class PrettyZooFacade {
                 .stream()
                 .map(item -> {
                     String path = item.getValue().getPath();
-                    final List<Text> highlights = Fills.fill(path, input, Text::new,
+                    var highlights = Fills.fill(path, input, Text::new,
                             s -> {
                                 final Text highlight = new Text(s);
                                 highlight.setFill(Color.RED);
                                 return highlight;
                             });
-                    final TextFlow textFlow = new TextFlow(highlights.toArray(new Text[0]));
+                    var textFlow = new TextFlow(highlights.toArray(new Text[0]));
                     return new ZkNodeSearchResult(path, textFlow, item);
                 })
                 .collect(Collectors.toList());
@@ -125,11 +125,6 @@ public class PrettyZooFacade {
 
     public void saveServerConfiguration(ServerConfigurationVO serverConfigurationVO) {
         var tunnelConfigurationBuilder = SSHTunnelConfiguration.builder();
-        if (serverConfigurationVO.getZkServer().trim().length() > 0) {
-            var localHostAndPort = serverConfigurationVO.getZkServer().split(":");
-            tunnelConfigurationBuilder.localhost(localHostAndPort[0]).localPort(Integer.parseInt(localHostAndPort[1]));
-        }
-
         if (serverConfigurationVO.getRemoteServer().trim().length() > 0) {
             var remoteHostAndPort = serverConfigurationVO.getRemoteServer().split(":");
             tunnelConfigurationBuilder.remoteHost(remoteHostAndPort[0]).remotePort(Integer.parseInt(remoteHostAndPort[1]));
@@ -139,12 +134,16 @@ public class PrettyZooFacade {
             var sshServerHostAndPort = serverConfigurationVO.getSshServer().split(":");
             tunnelConfigurationBuilder.sshHost(sshServerHostAndPort[0]).sshPort(Integer.parseInt(sshServerHostAndPort[1]));
         }
+        tunnelConfigurationBuilder.localhost(serverConfigurationVO.getZkHost())
+                .localPort(serverConfigurationVO.getZkPort());
         tunnelConfigurationBuilder.sshUsername(serverConfigurationVO.getSshUsername())
                 .sshPassword(serverConfigurationVO.getSshPassword());
 
-        final ServerConfiguration serverConfiguration = ServerConfiguration.builder()
+        var serverConfiguration = ServerConfiguration.builder()
                 .alias(serverConfigurationVO.getZkAlias())
-                .host(serverConfigurationVO.getZkServer())
+                .url(serverConfigurationVO.getZkUrl())
+                .host(serverConfigurationVO.getZkHost())
+                .port(serverConfigurationVO.getZkPort())
                 .aclList(new ArrayList<>(serverConfigurationVO.getAclList()))
                 .sshTunnelEnabled(serverConfigurationVO.isSshEnabled())
                 .sshTunnel(tunnelConfigurationBuilder.build())

@@ -28,11 +28,11 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
 
     @Override
     public void onServerRemove(ServerConfigData removeServer) {
-        if (removeServer.getHost().equals(ActiveServerContext.get())) {
+        if (removeServer.getUrl().equals(ActiveServerContext.get())) {
             ActiveServerContext.invalidate();
         }
-        TreeItemCache.getInstance().remove(removeServer.getHost());
-        configurationVO.getServers().removeIf(vo -> vo.getZkServer().equals(removeServer.getHost()));
+        TreeItemCache.getInstance().remove(removeServer.getUrl());
+        configurationVO.getServers().removeIf(vo -> vo.getZkUrl().equals(removeServer.getUrl()));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
         final ServerConfigurationVO vo = ConfigurationVOTransfer.to(newValue);
         configurationVO.getServers()
                 .stream()
-                .filter(s -> Objects.equals(s.getZkServer(), newValue.getHost()))
+                .filter(s -> Objects.equals(s.getZkUrl(), newValue.getUrl()))
                 .findFirst()
                 .map(old -> {
                     old.setAclList(FXCollections.observableList(newValue.getAclList()));

@@ -6,6 +6,7 @@ import cc.cc1234.core.configuration.entity.ServerConfiguration;
 import cc.cc1234.core.configuration.factory.ConfigurationFactory;
 import cc.cc1234.specification.config.PrettyZooConfigRepository;
 import cc.cc1234.specification.listener.ConfigurationChangeListener;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
+@Slf4j
 public class ConfigurationDomainService {
 
     private static final Cache<Configuration> configurationCache = new Cache<>();
@@ -31,7 +33,7 @@ public class ConfigurationDomainService {
 
     public void save(ServerConfiguration serverConfig) {
         final Configuration configuration = get().orElseThrow();
-        final Optional<ServerConfiguration> serverConfigurationOpt = get(serverConfig.getHost());
+        final Optional<ServerConfiguration> serverConfigurationOpt = get(serverConfig.getUrl());
         if (serverConfigurationOpt.isPresent()) {
             configuration.update(serverConfig);
         } else {
@@ -58,11 +60,11 @@ public class ConfigurationDomainService {
         return Optional.ofNullable(configurationCache.getVal());
     }
 
-    public Optional<ServerConfiguration> get(String host) {
+    public Optional<ServerConfiguration> get(String url) {
         return get().orElseThrow()
                 .getServerConfigurations()
                 .stream()
-                .filter(s -> s.getHost().equals(host))
+                .filter(s -> s.getUrl().equals(url))
                 .findFirst();
     }
 
@@ -87,7 +89,8 @@ public class ConfigurationDomainService {
             prettyZooConfigRepository.importConfig(stream);
             final Configuration originConfiguration = configurationCache.getVal();
             load(originConfiguration.getConfigurationChangeListeners());
-        } catch (IOException e) {
+        } catch (Exception e) {
+            log.error("import config failed", e);
             throw new IllegalStateException("import config failed", e);
         }
     }
@@ -96,6 +99,7 @@ public class ConfigurationDomainService {
         try (var stream = Files.newOutputStream(dir.toPath(), StandardOpenOption.WRITE, StandardOpenOption.CREATE)) {
             prettyZooConfigRepository.exportConfig(stream);
         } catch (IOException e) {
+            log.error("export config failed", e);
             throw new IllegalStateException("export config failed", e);
         }
     }

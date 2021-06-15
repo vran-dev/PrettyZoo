@@ -1,17 +1,18 @@
 package cc.cc1234.app.vo;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ServerConfigurationVO {
 
-    private SimpleStringProperty zkServer = new SimpleStringProperty("");
+    private SimpleStringProperty zkUrl = new SimpleStringProperty("");
 
-    private SimpleStringProperty zkAlias= new SimpleStringProperty("");
+    private SimpleStringProperty zkHost = new SimpleStringProperty("");
+
+    private SimpleIntegerProperty zkPort = new SimpleIntegerProperty(0);
+
+    private SimpleStringProperty zkAlias = new SimpleStringProperty("");
 
     private ObjectProperty<ObservableList<String>> aclList = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 
@@ -28,7 +29,9 @@ public class ServerConfigurationVO {
     private SimpleStringProperty remoteServer = new SimpleStringProperty("");
 
     public void unbind() {
-        zkServer.unbind();
+        zkUrl.unbind();
+        zkHost.unbind();
+        zkPort.unbind();
         zkAlias.unbind();
         aclList.unbind();
         sshEnabled.unbind();
@@ -36,6 +39,18 @@ public class ServerConfigurationVO {
         sshUsername.unbind();
         sshPassword.unbind();
         remoteServer.unbind();
+    }
+
+    public String getZkUrl() {
+        return zkUrl.get();
+    }
+
+    public SimpleStringProperty zkUrlProperty() {
+        return zkUrl;
+    }
+
+    public void setZkUrl(String zkUrl) {
+        this.zkUrl.set(zkUrl);
     }
 
     public ServerStatus getStatus() {
@@ -50,16 +65,28 @@ public class ServerConfigurationVO {
         this.status.set(status);
     }
 
-    public String getZkServer() {
-        return zkServer.get();
+    public String getZkHost() {
+        return zkHost.get();
     }
 
-    public void setZkServer(String zkServer) {
-        this.zkServer.set(zkServer);
+    public void setZkHost(String zkHost) {
+        this.zkHost.set(zkHost);
     }
 
-    public SimpleStringProperty zkServerProperty() {
-        return zkServer;
+    public SimpleStringProperty zkHostProperty() {
+        return zkHost;
+    }
+
+    public int getZkPort() {
+        return zkPort.get();
+    }
+
+    public SimpleIntegerProperty zkPortProperty() {
+        return zkPort;
+    }
+
+    public void setZkPort(int zkPort) {
+        this.zkPort.set(zkPort);
     }
 
     public ObservableList<String> getAclList() {

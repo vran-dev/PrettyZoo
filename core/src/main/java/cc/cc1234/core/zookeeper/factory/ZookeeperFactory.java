@@ -38,10 +38,9 @@ public class ZookeeperFactory {
                     .build();
         }
         var factory = new CuratorZookeeperConnectionFactory();
-        var params = new ZookeeperParams(serverConfig.getHost(), serverConfig.getAclList());
-        return new Zookeeper(serverConfig.getHost(), () -> factory.createAsync(params, serverListeners), tunnel, nodeListeners, serverListeners);
+        var params = new ZookeeperParams(serverConfig.getUrl(), serverConfig.getAclList());
+        return new Zookeeper(serverConfig.getUrl(), () -> factory.createAsync(params, serverListeners), tunnel, nodeListeners, serverListeners);
     }
-
 
     public Terminal createTerminal(String host, StringWriter writer) throws Exception {
         writer.write("connecting to " + host + "...\n");

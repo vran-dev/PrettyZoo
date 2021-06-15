@@ -230,18 +230,18 @@ public class NodeViewController {
                 });
     }
 
-    private void switchServer(String host) {
+    private void switchServer(String url) {
         zkNodeTreeView.setCellFactory(view -> new ZkNodeTreeCell(this::onNodeAdd, this::onNodeDelete));
-        initRootTreeNode(host);
-        ActiveServerContext.set(host);
-        prettyZooFacade.syncIfNecessary(host);
+        initRootTreeNode(url);
+        ActiveServerContext.set(url);
+        prettyZooFacade.syncIfNecessary(url);
         final TreeItem<ZkNode> selectedItem = zkNodeTreeView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
             nodeInfoViewController.show(nodeViewRightPane, selectedItem.getValue());
         } else {
             nodeInfoViewController.show(nodeViewRightPane);
         }
-        log.debug("switch server {} success", host);
+        log.debug("switch server {} success", url);
     }
 
     private void initRootTreeNode(String host) {

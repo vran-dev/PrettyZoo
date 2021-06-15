@@ -167,7 +167,7 @@ public class MainViewController {
             return;
         }
         Try.of(() -> prettyZooFacade.importConfig(configFile))
-                .onFailure(e -> Platform.runLater(() -> VToast.error("Failed to load config, file is not support")));
+                .onFailure(e -> Platform.runLater(() -> VToast.error(e.getMessage())));
     }
 
     private void initServerListView() {
@@ -177,8 +177,8 @@ public class MainViewController {
         serverListView.setCellFactory(cellCallback -> {
             var cell = new ZkServerListCell(
                     server -> serverViewController.connect(mainRightPane, server),
-                    server -> serverViewController.delete(server.getZkServer()),
-                    server -> serverViewController.disconnect(server.getZkServer())
+                    server -> serverViewController.delete(server.getZkUrl()),
+                    server -> serverViewController.disconnect(server.getZkUrl())
             );
             cell.setOnMouseClicked(event -> {
                 if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
