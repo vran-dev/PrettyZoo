@@ -55,6 +55,7 @@ public class ZookeeperDomainService {
         try {
             return zookeeperMap.get(url).set(path, data);
         } catch (Exception e) {
+            log.error("set data error " + url + " -> " + path, e);
             throw new IllegalStateException(e);
         }
     }
@@ -88,6 +89,7 @@ public class ZookeeperDomainService {
                 final Terminal terminal = new ZookeeperFactory().createTerminal(url, writer);
                 terminalMap.put(url, terminal);
             } catch (Exception e) {
+                log.error("init terminal error", e);
                 throw new IllegalStateException(e);
             }
         }
@@ -112,7 +114,7 @@ public class ZookeeperDomainService {
 
     public String execute4LetterCommand(String url, String command) {
         if (command == null || "".equals(command)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("command must not be empty");
         }
         final String[] hostAndPort = url.split(":");
         return new FourLetterCommand(hostAndPort[0], Integer.parseInt(hostAndPort[1])).request(command);

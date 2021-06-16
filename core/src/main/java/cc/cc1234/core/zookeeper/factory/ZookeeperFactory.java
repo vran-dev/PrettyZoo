@@ -6,15 +6,12 @@ import cc.cc1234.core.configuration.value.SSHTunnelConfiguration;
 import cc.cc1234.core.zookeeper.entity.SSHTunnel;
 import cc.cc1234.core.zookeeper.entity.Terminal;
 import cc.cc1234.core.zookeeper.entity.Zookeeper;
-import cc.cc1234.specification.connection.ZookeeperConnection;
-import cc.cc1234.specification.connection.ZookeeperConnectionFactory;
 import cc.cc1234.specification.connection.ZookeeperParams;
 import cc.cc1234.specification.listener.ServerListener;
 import cc.cc1234.specification.listener.ZookeeperNodeListener;
 import cc.cc1234.specification.util.StringWriter;
 import cc.cc1234.zookeeper.ZooKeeperMain;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.zookeeper.ZooKeeper;
 
 import java.util.List;
 
@@ -44,12 +41,12 @@ public class ZookeeperFactory {
 
     public Terminal createTerminal(String host, StringWriter writer) throws Exception {
         writer.write("connecting to " + host + "...\n");
-        ZookeeperConnectionFactory factory = new CuratorZookeeperConnectionFactory();
+        var factory = new CuratorZookeeperConnectionFactory();
         var params = new ZookeeperParams(host, List.of());
-        final ZookeeperConnection connection = factory.create(params);
-        final ZooKeeper zk = ((CuratorFramework) connection.getClient()).getZookeeperClient().getZooKeeper();
+        var connection = factory.create(params);
+        var zk = ((CuratorFramework) connection.getClient()).getZookeeperClient().getZooKeeper();
         writer.write("connect success \n");
-        final ZooKeeperMain zkMain = new ZooKeeperMain(zk, writer);
+        var zkMain = new ZooKeeperMain(zk, writer);
         return new Terminal(host, connection, zkMain);
     }
 }

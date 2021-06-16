@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="serverInfoPane" prefHeight="450.0" prefWidth="650.0" style="-fx-background-color: #fff;" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.ServerViewController">
+<AnchorPane fx:id="serverInfoPane" prefHeight="500.0" prefWidth="650.0" style="-fx-background-color: #fff;" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.ServerViewController">
    <children>
       <JFXTextField fx:id="zkHost" alignment="CENTER" layoutX="30.0" layoutY="25.0" prefHeight="26.0" prefWidth="160.0" promptText="host" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="25.0" />
       <Label layoutX="219.0" layoutY="30.0" text=":" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="30.0" />
