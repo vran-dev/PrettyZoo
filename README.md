@@ -14,6 +14,11 @@
 English |  [中文](README_CN.md)
 
 
+# Supported by
+
+[Jetbrains](https://www.jetbrains.com/)
+![https://www.jetbrains.com/](release/img/jetbrains.svg)
+
 
 # What
 
