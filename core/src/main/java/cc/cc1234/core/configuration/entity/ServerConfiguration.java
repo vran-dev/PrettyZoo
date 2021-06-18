@@ -19,13 +19,16 @@ public class ServerConfiguration {
 
     private Integer port;
 
-    private String alias;
+    @Builder.Default
+    private String alias = "";
 
-    private List<String> aclList;
+    @Builder.Default
+    private List<String> aclList = List.of();
 
     private int connectTimes;
 
-    private Boolean sshTunnelEnabled;
+    @Builder.Default
+    private Boolean sshTunnelEnabled = false;
 
     private SSHTunnelConfiguration sshTunnel;
 
@@ -36,7 +39,6 @@ public class ServerConfiguration {
         this.aclList = serverConfiguration.getAclList();
         this.sshTunnelEnabled = serverConfiguration.getSshTunnelEnabled();
         this.sshTunnel = serverConfiguration.getSshTunnel();
-        this.connectTimes = serverConfiguration.getConnectTimes();
         this.alias = serverConfiguration.getAlias();
     }
 
