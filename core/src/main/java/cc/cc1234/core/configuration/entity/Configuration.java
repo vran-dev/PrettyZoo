@@ -14,8 +14,10 @@ import java.util.stream.Collectors;
 @Getter
 public class Configuration {
 
+    @Singular
     private List<ServerConfiguration> serverConfigurations;
 
+    @Singular
     private List<ConfigurationChangeListener> configurationChangeListeners;
 
     private FontConfiguration fontConfiguration;
