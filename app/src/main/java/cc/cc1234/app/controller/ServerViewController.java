@@ -249,6 +249,11 @@ public class ServerViewController {
     private void initValidator() {
         zkHost.setValidators(new StringNotBlankValidator());
         zkPort.setValidators(new ZkPortValidator());
+        zkPort.textProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.equals("")) {
+                zkPort.validate();
+            }
+        }));
         zkAlias.setValidators(new StringNotEmptyValidator());
 
         var remoteServerMatchPattern = new RegexValidator("should be [host:port]");
