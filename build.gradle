@@ -40,6 +40,7 @@ subprojects {
         richtextfxVersion = '0.10.6'
         sshjVersion = '0.27.0'
         antlr4RuntimeVersion = '4.9.2'
+        commonsIoVersion = '2.10.0'
     }
 
     dependencies {
@@ -50,6 +51,7 @@ subprojects {
         testImplementation group: 'junit', name: 'junit', version: "${junitVersion}"
 
         constraints {
+            implementation group: 'commons-io', name: 'commons-io', version: "${commonsIoVersion}"
             implementation group: 'com.hierynomus', name: 'sshj', version: "${sshjVersion}"
             implementation group: 'org.fxmisc.richtext', name: 'richtextfx', version: "${richtextfxVersion}"
             implementation group: 'com.jfoenix', name: 'jfoenix', version: "${jfoenixVersion}"

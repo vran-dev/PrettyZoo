@@ -97,6 +97,7 @@ dependencies {
     implementation 'org.fxmisc.richtext:richtextfx'
     implementation 'org.antlr:antlr4-runtime'
     implementation 'com.jfoenix:jfoenix'
+    implementation 'commons-io:commons-io'
 }
 
 configJavafxRun {

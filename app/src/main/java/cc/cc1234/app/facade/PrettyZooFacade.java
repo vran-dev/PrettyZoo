@@ -2,6 +2,7 @@ package cc.cc1234.app.facade;
 
 import cc.cc1234.app.cache.TreeItemCache;
 import cc.cc1234.app.context.ActiveServerContext;
+import cc.cc1234.app.context.LogTailerThreadContext;
 import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.util.Asserts;
 import cc.cc1234.app.util.Fills;
@@ -25,11 +26,14 @@ import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import org.apache.commons.io.input.Tailer;
+import org.apache.commons.io.input.TailerListener;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -78,6 +82,7 @@ public class PrettyZooFacade {
     public void closeAll() {
         zookeeperDomainService.disconnectAll();
         zookeeperDomainService.closeAllTerminal();
+        LogTailerThreadContext.stop();
     }
 
     public void syncIfNecessary(String host) {
@@ -216,5 +221,42 @@ public class PrettyZooFacade {
 
     public String executeFourLetterCommand(String server, String fourLetter) {
         return zookeeperDomainService.execute4LetterCommand(server, fourLetter);
+    }
+
+    public void startLogTailer(Consumer<String> lineConsumer, Consumer<Exception> exceptionConsumer) {
+        var userHome = System.getProperty("user.home");
+        var path = Paths.get(userHome + "/.prettyZoo/log/prettyZoo.log");
+        var tailerThread = new Thread(() -> {
+            new Tailer(path.toFile(), new TailerListener() {
+                @Override
+                public void init(Tailer tailer) {
+                    log.info("init log dashboard");
+                }
+
+                @Override
+                public void fileNotFound() {
+                    log.info("can't find log file in " + path);
+                }
+
+                @Override
+                public void fileRotated() {
+
+                }
+
+                @Override
+                public void handle(String line) {
+                    if (line != null) {
+                        lineConsumer.accept(line);
+                    }
+                }
+
+                @Override
+                public void handle(Exception ex) {
+                    exceptionConsumer.accept(ex);
+                }
+            }, 1000, true).run();
+        });
+        LogTailerThreadContext.set(tailerThread);
+        tailerThread.start();
     }
 }
