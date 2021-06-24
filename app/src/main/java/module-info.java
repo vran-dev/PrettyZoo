@@ -16,7 +16,7 @@ open module app.main {
     requires org.antlr.antlr4.runtime;
     requires zookeeper;
     requires com.jfoenix;
-
+    requires org.apache.commons.io;
     // internal module
     requires core.main;
     requires specification.main;

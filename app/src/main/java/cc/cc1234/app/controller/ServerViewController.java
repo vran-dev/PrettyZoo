@@ -172,6 +172,9 @@ public class ServerViewController {
                     stackPane.getChildren().add(serverInfoPane);
                 });
             }
+        } else {
+            stackPane.getChildren().remove(serverInfoPane);
+            stackPane.getChildren().add(serverInfoPane);
         }
     }
 

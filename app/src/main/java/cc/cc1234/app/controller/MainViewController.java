@@ -65,6 +65,9 @@ public class MainViewController {
     private MenuItem importMenuItem;
 
     @FXML
+    private MenuItem logMenuItem;
+
+    @FXML
     private Menu langMenu;
 
     @FXML
@@ -77,6 +80,8 @@ public class MainViewController {
     private Hyperlink prettyZooLink;
 
     private ServerViewController serverViewController = FXMLs.getController("fxml/ServerView.fxml");
+
+    private LogViewController logViewController = FXMLs.getController("fxml/LogView.fxml");
 
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
@@ -91,6 +96,7 @@ public class MainViewController {
         });
         exportMenuItem.setOnAction(e -> onExportAction());
         importMenuItem.setOnAction(e -> onImportAction());
+        logMenuItem.setOnAction(e -> logViewController.show(mainRightPane));
         newVersionLabel.setOnMouseClicked(e -> HostServiceContext.jumpToReleases());
         serverViewController.setOnClose(() -> this.serverListView.selectionModelProperty().get().clearSelection());
         prettyZooLink.setOnMouseClicked(e -> HostServiceContext.get().showDocument(prettyZooLink.getText()));
