@@ -1,6 +1,7 @@
 package cc.cc1234.app.controller;
 
 import cc.cc1234.app.facade.PrettyZooFacade;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -21,11 +22,21 @@ public class LogViewController {
     @FXML
     private AnchorPane logViewPane;
 
+    @FXML
+    private JFXButton closeButton;
+
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
     @FXML
     public void initialize() {
         logContentArea.setWrapText(true);
+        closeButton.setOnAction(e -> {
+            var parent = logViewPane.getParent();
+            if (parent != null && parent instanceof StackPane) {
+                var parentStackPane = (StackPane) parent;
+                parentStackPane.getChildren().remove(logViewPane);
+            }
+        });
     }
 
     public void show(StackPane parent) {

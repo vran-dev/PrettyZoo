@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -7,6 +8,7 @@
 <AnchorPane fx:id="logViewPane" prefHeight="500.0" prefWidth="650.0" style="-fx-background-color: #FFF;" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.LogViewController">
    <children>
       <JFXTextArea fx:id="logContentArea" editable="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="2.0" />
+      <JFXButton fx:id="closeButton" layoutX="612.0" layoutY="14.0" styleClass="v-button" text="X" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
    </children>
    <effect>
       <DropShadow color="#dddddd" offsetX="1.0" offsetY="1.0" />
