@@ -40,6 +40,11 @@ public class LogViewController {
     }
 
     public void show(StackPane parent) {
+        parent.getChildren().stream()
+                .filter(c -> "nodeViewPane".equals(c.getId()))
+                .findFirst()
+                .ifPresent(c -> parent.getChildren().remove(c));
+
         if (!parent.getChildren().contains(logViewPane)) {
             parent.getChildren().add(logViewPane);
             var userHome = System.getProperty("user.home");
