@@ -403,26 +403,9 @@ public class ServerViewController {
                         });
                     }
                 }
-            })).thenAccept(v -> Platform.runLater(() -> {
-                nodeViewController.show(parent, serverConfigurationVO.getZkUrl());
-                if (currentNodeViewController != null) {
-                    currentNodeViewController.hideIfNotActive();
-                }
-                currentNodeViewController = nodeViewController;
-                parent.getChildren().remove(serverInfoPane);
-                if (serverConfigurationVO.getStatus() == ServerStatus.CONNECTING) {
-                    serverConfigurationVO.setStatus(ServerStatus.CONNECTED);
-                }
-                buttonHBox.setDisable(false);
-            })).exceptionally(e -> {
-                log.error("connect server error", e);
-                Platform.runLater(() -> {
-                    buttonHBox.setDisable(false);
-                    serverConfigurationVO.setStatus(ServerStatus.DISCONNECTED);
-                    VToast.error(e.getCause().getMessage());
-                });
-                return null;
-            });
+            }))
+                    .thenAccept(v -> connectSuccessCallback(parent, nodeViewController, serverConfigurationVO))
+                    .exceptionally(e -> connectErrorCallback(e, serverConfigurationVO));
         }).onFailure(e -> {
             log.error("connect server error", e);
             VToast.error(e.getMessage());
@@ -437,6 +420,34 @@ public class ServerViewController {
             nodeViewControllerMap.put(server, nodeViewController);
             return nodeViewController;
         }
+    }
+
+    private void connectSuccessCallback(StackPane parent,
+                                        NodeViewController nodeViewController,
+                                        ServerConfigurationVO serverConfigurationVO) {
+        Platform.runLater(() -> {
+            nodeViewController.show(parent, serverConfigurationVO.getZkUrl());
+            if (currentNodeViewController != null) {
+                currentNodeViewController.hideIfNotActive();
+            }
+            currentNodeViewController = nodeViewController;
+            parent.getChildren().remove(serverInfoPane);
+
+            if (serverConfigurationVO.getStatus() == ServerStatus.CONNECTING) {
+                serverConfigurationVO.setStatus(ServerStatus.CONNECTED);
+            }
+            buttonHBox.setDisable(false);
+        });
+    }
+
+    private Void connectErrorCallback(Throwable e, ServerConfigurationVO serverConfigurationVO) {
+        log.error("connect server error", e);
+        Platform.runLater(() -> {
+            buttonHBox.setDisable(false);
+            serverConfigurationVO.setStatus(ServerStatus.DISCONNECTED);
+            VToast.error(e.getCause().getMessage());
+        });
+        return null;
     }
 
     public void setOnClose(Runnable runnable) {

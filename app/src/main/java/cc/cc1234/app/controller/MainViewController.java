@@ -96,7 +96,10 @@ public class MainViewController {
         });
         exportMenuItem.setOnAction(e -> onExportAction());
         importMenuItem.setOnAction(e -> onImportAction());
-        logMenuItem.setOnAction(e -> logViewController.show(mainRightPane));
+        logMenuItem.setOnAction(e -> {
+            logViewController.show(mainRightPane);
+            serverListView.selectionModelProperty().get().clearSelection();
+        });
         newVersionLabel.setOnMouseClicked(e -> HostServiceContext.jumpToReleases());
         serverViewController.setOnClose(() -> this.serverListView.selectionModelProperty().get().clearSelection());
         prettyZooLink.setOnMouseClicked(e -> HostServiceContext.get().showDocument(prettyZooLink.getText()));
