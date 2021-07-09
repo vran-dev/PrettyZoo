@@ -75,7 +75,10 @@ public class Configuration {
                 .ifPresent(s -> {
                     throw new IllegalStateException(serverConfiguration.getUrl() + " exists");
                 });
-        serverConfigurations.add(serverConfiguration);
+        var copiedServers = new ArrayList<>(this.serverConfigurations);
+        copiedServers.add(serverConfiguration);
+        this.serverConfigurations = copiedServers;
+        this.serverConfigurations.add(serverConfiguration);
         configurationChangeListeners.forEach(listener -> listener.onServerAdd(toServerConfig(serverConfiguration)));
     }
 
