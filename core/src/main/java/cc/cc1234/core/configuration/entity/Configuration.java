@@ -78,7 +78,6 @@ public class Configuration {
         var copiedServers = new ArrayList<>(this.serverConfigurations);
         copiedServers.add(serverConfiguration);
         this.serverConfigurations = copiedServers;
-        this.serverConfigurations.add(serverConfiguration);
         configurationChangeListeners.forEach(listener -> listener.onServerAdd(toServerConfig(serverConfiguration)));
     }
 
