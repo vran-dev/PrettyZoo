@@ -348,7 +348,7 @@ public class ServerViewController {
     private void onDelete() {
         Asserts.notBlank(zkHost.getText(), "server can not be null");
         Asserts.notBlank(zkPort.getText(), "port can not be null");
-        String url = zkHost.getText() + ":" + zkPort;
+        String url = zkHost.getText() + ":" + zkPort.getText();
         prettyZooFacade.deleteServerConfiguration(url);
         if (prettyZooFacade.getServerConfigurations().isEmpty()) {
             onClose();
