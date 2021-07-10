@@ -2,6 +2,7 @@ package cc.cc1234.core.zookeeper.entity;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.LocalPortForwarder;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
@@ -12,6 +13,7 @@ import java.net.ServerSocket;
 
 @Builder
 @Getter
+@Slf4j
 public class SSHTunnel {
 
     private String localhost;
@@ -34,7 +36,7 @@ public class SSHTunnel {
 
     private ServerSocket proxySocket;
 
-    public void create() {
+    public void createAsync() {
         try {
             sshClient = new SSHClient();
             sshClient.addHostKeyVerifier(new PromiscuousVerifier());
@@ -45,10 +47,41 @@ public class SSHTunnel {
             proxySocket = new ServerSocket();
             proxySocket.setReuseAddress(true);
             proxySocket.bind(new InetSocketAddress(localhost, localPort));
-            sshClient.newLocalPortForwarder(param, proxySocket).listen();
+            new Thread(() -> {
+                try {
+                    sshClient.newLocalPortForwarder(param, proxySocket).listen();
+                } catch (IOException e) {
+                    throw new IllegalStateException(e.getMessage(), e);
+                }
+            }).start();
         } catch (IOException e) {
-            throw new IllegalStateException(e.getMessage(), e);
+            log.error("create ssh-tunnel failed", e);
+            throw new IllegalStateException(e.getMessage());
         }
+    }
+
+    public void blockUntilConnected() {
+        // block until connected
+        try {
+            int times = 1;
+            while (!isConnected() && times < 7) {
+                log.info("Try to connect SSH-Tunnel " + times + " times, tunnel = " + this);
+                Thread.sleep(1000);
+                times++;
+            }
+        } catch (Exception e) {
+            this.close();
+            throw new IllegalStateException(e);
+        }
+
+        if (!isConnected()) {
+            this.close();
+            throw new IllegalStateException("connect SSH Tunnel failed");
+        }
+    }
+
+    public boolean isConnected() {
+        return sshClient.isConnected();
     }
 
     public void close() {

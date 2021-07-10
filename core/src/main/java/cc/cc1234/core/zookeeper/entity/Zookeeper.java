@@ -34,8 +34,10 @@ public class Zookeeper {
         Objects.requireNonNull(connectionSupplier);
         this.url = url;
         this.sshTunnel = sshTunnel;
+
         if (sshTunnel != null) {
-            sshTunnel.create();
+            sshTunnel.createAsync();
+            sshTunnel.blockUntilConnected();
         }
         this.connection = connectionSupplier.get();
         this.nodeListeners = nodeListeners;
@@ -43,10 +45,10 @@ public class Zookeeper {
     }
 
     public void disconnect() {
+        connection.close();
         if (sshTunnel != null) {
             sshTunnel.close();
         }
-        connection.close();
         serverListeners.forEach(l -> l.onClose(url));
     }
 
