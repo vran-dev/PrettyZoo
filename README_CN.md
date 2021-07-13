@@ -42,7 +42,7 @@ mac 安装提示：已损坏，无法打开
 4. - [x] 节点数据高亮（V1.7.0+）
 5. - [x] 迁移到 [Jfoenix](https://github.com/sshahine/JFoenix)  UI 库 (V1.8.0+)
 6. - [ ] Zookeeper 监控
-7. - [ ] 日志看板
+7. - [x] 日志看板
 
 
 

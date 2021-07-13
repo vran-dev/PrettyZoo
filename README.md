@@ -40,7 +40,7 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 4. - [x] node data highlight (V1.7.0+)
 5. - [x] migration UI library to   [Jfoenix](https://github.com/sshahine/JFoenix) ( V1.8.0+)
 6. - [ ] zookeeper monitor
-7. - [ ] log dashboard
+7. - [x] log dashboard (v1.9.3)
 
 
 
