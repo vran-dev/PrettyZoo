@@ -43,6 +43,34 @@
     -fx-content-display: center;
 }
 
+.visible-button {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/visible/visible.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-size: 18;
+    -fx-pref-height: 26;
+    -fx-pref-width: 26;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.visible-button:pressed {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/visible/visible-off.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-size: 18;
+    -fx-pref-height: 26;
+    -fx-pref-width: 26;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
 /* ====================== background color ======================*/
 
 .primary-background {
@@ -113,7 +141,6 @@
     -fx-fill: #2C6DD2;
     -fx-text-fill: #2C6DD2;
 }
-
 
 
 /*   ==================================  Tree view ==================================*/

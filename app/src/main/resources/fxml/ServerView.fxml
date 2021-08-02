@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXToggleButton?>
@@ -37,8 +38,9 @@
                      <children>
                         <JFXTextField fx:id="sshServer" disable="true" layoutX="15.0" layoutY="14.0" prefHeight="20.0" promptText="ssh server : port" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
                         <JFXTextField fx:id="sshUsername" disable="true" layoutX="15.0" layoutY="54.0" prefHeight="20.0" promptText="%server.input.ssh.username.prompt" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="85.0" />
-                        <JFXTextField fx:id="sshPassword" disable="true" layoutX="15.0" layoutY="93.0" prefHeight="20.0" promptText="%server.input.ssh.password.prompt" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="130.0" />
+                        <JFXPasswordField fx:id="sshPassword" disable="true" layoutX="32.0" layoutY="132.0" prefHeight="23.0" prefWidth="144.0" promptText="%server.input.ssh.password.prompt" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="131.0" />
                         <Text layoutX="92.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SSH Server" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="10.0" />
+                        <JFXButton fx:id="sshPasswordVisibleButton" layoutX="182.0" layoutY="132.0" prefHeight="23.0" prefWidth="34.0" styleClass="visible-button" text="visible" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="131.0" />
                      </children>
                   </AnchorPane>
                   <ProgressBar fx:id="sshTunnelProgressBarTo" prefHeight="18.0" prefWidth="75.0" progress="0.0" GridPane.columnIndex="1" />
