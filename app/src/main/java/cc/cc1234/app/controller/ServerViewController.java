@@ -15,6 +15,8 @@ import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.app.vo.ServerStatus;
 import cc.cc1234.specification.listener.ServerListener;
 import com.google.common.base.Strings;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.validation.RegexValidator;
@@ -77,7 +79,10 @@ public class ServerViewController {
     private JFXTextField sshUsername;
 
     @FXML
-    private JFXTextField sshPassword;
+    private JFXPasswordField sshPassword;
+
+    @FXML
+    private JFXButton sshPasswordVisibleButton;
 
     @FXML
     private JFXTextField remoteServer;
@@ -246,7 +251,32 @@ public class ServerViewController {
                 "digest:test:test\r" +
                 "auth:test:test\r" +
                 "\n");
+        initPasswordComponent();
         initValidator();
+    }
+
+    private void initPasswordComponent() {
+        final var originPromptKey = "originPromptText";
+        final var originTextKey = "originText";
+        sshPasswordVisibleButton.setOnMousePressed(e -> {
+            sshPassword.getProperties().put(originPromptKey, sshPassword.getPromptText());
+            if (sshPassword.getText() != null && !sshPassword.getText().isEmpty()) {
+                sshPassword.getProperties().put(originTextKey, sshPassword.getText());
+                sshPassword.promptTextProperty().set(sshPassword.getText());
+                sshPassword.setText("");
+            }
+        });
+        sshPasswordVisibleButton.setOnMouseReleased(e -> {
+            var originPromptText = ((String) sshPassword.getProperties()
+                    .getOrDefault(originPromptKey, ""));
+            var originText = ((String) sshPassword.getProperties()
+                    .getOrDefault(originTextKey, ""));
+            sshPassword.promptTextProperty().set(originPromptText);
+            sshPassword.textProperty().set(originText);
+
+            sshPassword.getProperties().remove(originTextKey);
+            sshPassword.getProperties().remove(originPromptKey);
+        });
     }
 
     private void initValidator() {
@@ -370,40 +400,40 @@ public class ServerViewController {
             buttonHBox.setDisable(true);
             NodeViewController nodeViewController = retrieveNodeViewController(serverConfigurationVO.getZkUrl());
             prettyZooFacade.connect(serverConfigurationVO.getZkUrl(), List.of(new DefaultTreeNodeListener()), List.of(new ServerListener() {
-                @Override
-                public void onClose(String serverUrl) {
-                    if (serverUrl.equals(serverConfigurationVO.getZkUrl())) {
-                        Platform.runLater(() -> {
-                            serverConfigurationVO.setStatus(ServerStatus.DISCONNECTED);
-                            if (closeHook != null) {
-                                closeHook.run();
+                        @Override
+                        public void onClose(String serverUrl) {
+                            if (serverUrl.equals(serverConfigurationVO.getZkUrl())) {
+                                Platform.runLater(() -> {
+                                    serverConfigurationVO.setStatus(ServerStatus.DISCONNECTED);
+                                    if (closeHook != null) {
+                                        closeHook.run();
+                                    }
+                                });
                             }
-                        });
-                    }
-                }
+                        }
 
-                @Override
-                public void onReconnecting(String serverHost) {
-                    if (serverHost.equals(serverConfigurationVO.getZkUrl())) {
-                        Platform.runLater(() -> {
-                            serverConfigurationVO.setStatus(ServerStatus.RECONNECTING);
-                            VToast.error(serverHost + " lost connection");
-                        });
-                    }
-                }
-
-                @Override
-                public void onConnected(String serverHost) {
-                    if (serverHost.equals(serverConfigurationVO.getZkUrl())) {
-                        Platform.runLater(() -> {
-                            if (serverConfigurationVO.getStatus() == ServerStatus.RECONNECTING) {
-                                VToast.info("reconnect " + serverHost + " success");
+                        @Override
+                        public void onReconnecting(String serverHost) {
+                            if (serverHost.equals(serverConfigurationVO.getZkUrl())) {
+                                Platform.runLater(() -> {
+                                    serverConfigurationVO.setStatus(ServerStatus.RECONNECTING);
+                                    VToast.error(serverHost + " lost connection");
+                                });
                             }
-                            serverConfigurationVO.setStatus(ServerStatus.CONNECTED);
-                        });
-                    }
-                }
-            }))
+                        }
+
+                        @Override
+                        public void onConnected(String serverHost) {
+                            if (serverHost.equals(serverConfigurationVO.getZkUrl())) {
+                                Platform.runLater(() -> {
+                                    if (serverConfigurationVO.getStatus() == ServerStatus.RECONNECTING) {
+                                        VToast.info("reconnect " + serverHost + " success");
+                                    }
+                                    serverConfigurationVO.setStatus(ServerStatus.CONNECTED);
+                                });
+                            }
+                        }
+                    }))
                     .thenAccept(v -> connectSuccessCallback(parent, nodeViewController, serverConfigurationVO))
                     .exceptionally(e -> connectErrorCallback(e, serverConfigurationVO));
         }).onFailure(e -> {

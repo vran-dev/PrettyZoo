@@ -70,7 +70,7 @@ mac 安装提示：已损坏，无法打开
 
 
 
-- over view
+- overview
 
 ![](release/img/main.png)
 
