@@ -28,6 +28,8 @@ public class ServerConfigurationVO {
 
     private SimpleStringProperty remoteServer = new SimpleStringProperty("");
 
+    private SimpleIntegerProperty remoteServerPort = new SimpleIntegerProperty(0);
+
     public void unbind() {
         zkUrl.unbind();
         zkHost.unbind();
@@ -39,6 +41,7 @@ public class ServerConfigurationVO {
         sshUsername.unbind();
         sshPassword.unbind();
         remoteServer.unbind();
+        remoteServerPort.unbind();
     }
 
     public String getZkUrl() {
@@ -159,6 +162,18 @@ public class ServerConfigurationVO {
 
     public SimpleStringProperty remoteServerProperty() {
         return remoteServer;
+    }
+
+    public int getRemoteServerPort() {
+        return remoteServerPort.get();
+    }
+
+    public SimpleIntegerProperty remoteServerPortProperty() {
+        return remoteServerPort;
+    }
+
+    public void setRemoteServerPort(int remoteServerPort) {
+        this.remoteServerPort.set(remoteServerPort);
     }
 
     public String getZkAlias() {

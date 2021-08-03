@@ -131,8 +131,8 @@ public class PrettyZooFacade {
     public void saveServerConfiguration(ServerConfigurationVO serverConfigurationVO) {
         var tunnelConfigurationBuilder = SSHTunnelConfiguration.builder();
         if (serverConfigurationVO.getRemoteServer().trim().length() > 0) {
-            var remoteHostAndPort = serverConfigurationVO.getRemoteServer().split(":");
-            tunnelConfigurationBuilder.remoteHost(remoteHostAndPort[0]).remotePort(Integer.parseInt(remoteHostAndPort[1]));
+            tunnelConfigurationBuilder.remoteHost(serverConfigurationVO.getRemoteServer())
+                    .remotePort(serverConfigurationVO.getRemoteServerPort());
         }
 
         if (serverConfigurationVO.getSshServer().trim().length() > 0) {

@@ -46,8 +46,10 @@
                   <ProgressBar fx:id="sshTunnelProgressBarTo" prefHeight="18.0" prefWidth="75.0" progress="0.0" GridPane.columnIndex="1" />
                   <AnchorPane prefHeight="140.0" prefWidth="200.0" style="-fx-border-color: #ddd;" GridPane.columnIndex="2">
                      <children>
-                        <JFXTextField fx:id="remoteServer" disable="true" layoutX="13.0" layoutY="61.0" prefHeight="23.0" prefWidth="170.0" promptText="remote server:port" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="70.0" />
-                        <Text layoutX="70.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remote Server" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="20.0" />
+                        <JFXTextField fx:id="remoteServer" disable="true" layoutX="33.0" layoutY="73.0" prefHeight="23.0" prefWidth="80.0" promptText="remote server" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="72.0" />
+                        <Text layoutX="70.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remote Server" AnchorPane.leftAnchor="22.0" AnchorPane.topAnchor="20.0" />
+                        <Label layoutX="154.0" layoutY="75.0" prefHeight="23.0" text=":" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="71.0" />
+                        <JFXTextField fx:id="remoteServerPort" disable="true" layoutX="170.0" layoutY="72.0" prefHeight="23.0" prefWidth="70.0" promptText="port" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="71.0" />
                      </children>
                   </AnchorPane>
                </children>
