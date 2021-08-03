@@ -6,9 +6,9 @@ import cc.cc1234.app.listener.DefaultTreeNodeListener;
 import cc.cc1234.app.util.Asserts;
 import cc.cc1234.app.util.FXMLs;
 import cc.cc1234.app.validator.NotNullValidator;
+import cc.cc1234.app.validator.PortValidator;
 import cc.cc1234.app.validator.StringNotBlankValidator;
 import cc.cc1234.app.validator.StringNotEmptyValidator;
-import cc.cc1234.app.validator.ZkPortValidator;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.view.transitions.Transitions;
 import cc.cc1234.app.vo.ServerConfigurationVO;
@@ -86,6 +86,9 @@ public class ServerViewController {
 
     @FXML
     private JFXTextField remoteServer;
+
+    @FXML
+    private JFXTextField remoteServerPort;
 
     @FXML
     private Button closeButton;
@@ -216,6 +219,7 @@ public class ServerViewController {
         sshUsername.textProperty().setValue(config.getSshUsername());
         sshPassword.textProperty().setValue(config.getSshPassword());
         remoteServer.textProperty().setValue(config.getRemoteServer());
+        remoteServerPort.textProperty().setValue(config.getRemoteServerPort() + "");
         sshTunnelCheckbox.selectedProperty().setValue(config.isSshEnabled());
         final String acl = String.join("\n", config.getAclList());
         aclTextArea.textProperty().setValue(acl);
@@ -281,7 +285,7 @@ public class ServerViewController {
 
     private void initValidator() {
         zkHost.setValidators(new StringNotBlankValidator());
-        zkPort.setValidators(new ZkPortValidator());
+        zkPort.setValidators(new PortValidator());
         zkPort.textProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue != null && !newValue.equals("")) {
                 zkPort.validate();
@@ -289,9 +293,8 @@ public class ServerViewController {
         }));
         zkAlias.setValidators(new StringNotEmptyValidator());
 
-        var remoteServerMatchPattern = new RegexValidator("should be [host:port]");
-        remoteServerMatchPattern.setRegexPattern(".*\\:\\d+$");
-        remoteServer.setValidators(remoteServerMatchPattern);
+        remoteServer.setValidators(new StringNotBlankValidator());
+        remoteServerPort.setValidators(new PortValidator());
         sshUsername.setValidators(new NotNullValidator());
         sshPassword.setValidators(new NotNullValidator());
 
@@ -305,6 +308,7 @@ public class ServerViewController {
         zkPort.resetValidation();
         zkAlias.resetValidation();
         remoteServer.resetValidation();
+        remoteServerPort.resetValidation();
         sshUsername.resetValidation();
         sshPassword.resetValidation();
         sshServer.resetValidation();
@@ -317,6 +321,7 @@ public class ServerViewController {
         sshUsername.disableProperty().bind(disableBinding);
         sshPassword.disableProperty().bind(disableBinding);
         remoteServer.disableProperty().bind(disableBinding);
+        remoteServerPort.disableProperty().bind(disableBinding);
     }
 
     private void onSave() {
@@ -330,19 +335,24 @@ public class ServerViewController {
                 VToast.error(serverUrl + " already exists");
             } else {
                 var serverConfigVO = new ServerConfigurationVO();
+                // zookeeper server config
+                serverConfigVO.setZkAlias(zkAlias.textProperty().get());
                 serverConfigVO.setZkHost(zkHost.textProperty().get());
                 serverConfigVO.setZkPort(Integer.parseInt(zkPort.getText()));
                 serverConfigVO.setZkUrl(zkHost.getText() + ":" + zkPort.getText());
+                // ssh-tunnel config
                 serverConfigVO.setRemoteServer(remoteServer.textProperty().get());
+                serverConfigVO.setRemoteServerPort(Integer.parseInt(remoteServerPort.textProperty().get()));
                 serverConfigVO.setSshUsername(sshUsername.textProperty().get());
                 serverConfigVO.setSshPassword(sshPassword.textProperty().get());
                 serverConfigVO.setSshServer(sshServer.textProperty().get());
-                serverConfigVO.setZkAlias(zkAlias.textProperty().get());
                 serverConfigVO.setSshEnabled(sshTunnelCheckbox.isSelected());
+                // zookeeper ACL config
                 List<String> acls = Arrays.stream(aclTextArea.textProperty().get().split("\n"))
                         .filter(acl -> !Strings.isNullOrEmpty(acl))
                         .collect(Collectors.toList());
                 serverConfigVO.getAclList().addAll(acls);
+
                 Try.of(() -> prettyZooFacade.saveServerConfiguration(serverConfigVO))
                         .onSuccess(e -> {
                             if (zkHost.isEditable()) {
@@ -365,6 +375,7 @@ public class ServerViewController {
                     zkPort.validate(),
                     zkAlias.validate(),
                     remoteServer.validate(),
+                    remoteServerPort.validate(),
                     sshUsername.validate(),
                     sshPassword.validate(),
                     sshServer.validate()

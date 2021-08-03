@@ -3,7 +3,7 @@ package cc.cc1234.app.validator;
 import com.jfoenix.validation.base.ValidatorBase;
 import javafx.scene.control.TextInputControl;
 
-public class ZkPortValidator extends ValidatorBase {
+public class PortValidator extends ValidatorBase {
 
     @Override
     protected void eval() {

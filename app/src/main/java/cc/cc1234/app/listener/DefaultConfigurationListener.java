@@ -56,7 +56,8 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
                                 if (sshTunnelConfig.getRemoteHost() == null) {
                                     old.setRemoteServer("");
                                 } else {
-                                    old.setRemoteServer(String.format("%s:%d", sshTunnelConfig.getRemoteHost(), sshTunnelConfig.getRemotePort()));
+                                    old.setRemoteServer(sshTunnelConfig.getRemoteHost());
+                                    old.setRemoteServerPort(sshTunnelConfig.getRemotePort());
                                 }
                                 old.setSshUsername(sshTunnelConfig.getSshUsername());
                                 old.setSshPassword(sshTunnelConfig.getPassword());
