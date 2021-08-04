@@ -19,7 +19,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
-import com.jfoenix.validation.RegexValidator;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -37,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -74,6 +74,9 @@ public class ServerViewController {
 
     @FXML
     private JFXTextField sshServer;
+
+    @FXML
+    private JFXTextField sshServerPort;
 
     @FXML
     private JFXTextField sshUsername;
@@ -216,10 +219,11 @@ public class ServerViewController {
         zkPort.textProperty().setValue(config.getZkPort() + "");
         zkAlias.textProperty().setValue(config.getZkAlias());
         sshServer.textProperty().setValue(config.getSshServer());
+        sshServerPort.textProperty().setValue(Objects.toString(config.getSshServerPort(), ""));
         sshUsername.textProperty().setValue(config.getSshUsername());
         sshPassword.textProperty().setValue(config.getSshPassword());
         remoteServer.textProperty().setValue(config.getRemoteServer());
-        remoteServerPort.textProperty().setValue(config.getRemoteServerPort() + "");
+        remoteServerPort.textProperty().setValue(Objects.toString(config.getRemoteServerPort(), ""));
         sshTunnelCheckbox.selectedProperty().setValue(config.isSshEnabled());
         final String acl = String.join("\n", config.getAclList());
         aclTextArea.textProperty().setValue(acl);
@@ -295,12 +299,11 @@ public class ServerViewController {
 
         remoteServer.setValidators(new StringNotBlankValidator());
         remoteServerPort.setValidators(new PortValidator());
+
+        sshServer.setValidators(new StringNotBlankValidator());
+        sshServerPort.setValidators(new PortValidator());
         sshUsername.setValidators(new NotNullValidator());
         sshPassword.setValidators(new NotNullValidator());
-
-        var sshServerMatchPattern = new RegexValidator("should be [host:port]");
-        sshServerMatchPattern.setRegexPattern(".*\\:\\d+$");
-        sshServer.setValidators(sshServerMatchPattern);
     }
 
     private void resetValidate() {
@@ -312,12 +315,14 @@ public class ServerViewController {
         sshUsername.resetValidation();
         sshPassword.resetValidation();
         sshServer.resetValidation();
+        sshServerPort.resetValidation();
     }
 
     private void sshTunnelViewPropertyBind() {
         var sshTunnelEnabledProperty = sshTunnelCheckbox.selectedProperty();
         var disableBinding = Bindings.createBooleanBinding(() -> !sshTunnelEnabledProperty.get(), sshTunnelEnabledProperty);
         sshServer.disableProperty().bind(disableBinding);
+        sshServerPort.disableProperty().bind(disableBinding);
         sshUsername.disableProperty().bind(disableBinding);
         sshPassword.disableProperty().bind(disableBinding);
         remoteServer.disableProperty().bind(disableBinding);
@@ -342,10 +347,19 @@ public class ServerViewController {
                 serverConfigVO.setZkUrl(zkHost.getText() + ":" + zkPort.getText());
                 // ssh-tunnel config
                 serverConfigVO.setRemoteServer(remoteServer.textProperty().get());
-                serverConfigVO.setRemoteServerPort(Integer.parseInt(remoteServerPort.textProperty().get()));
+                if (Strings.isNullOrEmpty(remoteServerPort.getText())) {
+                    serverConfigVO.setRemoteServerPort(null);
+                } else {
+                    serverConfigVO.setRemoteServerPort(Integer.parseInt(remoteServerPort.getText()));
+                }
                 serverConfigVO.setSshUsername(sshUsername.textProperty().get());
                 serverConfigVO.setSshPassword(sshPassword.textProperty().get());
                 serverConfigVO.setSshServer(sshServer.textProperty().get());
+                if (Strings.isNullOrEmpty(sshServerPort.getText())) {
+                    serverConfigVO.setSshServerPort(null);
+                } else {
+                    serverConfigVO.setSshServerPort(Integer.parseInt(sshServerPort.getText()));
+                }
                 serverConfigVO.setSshEnabled(sshTunnelCheckbox.isSelected());
                 // zookeeper ACL config
                 List<String> acls = Arrays.stream(aclTextArea.textProperty().get().split("\n"))
@@ -378,7 +392,8 @@ public class ServerViewController {
                     remoteServerPort.validate(),
                     sshUsername.validate(),
                     sshPassword.validate(),
-                    sshServer.validate()
+                    sshServer.validate(),
+                    sshServerPort.validate()
             ).allMatch(t -> t);
         } else {
             baseValidate = Stream.of(zkHost.validate(), zkPort.validate(), zkAlias.validate()).allMatch(t -> t);

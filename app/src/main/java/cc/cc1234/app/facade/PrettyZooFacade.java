@@ -136,8 +136,8 @@ public class PrettyZooFacade {
         }
 
         if (serverConfigurationVO.getSshServer().trim().length() > 0) {
-            var sshServerHostAndPort = serverConfigurationVO.getSshServer().split(":");
-            tunnelConfigurationBuilder.sshHost(sshServerHostAndPort[0]).sshPort(Integer.parseInt(sshServerHostAndPort[1]));
+            tunnelConfigurationBuilder.sshHost(serverConfigurationVO.getSshServer())
+                    .sshPort(serverConfigurationVO.getSshServerPort());
         }
         tunnelConfigurationBuilder.localhost(serverConfigurationVO.getZkHost())
                 .localPort(serverConfigurationVO.getZkPort());
@@ -199,9 +199,9 @@ public class PrettyZooFacade {
 
     public void importConfig(File configFile) {
         Try.of(() -> {
-            Asserts.notNull(configFile, "文件不存在");
-            Asserts.assertTrue(configFile.isFile(), "请选择文件");
-        })
+                    Asserts.notNull(configFile, "文件不存在");
+                    Asserts.assertTrue(configFile.isFile(), "请选择文件");
+                })
                 .onFailure(e -> VToast.error(e.getMessage()))
                 .onSuccess(e -> configurationDomainService.importConfig(configFile));
     }

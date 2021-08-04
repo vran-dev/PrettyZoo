@@ -22,13 +22,15 @@ public class ServerConfigurationVO {
 
     private SimpleStringProperty sshServer = new SimpleStringProperty("");
 
+    private ObjectProperty<Integer> sshServerPort = new SimpleObjectProperty<>();
+
     private SimpleStringProperty sshUsername = new SimpleStringProperty("");
 
     private SimpleStringProperty sshPassword = new SimpleStringProperty("");
 
     private SimpleStringProperty remoteServer = new SimpleStringProperty("");
 
-    private SimpleIntegerProperty remoteServerPort = new SimpleIntegerProperty(0);
+    private ObjectProperty<Integer> remoteServerPort = new SimpleObjectProperty<>();
 
     public void unbind() {
         zkUrl.unbind();
@@ -38,6 +40,7 @@ public class ServerConfigurationVO {
         aclList.unbind();
         sshEnabled.unbind();
         sshServer.unbind();
+        sshServerPort.unbind();
         sshUsername.unbind();
         sshPassword.unbind();
         remoteServer.unbind();
@@ -48,24 +51,24 @@ public class ServerConfigurationVO {
         return zkUrl.get();
     }
 
-    public SimpleStringProperty zkUrlProperty() {
-        return zkUrl;
-    }
-
     public void setZkUrl(String zkUrl) {
         this.zkUrl.set(zkUrl);
+    }
+
+    public SimpleStringProperty zkUrlProperty() {
+        return zkUrl;
     }
 
     public ServerStatus getStatus() {
         return status.get();
     }
 
-    public SimpleObjectProperty<ServerStatus> statusProperty() {
-        return status;
-    }
-
     public void setStatus(ServerStatus status) {
         this.status.set(status);
+    }
+
+    public SimpleObjectProperty<ServerStatus> statusProperty() {
+        return status;
     }
 
     public String getZkHost() {
@@ -84,12 +87,12 @@ public class ServerConfigurationVO {
         return zkPort.get();
     }
 
-    public SimpleIntegerProperty zkPortProperty() {
-        return zkPort;
-    }
-
     public void setZkPort(int zkPort) {
         this.zkPort.set(zkPort);
+    }
+
+    public SimpleIntegerProperty zkPortProperty() {
+        return zkPort;
     }
 
     public ObservableList<String> getAclList() {
@@ -128,6 +131,18 @@ public class ServerConfigurationVO {
         return sshServer;
     }
 
+    public Integer getSshServerPort() {
+        return sshServerPort.get();
+    }
+
+    public void setSshServerPort(Integer sshServerPort) {
+        this.sshServerPort.set(sshServerPort);
+    }
+
+    public ObjectProperty<Integer> sshServerPortProperty() {
+        return sshServerPort;
+    }
+
     public String getSshUsername() {
         return sshUsername.get();
     }
@@ -160,31 +175,27 @@ public class ServerConfigurationVO {
         this.remoteServer.set(remoteServer);
     }
 
-    public SimpleStringProperty remoteServerProperty() {
-        return remoteServer;
-    }
-
-    public int getRemoteServerPort() {
+    public Integer getRemoteServerPort() {
         return remoteServerPort.get();
     }
 
-    public SimpleIntegerProperty remoteServerPortProperty() {
-        return remoteServerPort;
+    public void setRemoteServerPort(Integer remoteServerPort) {
+        this.remoteServerPort.set(remoteServerPort);
     }
 
-    public void setRemoteServerPort(int remoteServerPort) {
-        this.remoteServerPort.set(remoteServerPort);
+    public ObjectProperty<Integer> remoteServerPortProperty() {
+        return remoteServerPort;
     }
 
     public String getZkAlias() {
         return zkAlias.get();
     }
 
-    public SimpleStringProperty zkAliasProperty() {
-        return zkAlias;
-    }
-
     public void setZkAlias(String zkAlias) {
         this.zkAlias.set(zkAlias);
+    }
+
+    public SimpleStringProperty zkAliasProperty() {
+        return zkAlias;
     }
 }

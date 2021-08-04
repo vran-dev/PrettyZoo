@@ -48,17 +48,10 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
                     newValue.getSshTunnelConfig()
                             .map(sshTunnelConfig -> {
                                 old.setSshEnabled(newValue.getSshTunnelEnabled());
-                                if (sshTunnelConfig.getSshHost() == null) {
-                                    old.setSshServer("");
-                                } else {
-                                    old.setSshServer(String.format("%s:%d", sshTunnelConfig.getSshHost(), sshTunnelConfig.getSshPort()));
-                                }
-                                if (sshTunnelConfig.getRemoteHost() == null) {
-                                    old.setRemoteServer("");
-                                } else {
-                                    old.setRemoteServer(sshTunnelConfig.getRemoteHost());
-                                    old.setRemoteServerPort(sshTunnelConfig.getRemotePort());
-                                }
+                                old.setSshServer(sshTunnelConfig.getSshHost());
+                                old.setSshServerPort(sshTunnelConfig.getSshPort());
+                                old.setRemoteServer(sshTunnelConfig.getRemoteHost());
+                                old.setRemoteServerPort(sshTunnelConfig.getRemotePort());
                                 old.setSshUsername(sshTunnelConfig.getSshUsername());
                                 old.setSshPassword(sshTunnelConfig.getPassword());
                                 return true;
@@ -66,9 +59,11 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
                             .orElseGet(() -> {
                                 old.setSshEnabled(newValue.getSshTunnelEnabled());
                                 old.setSshServer("");
+                                old.setSshServerPort(null);
                                 old.setSshUsername("");
                                 old.setSshPassword("");
                                 old.setRemoteServer("");
+                                old.setRemoteServerPort(null);
                                 return true;
                             });
 
