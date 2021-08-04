@@ -37,7 +37,8 @@ public class ConfigurationVOTransfer {
             if (sshTunnelConfig.getSshHost() == null) {
                 vo.setSshServer("");
             } else {
-                vo.setSshServer(sshTunnelConfig.getSshHost() + ":" + sshTunnelConfig.getSshPort());
+                vo.setSshServer(sshTunnelConfig.getSshHost());
+                vo.setSshServerPort(sshTunnelConfig.getSshPort());
             }
             vo.setSshUsername(sshTunnelConfig.getSshUsername());
             vo.setSshPassword(sshTunnelConfig.getSshPassword());
@@ -76,7 +77,8 @@ public class ConfigurationVOTransfer {
             if (sshTunnelConfig.getRemoteHost() == null || sshTunnelConfig.getRemotePort() == null) {
                 vo.setRemoteServer("");
             } else {
-                vo.setSshServer(sshTunnelConfig.getSshHost() + ":" + sshTunnelConfig.getSshPort());
+                vo.setSshServer(sshTunnelConfig.getSshHost());
+                vo.setSshServerPort(sshTunnelConfig.getSshPort());
             }
         });
         vo.setSshEnabled(serverConfig.getSshTunnelEnabled());
