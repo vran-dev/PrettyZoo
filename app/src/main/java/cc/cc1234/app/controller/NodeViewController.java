@@ -11,6 +11,7 @@ import cc.cc1234.app.view.dialog.Dialog;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.vo.ZkNodeSearchResult;
 import cc.cc1234.specification.node.ZkNode;
+import cc.cc1234.specification.util.InetAddressUtil;
 import cc.cc1234.specification.util.StringWriter;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -232,7 +233,7 @@ public class NodeViewController {
 
     private void switchServer(String url) {
         zkNodeTreeView.setCellFactory(view -> new ZkNodeTreeCell(this::onNodeAdd, this::onNodeDelete));
-        initRootTreeNode(url);
+        initRootTreeNode(InetAddressUtil.getUrl(url));
         ActiveServerContext.set(url);
         prettyZooFacade.syncIfNecessary(url);
         final TreeItem<ZkNode> selectedItem = zkNodeTreeView.getSelectionModel().getSelectedItem();

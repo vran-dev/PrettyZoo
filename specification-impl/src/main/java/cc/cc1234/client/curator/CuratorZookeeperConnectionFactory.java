@@ -4,6 +4,7 @@ import cc.cc1234.specification.connection.ZookeeperConnection;
 import cc.cc1234.specification.connection.ZookeeperConnectionFactory;
 import cc.cc1234.specification.connection.ZookeeperParams;
 import cc.cc1234.specification.listener.ServerListener;
+import cc.cc1234.specification.util.InetAddressUtil;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.AuthInfo;
 import org.apache.curator.framework.CuratorFramework;
@@ -85,7 +86,7 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
     private CuratorFramework curatorFramework(ZookeeperParams params) {
         final RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 2);
         final CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
-                .connectString(params.getUrl())
+                .connectString(InetAddressUtil.getUrl(params.getUrl()))
                 .connectionTimeoutMs(5000)
                 .sessionTimeoutMs(6000)
                 .retryPolicy(retryPolicy);

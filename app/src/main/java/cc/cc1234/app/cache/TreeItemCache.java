@@ -2,6 +2,7 @@ package cc.cc1234.app.cache;
 
 import cc.cc1234.app.trie.PathTrie;
 import cc.cc1234.specification.node.ZkNode;
+import cc.cc1234.specification.util.InetAddressUtil;
 import javafx.scene.control.TreeItem;
 
 import java.util.Collections;
@@ -55,11 +56,13 @@ public class TreeItemCache {
     }
 
     public void remove(String server, String path) {
+        server = InetAddressUtil.getUrl(server);
         treeItemCache.get(server).remove(path);
         pathTreeCache.get(server).remove(path);
     }
 
     public void remove(String server) {
+        server = InetAddressUtil.getUrl(server);
         treeItemCache.remove(server);
         pathTreeCache.remove(server);
     }
