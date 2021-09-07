@@ -30,7 +30,24 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 - Mac (dmg)
 - Linux (rpm & deb)
 
+### If you see PrettyZoo is damaged  in Mac
 
+you can see the solution in [issue-219](https://github.com/vran-dev/PrettyZoo/issues/219)
+
+1. run the follow command
+
+```shell
+sudo spctl --master-disable
+```
+
+2. open System Preferences->Security & Privacy, select **anywhere**
+3. run the follow command
+
+```shell
+xattr -rc /Applications/prettyZoo.app
+```
+
+4. Enjoy it
 
 # TODO
 

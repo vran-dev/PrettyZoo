@@ -28,11 +28,26 @@
 
 mac 安装提示：已损坏，无法打开
 
-请参考 https://www.macwk.com/article/mac-catalina-1015-file-damage  解决
-
 本质是因为安装包打包时没有加入 apple 平台的签名，我会在后续寻找解决方案
 
+可以参考 [issue-219](https://github.com/vran-dev/PrettyZoo/issues/219)
 
+1. 在命令行执行以下命令
+
+```shell
+sudo spctl --master-disable
+```
+
+2. 打开系统设置，点击安全与隐私，在软件来源处选择任意来源
+3. 执行以下命令
+
+```shell
+xattr -rc /Applications/prettyZoo.app
+```
+
+4. 启动 prettyZoo 即可
+
+或者你也可以参考 https://www.macwk.com/article/mac-catalina-1015-file-damage  解决。
 
 # 规划
 
