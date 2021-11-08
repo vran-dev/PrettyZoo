@@ -19,7 +19,7 @@ subprojects {
     apply plugin: 'application'
     apply plugin: 'idea'
 
-    sourceCompatibility = 11
+    sourceCompatibility = 17
     group 'cc.c1234'
     version '1.9.4'
 
@@ -31,7 +31,7 @@ subprojects {
         slf4jVersion = '1.7.28'
         jacksonVersion = '2.12.0'
         log4jVersion = '2.12.1'
-        lombokVersion = '1.18.20'
+        lombokVersion = '1.18.22'
         junitVersion = '4.12'
         zookeeperVersion = '3.4.6'
         curatorRecipesVersion = '4.2.0'
