@@ -1,13 +1,13 @@
 plugins {
     id 'org.openjfx.javafxplugin' version '0.0.10'
-    id 'org.beryx.jlink' version '2.23.6'
+    id 'org.beryx.jlink' version '2.24.4'
     id 'antlr'
     id 'idea'
     id 'java-library'
 }
 
 javafx {
-    version = "16"
+    version = "17"
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.base']
 }
 
