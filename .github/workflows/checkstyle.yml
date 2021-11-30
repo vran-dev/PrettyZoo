@@ -7,8 +7,7 @@ on:
 
 jobs:
   checkstyle:
-
-    runs-on: [ self-hosted ]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Set up JDK 17
