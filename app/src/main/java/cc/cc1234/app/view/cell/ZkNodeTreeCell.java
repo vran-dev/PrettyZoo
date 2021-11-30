@@ -21,7 +21,6 @@ public class ZkNodeTreeCell extends JFXTreeCell<ZkNode> {
     public ZkNodeTreeCell(Runnable createAction, Runnable deleteAction) {
         ResourceBundle rb = ResourceBundleUtils.get(prettyZooFacade.getLocale());
         String addButtonText = rb.getString("nodeList.button.add");
-        String deleteButtonText = rb.getString("nodeList.button.delete");
         JFXButton add = new JFXButton(addButtonText);
         ImageView addGraphic = new ImageView("assets/img/add.png");
         addGraphic.setFitWidth(18);
@@ -32,6 +31,7 @@ public class ZkNodeTreeCell extends JFXTreeCell<ZkNode> {
         ImageView deleteGraphic = new ImageView("assets/img/delete.png");
         deleteGraphic.setFitHeight(18);
         deleteGraphic.setFitWidth(18);
+        String deleteButtonText = rb.getString("nodeList.button.delete");
         JFXButton delete = new JFXButton(deleteButtonText);
         delete.setGraphic(deleteGraphic);
         delete.setOnAction(e -> {

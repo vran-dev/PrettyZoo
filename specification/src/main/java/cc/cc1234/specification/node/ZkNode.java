@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.zookeeper.data.Stat;
 
-
 @Data
 @NoArgsConstructor
 public class ZkNode {
@@ -20,15 +19,25 @@ public class ZkNode {
     private String path;
 
     private long czxid;
+
     private long mzxid;
+
     private long ctime;
+
     private long mtime;
+
     private int version;
+
     private int cversion;
+
     private int aversion;
+
     private long ephemeralOwner;
+
     private int dataLength;
+
     private int numChildren;
+
     private long pzxid;
 
     private String data;

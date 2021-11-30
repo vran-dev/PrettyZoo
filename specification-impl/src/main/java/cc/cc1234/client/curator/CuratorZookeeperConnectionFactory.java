@@ -5,7 +5,6 @@ import cc.cc1234.specification.connection.ZookeeperConnectionFactory;
 import cc.cc1234.specification.connection.ZookeeperParams;
 import cc.cc1234.specification.listener.ServerListener;
 import org.apache.curator.RetryPolicy;
-import org.apache.curator.framework.AuthInfo;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.api.ACLProvider;
@@ -81,7 +80,6 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
         return new CuratorZookeeperConnection(client);
     }
 
-
     private CuratorFramework curatorFramework(ZookeeperParams params) {
         final RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 2);
         final CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
@@ -91,7 +89,7 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
                 .retryPolicy(retryPolicy);
 
         if (!params.getAclList().isEmpty()) {
-            final List<AuthInfo> acls = params.getAclList().stream().map(ACLs::parseDigest).collect(Collectors.toList());
+            var acls = params.getAclList().stream().map(ACLs::parseDigest).collect(Collectors.toList());
             builder.authorization(acls)
                     .aclProvider(new ACLProvider() {
                         @Override

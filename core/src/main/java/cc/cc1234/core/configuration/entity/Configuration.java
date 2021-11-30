@@ -147,7 +147,7 @@ public class Configuration {
                 .map(this::toServerConfig)
                 .collect(Collectors.toList());
         var fontConfig = new ConfigData.FontConfigData(this.getFontConfiguration().getSize());
-        var langConfig = new ConfigData.LocalConfigData(ConfigData.Lang.valueOf((this.localeConfiguration.getLocale())));
+        var langConfig = new ConfigData.LocalConfigData(ConfigData.Lang.valueOf((localeConfiguration.getLocale())));
         configData.setServers(servers);
         configData.setFontConfig(fontConfig);
         configData.setLocalConfig(langConfig);

@@ -18,7 +18,6 @@ public class Transitions {
         return zoom(node, Duration.millis(500), 0, 0, 1, 1, 1, false, finishedEvent);
     }
 
-
     public static ScaleTransition zoom(Node node,
                                        Duration duration,
                                        double fromX,

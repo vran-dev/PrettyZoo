@@ -15,11 +15,17 @@ public class XmlHighlights {
     private static final Pattern ATTRIBUTES = Pattern.compile("(\\w+\\h*)(=)(\\h*\"[^\"]+\")");
 
     private static final int GROUP_OPEN_BRACKET = 2;
+
     private static final int GROUP_ELEMENT_NAME = 3;
+
     private static final int GROUP_ATTRIBUTES_SECTION = 4;
+
     private static final int GROUP_CLOSE_BRACKET = 5;
+
     private static final int GROUP_ATTRIBUTE_NAME = 1;
+
     private static final int GROUP_EQUAL_SYMBOL = 2;
+
     private static final int GROUP_ATTRIBUTE_VALUE = 3;
 
     public static StyleSpans<Collection<String>> compute(String text) {
@@ -35,28 +41,33 @@ public class XmlHighlights {
                 if (matcher.group("ELEMENT") != null) {
                     String attributesText = matcher.group(GROUP_ATTRIBUTES_SECTION);
 
-                    spansBuilder.add(Collections.singleton("xml-tag-mark"), matcher.end(GROUP_OPEN_BRACKET) - matcher.start(GROUP_OPEN_BRACKET));
-                    spansBuilder.add(Collections.singleton("xml-any-tag"), matcher.end(GROUP_ELEMENT_NAME) - matcher.end(GROUP_OPEN_BRACKET));
+                    spansBuilder.add(Collections.singleton("xml-tag-mark"),
+                            matcher.end(GROUP_OPEN_BRACKET) - matcher.start(GROUP_OPEN_BRACKET));
+                    spansBuilder.add(Collections.singleton("xml-any-tag"),
+                            matcher.end(GROUP_ELEMENT_NAME) - matcher.end(GROUP_OPEN_BRACKET));
 
                     if (!attributesText.isEmpty()) {
-
                         lastKwEnd = 0;
-
                         Matcher amatcher = ATTRIBUTES.matcher(attributesText);
                         while (amatcher.find()) {
                             spansBuilder.add(Collections.emptyList(), amatcher.start() - lastKwEnd);
-                            spansBuilder.add(Collections.singleton("xml-attribute"), amatcher.end(GROUP_ATTRIBUTE_NAME) - amatcher.start(GROUP_ATTRIBUTE_NAME));
-                            spansBuilder.add(Collections.singleton("xml-tag-mark"), amatcher.end(GROUP_EQUAL_SYMBOL) - amatcher.end(GROUP_ATTRIBUTE_NAME));
-                            spansBuilder.add(Collections.singleton("xml-value"), amatcher.end(GROUP_ATTRIBUTE_VALUE) - amatcher.end(GROUP_EQUAL_SYMBOL));
+                            spansBuilder.add(Collections.singleton("xml-attribute"),
+                                    amatcher.end(GROUP_ATTRIBUTE_NAME) - amatcher.start(GROUP_ATTRIBUTE_NAME));
+                            spansBuilder.add(Collections.singleton("xml-tag-mark"),
+                                    amatcher.end(GROUP_EQUAL_SYMBOL) - amatcher.end(GROUP_ATTRIBUTE_NAME));
+                            spansBuilder.add(Collections.singleton("xml-value"),
+                                    amatcher.end(GROUP_ATTRIBUTE_VALUE) - amatcher.end(GROUP_EQUAL_SYMBOL));
                             lastKwEnd = amatcher.end();
                         }
-                        if (attributesText.length() > lastKwEnd)
+                        if (attributesText.length() > lastKwEnd) {
                             spansBuilder.add(Collections.emptyList(), attributesText.length() - lastKwEnd);
+                        }
                     }
 
                     lastKwEnd = matcher.end(GROUP_ATTRIBUTES_SECTION);
 
-                    spansBuilder.add(Collections.singleton("xml-tag-mark"), matcher.end(GROUP_CLOSE_BRACKET) - lastKwEnd);
+                    spansBuilder.add(Collections.singleton("xml-tag-mark"),
+                            matcher.end(GROUP_CLOSE_BRACKET) - lastKwEnd);
                 }
             }
             lastKwEnd = matcher.end();

@@ -6,6 +6,8 @@ plugins {
     id 'java-library'
 }
 
+checkstyleMain.source = "src/main/java"
+
 javafx {
     version = "17"
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.base']

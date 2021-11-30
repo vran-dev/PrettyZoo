@@ -8,6 +8,8 @@ compileJava {
     }
 }
 
+checkstyleMain.exclude('**/cc/cc1234/zookeeper/**')
+
 dependencies {
     api project(':specification')
     api('org.apache.curator:curator-recipes') {

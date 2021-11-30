@@ -1,6 +1,5 @@
 package cc.cc1234.specification.listener;
 
-
 public interface ZookeeperNodeListener {
 
     default void onNodeUpdate(NodeEvent event) {

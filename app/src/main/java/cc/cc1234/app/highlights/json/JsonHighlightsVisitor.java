@@ -56,7 +56,6 @@ public class JsonHighlightsVisitor extends JSONBaseVisitor<List<StyleSpan<Collec
         return super.visitChildren(ctx);
     }
 
-
     @Override
     protected List<StyleSpan<Collection<String>>> defaultResult() {
         return spans;
