@@ -1,6 +1,5 @@
 package cc.cc1234.core.zookeeper.entity;
 
-
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -49,6 +48,7 @@ public class FourLetterCommand {
             try {
                 c.close();
             } catch (IOException e) {
+                // ignore
             }
         }
     }

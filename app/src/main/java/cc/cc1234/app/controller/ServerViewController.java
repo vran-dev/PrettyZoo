@@ -255,10 +255,10 @@ public class ServerViewController {
             });
         });
 
-        aclTextArea.setPromptText("ACL:\r" +
-                "digest:test:test\r" +
-                "auth:test:test\r" +
-                "\n");
+        aclTextArea.setPromptText("ACL:\r"
+                + "digest:test:test\r"
+                + "auth:test:test\r"
+                + "\n");
         initPasswordComponent();
         initValidator();
     }
@@ -320,7 +320,8 @@ public class ServerViewController {
 
     private void sshTunnelViewPropertyBind() {
         var sshTunnelEnabledProperty = sshTunnelCheckbox.selectedProperty();
-        var disableBinding = Bindings.createBooleanBinding(() -> !sshTunnelEnabledProperty.get(), sshTunnelEnabledProperty);
+        var disableBinding = Bindings.createBooleanBinding(() -> !sshTunnelEnabledProperty.get(),
+                sshTunnelEnabledProperty);
         sshServer.disableProperty().bind(disableBinding);
         sshServerPort.disableProperty().bind(disableBinding);
         sshUsername.disableProperty().bind(disableBinding);
@@ -418,48 +419,51 @@ public class ServerViewController {
         }
         Try.of(() -> {
             Asserts.notNull(serverConfigurationVO, "save config first");
-            Asserts.assertTrue(prettyZooFacade.hasServerConfiguration(serverConfigurationVO.getZkUrl()), "save config first");
+            Asserts.assertTrue(prettyZooFacade.hasServerConfiguration(serverConfigurationVO.getZkUrl()),
+                    "save config first");
         }).onSuccess(o -> {
             if (serverConfigurationVO.getStatus() == ServerStatus.DISCONNECTED) {
                 serverConfigurationVO.setStatus(ServerStatus.CONNECTING);
             }
             buttonHBox.setDisable(true);
             NodeViewController nodeViewController = retrieveNodeViewController(serverConfigurationVO.getZkUrl());
-            prettyZooFacade.connect(serverConfigurationVO.getZkUrl(), List.of(new DefaultTreeNodeListener()), List.of(new ServerListener() {
-                        @Override
-                        public void onClose(String serverUrl) {
-                            if (serverUrl.equals(serverConfigurationVO.getZkUrl())) {
-                                Platform.runLater(() -> {
-                                    serverConfigurationVO.setStatus(ServerStatus.DISCONNECTED);
-                                    if (closeHook != null) {
-                                        closeHook.run();
+            prettyZooFacade.connect(serverConfigurationVO.getZkUrl(),
+                            List.of(new DefaultTreeNodeListener()),
+                            List.of(new ServerListener() {
+                                @Override
+                                public void onClose(String serverUrl) {
+                                    if (serverUrl.equals(serverConfigurationVO.getZkUrl())) {
+                                        Platform.runLater(() -> {
+                                            serverConfigurationVO.setStatus(ServerStatus.DISCONNECTED);
+                                            if (closeHook != null) {
+                                                closeHook.run();
+                                            }
+                                        });
                                     }
-                                });
-                            }
-                        }
+                                }
 
-                        @Override
-                        public void onReconnecting(String serverHost) {
-                            if (serverHost.equals(serverConfigurationVO.getZkUrl())) {
-                                Platform.runLater(() -> {
-                                    serverConfigurationVO.setStatus(ServerStatus.RECONNECTING);
-                                    VToast.error(serverHost + " lost connection");
-                                });
-                            }
-                        }
-
-                        @Override
-                        public void onConnected(String serverHost) {
-                            if (serverHost.equals(serverConfigurationVO.getZkUrl())) {
-                                Platform.runLater(() -> {
-                                    if (serverConfigurationVO.getStatus() == ServerStatus.RECONNECTING) {
-                                        VToast.info("reconnect " + serverHost + " success");
+                                @Override
+                                public void onReconnecting(String serverHost) {
+                                    if (serverHost.equals(serverConfigurationVO.getZkUrl())) {
+                                        Platform.runLater(() -> {
+                                            serverConfigurationVO.setStatus(ServerStatus.RECONNECTING);
+                                            VToast.error(serverHost + " lost connection");
+                                        });
                                     }
-                                    serverConfigurationVO.setStatus(ServerStatus.CONNECTED);
-                                });
-                            }
-                        }
-                    }))
+                                }
+
+                                @Override
+                                public void onConnected(String serverHost) {
+                                    if (serverHost.equals(serverConfigurationVO.getZkUrl())) {
+                                        Platform.runLater(() -> {
+                                            if (serverConfigurationVO.getStatus() == ServerStatus.RECONNECTING) {
+                                                VToast.info("reconnect " + serverHost + " success");
+                                            }
+                                            serverConfigurationVO.setStatus(ServerStatus.CONNECTED);
+                                        });
+                                    }
+                                }
+                            }))
                     .thenAccept(v -> connectSuccessCallback(parent, nodeViewController, serverConfigurationVO))
                     .exceptionally(e -> connectErrorCallback(e, serverConfigurationVO));
         }).onFailure(e -> {

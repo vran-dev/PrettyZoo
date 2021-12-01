@@ -1,6 +1,5 @@
 package cc.cc1234.specification.listener;
 
-
 import cc.cc1234.specification.config.model.ServerConfigData;
 
 import java.util.List;

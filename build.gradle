@@ -1,3 +1,7 @@
+plugins {
+    id 'checkstyle'
+}
+
 group 'cc.c1234'
 
 tasks.withType(JavaCompile) {
@@ -18,10 +22,17 @@ subprojects {
     apply plugin: 'java-library'
     apply plugin: 'application'
     apply plugin: 'idea'
+    apply plugin: 'checkstyle'
 
     sourceCompatibility = 17
     group 'cc.c1234'
     version '1.9.5'
+
+    checkstyle {
+        toolVersion = '8.42'
+        ignoreFailures = false
+        maxWarnings = 0
+    }
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'

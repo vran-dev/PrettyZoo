@@ -42,13 +42,13 @@ public class SSHTunnel {
             sshClient.addHostKeyVerifier(new PromiscuousVerifier());
             sshClient.connect(getSshHost(), getSshPort());
             sshClient.authPassword(getSshUsername(), getSshPassword());
-            LocalPortForwarder.Parameters param = new LocalPortForwarder.Parameters(localhost, localPort, remoteHost, remotePort);
 
             proxySocket = new ServerSocket();
             proxySocket.setReuseAddress(true);
             proxySocket.bind(new InetSocketAddress(localhost, localPort));
             new Thread(() -> {
                 try {
+                    var param = new LocalPortForwarder.Parameters(localhost, localPort, remoteHost, remotePort);
                     sshClient.newLocalPortForwarder(param, proxySocket).listen();
                 } catch (IOException e) {
                     throw new IllegalStateException(e.getMessage(), e);

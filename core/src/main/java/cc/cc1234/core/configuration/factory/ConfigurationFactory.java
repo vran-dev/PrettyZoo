@@ -52,9 +52,11 @@ public class ConfigurationFactory {
                 })
                 .collect(Collectors.toList());
         var fontConfiguration = getOrDefaultFontConfiguration(configData.getFontConfig());
+        var locale = configData.getLocalConfig().getLang().getLocale();
+        var localeConfiguration = new Configuration.LocaleConfiguration(locale);
         return Configuration.builder()
                 .fontConfiguration(fontConfiguration)
-                .localeConfiguration(new Configuration.LocaleConfiguration(configData.getLocalConfig().getLang().getLocale()))
+                .localeConfiguration(localeConfiguration)
                 .configurationChangeListeners(listeners)
                 .serverConfigurations(serverConfigurations)
                 .build();

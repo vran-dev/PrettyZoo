@@ -1,6 +1,5 @@
 package cc.cc1234.specification.config;
 
-
 import cc.cc1234.specification.config.model.ConfigData;
 
 import java.io.InputStream;

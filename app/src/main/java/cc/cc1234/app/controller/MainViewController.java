@@ -124,7 +124,8 @@ public class MainViewController {
             }
         }));
         var jfxSliderItem = new MenuItem("", jfxSlider);
-        var valueTextBinding = Bindings.createStringBinding(() -> jfxSlider.valueProperty().intValue() + "", jfxSlider.valueProperty());
+        var valueTextBinding = Bindings.createStringBinding(() -> jfxSlider.valueProperty().intValue() + "",
+                jfxSlider.valueProperty());
         jfxSliderItem.textProperty().bind(valueTextBinding);
         fontMenuButton.getItems().add(jfxSliderItem);
 

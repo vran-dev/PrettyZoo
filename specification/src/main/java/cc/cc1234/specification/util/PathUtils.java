@@ -1,6 +1,5 @@
 package cc.cc1234.specification.util;
 
-
 public class PathUtils {
 
     public static String getLastPath(String path) {
@@ -21,7 +20,6 @@ public class PathUtils {
         // ignore /
         return path.substring(mark + 1);
     }
-
 
     public static String getStartPath(String path) {
         if (!path.startsWith("/")) {

@@ -35,25 +35,24 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
                             Consumer<ServerConfigurationVO> deleteAction,
                             Consumer<ServerConfigurationVO> disconnectAction) {
         ResourceBundle rb = ResourceBundleUtils.get(prettyZooFacade.getLocale());
-        String connectText = rb.getString("server.button.connect");
-        String deleteText = rb.getString("server.button.delete");
-        String disconnectText = rb.getString("server.button.disconnect");
-
         ImageView connectGraphic = new ImageView("assets/img/connect.png");
         connectGraphic.setFitWidth(18);
         connectGraphic.setFitHeight(18);
+        String connectText = rb.getString("server.button.connect");
         var connectButton = new JFXButton(connectText);
         connectButton.setGraphic(connectGraphic);
 
         ImageView deleteGraphic = new ImageView("assets/img/delete.png");
         deleteGraphic.setFitWidth(18);
         deleteGraphic.setFitHeight(18);
+        String deleteText = rb.getString("server.button.delete");
         var deleteButton = new JFXButton(deleteText);
         deleteButton.setGraphic(deleteGraphic);
 
         ImageView disconnectGraphic = new ImageView("assets/img/disconnect.png");
         disconnectGraphic.setFitWidth(18);
         disconnectGraphic.setFitHeight(18);
+        String disconnectText = rb.getString("server.button.disconnect");
         var disconnectButton = new JFXButton(disconnectText);
         disconnectButton.setGraphic(disconnectGraphic);
 
@@ -88,17 +87,17 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
             var progressIndicator = new ProgressIndicator();
             progressIndicator.setPrefSize(14, 14);
 
-            var hBox = new HBox(10, label);
-            hBox.setAlignment(Pos.CENTER_LEFT);
+            var hbox = new HBox(10, label);
+            hbox.setAlignment(Pos.CENTER_LEFT);
             item.statusProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
-                    onServerStatusChange(newValue, hBox, progressIndicator);
-                    onServerStatusChange(newValue, hBox, symbolImage);
+                    onServerStatusChange(newValue, hbox, progressIndicator);
+                    onServerStatusChange(newValue, hbox, symbolImage);
                 }
             });
-            onServerStatusChange(item.getStatus(), hBox, progressIndicator);
-            onServerStatusChange(item.getStatus(), hBox, symbolImage);
-            setGraphic(hBox);
+            onServerStatusChange(item.getStatus(), hbox, progressIndicator);
+            onServerStatusChange(item.getStatus(), hbox, symbolImage);
+            setGraphic(hbox);
         }
     }
 
@@ -116,11 +115,11 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
         }
     }
 
-    private void onServerStatusChange(ServerStatus newValue, HBox hBox, ImageView child) {
+    private void onServerStatusChange(ServerStatus newValue, HBox hbox, ImageView child) {
         Platform.runLater(() -> {
             switch (newValue) {
                 case DISCONNECTED:
-                    hBox.getChildren().remove(child);
+                    hbox.getChildren().remove(child);
                     if (!getContextMenu().getItems().contains(connectMenu)) {
                         getContextMenu().getItems().add(0, connectMenu);
                     }
@@ -131,31 +130,35 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
                     break;
                 case CONNECTING:
                 case RECONNECTING:
-                    hBox.getChildren().remove(child);
+                    hbox.getChildren().remove(child);
                     getContextMenu().getItems().clear();
                     break;
                 case CONNECTED:
-                    hBox.getChildren().add(0, child);
+                    hbox.getChildren().add(0, child);
                     if (!getContextMenu().getItems().contains(disConnectMenu)) {
                         getContextMenu().getItems().add(0, disConnectMenu);
                     }
                     getContextMenu().getItems().remove(connectMenu);
                     getContextMenu().getItems().remove(deleteMenu);
                     break;
+                default:
+                    break;
             }
         });
     }
 
-    private void onServerStatusChange(ServerStatus newValue, HBox hBox, ProgressIndicator child) {
+    private void onServerStatusChange(ServerStatus newValue, HBox hbox, ProgressIndicator child) {
         Platform.runLater(() -> {
             switch (newValue) {
                 case CONNECTING:
                 case RECONNECTING:
-                    addIfNecessary(hBox.getChildren(), child);
+                    addIfNecessary(hbox.getChildren(), child);
                     break;
                 case DISCONNECTED:
                 case CONNECTED:
-                    removeIfNecessary(hBox.getChildren(), child);
+                    removeIfNecessary(hbox.getChildren(), child);
+                    break;
+                default:
                     break;
             }
         });

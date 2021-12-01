@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("all")
 public class NodeInfoViewController {
 
     @FXML
@@ -42,9 +43,11 @@ public class NodeInfoViewController {
     private AnchorPane nodeDataPane;
 
     @FXML
+    @SuppressWarnings("all")
     private TextField cZxidField;
 
     @FXML
+    @SuppressWarnings("all")
     private TextField pZxidField;
 
     @FXML
@@ -57,6 +60,7 @@ public class NodeInfoViewController {
     private TextField ctimeField;
 
     @FXML
+    @SuppressWarnings("all")
     private TextField mZxidField;
 
     @FXML
@@ -72,6 +76,7 @@ public class NodeInfoViewController {
     private TextField aclVersionField;
 
     @FXML
+    @SuppressWarnings("all")
     private TextField cVersionField;
 
     @FXML
@@ -200,7 +205,8 @@ public class NodeInfoViewController {
 
         Runnable action = () -> {
             Transitions.rotate(nodeUpdateButton, () -> {
-                Stat stat = prettyZooFacade.updateData(ActiveServerContext.get(), path, data, ex -> VToast.error(ex.getMessage()));
+                Stat stat = prettyZooFacade.updateData(ActiveServerContext.get(), path, data,
+                        ex -> VToast.error(ex.getMessage()));
                 dataCodeArea.getProperties().put("raw", data);
                 dataCodeArea.getProperties().put("rawBytes", data.getBytes());
                 updateField(stat);

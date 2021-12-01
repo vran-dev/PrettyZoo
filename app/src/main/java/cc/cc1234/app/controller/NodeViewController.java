@@ -202,7 +202,7 @@ public class NodeViewController {
                     setGraphic(item.getTextFlow());
                     setOnMouseClicked(mouseEvent -> {
                         if (mouseEvent.getClickCount() == 2) {
-                            ListCell<ZkNodeSearchResult> clickedRow = (ListCell<ZkNodeSearchResult>) mouseEvent.getSource();
+                            var clickedRow = (ListCell<ZkNodeSearchResult>) mouseEvent.getSource();
                             zkNodeTreeView.getSelectionModel().clearSelection();
                             zkNodeTreeView.getSelectionModel().select(clickedRow.getItem().getItem());
                             zkNodeTreeView.scrollTo(zkNodeTreeView.getSelectionModel().getSelectedIndex());

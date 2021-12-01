@@ -14,7 +14,8 @@ public class ServerConfigurationVO {
 
     private SimpleStringProperty zkAlias = new SimpleStringProperty("");
 
-    private ObjectProperty<ObservableList<String>> aclList = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+    private ObjectProperty<ObservableList<String>> aclList =
+            new SimpleObjectProperty<>(FXCollections.observableArrayList());
 
     private SimpleObjectProperty<ServerStatus> status = new SimpleObjectProperty<>(ServerStatus.DISCONNECTED);
 
