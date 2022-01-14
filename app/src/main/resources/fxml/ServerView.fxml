@@ -21,7 +21,7 @@
       <Label layoutX="219.0" layoutY="30.0" text=":" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="30.0" />
       <JFXTextField fx:id="zkPort" alignment="CENTER" layoutX="230.0" layoutY="25.0" prefHeight="26.0" prefWidth="80.0" promptText="port" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="25.0" />
       <JFXTextField fx:id="zkAlias" layoutX="30.0" layoutY="84.0" prefHeight="25.0" prefWidth="260.0" promptText="%server.input.alias.prompt" />
-        <JFXToggleButton fx:id="sshTunnelCheckbox" layoutX="30.0" layoutY="124.0" mnemonicParsing="false" prefHeight="18.0" size="8.0" text="Use SSH Tunne" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="124.0" />
+        <JFXToggleButton fx:id="sshTunnelCheckbox" layoutX="30.0" layoutY="124.0" mnemonicParsing="false" prefHeight="18.0" size="8.0" text="Use SSH Tunnel" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="124.0" />
       <AnchorPane fx:id="sshTunnelPane" layoutX="30.0" layoutY="184.0" prefHeight="206.0" prefWidth="618.0" style="-fx-border-color: #ddd; -fx-border-style: dashed; -fx-border-width: 2; -fx-background-color: transparent;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="184.0">
          <children>
             <GridPane hgap="20.0" layoutX="6.0" layoutY="14.0" prefHeight="190.0" prefWidth="614.0" vgap="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="10.0">
