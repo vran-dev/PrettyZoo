@@ -228,6 +228,12 @@ public class PrettyZooFacade {
                 .onSuccess(e -> configurationDomainService.importConfig(configFile));
     }
 
+    public void resetConfiguration() {
+        changeFontSize(14);
+        changeMainSplitPaneDividerPosition(0.25);
+        changeNodeViewSplitPaneDividerPosition(0.3);
+    }
+
     public void startTerminal(String server, StringWriter stream) {
         zookeeperDomainService.initTerminal(server, stream);
     }
