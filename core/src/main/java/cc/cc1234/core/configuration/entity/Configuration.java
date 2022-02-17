@@ -165,7 +165,6 @@ public class Configuration {
         return serverData;
     }
 
-
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
