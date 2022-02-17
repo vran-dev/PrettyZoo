@@ -54,11 +54,15 @@ public class ConfigurationFactory {
         var fontConfiguration = getOrDefaultFontConfiguration(configData.getFontConfig());
         var locale = configData.getLocalConfig().getLang().getLocale();
         var localeConfiguration = new Configuration.LocaleConfiguration(locale);
+        var uiConfig = configData.getUiConfig();
+        var uiConfiguration = new Configuration.UiConfiguration(uiConfig.getMainSplitPaneDividerPosition(),
+                uiConfig.getNodeViewSplitPaneDividerPosition());
         return Configuration.builder()
                 .fontConfiguration(fontConfiguration)
                 .localeConfiguration(localeConfiguration)
                 .configurationChangeListeners(listeners)
                 .serverConfigurations(serverConfigurations)
+                .uiConfiguration(uiConfiguration)
                 .build();
     }
 

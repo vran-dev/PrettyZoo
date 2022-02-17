@@ -1,6 +1,7 @@
 package cc.cc1234.specification.config.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,8 @@ public class ConfigData {
     private FontConfigData fontConfig;
 
     private LocalConfigData localConfig = new LocalConfigData();
+
+    private UiConfig uiConfig = new UiConfig();
 
     @Data
     @AllArgsConstructor
@@ -59,10 +62,22 @@ public class ConfigData {
         public static Lang valueOf(Locale locale) {
             for (Lang value : Lang.values()) {
                 if (value.getLocale().getLanguage().equals(locale.getLanguage())) {
-                    return  value;
+                    return value;
                 }
             }
             return null;
         }
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class UiConfig {
+
+        private double mainSplitPaneDividerPosition = 0.3;
+
+        private double nodeViewSplitPaneDividerPosition = 0.3;
+
     }
 }

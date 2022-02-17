@@ -27,6 +27,7 @@
                                  <MenuItem fx:id="importMenuItem" mnemonicParsing="false" text="%main.menuBar.config.import" />
                                  <MenuItem fx:id="logMenuItem" mnemonicParsing="false" text="log" />
                                  <Menu fx:id="langMenu" text="%main.menuBar.config.lang" />
+                                 <MenuItem fx:id="resetMenuItem" text="%main.menuBar.config.reset" />
                              </items>
                          </MenuButton>
 

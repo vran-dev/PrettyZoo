@@ -68,6 +68,9 @@ public class MainViewController {
     private MenuItem logMenuItem;
 
     @FXML
+    private MenuItem resetMenuItem;
+
+    @FXML
     private Menu langMenu;
 
     @FXML
@@ -89,7 +92,22 @@ public class MainViewController {
     private void initialize() {
         initServerListView();
         RootPaneContext.set(rootStackPane);
+        mainSplitPane.setDividerPositions(prettyZooFacade.getMainSplitPaneDividerPosition());
+        mainSplitPane.getDividers().stream().findFirst().ifPresent(divider -> {
+            divider.positionProperty().addListener(((observable, oldValue, newValue) -> {
+                prettyZooFacade.changeMainSplitPaneDividerPosition(newValue.doubleValue());
+            }));
+        });
+
         mainRightPane.setPadding(new Insets(30, 30, 30, 30));
+        initMenuAction();
+        newVersionLabel.setOnMouseClicked(e -> HostServiceContext.jumpToReleases());
+        serverViewController.setOnClose(() -> this.serverListView.selectionModelProperty().get().clearSelection());
+        prettyZooLink.setOnMouseClicked(e -> HostServiceContext.get().showDocument(prettyZooLink.getText()));
+        initFontChangeButton();
+    }
+
+    private void initMenuAction() {
         serverAddButton.setOnMouseClicked(event -> {
             serverListView.getSelectionModel().clearSelection();
             serverViewController.show(mainRightPane);
@@ -100,10 +118,11 @@ public class MainViewController {
             logViewController.show(mainRightPane);
             serverListView.selectionModelProperty().get().clearSelection();
         });
-        newVersionLabel.setOnMouseClicked(e -> HostServiceContext.jumpToReleases());
-        serverViewController.setOnClose(() -> this.serverListView.selectionModelProperty().get().clearSelection());
-        prettyZooLink.setOnMouseClicked(e -> HostServiceContext.get().showDocument(prettyZooLink.getText()));
-        initFontChangeButton();
+        resetMenuItem.setOnAction(e -> {
+            prettyZooFacade.resetConfiguration();
+            PrimaryStageContext.get().close();
+            Platform.runLater(() -> new PrettyZooApplication().start(new Stage()));
+        });
     }
 
     public void bindShortcutKey() {

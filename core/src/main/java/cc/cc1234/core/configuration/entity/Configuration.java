@@ -24,42 +24,21 @@ public class Configuration {
 
     private LocaleConfiguration localeConfiguration;
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class FontConfiguration {
-
-        private Integer size;
-
-        public void checkIsValid() {
-            if (size == null) {
-                throw new IllegalArgumentException("font size is invalid");
-            }
-            if (size < 8 || size > 50) {
-                throw new IllegalArgumentException("font size is invalid");
-            }
-        }
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class LocaleConfiguration {
-
-        private Locale locale;
-
-    }
+    private UiConfiguration uiConfiguration;
 
     public Configuration(List<ServerConfiguration> serverConfigs,
                          List<ConfigurationChangeListener> listeners,
                          FontConfiguration fontConfiguration,
-                         LocaleConfiguration localeConfiguration) {
+                         LocaleConfiguration localeConfiguration,
+                         UiConfiguration uiConfiguration) {
         Objects.requireNonNull(listeners);
         Objects.requireNonNull(serverConfigs);
+        Objects.requireNonNull(uiConfiguration);
         this.serverConfigurations = serverConfigs;
         this.configurationChangeListeners = listeners;
         this.fontConfiguration = fontConfiguration;
         this.localeConfiguration = localeConfiguration;
+        this.uiConfiguration = uiConfiguration;
 
         final List<ServerConfigData> servers = this.serverConfigurations.stream()
                 .map(this::toServerConfig)
@@ -148,9 +127,14 @@ public class Configuration {
                 .collect(Collectors.toList());
         var fontConfig = new ConfigData.FontConfigData(this.getFontConfiguration().getSize());
         var langConfig = new ConfigData.LocalConfigData(ConfigData.Lang.valueOf((localeConfiguration.getLocale())));
+        var uiConfig = new ConfigData.UiConfig(
+                uiConfiguration.getMainSplitPaneDividerPosition(),
+                uiConfiguration.getNodeViewSplitPaneDividerPosition()
+        );
         configData.setServers(servers);
         configData.setFontConfig(fontConfig);
         configData.setLocalConfig(langConfig);
+        configData.setUiConfig(uiConfig);
         return configData;
     }
 
@@ -179,5 +163,42 @@ public class Configuration {
         serverData.setSshTunnelConfig(Optional.ofNullable(sshTunnelData));
         serverData.setAlias(serverConfiguration.getAlias());
         return serverData;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class FontConfiguration {
+
+        private Integer size;
+
+        public void checkIsValid() {
+            if (size == null) {
+                throw new IllegalArgumentException("font size is invalid");
+            }
+            if (size < 8 || size > 50) {
+                throw new IllegalArgumentException("font size is invalid");
+            }
+        }
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class LocaleConfiguration {
+
+        private Locale locale;
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UiConfiguration {
+
+        private double mainSplitPaneDividerPosition;
+
+        private double nodeViewSplitPaneDividerPosition;
+
     }
 }

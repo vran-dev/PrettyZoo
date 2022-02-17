@@ -56,6 +56,18 @@ public class ConfigurationDomainService {
         prettyZooConfigRepository.save(configuration.toPersistModel());
     }
 
+    public void saveMainSplitPaneDividerPosition(Double value) {
+        var configuration = get().orElseThrow();
+        configuration.getUiConfiguration().setMainSplitPaneDividerPosition(value);
+        prettyZooConfigRepository.save(configuration.toPersistModel());
+    }
+
+    public void saveNodeViewSplitPaneDividerPosition(Double value) {
+        var configuration = get().orElseThrow();
+        configuration.getUiConfiguration().setNodeViewSplitPaneDividerPosition(value);
+        prettyZooConfigRepository.save(configuration.toPersistModel());
+    }
+
     public Optional<Configuration> get() {
         return Optional.ofNullable(configurationCache.getVal());
     }

@@ -156,6 +156,28 @@ public class PrettyZooFacade {
         configurationDomainService.save(serverConfiguration);
     }
 
+    public Double getMainSplitPaneDividerPosition() {
+        return configurationDomainService.get()
+                .orElseThrow()
+                .getUiConfiguration()
+                .getMainSplitPaneDividerPosition();
+    }
+
+    public Double getNodeViewSplitPaneDividerPosition() {
+        return configurationDomainService.get()
+                .orElseThrow()
+                .getUiConfiguration()
+                .getNodeViewSplitPaneDividerPosition();
+    }
+
+    public void changeMainSplitPaneDividerPosition(Double value) {
+        configurationDomainService.saveMainSplitPaneDividerPosition(value);
+    }
+
+    public void changeNodeViewSplitPaneDividerPosition(Double value) {
+        configurationDomainService.saveNodeViewSplitPaneDividerPosition(value);
+    }
+
     public Integer getFontSize() {
         return configurationDomainService.get().orElseThrow().getFontConfiguration().getSize();
     }
@@ -204,6 +226,12 @@ public class PrettyZooFacade {
                 })
                 .onFailure(e -> VToast.error(e.getMessage()))
                 .onSuccess(e -> configurationDomainService.importConfig(configFile));
+    }
+
+    public void resetConfiguration() {
+        changeFontSize(14);
+        changeMainSplitPaneDividerPosition(0.25);
+        changeNodeViewSplitPaneDividerPosition(0.3);
     }
 
     public void startTerminal(String server, StringWriter stream) {
