@@ -38,6 +38,9 @@ public class NodeViewController {
     private TabPane nodeViewPane;
 
     @FXML
+    private SplitPane nodeViewSplitPane;
+
+    @FXML
     private AnchorPane nodeViewLeftPane;
 
     @FXML
@@ -87,6 +90,12 @@ public class NodeViewController {
     @FXML
     public void initialize() {
         nodeViewPane.setEffect(new DropShadow(BlurType.GAUSSIAN, Color.valueOf("#EEE"), 5, 0.1, 3, 5));
+        nodeViewSplitPane.setDividerPositions(prettyZooFacade.getNodeViewSplitPaneDividerPosition());
+        nodeViewSplitPane.getDividers().stream().findFirst().ifPresent(divider -> {
+            divider.positionProperty().addListener(((observable, oldValue, newValue) -> {
+                prettyZooFacade.changeNodeViewSplitPaneDividerPosition(newValue.doubleValue());
+            }));
+        });
 
         initSearchResultList();
         initSearchTextField();

@@ -89,6 +89,13 @@ public class MainViewController {
     private void initialize() {
         initServerListView();
         RootPaneContext.set(rootStackPane);
+        mainSplitPane.setDividerPositions(prettyZooFacade.getMainSplitPaneDividerPosition());
+        mainSplitPane.getDividers().stream().findFirst().ifPresent(divider -> {
+            divider.positionProperty().addListener(((observable, oldValue, newValue) -> {
+                prettyZooFacade.changeMainSplitPaneDividerPosition(newValue.doubleValue());
+            }));
+        });
+
         mainRightPane.setPadding(new Insets(30, 30, 30, 30));
         serverAddButton.setOnMouseClicked(event -> {
             serverListView.getSelectionModel().clearSelection();
