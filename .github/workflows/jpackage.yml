@@ -24,8 +24,8 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-      - name: JPackage
-        run: ./gradlew app:jpackage
+      - name: Release
+        run: ./gradlew app:release
 
       - name: Release-win
         uses: softprops/action-gh-release@v1
