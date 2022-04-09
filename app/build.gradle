@@ -57,7 +57,6 @@ jlink {
                 '--vendor', 'vran'
         ]
         if (os.windows) {
-            installerType = 'msi'
             icon = 'src/main/resources/assets/icon/icon.ico'
             installerOptions += [
                     '--win-per-user-install', '--win-dir-chooser',
@@ -87,6 +86,15 @@ jpackage {
         file("${buildDir}/jpackage/prettyZoo-${version}.msi").renameTo("${buildDir}/jpackage/prettyZoo-win.msi")
         file("${buildDir}/jpackage/prettyZoo-${version}.rpm").renameTo("${buildDir}/jpackage/prettyZoo-linux.rpm")
         file("${buildDir}/jpackage/prettyZoo-${version}.deb").renameTo("${buildDir}/jpackage/prettyZoo-linux.deb")
+    }
+}
+
+task release(type: Zip, dependsOn: jpackage) {
+    def os = org.gradle.internal.os.OperatingSystem.current()
+    if (os.windows) {
+        from "${buildDir}/jpackage/prettyZoo"
+        archiveFileName = "prettyZoo-win.zip"
+        destinationDirectory = file("$buildDir/jpackage")
     }
 }
 

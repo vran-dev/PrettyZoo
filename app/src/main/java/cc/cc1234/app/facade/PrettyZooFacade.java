@@ -229,6 +229,7 @@ public class PrettyZooFacade {
     }
 
     public void resetConfiguration() {
+        closeAll();
         changeFontSize(14);
         changeMainSplitPaneDividerPosition(0.25);
         changeNodeViewSplitPaneDividerPosition(0.3);

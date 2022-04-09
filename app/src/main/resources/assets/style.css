@@ -160,17 +160,18 @@
 
 .tree-cell {
     -fx-text-fill: #000;
+    -fx-padding: 0.25em;
 }
 
 .tree-view:focused .tree-cell:selected {
     -fx-background-color: #6093e7;
     -fx-text-fill: #FFF;
-    -fx-border-width: 0 0 0 0;
+    -fx-padding: 0.25em;
 }
 
 .tree-cell:filled:selected {
     -fx-background-color: #E0E0E0;
-    -fx-border-width: 0 0 0 0;
+    -fx-padding: 0.25em;
 }
 
 /*   ==================================  split pane ==================================*/
