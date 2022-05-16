@@ -19,6 +19,7 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -220,6 +221,13 @@ public class NodeViewController {
                                 searchResultList.getItems().clear();
                                 searchResultList.setVisible(false);
                             }
+                            return;
+                        }
+
+                        if (mouseEvent.getButton() == MouseButton.PRIMARY
+                                && mouseEvent.getClickCount() == 1) {
+                            nodeInfoViewController.show(nodeViewRightPane, item.getItem().getValue());
+                            return;
                         }
                     });
                 }
