@@ -113,6 +113,18 @@ public class NodeInfoViewController {
 
     private List<Button> formatButtons = List.of();
 
+    public final static String SYS_LF;
+
+    static {
+        String lf;
+        try {
+            lf = System.getProperty("line.separator");
+        } catch (Throwable t) {
+            lf = "\n"; // fallback when security manager denies access
+        }
+        SYS_LF = lf;
+    }
+
     @FXML
     private void initialize() {
         nodeUpdateButton.setOnMouseClicked(e -> onNodeUpdate());
@@ -332,10 +344,16 @@ public class NodeInfoViewController {
         if (data == null) {
             return;
         }
-        final String prettyJson;
+        String prettyJson;
         try {
-            prettyJson = Formatters.prettyJson(data.toString());
-            setCodeAreaData(prettyJson);
+            String raw = data.toString();
+            prettyJson = Formatters.prettyJson(raw);
+            if (Objects.equals(SYS_LF, "\r\n")) {
+                prettyJson = prettyJson.replaceAll("\r\n", "\n");
+            }
+            if (!Objects.equals(prettyJson, raw)) {
+                setCodeAreaData(prettyJson);
+            }
             switchFormatButton(jsonFormatButton);
         } catch (JsonProcessingException e) {
             VToast.error("JSON format failed");
