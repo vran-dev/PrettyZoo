@@ -6,11 +6,14 @@ public class PathTrie<T> {
 
     private Entry<T> root;
 
+    private Map<String, T> pathAndDataMap = new HashMap<>();
+
     public PathTrie() {
         final Entry<T> rootEntry = new Entry<>();
         rootEntry.name = "/";
         rootEntry.subEntries = new LinkedList<>();
         root = rootEntry;
+        pathAndDataMap.put("/", root.data);
     }
 
     public static <T> PathTrie<T> of(Map<String, T> map) {
@@ -104,11 +107,17 @@ public class PathTrie<T> {
     public void add(String path, T data) {
         final Entry<T> entry = buildEntries(root, paths(path), 0);
         entry.data = data;
+        this.pathAndDataMap.put(path, data);
     }
 
     public void remove(String path) {
         final String[] pathArray = paths(path);
         isMatch(root.subEntries, 0, pathArray).ifPresent(e -> e.parent.subEntries.remove(e));
+        this.pathAndDataMap.remove(path);
+    }
+
+    public T getByPath(String path) {
+        return this.pathAndDataMap.get(path);
     }
 
     private static class Entry<T> {

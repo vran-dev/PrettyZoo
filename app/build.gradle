@@ -16,6 +16,8 @@ javafx {
 mainClassName = "cc.cc1234.PrettyZooApplication"
 
 def runArgsValue = [
+        "-XX:+UnlockExperimentalVMOptions",
+        "-XX:+UseZGC",
         "-Djdk.gtk.version=2",
         "-Dfile.encoding=utf-8",
         "--add-exports=javafx.controls/com.sun.javafx.scene.control.behavior=com.jfoenix",
