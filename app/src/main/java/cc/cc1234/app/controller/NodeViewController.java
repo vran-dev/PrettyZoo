@@ -213,14 +213,15 @@ public class NodeViewController {
                     setOnMouseClicked(mouseEvent -> {
                         if (mouseEvent.getClickCount() == 2) {
                             var clickedRow = (ListCell<ZkNodeSearchResult>) mouseEvent.getSource();
-                            zkNodeTreeView.getSelectionModel().clearSelection();
-                            zkNodeTreeView.getSelectionModel().select(clickedRow.getItem().getItem());
-                            zkNodeTreeView.scrollTo(zkNodeTreeView.getSelectionModel().getSelectedIndex());
-                            zkNodeTreeView.requestFocus();
+                            TreeItem<ZkNode> clickedNode = clickedRow.getItem().getItem();
                             if (searchResultList.isVisible()) {
                                 searchResultList.getItems().clear();
                                 searchResultList.setVisible(false);
                             }
+                            zkNodeTreeView.getSelectionModel().clearSelection();
+                            zkNodeTreeView.getSelectionModel().select(clickedNode);
+                            zkNodeTreeView.scrollTo(zkNodeTreeView.getSelectionModel().getSelectedIndex());
+                            zkNodeTreeView.requestFocus();
                             return;
                         }
 
