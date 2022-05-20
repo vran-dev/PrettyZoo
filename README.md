@@ -1,5 +1,4 @@
 
-
 <p align="center">
     <img src="release/img/icon.png">
 </p>
@@ -7,18 +6,14 @@
 
 ![release-version](https://img.shields.io/github/v/release/vran-dev/prettyZoo?include_prereleases&style=for-the-badge) ![downloads](https://img.shields.io/github/downloads/vran-dev/PrettyZoo/total?style=for-the-badge) ![language](https://img.shields.io/github/languages/top/vran-dev/PrettyZoo?style=for-the-badge) ![licence](https://img.shields.io/github/license/vran-dev/PrettyZoo?style=for-the-badge) ![stars](https://img.shields.io/github/stars/vran-dev/PrettyZoo?style=for-the-badge)
 
-
-
 # Language
 
 English |  [中文](README_CN.md)
-
 
 # Supported by
 
 [Jetbrains](https://www.jetbrains.com/)
 ![https://www.jetbrains.com/](release/img/jetbrains.svg)
-
 
 # What
 
@@ -59,8 +54,6 @@ xattr -rc /Applications/prettyZoo.app
 6. - [ ] zookeeper monitor
 7. - [x] log dashboard (v1.9.3)
 
-
-
 # Feature
 
 1. Multi zookeeper server manage
@@ -74,13 +67,15 @@ xattr -rc /Applications/prettyZoo.app
 9. Support node data hightlight ( Json / Xml / Properties )
 10. Support reconnet zookeeper automatic
 
-
-
 ## Build
 
 See wiki: [build yourself](https://github.com/vran-dev/PrettyZoo/wiki/build-yourself)
 
+# Sponsor
 
+By wechat sponsor code
+
+<img src="release/img/sponsor.jpg" width="250px"/>
 
 # Show
 
@@ -88,13 +83,9 @@ See wiki: [build yourself](https://github.com/vran-dev/PrettyZoo/wiki/build-your
 
 ![](release/img/main.png)
 
-
-
 - server info 
 
 ![](release/img/server.gif)
-
-
 
 - node data highlight
 
@@ -102,22 +93,15 @@ See wiki: [build yourself](https://github.com/vran-dev/PrettyZoo/wiki/build-your
 
 - node info
 
-
-
-
 ![](release/img/time-format.gif)
-
 
 - node add 
 
 ![](release/img/create-node.gif)
 
-
-
 - node search
 
 ![](release/img/search.gif)
-
 
 - terminal
 

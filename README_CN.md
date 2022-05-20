@@ -4,13 +4,9 @@
 
 ![release-version](https://img.shields.io/github/v/release/vran-dev/prettyZoo?include_prereleases&style=for-the-badge) ![downloads](https://img.shields.io/github/downloads/vran-dev/PrettyZoo/total?style=for-the-badge) ![language](https://img.shields.io/github/languages/top/vran-dev/PrettyZoo?style=for-the-badge) ![licence](https://img.shields.io/github/license/vran-dev/PrettyZoo?style=for-the-badge) ![stars](https://img.shields.io/github/stars/vran-dev/PrettyZoo?style=for-the-badge)
 
-
-
 # 语言
 
 [English](README.md)  | 中文
-
-
 
 # 介绍
 
@@ -21,8 +17,6 @@
 目前已提供了 mac（dmg 文件）、Linux（deb 和 rpm 文件）、windows（msi 文件） 的安装包，[下载地址](https://github.com/vran-dev/PrettyZoo/releases)。
 
 更多内容可以查看：https://mp.weixin.qq.com/s/TkFirILto_moEv_kjBBPFw
-
-
 
 # MAC 安装问题
 
@@ -59,8 +53,6 @@ xattr -rc /Applications/prettyZoo.app
 6. - [ ] Zookeeper 监控
 7. - [x] 日志看板
 
-
-
 # 特性
 
 1. 可同时管理多个 zookeeper 连接
@@ -79,49 +71,35 @@ xattr -rc /Applications/prettyZoo.app
 
 查看 wiki: [build yourself](https://github.com/vran-dev/PrettyZoo/wiki/build-yourself)
 
+# 赞赏
 
+<img src="release/img/sponsor.jpg" width="250px"/>
 
 # 界面展示
-
-
 
 - overview
 
 ![](release/img/main.png)
 
-
-
 - server info
 
 ![](release/img/server.gif)
 
-
-
-
-
 - node info
 
-
-
-
 ![](release/img/time-format.gif)
-
 
 - node data highlight
 
 ![](release/img/highlight.gif)
 
-
 - node add
 
 ![](release/img/create-node.gif)
 
-
-
 - node search
 
 ![](release/img/search.gif)
-
 
 - terminal
 
@@ -136,4 +114,3 @@ xattr -rc /Applications/prettyZoo.app
 - 感谢「芋道源码」对 PrettyZoo 的推荐: [ZooKeeper GUI 客户端](http://vip.iocoder.cn/Zookeeper/PrettyZoo/)
 
 -  [PrettyZoo, 颜值与功能双在线的 Zookeeper 可视化工具](https://mp.weixin.qq.com/s/TkFirILto_moEv_kjBBPFw)
-
