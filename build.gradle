@@ -20,7 +20,6 @@ allprojects {
 
 subprojects {
     apply plugin: 'java-library'
-    apply plugin: 'application'
     apply plugin: 'idea'
     apply plugin: 'checkstyle'
 
