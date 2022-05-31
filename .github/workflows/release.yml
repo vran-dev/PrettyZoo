@@ -38,7 +38,7 @@ jobs:
             app/build/jpackage/*.msi
             app/build/jpackage/*.zip
           draft: true
-          fail_on_unmatched_files: true
+          fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -50,7 +50,7 @@ jobs:
             app/build/jpackage/*.dmg
             app/build/jpackage/*.zip
           draft: true
-          fail_on_unmatched_files: true
+          fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -63,6 +63,6 @@ jobs:
             app/build/jpackage/*.deb
             app/build/jpackage/*.zip
           draft: true
-          fail_on_unmatched_files: true
+          fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
