@@ -15,6 +15,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.control.Tab?>
 <AnchorPane fx:id="serverInfoPane" prefHeight="500.0" prefWidth="650.0" style="-fx-background-color: #fff;" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.ServerViewController">
    <children>
       <JFXTextField fx:id="zkHost" alignment="CENTER" layoutX="30.0" layoutY="25.0" prefHeight="26.0" prefWidth="160.0" promptText="host" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="25.0" />
@@ -22,45 +24,52 @@
       <JFXTextField fx:id="zkPort" alignment="CENTER" layoutX="230.0" layoutY="25.0" prefHeight="26.0" prefWidth="80.0" promptText="port" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="25.0" />
       <JFXTextField fx:id="zkAlias" layoutX="30.0" layoutY="84.0" prefHeight="25.0" prefWidth="260.0" promptText="%server.input.alias.prompt" />
         <JFXToggleButton fx:id="sshTunnelCheckbox" layoutX="30.0" layoutY="124.0" mnemonicParsing="false" prefHeight="18.0" size="8.0" text="Use SSH Tunnel" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="124.0" />
-      <AnchorPane fx:id="sshTunnelPane" layoutX="30.0" layoutY="184.0" prefHeight="206.0" prefWidth="618.0" style="-fx-border-color: #ddd; -fx-border-style: dashed; -fx-border-width: 2; -fx-background-color: transparent;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="184.0">
-         <children>
-            <GridPane hgap="20.0" layoutX="6.0" layoutY="14.0" prefHeight="190.0" prefWidth="614.0" vgap="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="10.0">
-              <columnConstraints>
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="240.0" prefWidth="260.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" prefWidth="50.0" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="220.0" prefWidth="220.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="0.0" prefHeight="150.0" valignment="CENTER" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <AnchorPane prefHeight="140.0" prefWidth="200.0" style="-fx-border-color: #ddd;">
-                     <children>
-                        <JFXTextField fx:id="sshServer" disable="true" layoutX="22.0" layoutY="42.0" prefHeight="23.0" prefWidth="144.0" promptText="ssh server" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="41.0" />
-                        <JFXTextField fx:id="sshUsername" disable="true" layoutX="15.0" layoutY="54.0" prefHeight="20.0" promptText="%server.input.ssh.username.prompt" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="85.0" />
-                        <JFXPasswordField fx:id="sshPassword" disable="true" layoutX="32.0" layoutY="132.0" prefHeight="23.0" prefWidth="144.0" promptText="%server.input.ssh.password.prompt" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="131.0" />
-                        <Text layoutX="92.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SSH Server" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" />
-                        <JFXButton fx:id="sshPasswordVisibleButton" layoutX="182.0" layoutY="132.0" prefHeight="23.0" prefWidth="34.0" styleClass="visible-button" text="visible" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="131.0" />
-                        <Label layoutX="150.0" layoutY="45.0" prefHeight="23.0" text=":" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="41.0" />
-                        <JFXTextField fx:id="sshServerPort" alignment="CENTER" disable="true" layoutX="166.0" layoutY="51.0" prefHeight="23.0" prefWidth="60.0" promptText="port" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="41.0" />
-                     </children>
-                  </AnchorPane>
-                  <ProgressBar fx:id="sshTunnelProgressBarTo" prefHeight="18.0" prefWidth="75.0" progress="0.0" GridPane.columnIndex="1" />
-                  <AnchorPane prefHeight="140.0" prefWidth="200.0" style="-fx-border-color: #ddd;" GridPane.columnIndex="2">
-                     <children>
-                        <JFXTextField fx:id="remoteServer" disable="true" layoutX="33.0" layoutY="73.0" prefHeight="23.0" prefWidth="80.0" promptText="remote server" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="72.0" />
-                        <Text layoutX="70.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remote Server" AnchorPane.leftAnchor="22.0" AnchorPane.topAnchor="20.0" />
-                        <Label layoutX="154.0" layoutY="75.0" prefHeight="23.0" text=":" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="71.0" />
-                        <JFXTextField fx:id="remoteServerPort" alignment="CENTER" disable="true" layoutX="170.0" layoutY="72.0" prefHeight="23.0" prefWidth="70.0" promptText="port" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="71.0" />
-                     </children>
-                  </AnchorPane>
-               </children>
-               <padding>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-               </padding>
-            </GridPane>
-         </children>
-      </AnchorPane>
+       <JFXTabPane AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="184.0">
+           <Tab text="SSH Tunnel">
+            <content>
+                <AnchorPane fx:id="sshTunnelPane" layoutX="30.0" layoutY="184.0" prefHeight="206.0" prefWidth="618.0" >
+                    <children>
+                        <GridPane hgap="20.0" layoutX="6.0" layoutY="14.0" prefHeight="190.0" prefWidth="614.0" vgap="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="10.0">
+                            <columnConstraints>
+                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="240.0" prefWidth="260.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" prefWidth="50.0" />
+                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="220.0" prefWidth="220.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="0.0" prefHeight="150.0" valignment="CENTER" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <AnchorPane prefHeight="140.0" prefWidth="200.0" style="-fx-border-color: #ddd;">
+                                    <children>
+                                        <JFXTextField fx:id="sshServer" disable="true" layoutX="22.0" layoutY="42.0" prefHeight="23.0" prefWidth="144.0" promptText="ssh server" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="41.0" />
+                                        <JFXTextField fx:id="sshUsername" disable="true" layoutX="15.0" layoutY="54.0" prefHeight="20.0" promptText="%server.input.ssh.username.prompt" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="85.0" />
+                                        <JFXPasswordField fx:id="sshPassword" disable="true" layoutX="32.0" layoutY="132.0" prefHeight="23.0" prefWidth="144.0" promptText="%server.input.ssh.password.prompt" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="131.0" />
+                                        <Text layoutX="92.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SSH Server" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" />
+                                        <JFXButton fx:id="sshPasswordVisibleButton" layoutX="182.0" layoutY="132.0" prefHeight="23.0" prefWidth="34.0" styleClass="visible-button" text="visible" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="131.0" />
+                                        <Label layoutX="150.0" layoutY="45.0" prefHeight="23.0" text=":" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="41.0" />
+                                        <JFXTextField fx:id="sshServerPort" alignment="CENTER" disable="true" layoutX="166.0" layoutY="51.0" prefHeight="23.0" prefWidth="60.0" promptText="port" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="41.0" />
+                                    </children>
+                                </AnchorPane>
+                                <ProgressBar fx:id="sshTunnelProgressBarTo" prefHeight="18.0" prefWidth="75.0" progress="0.0" GridPane.columnIndex="1" />
+                                <AnchorPane prefHeight="140.0" prefWidth="200.0" style="-fx-border-color: #ddd;" GridPane.columnIndex="2">
+                                    <children>
+                                        <JFXTextField fx:id="remoteServer" disable="true" layoutX="33.0" layoutY="73.0" prefHeight="23.0" prefWidth="80.0" promptText="remote server" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="72.0" />
+                                        <Text layoutX="70.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remote Server" AnchorPane.leftAnchor="22.0" AnchorPane.topAnchor="20.0" />
+                                        <Label layoutX="154.0" layoutY="75.0" prefHeight="23.0" text=":" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="71.0" />
+                                        <JFXTextField fx:id="remoteServerPort" alignment="CENTER" disable="true" layoutX="170.0" layoutY="72.0" prefHeight="23.0" prefWidth="70.0" promptText="port" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="71.0" />
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                            <padding>
+                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                            </padding>
+                        </GridPane>
+                    </children>
+                </AnchorPane>
+            </content>
+           </Tab>
+       </JFXTabPane>
+
       <JFXButton fx:id="closeButton" layoutX="620.0" layoutY="14.0" mnemonicParsing="false" styleClass="v-button" text="X" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0" />
       <JFXTextArea fx:id="aclTextArea" layoutX="353.0" layoutY="51.0" prefHeight="90.0" prefWidth="240.0" AnchorPane.rightAnchor="81.0" AnchorPane.topAnchor="20.0" />
       <HBox fx:id="buttonHBox" alignment="CENTER" layoutX="444.0" layoutY="432.0" minHeight="30.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="30.0">

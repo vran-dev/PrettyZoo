@@ -18,7 +18,7 @@
 
 更多内容可以查看：https://mp.weixin.qq.com/s/TkFirILto_moEv_kjBBPFw
 
-# MAC 安装问题
+## MAC 安装问题
 
 mac 安装提示：已损坏，无法打开
 
@@ -42,6 +42,22 @@ xattr -rc /Applications/prettyZoo.app
 4. 启动 prettyZoo 即可
 
 或者你也可以参考 https://www.macwk.com/article/mac-catalina-1015-file-damage  解决。
+
+## 如何为 zookeeper 设置系统属性
+
+有些时候我们需要覆盖系统属性来添加 zookeper 支持的一些参数，比如
+
+```properties
+jute.maxbuffer=1000000
+```
+
+这个时候可以创建一个 `zookeeper.properties` 文件在下面的目录下
+
+- mac: `{{ user.home }}/.prettyZoo/zookeeper.properties`
+- wind: `{{ user.home }}/.prettyZoo/zookeeper.properties`
+- linux: `{{ user.home }}/.prettyZoo/zookeeper.properties`
+
+PrettyZoo 会在启动的时候去加载这个文件里面，并将里面的内容设置到 system properties 中，这样 zookeeper 就能读取这些配置了。
 
 # 规划
 

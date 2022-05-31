@@ -75,8 +75,10 @@ public class ConfigData {
     @Builder
     public static class UiConfig {
 
+        @Builder.Default
         private double mainSplitPaneDividerPosition = 0.3;
 
+        @Builder.Default
         private double nodeViewSplitPaneDividerPosition = 0.3;
 
     }

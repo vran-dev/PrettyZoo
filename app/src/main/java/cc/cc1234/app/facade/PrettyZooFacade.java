@@ -15,6 +15,7 @@ import cc.cc1234.core.configuration.entity.ServerConfiguration;
 import cc.cc1234.core.configuration.service.ConfigurationDomainService;
 import cc.cc1234.core.configuration.value.SSHTunnelConfiguration;
 import cc.cc1234.core.zookeeper.service.ZookeeperDomainService;
+import cc.cc1234.specification.config.PrettyZooConfigRepository;
 import cc.cc1234.specification.config.model.ConfigData;
 import cc.cc1234.specification.listener.ConfigurationChangeListener;
 import cc.cc1234.specification.listener.ServerListener;
@@ -33,6 +34,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -287,5 +291,25 @@ public class PrettyZooFacade {
         });
         LogTailerThreadContext.set(tailerThread);
         tailerThread.start();
+    }
+
+    public void loadSystemProperties() {
+        String sysPropPath = PrettyZooConfigRepository.SYS_PROP_PATH;
+        if (Files.exists(Paths.get(sysPropPath))) {
+            try {
+                var properties = new Properties();
+                properties.load(new FileInputStream(sysPropPath));
+                var sysProps = new HashMap<String, String>();
+                for (var entry : properties.entrySet()) {
+                    sysProps.put(entry.getKey().toString(), entry.getValue().toString());
+                }
+                log.info("load system properties success ->\n {}", sysProps);
+            } catch (IOException e) {
+                // ignore error and log it
+                log.error("load system properties failed", e);
+            }
+        } else {
+            log.info("ignore load system properties, file not exists -> {}", sysPropPath);
+        }
     }
 }

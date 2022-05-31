@@ -19,9 +19,10 @@ import java.util.Optional;
 
 public class PrettyZooApplication extends Application {
 
-    private PrettyZooFacade facade = new PrettyZooFacade();
+    private static final PrettyZooFacade facade = new PrettyZooFacade();
 
     public static void main(String[] args) {
+        facade.loadSystemProperties();
         initIconImage();
         Application.launch(args);
     }
