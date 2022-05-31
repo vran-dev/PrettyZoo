@@ -260,6 +260,33 @@
     visibility: false;
 }
 
+/* ========================== jfoenix table pane  =================================*/
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-background-color: #696969;
+    -fx-pref-height: 4px;
+}
+
+.jfx-tab-pane .headers-region .tab .tab-container .tab-label {
+    -fx-text-fill: #303133;
+    -fx-font-weight: 100;
+    -fx-padding: 6 10 6 10;
+    -fx-font-size: 12;
+}
+
+.jfx-tab-pane .headers-region .tab:selected .tab-container .tab-label {
+    -fx-text-fill: #303133;
+}
+
+.jfx-tab-pane:top .depth-container .tab-header-area .headers-region .tab-selected-line {
+    -fx-background-color: transparent;
+}
+
+.jfx-tab-pane .tab:selected {
+    -fx-border-width: 0 0 3 0;
+    -fx-border-color: #303133;
+}
+
 /* ========================== custom  =================================*/
 .vTextArea {
     -fx-border-color: #a0a0a0;

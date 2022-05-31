@@ -25,7 +25,7 @@ You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/
 - Mac (dmg)
 - Linux (rpm & deb)
 
-### If you see PrettyZoo is damaged  in Mac
+## If you see PrettyZoo is damaged  in Mac
 
 you can see the solution in [issue-219](https://github.com/vran-dev/PrettyZoo/issues/219)
 
@@ -43,6 +43,24 @@ xattr -rc /Applications/prettyZoo.app
 ```
 
 4. Enjoy it
+
+### How to add zookeeper system properties
+
+If you want to configure system properties for zookeeper, you could creat `zookeeper.file` file
+
+- mac: `{{ user.home }}/.prettyZoo/zookeeper.properties`
+- wind: `{{ user.home }}/.prettyZoo/zookeeper.properties`
+- linux: `{{ user.home }}/.prettyZoo/zookeeper.properties`
+
+such as follow content
+
+```properties
+jute.maxbuffer=1000000
+```
+
+prettyZoo will load and set it to system properties when application start
+
+> note: the `zookeeper.properties` will work for all server.
 
 # TODO
 

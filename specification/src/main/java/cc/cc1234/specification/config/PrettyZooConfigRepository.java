@@ -15,6 +15,8 @@ public interface PrettyZooConfigRepository {
 
     String CONFIG_PATH = System.getProperty("user.home") + "/.prettyZoo/prettyZoo.cfg";
 
+    String SYS_PROP_PATH = System.getProperty("user.home") + "/.prettyZoo/zookeeper.properties";
+
     ConfigData get();
 
     void save(ConfigData config);
