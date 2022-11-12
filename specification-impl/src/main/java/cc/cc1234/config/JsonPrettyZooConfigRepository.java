@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -53,7 +54,7 @@ public class JsonPrettyZooConfigRepository implements PrettyZooConfigRepository 
     public void save(ConfigData config) {
         try {
             final String json = JsonUtils.to(config);
-            Files.write(Paths.get(CONFIG_PATH), json.getBytes());
+            Files.write(Paths.get(CONFIG_PATH), json.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
