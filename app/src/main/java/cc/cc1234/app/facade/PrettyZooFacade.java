@@ -2,6 +2,7 @@ package cc.cc1234.app.facade;
 
 import cc.cc1234.app.cache.TreeItemCache;
 import cc.cc1234.app.context.ActiveServerContext;
+import cc.cc1234.app.context.LocaleContext;
 import cc.cc1234.app.context.LogTailerThreadContext;
 import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.util.Asserts;
@@ -211,6 +212,9 @@ public class PrettyZooFacade {
 
     public List<ServerConfigurationVO> loadServerConfigurations(ConfigurationChangeListener changeListener) {
         final Configuration configuration = configurationDomainService.load(List.of(changeListener));
+        if (configuration.getLocaleConfiguration() != null) {
+            LocaleContext.set(configuration.getLocaleConfiguration().getLocale());
+        }
         return configuration.getServerConfigurations()
                 .stream()
                 .map(ConfigurationVOTransfer::to)

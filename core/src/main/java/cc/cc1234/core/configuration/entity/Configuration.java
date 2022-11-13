@@ -77,6 +77,8 @@ public class Configuration {
     public void updateLocale(LocaleConfiguration localeConfiguration) {
         Objects.requireNonNull(localeConfiguration.getLocale());
         this.localeConfiguration = localeConfiguration;
+        configurationChangeListeners.forEach(listener ->
+                listener.onLocaleChange(this.localeConfiguration.getLocale()));
     }
 
     public Optional<ServerConfiguration> get(String url) {

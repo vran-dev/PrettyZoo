@@ -67,7 +67,7 @@ public class PrettyZooApplication extends Application {
         primaryStage.setTitle("PrettyZoo");
         getIconStream().ifPresent(stream -> primaryStage.getIcons().add(new Image(stream)));
         primaryStage.setOnShown(e -> {
-            controller.showNewVersionLabel();
+            controller.checkForUpdate();
             controller.bindShortcutKey();
         });
         primaryStage.show();
