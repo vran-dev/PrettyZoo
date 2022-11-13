@@ -5,15 +5,13 @@ import cc.cc1234.app.util.ResourceBundleUtils;
 import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.app.vo.ServerStatus;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListCell;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.CustomMenuItem;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
@@ -21,7 +19,11 @@ import java.util.Collection;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
+public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
+
+    private static final String CONNECTED_SYMBOL = "assets/img/connected-symbol.png";
+
+    private static final String RECONNECTING_SYMBOL = "assets/img/reconnecting-symbol.png";
 
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
@@ -72,33 +74,49 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
     protected void updateItem(ServerConfigurationVO item, boolean empty) {
         super.updateItem(item, empty);
         if (empty || item == null) {
-            setText(null);
-            setGraphic(null);
-        } else if (getGraphic() == null) {
-            setText(null);
-
-            var label = new Label();
-            label.textProperty().bind(serverNameBinding(item));
-
-            var symbolImage = new ImageView("assets/img/connected-symbol.png");
-            symbolImage.setFitWidth(10);
-            symbolImage.setFitHeight(10);
-
-            var progressIndicator = new ProgressIndicator();
-            progressIndicator.setPrefSize(14, 14);
-
-            var hbox = new HBox(10, label);
-            hbox.setAlignment(Pos.CENTER_LEFT);
-            item.statusProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue != null) {
-                    onServerStatusChange(newValue, hbox, progressIndicator);
-                    onServerStatusChange(newValue, hbox, symbolImage);
-                }
-            });
-            onServerStatusChange(item.getStatus(), hbox, progressIndicator);
-            onServerStatusChange(item.getStatus(), hbox, symbolImage);
-            setGraphic(hbox);
+            super.setText(null);
+            super.setGraphic(null);
+            return;
         }
+
+        setText(null);
+        var label = new Label();
+        label.textProperty().bind(serverNameBinding(item));
+
+        var symbolImage = new ImageView(CONNECTED_SYMBOL);
+        symbolImage.setFitWidth(8);
+        symbolImage.setFitHeight(8);
+
+        var progressIndicator = new ProgressIndicator();
+        progressIndicator.setPrefSize(12, 12);
+        progressIndicator.getStyleClass().add("red");
+
+        var hbox = new HBox(10, label);
+        hbox.setId(item.getZkUrl());
+        hbox.getStyleClass().add("server-item");
+        hbox.setAlignment(Pos.CENTER);
+        item.statusProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                onServerStatusChange(newValue, hbox, progressIndicator);
+                onServerStatusChange(newValue, hbox, symbolImage);
+            }
+        });
+        onServerStatusChange(item.getStatus(), hbox, progressIndicator);
+        onServerStatusChange(item.getStatus(), hbox, symbolImage);
+        super.selectedProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue) {
+                updateItemSelectedCss(hbox, progressIndicator);
+            } else {
+                updateItemUnSelectedCss(hbox, progressIndicator);
+            }
+        }));
+        if (this.isSelected()) {
+            updateItemSelectedCss(hbox, progressIndicator);
+        } else {
+            updateItemUnSelectedCss(hbox, progressIndicator);
+        }
+        super.setPadding(new Insets(5, 5, 5, 5));
+        super.setGraphic(hbox);
     }
 
     private StringBinding serverNameBinding(ServerConfigurationVO item) {
@@ -130,10 +148,11 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
                     break;
                 case CONNECTING:
                 case RECONNECTING:
-                    hbox.getChildren().remove(child);
+                    child.setImage(new Image(RECONNECTING_SYMBOL));
                     getContextMenu().getItems().clear();
                     break;
                 case CONNECTED:
+                    child.setImage(new Image(CONNECTED_SYMBOL));
                     hbox.getChildren().add(0, child);
                     if (!getContextMenu().getItems().contains(disConnectMenu)) {
                         getContextMenu().getItems().add(0, disConnectMenu);
@@ -174,4 +193,15 @@ public class ZkServerListCell extends JFXListCell<ServerConfigurationVO> {
         collection.remove(value);
     }
 
+    private void updateItemSelectedCss(HBox hbox, ProgressIndicator indicator) {
+        hbox.getStyleClass().add("server-item-select");
+        indicator.getStyleClass().addAll("server-select-progress-indicator");
+        hbox.getStyleClass().remove("server-item");
+    }
+
+    private void updateItemUnSelectedCss(HBox hbox, ProgressIndicator indicator) {
+        hbox.getStyleClass().remove("server-item-select");
+        indicator.getStyleClass().removeAll("server-progress-indicator");
+        hbox.getStyleClass().add("server-item");
+    }
 }

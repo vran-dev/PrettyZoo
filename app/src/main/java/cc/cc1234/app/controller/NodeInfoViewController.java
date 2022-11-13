@@ -22,6 +22,7 @@ import org.apache.zookeeper.data.Stat;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -138,7 +139,18 @@ public class NodeInfoViewController {
         rawFormatButton.setOnAction(e -> dataRawFormat());
         xmlFormatButton.setOnAction(e -> dataXmlFormat());
         formatButtons = List.of(jsonFormatButton, xmlFormatButton, rawFormatButton);
-        charsetChoice.getItems().addAll("UTF-8", "GBK", "GB2312", "ISO-8859-1", "UTF-16");
+        Charset.availableCharsets()
+                .entrySet()
+                .stream()
+                .filter(entry -> !entry.getValue().name().startsWith("x-"))
+                .filter(entry -> !entry.getValue().name().startsWith("X-"))
+                .filter(entry -> !entry.getValue().name().startsWith("IBM"))
+                .filter(entry -> !entry.getValue().name().startsWith("ibm"))
+                .filter(entry -> !entry.getValue().name().startsWith("windows"))
+                .filter(entry -> !entry.getValue().name().startsWith("WINDOWS"))
+                .forEach(entry -> {
+                    charsetChoice.getItems().add(entry.getValue().name());
+                });
         charsetChoice.getSelectionModel().select("UTF-8");
         charsetChoice.getSelectionModel().selectedItemProperty().addListener((event, ov, nv) -> {
             if (nv == null) {

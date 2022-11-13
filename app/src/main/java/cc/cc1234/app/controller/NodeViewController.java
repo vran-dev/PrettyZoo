@@ -17,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
@@ -101,7 +100,6 @@ public class NodeViewController {
         initSearchResultList();
         initSearchTextField();
         initZkNodeTreeView();
-        initHomeTab();
         initTerminalArea();
         initFourLetterTab();
 
@@ -274,18 +272,7 @@ public class NodeViewController {
         }
     }
 
-    private void initHomeTab() {
-        final ImageView imageView = new ImageView("assets/img/tab/home.png");
-        imageView.setFitWidth(18);
-        imageView.setFitHeight(18);
-        homeTab.setGraphic(imageView);
-    }
-
     private void initTerminalArea() {
-        final ImageView imageView = new ImageView("assets/img/tab/terminal.png");
-        imageView.setFitWidth(18);
-        imageView.setFitHeight(18);
-        terminalTab.setGraphic(imageView);
         terminalTab.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 prettyZooFacade.startTerminal(ActiveServerContext.get(), new StringWriter() {
@@ -325,10 +312,6 @@ public class NodeViewController {
     }
 
     private void initFourLetterTab() {
-        final ImageView graphic = new ImageView("assets/img/tab/fourLetter.png");
-        graphic.setFitHeight(20);
-        graphic.setFitWidth(20);
-        fourLetterCommandTab.setGraphic(graphic);
         fourLetterCommandRequestArea.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
                 String command = fourLetterCommandRequestArea.getText();

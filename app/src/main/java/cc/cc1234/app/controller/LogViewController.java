@@ -10,8 +10,6 @@ import javafx.scene.layout.StackPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Paths;
-
 public class LogViewController {
 
     private static final Logger logger = LoggerFactory.getLogger(LogViewController.class);
@@ -47,8 +45,6 @@ public class LogViewController {
 
         if (!parent.getChildren().contains(logViewPane)) {
             parent.getChildren().add(logViewPane);
-            var userHome = System.getProperty("user.home");
-            var path = Paths.get(userHome + "/.prettyZoo/log/prettyZoo.log");
             prettyZooFacade.startLogTailer(line -> {
                 Platform.runLater(() -> {
                     logContentArea.appendText("\n");

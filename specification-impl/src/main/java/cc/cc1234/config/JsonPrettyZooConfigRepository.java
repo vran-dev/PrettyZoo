@@ -11,10 +11,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class JsonPrettyZooConfigRepository implements PrettyZooConfigRepository {
@@ -31,11 +28,20 @@ public class JsonPrettyZooConfigRepository implements PrettyZooConfigRepository 
         final ConfigData config = JsonUtils.from(CONFIG_PATH, ConfigData.class);
         final List<ServerConfigData> sortedServers = config.getServers()
                 .stream()
+                .filter(serverConfigData -> serverConfigData.getConnectTimes() > 0)
                 .sorted(Comparator.comparingInt(ServerConfigData::getConnectTimes))
                 .collect(Collectors.toList());
         // sort by connect times desc
         Collections.reverse(sortedServers);
-        config.setServers(sortedServers);
+        List<ServerConfigData> unConnectServers = config.getServers()
+                .stream()
+                .filter(serverConfigData -> serverConfigData.getConnectTimes() == 0)
+                .collect(Collectors.toList());
+
+        List<ServerConfigData> servers = new ArrayList<>();
+        servers.addAll(sortedServers);
+        servers.addAll(unConnectServers);
+        config.setServers(servers);
         return config;
     }
 
