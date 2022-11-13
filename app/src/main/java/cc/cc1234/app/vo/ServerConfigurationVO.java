@@ -33,6 +33,10 @@ public class ServerConfigurationVO {
 
     private ObjectProperty<Integer> remoteServerPort = new SimpleObjectProperty<>();
 
+    private SimpleBooleanProperty enableConnectionAdvanceConfiguration = new SimpleBooleanProperty(false);
+
+    private ObjectProperty<ServerConnectionAdvanceConfigurationVO> connectionAdvanceConfiguration = new SimpleObjectProperty<>();
+
     public void unbind() {
         zkUrl.unbind();
         zkHost.unbind();
@@ -46,6 +50,8 @@ public class ServerConfigurationVO {
         sshPassword.unbind();
         remoteServer.unbind();
         remoteServerPort.unbind();
+        enableConnectionAdvanceConfiguration.unbind();
+        connectionAdvanceConfiguration.unbind();
     }
 
     public String getZkUrl() {
@@ -198,5 +204,29 @@ public class ServerConfigurationVO {
 
     public SimpleStringProperty zkAliasProperty() {
         return zkAlias;
+    }
+
+    public boolean isEnableConnectionAdvanceConfiguration() {
+        return enableConnectionAdvanceConfiguration.get();
+    }
+
+    public SimpleBooleanProperty enableConnectionAdvanceConfigurationProperty() {
+        return enableConnectionAdvanceConfiguration;
+    }
+
+    public void setEnableConnectionAdvanceConfiguration(boolean enableConnectionAdvanceConfiguration) {
+        this.enableConnectionAdvanceConfiguration.set(enableConnectionAdvanceConfiguration);
+    }
+
+    public ServerConnectionAdvanceConfigurationVO getConnectionAdvanceConfiguration() {
+        return connectionAdvanceConfiguration.get();
+    }
+
+    public ObjectProperty<ServerConnectionAdvanceConfigurationVO> connectionAdvanceConfigurationProperty() {
+        return connectionAdvanceConfiguration;
+    }
+
+    public void setConnectionAdvanceConfiguration(ServerConnectionAdvanceConfigurationVO connectionAdvanceConfiguration) {
+        this.connectionAdvanceConfiguration.set(connectionAdvanceConfiguration);
     }
 }

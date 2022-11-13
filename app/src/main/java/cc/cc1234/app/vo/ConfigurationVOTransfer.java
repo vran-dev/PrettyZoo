@@ -2,8 +2,10 @@ package cc.cc1234.app.vo;
 
 import cc.cc1234.core.configuration.entity.Configuration;
 import cc.cc1234.core.configuration.entity.ServerConfiguration;
+import cc.cc1234.core.configuration.entity.ServerConnectionAdvanceConfiguration;
 import cc.cc1234.specification.config.model.ConfigData;
 import cc.cc1234.specification.config.model.ServerConfigData;
+import cc.cc1234.specification.config.model.ServerConnectionAdvanceConfigData;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +46,8 @@ public class ConfigurationVOTransfer {
             vo.setSshPassword(sshTunnelConfig.getSshPassword());
         }
         vo.setSshEnabled(serverConfiguration.getSshTunnelEnabled());
+        vo.setEnableConnectionAdvanceConfiguration(serverConfiguration.getEnableConnectionAdvanceConfiguration());
+        vo.setConnectionAdvanceConfiguration(to(serverConfiguration.getConnectionAdvanceConfiguration()));
         return vo;
     }
 
@@ -82,6 +86,26 @@ public class ConfigurationVOTransfer {
             }
         });
         vo.setSshEnabled(serverConfig.getSshTunnelEnabled());
+        vo.setEnableConnectionAdvanceConfiguration(serverConfig.getEnableConnectionAdvanceConfiguration());
+        vo.setConnectionAdvanceConfiguration(to(serverConfig.getConnectionAdvanceConfig()));
+        return vo;
+    }
+
+    public static ServerConnectionAdvanceConfigurationVO to(ServerConnectionAdvanceConfigData connectionConfig) {
+        final ServerConnectionAdvanceConfigurationVO vo = new ServerConnectionAdvanceConfigurationVO();
+        vo.setConnectionTimeout(connectionConfig.getConnectionTimeout());
+        vo.setSessionTimeout(connectionConfig.getSessionTimeout());
+        vo.setMaxRetries(connectionConfig.getMaxRetries());
+        vo.setRetryIntervalTime(connectionConfig.getRetryIntervalTime());
+        return vo;
+    }
+
+    private static ServerConnectionAdvanceConfigurationVO to(ServerConnectionAdvanceConfiguration connectionConfig) {
+        final ServerConnectionAdvanceConfigurationVO vo = new ServerConnectionAdvanceConfigurationVO();
+        vo.setConnectionTimeout(connectionConfig.getConnectionTimeout());
+        vo.setSessionTimeout(connectionConfig.getSessionTimeout());
+        vo.setMaxRetries(connectionConfig.getMaxRetries());
+        vo.setRetryIntervalTime(connectionConfig.getRetryIntervalTime());
         return vo;
     }
 

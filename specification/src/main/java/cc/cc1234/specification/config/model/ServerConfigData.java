@@ -29,6 +29,10 @@ public class ServerConfigData {
 
     private Boolean sshTunnelEnabled = false;
 
+    private Boolean enableConnectionAdvanceConfiguration = false;
+
     private Optional<SSHTunnelConfigData> sshTunnelConfig = Optional.empty();
+
+    private ServerConnectionAdvanceConfigData connectionAdvanceConfig = new ServerConnectionAdvanceConfigData();
 
 }

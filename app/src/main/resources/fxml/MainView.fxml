@@ -14,7 +14,6 @@
             <items>
                 <AnchorPane fx:id="mainLeftPane" minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="694.0">
                     <children>
-                        <!--                  <Label fx:id="prettyZooLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="160.0" prefWidth="199.0" styleClass="prettyZoo" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />-->
                         <VBox fx:id="serverButtons" alignment="TOP_LEFT" prefWidth="40.0" styleClass="main-menu-bar"
                               spacing="6" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                               AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0">

@@ -3,9 +3,11 @@ package cc.cc1234.core.configuration.factory;
 import cc.cc1234.config.JsonPrettyZooConfigRepository;
 import cc.cc1234.core.configuration.entity.Configuration;
 import cc.cc1234.core.configuration.entity.ServerConfiguration;
+import cc.cc1234.core.configuration.entity.ServerConnectionAdvanceConfiguration;
 import cc.cc1234.core.configuration.value.SSHTunnelConfiguration;
 import cc.cc1234.specification.config.PrettyZooConfigRepository;
 import cc.cc1234.specification.config.model.ConfigData;
+import cc.cc1234.specification.config.model.ServerConnectionAdvanceConfigData;
 import cc.cc1234.specification.listener.ConfigurationChangeListener;
 
 import java.util.List;
@@ -39,6 +41,12 @@ public class ConfigurationFactory {
                     var port = serverConfig.getPort()
                             .orElseGet(() -> Integer.parseInt(hostAndPort[1]));
                     var url = host + ":" + port;
+                    var advanceConfig = new ServerConnectionAdvanceConfiguration();
+                    ServerConnectionAdvanceConfigData originAdvance = serverConfig.getConnectionAdvanceConfig();
+                    advanceConfig.setRetryIntervalTime(originAdvance.getRetryIntervalTime());
+                    advanceConfig.setMaxRetries(originAdvance.getMaxRetries());
+                    advanceConfig.setSessionTimeout(originAdvance.getSessionTimeout());
+                    advanceConfig.setConnectionTimeout(originAdvance.getConnectionTimeout());
                     return ServerConfiguration.builder()
                             .alias(serverConfig.getAlias())
                             .url(url)
@@ -48,6 +56,9 @@ public class ConfigurationFactory {
                             .connectTimes(serverConfig.getConnectTimes())
                             .sshTunnelEnabled(serverConfig.getSshTunnelEnabled())
                             .sshTunnel(tunnelConfiguration)
+                            .enableConnectionAdvanceConfiguration(
+                                    serverConfig.getEnableConnectionAdvanceConfiguration())
+                            .connectionAdvanceConfiguration(advanceConfig)
                             .build();
                 })
                 .collect(Collectors.toList());

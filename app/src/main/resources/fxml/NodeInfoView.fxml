@@ -1,180 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<AnchorPane fx:id="nodeInfoPane" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #FFF;" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.NodeInfoViewController">
-   <children>
-      <SplitPane fx:id="nodeInfoSplitPane" dividerPositions="0.6" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" styleClass="node-info-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <items>
-            <AnchorPane prefHeight="250.0" prefWidth="200.0">
-               <children>
-                  <GridPane layoutX="55.0" layoutY="64.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="35.0">
-                    <columnConstraints>
-                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="60.0" />
-                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="5">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="cZxid" />
-                              <TextField fx:id="cZxidField" editable="false" styleClass="node-info-field" />
-                           </children>
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane fx:id="nodeInfoPane" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #FFF;"
+            stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/15.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.NodeInfoViewController">
+    <children>
+        <SplitPane fx:id="nodeInfoSplitPane" dividerPositions="0.6" orientation="VERTICAL" prefHeight="200.0"
+                   prefWidth="160.0" styleClass="node-info-pane" AnchorPane.bottomAnchor="0.0"
+                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <items>
+                <AnchorPane prefHeight="250.0" prefWidth="200.0">
+                    <children>
+                        <GridPane layoutX="55.0" layoutY="64.0" AnchorPane.bottomAnchor="0.0"
+                                  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="35.0">
+                            <columnConstraints>
+                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0"
+                                                   percentWidth="60.0"/>
+                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                            </rowConstraints>
+                            <children>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="5">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="cZxid"/>
+                                        <TextField fx:id="cZxidField" editable="false" styleClass="node-info-field"/>
+                                    </children>
+                                    <padding>
+                                        <Insets left="5.0" right="5.0"/>
+                                    </padding>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="4">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="pZxid"/>
+                                        <TextField fx:id="pZxidField" editable="false" styleClass="node-info-field"/>
+                                    </children>
+                                    <padding>
+                                        <Insets left="5.0" right="5.0"/>
+                                    </padding>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.rowIndex="1">
+                                    <children>
+                                        <Label fx:id="mtimeLabel" minWidth="40.0" text="mtime"/>
+                                        <TextField fx:id="mtimeField" editable="false" styleClass="node-info-field"/>
+                                    </children>
+                                    <padding>
+                                        <Insets left="5.0" right="5.0"/>
+                                    </padding>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ephemeralOwner"/>
+                                        <TextField fx:id="ephemeralOwnerField" editable="false"
+                                                   styleClass="node-info-field"/>
+                                    </children>
+                                    <padding>
+                                        <Insets left="5.0" right="5.0"/>
+                                    </padding>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="2">
+                                    <children>
+                                        <Label fx:id="ctimeLabel" minWidth="40.0" text="ctime"/>
+                                        <TextField fx:id="ctimeField" editable="false" styleClass="node-info-field"/>
+                                    </children>
+                                    <padding>
+                                        <Insets left="5.0" right="5.0"/>
+                                    </padding>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="3">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="mZxid"/>
+                                        <TextField fx:id="mZxidField" editable="false" styleClass="node-info-field"/>
+                                    </children>
+                                    <padding>
+                                        <Insets left="5.0" right="5.0"/>
+                                    </padding>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1"
+                                      GridPane.rowIndex="1">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="dataLength"/>
+                                        <TextField fx:id="dataLengthField" editable="false"
+                                                   styleClass="node-info-field"/>
+                                    </children>
+                                    <padding>
+                                        <Insets left="5.0" right="5.0"/>
+                                    </padding>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1"
+                                      GridPane.rowIndex="2">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="numChildren"/>
+                                        <TextField fx:id="numChildrenField" editable="false"
+                                                   styleClass="node-info-field"/>
+                                    </children>
+                                    <padding>
+                                        <Insets left="5.0" right="5.0"/>
+                                    </padding>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1"
+                                      GridPane.rowIndex="3">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="dataVersion"/>
+                                        <TextField fx:id="dataVersionField" editable="false"
+                                                   styleClass="node-info-field"/>
+                                    </children>
+                                    <padding>
+                                        <Insets left="5.0" right="5.0"/>
+                                    </padding>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1"
+                                      GridPane.rowIndex="4">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="aclVersion"/>
+                                        <TextField fx:id="aclVersionField" editable="false"
+                                                   styleClass="node-info-field"/>
+                                    </children>
+                                    <padding>
+                                        <Insets left="5.0" right="5.0"/>
+                                    </padding>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1"
+                                      GridPane.rowIndex="5">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="cVersion"/>
+                                        <TextField fx:id="cVersionField" editable="false" styleClass="node-info-field"/>
+                                    </children>
+                                    <padding>
+                                        <Insets left="5.0" right="5.0"/>
+                                    </padding>
+                                </HBox>
+                            </children>
+                        </GridPane>
+                        <TextField fx:id="pathField" editable="false" layoutX="41.0" layoutY="14.0" minHeight="30.0"
+                                   prefHeight="30.0" styleClass="node-info-field" AnchorPane.leftAnchor="0.0"
+                                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        </TextField>
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="15.0" right="15.0" top="5.0"/>
+                    </padding>
+                </AnchorPane>
+                <AnchorPane fx:id="nodeDataPane" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <HBox fx:id="dataMenuBar" alignment="CENTER_LEFT" layoutX="42.0" layoutY="14.0" minHeight="40.0"
+                              prefHeight="40.0" spacing="10.0" styleClass="data-menu-bar" AnchorPane.leftAnchor="0.0"
+                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <Button fx:id="nodeUpdateButton" mnemonicParsing="false" styleClass="data-save-button">
+                                    <tooltip>
+                                        <Tooltip anchorLocation="WINDOW_TOP_LEFT" text="更新"/>
+                                    </tooltip>
+                                    <font>
+                                        <Font size="10.0"/>
+                                    </font>
+                                </Button>
+                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0"
+                                      styleClass="button-group">
+                                    <children>
+                                        <Button fx:id="rawFormatButton" mnemonicParsing="false" text="RAW"/>
+                                        <Button fx:id="jsonFormatButton" mnemonicParsing="false" text="JSON"/>
+                                        <Button mnemonicParsing="false" text="XML" fx:id="xmlFormatButton"/>
+                                    </children>
+                                </HBox>
+                                <ChoiceBox fx:id="charsetChoice" prefWidth="150.0"/>
+                            </children>
+                            <padding>
+                                <Insets left="5.0" right="5.0"/>
+                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="4">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="pZxid" />
-                              <TextField fx:id="pZxidField" editable="false" styleClass="node-info-field" />
-                           </children>
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.rowIndex="1">
-                           <children>
-                              <Label fx:id="mtimeLabel" minWidth="40.0" text="mtime" />
-                              <TextField fx:id="mtimeField" editable="false" styleClass="node-info-field" />
-                           </children>
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ephemeralOwner" />
-                              <TextField fx:id="ephemeralOwnerField" editable="false" styleClass="node-info-field" />
-                           </children>
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="2">
-                           <children>
-                              <Label fx:id="ctimeLabel" minWidth="40.0" text="ctime" />
-                              <TextField fx:id="ctimeField" editable="false" styleClass="node-info-field" />
-                           </children>
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="3">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="mZxid" />
-                              <TextField fx:id="mZxidField" editable="false" styleClass="node-info-field" />
-                           </children>
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="dataLength" />
-                              <TextField fx:id="dataLengthField" editable="false" styleClass="node-info-field" />
-                           </children>
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="numChildren" />
-                              <TextField fx:id="numChildrenField" editable="false" styleClass="node-info-field" />
-                           </children>
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="dataVersion" />
-                              <TextField fx:id="dataVersionField" editable="false" styleClass="node-info-field" />
-                           </children>
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="aclVersion" />
-                              <TextField fx:id="aclVersionField" editable="false" styleClass="node-info-field" />
-                           </children>
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="cVersion" />
-                              <TextField fx:id="cVersionField" editable="false" styleClass="node-info-field" />
-                           </children>
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </HBox>
-                     </children>
-                  </GridPane>
-                  <TextField fx:id="pathField" editable="false" layoutX="41.0" layoutY="14.0" minHeight="30.0" prefHeight="30.0" styleClass="node-info-field" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                  </TextField>
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
-               </padding>
-            </AnchorPane>
-            <AnchorPane fx:id="nodeDataPane" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <HBox fx:id="dataMenuBar" alignment="CENTER_LEFT" layoutX="42.0" layoutY="14.0" minHeight="40.0" prefHeight="40.0" spacing="10.0" styleClass="data-menu-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Button fx:id="nodeUpdateButton" mnemonicParsing="false" styleClass="data-save-button">
-                            <tooltip><Tooltip anchorLocation="WINDOW_TOP_LEFT" text="更新" /></tooltip>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
-                        </Button>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="button-group">
-                           <children>
-                              <Button fx:id="rawFormatButton" mnemonicParsing="false" text="RAW" />
-                              <Button fx:id="jsonFormatButton" mnemonicParsing="false" text="JSON" />
-                              <Button mnemonicParsing="false" text="XML" fx:id="xmlFormatButton" />
-                           </children>
-                        </HBox>
-                        <ChoiceBox fx:id="charsetChoice" prefWidth="150.0" />
-                     </children>
-                     <padding>
-                        <Insets left="5.0" right="5.0" />
-                     </padding>
-                  </HBox>
-               </children>
-               <padding>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="5.0" />
-               </padding>
-            </AnchorPane>
-        </items>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </SplitPane>
-   </children>
+                    </children>
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="5.0"/>
+                    </padding>
+                </AnchorPane>
+            </items>
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+        </SplitPane>
+    </children>
 </AnchorPane>

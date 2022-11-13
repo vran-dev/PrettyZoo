@@ -10,9 +10,11 @@ import cc.cc1234.app.util.Fills;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.vo.ConfigurationVOTransfer;
 import cc.cc1234.app.vo.ServerConfigurationVO;
+import cc.cc1234.app.vo.ServerConnectionAdvanceConfigurationVO;
 import cc.cc1234.app.vo.ZkNodeSearchResult;
 import cc.cc1234.core.configuration.entity.Configuration;
 import cc.cc1234.core.configuration.entity.ServerConfiguration;
+import cc.cc1234.core.configuration.entity.ServerConnectionAdvanceConfiguration;
 import cc.cc1234.core.configuration.service.ConfigurationDomainService;
 import cc.cc1234.core.configuration.value.SSHTunnelConfiguration;
 import cc.cc1234.core.zookeeper.service.ZookeeperDomainService;
@@ -156,6 +158,16 @@ public class PrettyZooFacade {
         tunnelConfigurationBuilder.sshUsername(serverConfigurationVO.getSshUsername())
                 .sshPassword(serverConfigurationVO.getSshPassword());
 
+        ServerConnectionAdvanceConfiguration advanceConfig = new ServerConnectionAdvanceConfiguration();
+        if (serverConfigurationVO.isEnableConnectionAdvanceConfiguration()) {
+            ServerConnectionAdvanceConfigurationVO inputAdvanceConfig =
+                    serverConfigurationVO.getConnectionAdvanceConfiguration();
+            advanceConfig.setConnectionTimeout(inputAdvanceConfig.getConnectionTimeout());
+            advanceConfig.setSessionTimeout(inputAdvanceConfig.getSessionTimeout());
+            advanceConfig.setMaxRetries(inputAdvanceConfig.getMaxRetries());
+            advanceConfig.setRetryIntervalTime(inputAdvanceConfig.getRetryIntervalTime());
+        }
+
         var serverConfiguration = ServerConfiguration.builder()
                 .alias(serverConfigurationVO.getZkAlias())
                 .url(serverConfigurationVO.getZkUrl())
@@ -164,6 +176,8 @@ public class PrettyZooFacade {
                 .aclList(new ArrayList<>(serverConfigurationVO.getAclList()))
                 .sshTunnelEnabled(serverConfigurationVO.isSshEnabled())
                 .sshTunnel(tunnelConfigurationBuilder.build())
+                .enableConnectionAdvanceConfiguration(serverConfigurationVO.isEnableConnectionAdvanceConfiguration())
+                .connectionAdvanceConfiguration(advanceConfig)
                 .build();
         configurationDomainService.save(serverConfiguration);
     }
