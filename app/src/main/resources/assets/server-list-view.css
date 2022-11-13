@@ -1,0 +1,26 @@
+.list-view {
+    -fx-base: #1d1d1d;
+    -fx-control-inner-background: white;
+    -fx-background-color: #FFF;
+    -fx-table-cell-border-color: white;
+    -fx-table-cell-border-size: 0;
+    -fx-table-header-border-color: white;
+    -fx-table-header-border-size: 0;
+    -fx-padding: 10 10 0 10;
+    -fx-border-color: transparent;
+    -fx-selection-bar: transparent;
+    -fx-selection-bar-non-focused: transparent;
+    -fx-fill: #000;
+    -fx-text-fill: #000;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 6 10 6 10;
+    -fx-cell-size: 80;
+    -fx-text-fill: #000;
+    -fx-fill: #000;
+    -fx-border-width: 0;
+    -fx-alignment: center;
+}

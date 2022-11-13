@@ -1,0 +1,200 @@
+.tree-tab-icon {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/tab/tree.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-border-radius: 22;
+    -fx-background-size: 18;
+    -fx-pref-height: 18;
+    -fx-pref-width: 18;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.terminal-tab-icon {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/tab/terminal.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-border-radius: 22;
+    -fx-background-size: 18;
+    -fx-pref-height: 18;
+    -fx-pref-width: 18;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.letter-command-tab-icon {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/tab/fourLetter.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-border-radius: 22;
+    -fx-background-size: 18;
+    -fx-pref-height: 18;
+    -fx-pref-width: 18;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+/* -------------------------------------- tab --------------------------------------*/
+.tab-pane .headers-region .tab .tab-container .tab-label {
+    -fx-text-fill: #303133;
+    -fx-font-weight: 100;
+    -fx-padding: 2 10 2 10;
+}
+
+.tab-pane:top .depth-container .tab-header-area .headers-region .tab-selected-line {
+    -fx-background-color: transparent;
+}
+
+.tab-pane .headers-region .tab:selected .tab-container .tab-label {
+    -fx-text-fill: #000;
+}
+
+.tab:selected {
+    -fx-border-width: 0 0 3 0;
+    -fx-border-color: #000;
+    -fx-background-color: transparent;
+    -fx-text-fill: #000;
+    -fx-opacity: 0.9;
+    -fx-background-radius: 8;
+}
+
+.data-save-button {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/update.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 20;
+    -fx-pref-height: 20;
+    -fx-pref-width: 20;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.data-save-button:hover {
+    -fx-background-color: #DDD;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.data-save-button .tooltip {
+    -fx-font-size: 10px;
+    -fx-opacity: 0.9;
+    -fx-text-alignment: center;
+}
+
+.data-menu-bar {
+    -fx-background-color: #FFF;
+    -fx-border-color: #a0a0a0;
+    -fx-border-width: 1 1 0 1;
+    -fx-background-radius: 0;
+    -fx-padding: 6 10 6 10;
+    -fx-border-radius: 6 6 0 0;
+    -fx-spacing: 10;
+}
+
+.data-menu-bar:hover {
+    -fx-border-color: #000;
+}
+
+/* -------------------------------------- terminal --------------------------------------*/
+.terminal-area {
+    -fx-background-color: #1c1f20;
+    -fx-border-width: 0;
+    -fx-background-insets: 0;
+    -fx-border-radius: 0;
+    -fx-opacity: 0.85;
+    -fx-text-fill: #FFF;
+}
+
+.terminal-area .content {
+    -fx-background-color: #1c1f20;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+}
+
+.terminal-area:focused .content {
+    -fx-background-color: #1c1f20;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+}
+
+.terminal-input {
+    -fx-background-color: #1c1f20;
+    -fx-background-insets: 0;
+    -fx-opacity: 0.95;
+    -fx-text-fill: #FFF;
+    -fx-border-color: #FFF;
+    -fx-border-width: 2 0 0 0;
+}
+
+/* json data highlights*/
+
+.json-key {
+    -fx-fill: #92278f;
+}
+
+.json-boolean-value {
+    -fx-fill: #f98280;
+}
+
+.json-null-value {
+    -fx-fill: #ff0000;
+}
+
+.json-number-value {
+    -fx-fill: #25aae2;
+}
+
+.json-string-value {
+    -fx-fill: #3ab54a;
+}
+
+/* properties highlights*/
+.property-comment {
+    -fx-fill: #949494;
+}
+
+.property-key {
+    -fx-fill: #067eb0;
+}
+
+.property-value {
+    -fx-fill: #25852e;
+}
+
+/* xml data highlights */
+
+.xml-tag-mark {
+    -fx-fill: gray;
+}
+
+.xml-any-tag {
+    -fx-fill: crimson;
+}
+
+.xml-paren {
+    -fx-fill: firebrick;
+    -fx-font-weight: bold;
+}
+
+.xml-attribute {
+    -fx-fill: darkviolet;
+}
+
+.xml-value {
+    -fx-fill: black;
+}
+
+.xml-comment {
+    -fx-fill: teal;
+}

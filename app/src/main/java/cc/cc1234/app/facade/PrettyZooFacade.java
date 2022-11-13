@@ -27,6 +27,7 @@ import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import org.apache.commons.io.input.ReversedLinesFileReader;
 import org.apache.commons.io.input.Tailer;
 import org.apache.commons.io.input.TailerListener;
 import org.apache.zookeeper.data.Stat;
@@ -36,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -102,10 +104,15 @@ public class PrettyZooFacade {
                 .stream()
                 .map(item -> {
                     String path = item.getValue().getPath();
-                    var highlights = Fills.fill(path, input, Text::new,
+                    var highlights = Fills.fill(path, input,
+                            s -> {
+                                Text text = new Text(s);
+                                text.setFill(Color.valueOf("#625D5DFF"));
+                                return text;
+                            },
                             s -> {
                                 final Text highlight = new Text(s);
-                                highlight.setFill(Color.RED);
+                                highlight.setFill(Color.valueOf("#2C6DD2"));
                                 return highlight;
                             });
                     var textFlow = new TextFlow(highlights.toArray(new Text[0]));
@@ -259,6 +266,12 @@ public class PrettyZooFacade {
     public void startLogTailer(Consumer<String> lineConsumer, Consumer<Exception> exceptionConsumer) {
         var userHome = System.getProperty("user.home");
         var path = Paths.get(userHome + "/.prettyZoo/log/prettyZoo.log");
+        try (ReversedLinesFileReader reader = new ReversedLinesFileReader(path, Charset.defaultCharset())) {
+            reader.readLines(50).forEach(lineConsumer);
+        } catch (Exception e) {
+            log.error("file read error, msg:{}", e.getMessage(), e);
+        }
+
         var tailerThread = new Thread(() -> {
             new Tailer(path.toFile(), new TailerListener() {
                 @Override

@@ -1,0 +1,59 @@
+.list-view {
+    -fx-base: #FFF;
+    -fx-control-inner-background: white;
+    -fx-background-color: white;
+    -fx-table-cell-border-color: white;
+    -fx-table-cell-border-size: 0;
+    -fx-table-header-border-color: white;
+    -fx-table-header-border-size: 0;
+    -fx-padding: 0 0 0 0;
+    -fx-border-color: #FFF;
+    -fx-selection-bar: transparent;
+    -fx-selection-bar-non-focused: transparent;
+}
+
+.list-cell {
+    -fx-background-color: #FFF;
+    -fx-background-radius: 0;
+    -fx-padding: 6 10 6 10;
+    -fx-cell-size: 30;
+    -fx-text-fill: #000;
+    -fx-fill: #000;
+    -fx-border-width: 0;
+    -fx-alignment: center;
+    -fx-opacity: 0.9;
+}
+
+.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:focused {
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: #FFF;
+    -fx-border-color: #F4F8FB;
+    /*-fx-border-radius: 10;*/
+    /*-fx-background-radius: 10;*/
+}
+
+.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:focused > .label {
+    -fx-text-fill: #FFF;
+    -fx-font-weight: bold;
+}
+
+
+.list-view .virtual-flow .clipped-container .sheet .list-cell:filled {
+    -fx-fill: #FFF;
+    -fx-text-fill: #FFF;
+}
+
+.list-view .virtual-flow .clipped-container .sheet .list-cell:filled .text {
+    -fx-fill: #FFF;
+    -fx-text-fill: #FFF;
+}
+
+.list-view .virtual-flow .clipped-container .sheet .list-cell:focused:filled {
+    -fx-fill: #FFF;
+    -fx-text-fill: #FFF;
+}
+
+.list-view .virtual-flow .clipped-container .sheet .list-cell:focused:filled .text {
+    -fx-fill: #FFF;
+    -fx-text-fill: #FFF;
+}

@@ -10,40 +10,38 @@
    <children>
       <SplitPane fx:id="mainSplitPane" dividerPositions="0.25" prefHeight="160.0" prefWidth="200.0">
         <items>
-          <AnchorPane fx:id="mainLeftPane" minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="694.0">
+            <AnchorPane fx:id="mainLeftPane" minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="694.0">
                <children>
-                  <Label fx:id="prettyZooLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="160.0" prefWidth="199.0" styleClass="prettyZoo" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <JFXListView fx:id="serverListView" layoutY="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="212.0" />
-                  <HBox fx:id="serverButtons" alignment="CENTER_LEFT" layoutX="-248.0" layoutY="-100.0" prefHeight="50.0" prefWidth="200.0" styleClass="main-menu-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="160.0">
-                     <children>
-                        <JFXButton fx:id="serverAddButton" alignment="CENTER" mnemonicParsing="false" styleClass="menu-button" text="%main.menuBar.new" textAlignment="CENTER">
-                           <HBox.margin>
-                              <Insets right="3.0" />
-                           </HBox.margin>
-                        </JFXButton>
-                         <MenuButton fx:id="configMenuButton" mnemonicParsing="false" text="%main.menuBar.config">
-                             <items>
-                                 <MenuItem fx:id="exportMenuItem" mnemonicParsing="false" text="%main.menuBar.config.export" />
-                                 <MenuItem fx:id="importMenuItem" mnemonicParsing="false" text="%main.menuBar.config.import" />
-                                 <MenuItem fx:id="logMenuItem" mnemonicParsing="false" text="log" />
-                                 <Menu fx:id="langMenu" text="%main.menuBar.config.lang" />
-                                 <MenuItem fx:id="resetMenuItem" text="%main.menuBar.config.reset" />
-                             </items>
-                         </MenuButton>
-
-                        <MenuButton fx:id="fontMenuButton" mnemonicParsing="false" text="%main.menuBar.font">
-                          <items>
-                          </items>
-                        </MenuButton>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="1.0" />
-                     </padding>
-                  </HBox>
-                  <Label fx:id="newVersionLabel" layoutX="142.0" layoutY="14.0" styleClass="new-version" visible="false" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
+<!--                  <Label fx:id="prettyZooLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="160.0" prefWidth="199.0" styleClass="prettyZoo" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />-->
+                   <VBox fx:id="serverButtons" alignment="TOP_LEFT" prefWidth="40.0" styleClass="main-menu-bar" spacing="6" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0">
+                       <children>
+                           <JFXButton fx:id="serverAddButton" mnemonicParsing="false" styleClass="plus-button" >
+                           </JFXButton>
+                           <MenuButton fx:id="configMenuButton" mnemonicParsing="false" styleClass="setting-button" >
+                               <items>
+                                   <MenuItem fx:id="exportMenuItem" mnemonicParsing="false" text="%main.menuBar.config.export" />
+                                   <MenuItem fx:id="importMenuItem" mnemonicParsing="false" text="%main.menuBar.config.import" />
+                                   <Menu fx:id="langMenu" text="%main.menuBar.config.lang" />
+                                   <MenuItem fx:id="resetMenuItem" text="%main.menuBar.config.reset" />
+                               </items>
+                           </MenuButton>
+                           <JFXButton fx:id="logsButton" mnemonicParsing="false" styleClass="logs-button" >
+                           </JFXButton>
+                           <MenuButton fx:id="fontMenuButton" mnemonicParsing="false" styleClass="font-size-button">
+                               <items>
+                               </items>
+                           </MenuButton>
+                       </children>
+                       <padding>
+                           <Insets left="10.0" top="6.0" />
+                       </padding>
+                   </VBox>
+                   <ListView fx:id="serverListView" stylesheets="@../assets/server-list-view.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0">
+                   </ListView>
+                   <Label fx:id="newVersionLabel" layoutX="142.0" layoutY="14.0" styleClass="new-version" visible="false" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
                </children>
             </AnchorPane>
-            <StackPane fx:id="mainRightPane" style="-fx-background-color: F4F8FB;">
+            <StackPane fx:id="mainRightPane" style="-fx-background-color: #FFF;">
                <children>
                   <AnchorPane StackPane.alignment="CENTER">
                      <children>

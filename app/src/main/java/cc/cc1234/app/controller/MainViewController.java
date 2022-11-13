@@ -18,17 +18,17 @@ import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.specification.config.model.ConfigData;
 import cc.cc1234.version.Version;
 import cc.cc1234.version.VersionChecker;
-import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSlider;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -50,22 +50,22 @@ public class MainViewController {
     private StackPane mainRightPane;
 
     @FXML
-    private JFXListView<ServerConfigurationVO> serverListView;
+    private ListView<ServerConfigurationVO> serverListView;
 
     @FXML
-    private HBox serverButtons;
+    private VBox serverButtons;
 
     @FXML
     private Button serverAddButton;
+
+    @FXML
+    private Button logsButton;
 
     @FXML
     private MenuItem exportMenuItem;
 
     @FXML
     private MenuItem importMenuItem;
-
-    @FXML
-    private MenuItem logMenuItem;
 
     @FXML
     private MenuItem resetMenuItem;
@@ -90,9 +90,16 @@ public class MainViewController {
 
     @FXML
     private void initialize() {
+
         initServerListView();
+        initConfigs();
+
         RootPaneContext.set(rootStackPane);
-        mainSplitPane.setDividerPositions(prettyZooFacade.getMainSplitPaneDividerPosition());
+        if (serverListView.getItems().isEmpty()) {
+            mainSplitPane.setDividerPositions(calculateDividerPositions());
+        } else {
+            mainSplitPane.setDividerPositions(prettyZooFacade.getMainSplitPaneDividerPosition());
+        }
         mainSplitPane.getDividers().stream().findFirst().ifPresent(divider -> {
             divider.positionProperty().addListener(((observable, oldValue, newValue) -> {
                 prettyZooFacade.changeMainSplitPaneDividerPosition(newValue.doubleValue());
@@ -112,12 +119,12 @@ public class MainViewController {
             serverListView.getSelectionModel().clearSelection();
             serverViewController.show(mainRightPane);
         });
-        exportMenuItem.setOnAction(e -> onExportAction());
-        importMenuItem.setOnAction(e -> onImportAction());
-        logMenuItem.setOnAction(e -> {
+        logsButton.setOnAction(e -> {
             logViewController.show(mainRightPane);
             serverListView.selectionModelProperty().get().clearSelection();
         });
+        exportMenuItem.setOnAction(e -> onExportAction());
+        importMenuItem.setOnAction(e -> onImportAction());
         resetMenuItem.setOnAction(e -> {
             prettyZooFacade.resetConfiguration();
             PrimaryStageContext.get().close();
@@ -200,9 +207,6 @@ public class MainViewController {
     }
 
     private void initServerListView() {
-        final ConfigurationVO configurationVO = new ConfigurationVO();
-        prettyZooFacade.loadServerConfigurations(new DefaultConfigurationListener(configurationVO));
-        serverListView.itemsProperty().set(configurationVO.getServers());
         serverListView.setCellFactory(cellCallback -> {
             var cell = new ZkServerListCell(
                     server -> serverViewController.connect(mainRightPane, server),
@@ -225,6 +229,26 @@ public class MainViewController {
                 serverViewController.show(mainRightPane, newValue);
             }
         });
+    }
+
+    private void initConfigs() {
+        final ConfigurationVO configurationVO = new ConfigurationVO();
+        configurationVO.getServers()
+                .addListener((ListChangeListener<? super ServerConfigurationVO>) (change) -> {
+                    if (change.getList().isEmpty()) {
+                        mainSplitPane.setDividerPositions(calculateDividerPositions());
+                    } else {
+                        mainSplitPane.setDividerPositions(0.25);
+                    }
+                });
+        prettyZooFacade.loadServerConfigurations(new DefaultConfigurationListener(configurationVO));
+        serverListView.itemsProperty().set(configurationVO.getServers());
+    }
+
+    private double calculateDividerPositions() {
+        double buttonBarWidth = serverButtons.getPrefWidth();
+        double mainPaneWidth = rootStackPane.getPrefWidth();
+        return (buttonBarWidth + 6) / mainPaneWidth;
     }
 
     public StackPane getRootStackPane() {

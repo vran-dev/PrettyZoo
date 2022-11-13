@@ -15,21 +15,16 @@ import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.app.vo.ServerStatus;
 import cc.cc1234.specification.listener.ServerListener;
 import com.google.common.base.Strings;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXToggleButton;
+import com.jfoenix.controls.*;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,16 +44,19 @@ public class ServerViewController {
     private AnchorPane serverInfoPane;
 
     @FXML
+    private AnchorPane serverBasicInfoPane;
+
+    @FXML
     private JFXToggleButton sshTunnelCheckbox;
+
+    @FXML
+    private JFXTabPane tunnelTabPane;
 
     @FXML
     private AnchorPane sshTunnelPane;
 
     @FXML
     private ProgressBar sshTunnelProgressBarTo;
-
-    @FXML
-    private ProgressBar sshTunnelProgressBarFrom;
 
     @FXML
     private TextArea aclTextArea;
@@ -242,10 +240,10 @@ public class ServerViewController {
     @FXML
     private void initialize() {
         sshTunnelViewPropertyBind();
+        sshTunnelProgressBarTo.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
         closeButton.setOnMouseClicked(e -> onClose());
         saveButton.setOnMouseClicked(e -> onSave());
         deleteButton.setOnMouseClicked(e -> onDelete());
-        serverInfoPane.setEffect(new DropShadow(15, 1, 1, Color.valueOf("#DDD")));
         sshTunnelPane.getChildren().forEach(node -> {
             node.setOnMouseClicked(e -> {
                 if (!sshTunnelCheckbox.isSelected()) {
@@ -253,6 +251,18 @@ public class ServerViewController {
                 }
                 e.consume();
             });
+        });
+        tunnelTabPane.visibleProperty().bind(sshTunnelCheckbox.selectedProperty());
+        sshTunnelCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                AnchorPane.setTopAnchor(serverBasicInfoPane, 0.0);
+                AnchorPane.setTopAnchor(buttonHBox, null);
+                AnchorPane.setBottomAnchor(buttonHBox, 30.0);
+            } else {
+                AnchorPane.setTopAnchor(serverBasicInfoPane, 30.0);
+                AnchorPane.setBottomAnchor(buttonHBox, null);
+                AnchorPane.setTopAnchor(buttonHBox, 248.0);
+            }
         });
 
         aclTextArea.setPromptText("ACL:\r"

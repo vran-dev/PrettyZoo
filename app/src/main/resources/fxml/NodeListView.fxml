@@ -16,9 +16,12 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<TabPane fx:id="nodeViewPane" prefHeight="540.0" prefWidth="815.0" stylesheets="@../assets/style.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.NodeViewController">
+<TabPane fx:id="nodeViewPane" prefHeight="550.0" prefWidth="815.0" stylesheets="@../assets/style.css, @../assets/node-info-tab.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.NodeViewController">
    <tabs>
-      <Tab fx:id="homeTab" text="Home">
+      <Tab fx:id="homeTab" text="Tree">
+         <graphic>
+            <Label alignment="CENTER" contentDisplay="CENTER" styleClass="tree-tab-icon"/>
+         </graphic>
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -26,7 +29,7 @@
                      <items>
                         <AnchorPane fx:id="nodeViewLeftPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="5.0" styleClass="head" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="5.0" styleClass="head" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="6">
                                  <children>
                                     <Label styleClass="search-label" />
                                     <JFXTextField fx:id="searchTextField" prefHeight="28.0" promptText="%nodeList.button.search.prompt" HBox.hgrow="ALWAYS">
@@ -39,8 +42,8 @@
                                     <Insets left="10.0" right="10.0" />
                                  </padding>
                               </HBox>
-                              <TreeView fx:id="zkNodeTreeView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0" />
-                              <ListView fx:id="searchResultList" maxHeight="1.7976931348623157E308" minHeight="300.0" prefHeight="0.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0" />
+                              <TreeView fx:id="zkNodeTreeView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0" />
+                              <ListView fx:id="searchResultList" stylesheets="@../assets/node-list-view.css" maxHeight="1.7976931348623157E308" minHeight="300.0" prefHeight="0.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0" />
                            </children>
                         </AnchorPane>
                         <StackPane fx:id="nodeViewRightPane" prefHeight="150.0" prefWidth="200.0">
@@ -56,6 +59,9 @@
          </content>
       </Tab>
       <Tab fx:id="terminalTab" text="&gt;_">
+         <graphic>
+            <Label alignment="CENTER" contentDisplay="CENTER" styleClass="terminal-tab-icon"/>
+         </graphic>
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="terminal-area">
                <children>
@@ -65,6 +71,9 @@
          </content>
       </Tab>
       <Tab fx:id="fourLetterCommandTab" text="LetterCommand">
+         <graphic>
+            <Label alignment="CENTER" contentDisplay="CENTER" styleClass="letter-command-tab-icon"/>
+         </graphic>
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #FFF;">
                <children>
