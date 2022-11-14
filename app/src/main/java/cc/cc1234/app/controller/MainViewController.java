@@ -59,6 +59,9 @@ public class MainViewController {
     private Button serverAddButton;
 
     @FXML
+    private Button checkUpdateButton;
+
+    @FXML
     private Button logsButton;
 
     @FXML
@@ -75,9 +78,6 @@ public class MainViewController {
 
     @FXML
     private MenuButton fontMenuButton;
-
-    @FXML
-    private Label newVersionLabel;
 
     @FXML
     private Hyperlink prettyZooLink;
@@ -108,13 +108,58 @@ public class MainViewController {
 
         mainRightPane.setPadding(new Insets(30, 30, 30, 30));
         initMenuAction();
-        newVersionLabel.setOnMouseClicked(e -> HostServiceContext.jumpToReleases());
         serverViewController.setOnClose(() -> this.serverListView.selectionModelProperty().get().clearSelection());
         prettyZooLink.setOnMouseClicked(e -> HostServiceContext.get().showDocument(prettyZooLink.getText()));
         initFontChangeButton();
     }
 
+    public StackPane getRootStackPane() {
+        return rootStackPane;
+    }
+
+    public void checkForUpdate() {
+        doCheckForUpdate(true);
+    }
+
+    private void doCheckForUpdate(Boolean ignoreToast) {
+        if (checkUpdateButton.getGraphic() != null) {
+            return;
+        }
+        ProgressIndicator indicator = new ProgressIndicator();
+        indicator.setPrefSize(12, 12);
+        indicator.getStyleClass().add("check-update-progress");
+        checkUpdateButton.getStyleClass().remove("check-update-button");
+        checkUpdateButton.setGraphic(indicator);
+        VersionChecker.hasNewVersion((latestVersion, features) -> {
+                    String title = "New version";
+                    final String content = new StringBuilder()
+                            .append("latest: ").append(latestVersion).append("\r\n")
+                            .append("yours: v").append(Version.VERSION).append("\r\n")
+                            .append("features: \r\n").append(features)
+                            .toString();
+                    checkUpdateButton.setOnAction(e2 ->
+                            Dialog.confirm(title, content, HostServiceContext::jumpToReleases));
+                    checkUpdateButton.getStyleClass().add("new-version");
+                    checkUpdateButton.setTooltip(new Tooltip("New version " + latestVersion + " released"));
+                    checkUpdateButton.setGraphic(null);
+                },
+                () -> {
+                    checkUpdateButton.getStyleClass().add("check-update-button");
+                    checkUpdateButton.setGraphic(null);
+                    if (!ignoreToast) {
+                        VToast.info(ResourceBundleUtils.getContent("action.check-update.no-change"));
+                    }
+                },
+                () -> {
+                    checkUpdateButton.getStyleClass().add("check-update-button");
+                    checkUpdateButton.setGraphic(null);
+                });
+    }
+
     private void initMenuAction() {
+        checkUpdateButton.setOnAction(e -> {
+            doCheckForUpdate(false);
+        });
         serverAddButton.setOnMouseClicked(event -> {
             serverListView.getSelectionModel().clearSelection();
             serverViewController.show(mainRightPane);
@@ -251,21 +296,4 @@ public class MainViewController {
         return (buttonBarWidth + 6) / mainPaneWidth;
     }
 
-    public StackPane getRootStackPane() {
-        return rootStackPane;
-    }
-
-    public void showNewVersionLabel() {
-        VersionChecker.hasNewVersion((latestVersion, features) -> {
-            String title = "New version";
-            final String content = new StringBuilder()
-                    .append("current: ").append(latestVersion).append("\r\n")
-                    .append("release: v").append(Version.VERSION).append("\r\n")
-                    .append("features: \r\n").append(features)
-                    .toString();
-            newVersionLabel.setTooltip(new Tooltip("New version " + latestVersion + " released"));
-            newVersionLabel.setVisible(true);
-            Dialog.confirm(title, content, HostServiceContext::jumpToReleases);
-        });
-    }
 }

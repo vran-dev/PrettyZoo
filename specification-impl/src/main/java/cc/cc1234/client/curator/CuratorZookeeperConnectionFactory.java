@@ -33,10 +33,10 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
         try {
             if (!client.blockUntilConnected(5, TimeUnit.SECONDS)) {
                 client.close();
-                throw new IllegalStateException("连接超时");
+                throw new IllegalStateException("connect timeout");
             }
         } catch (InterruptedException e) {
-            throw new IllegalStateException("连接失败", e);
+            throw new IllegalStateException("connect timeout", e);
         }
         return new CuratorZookeeperConnection(client);
     }

@@ -122,6 +122,28 @@
     -fx-background-color: #eee;
 }
 
+.check-update-button {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/arrow/arrow_up.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-size: 18;
+    -fx-pref-height: 26;
+    -fx-pref-width: 26;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+.check-update-button:hover {
+    -fx-background-color: #eee;
+}
+
+.check-update-progress {
+    -fx-progress-color: #000
+}
+
 .font-size-button {
     -fx-background-color: transparent;
     -fx-background-image: url("img/font-size.png");
@@ -388,6 +410,10 @@
     -fx-text-alignment: center;
     -fx-alignment: center;
     -fx-content-display: center;
+}
+
+.new-version:hover {
+    -fx-background-color: #DDD;
 }
 
 .tab-header-background {

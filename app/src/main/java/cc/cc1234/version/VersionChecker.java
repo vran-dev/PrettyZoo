@@ -1,5 +1,6 @@
 package cc.cc1234.version;
 
+import cc.cc1234.app.view.toast.VToast;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.application.Platform;
@@ -17,7 +18,17 @@ public class VersionChecker {
 
     private static final Logger logger = LoggerFactory.getLogger(VersionChecker.class);
 
-    public static void hasNewVersion(BiConsumer<String, String> runnable) {
+    public static void hasNewVersion(BiConsumer<String, String> newVersionAction) {
+        hasNewVersion(newVersionAction,
+                () -> {
+                },
+                () -> {
+                });
+    }
+
+    public static void hasNewVersion(BiConsumer<String, String> newVersionAction,
+                                     Runnable noUpdateAction,
+                                     Runnable exceptionally) {
         var request = HttpRequest.newBuilder(URI.create("https://api.github.com/repos/vran-dev/PrettyZoo/releases/latest"))
                 .build();
         var client = HttpClient.newHttpClient();
@@ -36,16 +47,27 @@ public class VersionChecker {
                         final ObjectNode node = mapper.readValue(response.body(), ObjectNode.class);
                         final String latestVersion = node.get("tag_name").asText("");
                         final String features = node.get("body").asText("");
-                        compareAndRun(latestVersion, features, runnable);
+                        compareAndRun(latestVersion, features, newVersionAction, noUpdateAction);
                     } catch (Exception exception) {
                         logger.error("check update failed", exception);
+                        throw new RuntimeException("check update failed", exception);
                     }
+                })
+                .exceptionally((ex) -> {
+                    Platform.runLater(exceptionally);
+                    Platform.runLater(() -> VToast.error("check update failed"));
+                    return null;
                 });
     }
 
-    private static void compareAndRun(String latestVersion, String features, BiConsumer<String, String> runnable) {
+    private static void compareAndRun(String latestVersion,
+                                      String features,
+                                      BiConsumer<String, String> runnable,
+                                      Runnable noUpdate) {
         if (isLargerThanCurrent(latestVersion)) {
             Platform.runLater(() -> runnable.accept(latestVersion, features));
+        } else {
+            Platform.runLater(noUpdate);
         }
     }
 

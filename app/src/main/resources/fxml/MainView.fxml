@@ -1,63 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXListView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<StackPane fx:id="rootStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="1050.0" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.MainViewController">
-   <children>
-      <SplitPane fx:id="mainSplitPane" dividerPositions="0.25" prefHeight="160.0" prefWidth="200.0">
-        <items>
-            <AnchorPane fx:id="mainLeftPane" minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="694.0">
-               <children>
-<!--                  <Label fx:id="prettyZooLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="160.0" prefWidth="199.0" styleClass="prettyZoo" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />-->
-                   <VBox fx:id="serverButtons" alignment="TOP_LEFT" prefWidth="40.0" styleClass="main-menu-bar" spacing="6" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0">
-                       <children>
-                           <JFXButton fx:id="serverAddButton" mnemonicParsing="false" styleClass="plus-button" >
-                           </JFXButton>
-                           <MenuButton fx:id="configMenuButton" mnemonicParsing="false" styleClass="setting-button" >
-                               <items>
-                                   <MenuItem fx:id="exportMenuItem" mnemonicParsing="false" text="%main.menuBar.config.export" />
-                                   <MenuItem fx:id="importMenuItem" mnemonicParsing="false" text="%main.menuBar.config.import" />
-                                   <Menu fx:id="langMenu" text="%main.menuBar.config.lang" />
-                                   <MenuItem fx:id="resetMenuItem" text="%main.menuBar.config.reset" />
-                               </items>
-                           </MenuButton>
-                           <JFXButton fx:id="logsButton" mnemonicParsing="false" styleClass="logs-button" >
-                           </JFXButton>
-                           <MenuButton fx:id="fontMenuButton" mnemonicParsing="false" styleClass="font-size-button">
-                               <items>
-                               </items>
-                           </MenuButton>
-                       </children>
-                       <padding>
-                           <Insets left="10.0" top="6.0" />
-                       </padding>
-                   </VBox>
-                   <ListView fx:id="serverListView" stylesheets="@../assets/server-list-view.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0">
-                   </ListView>
-                   <Label fx:id="newVersionLabel" layoutX="142.0" layoutY="14.0" styleClass="new-version" visible="false" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
-               </children>
-            </AnchorPane>
-            <StackPane fx:id="mainRightPane" style="-fx-background-color: #FFF;">
-               <children>
-                  <AnchorPane StackPane.alignment="CENTER">
-                     <children>
-                        <Label fx:id="prettyZooLabel1" alignment="CENTER" contentDisplay="CENTER" prefHeight="160.0" prefWidth="199.0" style="-fx-background-color: transparent;" styleClass="prettyZoo" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
-                        <Hyperlink fx:id="prettyZooLink" alignment="CENTER" contentDisplay="CENTER" layoutX="232.0" layoutY="303.0" text="https://github.com/vran-dev/PrettyZoo" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="250.0">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Hyperlink>
-                     </children>
-                     <StackPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </StackPane.margin>
-                  </AnchorPane>
-               </children></StackPane>
-        </items>
-      </SplitPane>
-   </children>
+<StackPane fx:id="rootStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+           prefHeight="560.0" prefWidth="1050.0" stylesheets="@../assets/style.css"
+           xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="cc.cc1234.app.controller.MainViewController">
+    <children>
+        <SplitPane fx:id="mainSplitPane" dividerPositions="0.25" prefHeight="160.0" prefWidth="200.0">
+            <items>
+                <AnchorPane fx:id="mainLeftPane" minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="694.0">
+                    <children>
+                        <!--                  <Label fx:id="prettyZooLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="160.0" prefWidth="199.0" styleClass="prettyZoo" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />-->
+                        <VBox fx:id="serverButtons" alignment="TOP_LEFT" prefWidth="40.0" styleClass="main-menu-bar"
+                              spacing="6" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                              AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0">
+                            <children>
+                                <JFXButton fx:id="serverAddButton" mnemonicParsing="false" styleClass="plus-button">
+                                    <tooltip><Tooltip text="%main.menuBar.new" /></tooltip>
+                                </JFXButton>
+                                <MenuButton fx:id="configMenuButton" mnemonicParsing="false"
+                                            styleClass="setting-button">
+                                    <tooltip><Tooltip text="%main.menuBar.config" /></tooltip>
+                                    <items>
+                                        <MenuItem fx:id="exportMenuItem" mnemonicParsing="false"
+                                                  text="%main.menuBar.config.export"/>
+                                        <MenuItem fx:id="importMenuItem" mnemonicParsing="false"
+                                                  text="%main.menuBar.config.import"/>
+                                        <Menu fx:id="langMenu" text="%main.menuBar.config.lang"/>
+                                        <MenuItem fx:id="resetMenuItem" text="%main.menuBar.config.reset"/>
+                                    </items>
+                                </MenuButton>
+                                <JFXButton fx:id="logsButton" mnemonicParsing="false" styleClass="logs-button">
+                                    <tooltip><Tooltip text="%main.menuBar.logs" /></tooltip>
+                                </JFXButton>
+                                <MenuButton fx:id="fontMenuButton" mnemonicParsing="false"
+                                            styleClass="font-size-button">
+                                    <tooltip><Tooltip text="%main.menuBar.font" /></tooltip>
+                                    <items>
+                                    </items>
+                                </MenuButton>
+                                <JFXButton fx:id="checkUpdateButton" mnemonicParsing="false"
+                                           styleClass="check-update-button">
+                                    <tooltip><Tooltip text="%main.menuBar.check-update.tooltip" /></tooltip>
+                                </JFXButton>
+                            </children>
+                            <padding>
+                                <Insets left="10.0" top="6.0"/>
+                            </padding>
+                        </VBox>
+                        <ListView fx:id="serverListView" stylesheets="@../assets/server-list-view.css"
+                                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0"
+                                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0">
+                        </ListView>
+                    </children>
+                </AnchorPane>
+                <StackPane fx:id="mainRightPane" style="-fx-background-color: #FFF;">
+                    <children>
+                        <AnchorPane StackPane.alignment="CENTER">
+                            <children>
+                                <Label fx:id="prettyZooLabel1" alignment="CENTER" contentDisplay="CENTER"
+                                       prefHeight="160.0" prefWidth="199.0" style="-fx-background-color: transparent;"
+                                       styleClass="prettyZoo" AnchorPane.bottomAnchor="300.0"
+                                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                       AnchorPane.topAnchor="50.0"/>
+                                <Hyperlink fx:id="prettyZooLink" alignment="CENTER" contentDisplay="CENTER"
+                                           layoutX="232.0" layoutY="303.0" text="https://github.com/vran-dev/PrettyZoo"
+                                           AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0"
+                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="250.0">
+                                    <font>
+                                        <Font size="17.0"/>
+                                    </font>
+                                </Hyperlink>
+                            </children>
+                            <StackPane.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </StackPane.margin>
+                        </AnchorPane>
+                    </children>
+                </StackPane>
+            </items>
+        </SplitPane>
+    </children>
 </StackPane>

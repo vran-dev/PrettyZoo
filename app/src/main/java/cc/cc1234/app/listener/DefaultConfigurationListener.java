@@ -2,6 +2,7 @@ package cc.cc1234.app.listener;
 
 import cc.cc1234.app.cache.TreeItemCache;
 import cc.cc1234.app.context.ActiveServerContext;
+import cc.cc1234.app.context.LocaleContext;
 import cc.cc1234.app.vo.ConfigurationVO;
 import cc.cc1234.app.vo.ConfigurationVOTransfer;
 import cc.cc1234.app.vo.ServerConfigurationVO;
@@ -10,6 +11,7 @@ import cc.cc1234.specification.listener.ConfigurationChangeListener;
 import javafx.collections.FXCollections;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -79,5 +81,10 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
                 .collect(Collectors.toList());
         configurationVO.getServers().clear();
         configurationVO.getServers().addAll(configurations);
+    }
+
+    @Override
+    public void onLocaleChange(Locale locale) {
+        LocaleContext.set(locale);
     }
 }

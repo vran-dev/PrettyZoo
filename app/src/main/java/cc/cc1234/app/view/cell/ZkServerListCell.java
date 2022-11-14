@@ -89,7 +89,6 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
 
         var progressIndicator = new ProgressIndicator();
         progressIndicator.setPrefSize(12, 12);
-        progressIndicator.getStyleClass().add("red");
 
         var hbox = new HBox(10, label);
         hbox.setId(item.getZkUrl());
