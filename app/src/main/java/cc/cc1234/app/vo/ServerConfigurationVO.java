@@ -35,7 +35,8 @@ public class ServerConfigurationVO {
 
     private SimpleBooleanProperty enableConnectionAdvanceConfiguration = new SimpleBooleanProperty(false);
 
-    private ObjectProperty<ServerConnectionAdvanceConfigurationVO> connectionAdvanceConfiguration = new SimpleObjectProperty<>();
+    private ObjectProperty<ServerConnectionAdvanceConfigurationVO> connectionAdvanceConfiguration
+            = new SimpleObjectProperty<>();
 
     public void unbind() {
         zkUrl.unbind();
@@ -226,7 +227,8 @@ public class ServerConfigurationVO {
         return connectionAdvanceConfiguration;
     }
 
-    public void setConnectionAdvanceConfiguration(ServerConnectionAdvanceConfigurationVO connectionAdvanceConfiguration) {
+    public void setConnectionAdvanceConfiguration(ServerConnectionAdvanceConfigurationVO
+                                                          connectionAdvanceConfiguration) {
         this.connectionAdvanceConfiguration.set(connectionAdvanceConfiguration);
     }
 }
