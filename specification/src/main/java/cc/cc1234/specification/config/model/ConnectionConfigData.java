@@ -3,7 +3,7 @@ package cc.cc1234.specification.config.model;
 import lombok.Data;
 
 @Data
-public class ServerConnectionAdvanceConfigData {
+public class ConnectionConfigData {
 
     private int maxRetries = 2;
 

@@ -4,7 +4,7 @@ import cc.cc1234.core.configuration.value.SSHTunnelConfiguration;
 import cc.cc1234.specification.config.model.ConfigData;
 import cc.cc1234.specification.config.model.SSHTunnelConfigData;
 import cc.cc1234.specification.config.model.ServerConfigData;
-import cc.cc1234.specification.config.model.ServerConnectionAdvanceConfigData;
+import cc.cc1234.specification.config.model.ConnectionConfigData;
 import cc.cc1234.specification.listener.ConfigurationChangeListener;
 import lombok.*;
 
@@ -167,8 +167,8 @@ public class Configuration {
         serverData.setAlias(config.getAlias());
         serverData.setEnableConnectionAdvanceConfiguration(config.getEnableConnectionAdvanceConfiguration());
 
-        ServerConnectionAdvanceConfigData advanceConfig = serverData.getConnectionAdvanceConfig();
-        ServerConnectionAdvanceConfiguration inputAdvanceConfig = config.getConnectionAdvanceConfiguration();
+        ConnectionConfigData advanceConfig = serverData.getConnectionConfig();
+        ConnectionConfiguration inputAdvanceConfig = config.getConnectionConfiguration();
         advanceConfig.setConnectionTimeout(inputAdvanceConfig.getConnectionTimeout());
         advanceConfig.setSessionTimeout(inputAdvanceConfig.getSessionTimeout());
         advanceConfig.setMaxRetries(inputAdvanceConfig.getMaxRetries());

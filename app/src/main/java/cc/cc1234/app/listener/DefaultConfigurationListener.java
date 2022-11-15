@@ -6,9 +6,9 @@ import cc.cc1234.app.context.LocaleContext;
 import cc.cc1234.app.vo.ConfigurationVO;
 import cc.cc1234.app.vo.ConfigurationVOTransfer;
 import cc.cc1234.app.vo.ServerConfigurationVO;
-import cc.cc1234.app.vo.ServerConnectionAdvanceConfigurationVO;
+import cc.cc1234.app.vo.ConnectionConfigurationVO;
 import cc.cc1234.specification.config.model.ServerConfigData;
-import cc.cc1234.specification.config.model.ServerConnectionAdvanceConfigData;
+import cc.cc1234.specification.config.model.ConnectionConfigData;
 import cc.cc1234.specification.listener.ConfigurationChangeListener;
 import javafx.collections.FXCollections;
 
@@ -72,13 +72,13 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
                                 return true;
                             });
 
-                    ServerConnectionAdvanceConfigData newAdvanceConfig = newValue.getConnectionAdvanceConfig();
-                    ServerConnectionAdvanceConfigurationVO updated = new ServerConnectionAdvanceConfigurationVO();
+                    ConnectionConfigData newAdvanceConfig = newValue.getConnectionConfig();
+                    ConnectionConfigurationVO updated = new ConnectionConfigurationVO();
                     updated.setConnectionTimeout(newAdvanceConfig.getConnectionTimeout());
                     updated.setSessionTimeout(newAdvanceConfig.getSessionTimeout());
                     updated.setMaxRetries(newAdvanceConfig.getMaxRetries());
                     updated.setRetryIntervalTime(newAdvanceConfig.getRetryIntervalTime());
-                    old.setConnectionAdvanceConfiguration(updated);
+                    old.setConnectionConfiguration(updated);
                     return true;
                 })
                 .orElseGet(() -> configurationVO.getServers().add(vo));

@@ -2,7 +2,7 @@ package cc.cc1234.app.vo;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
-public class ServerConnectionAdvanceConfigurationVO {
+public class ConnectionConfigurationVO {
 
     private SimpleIntegerProperty maxRetries = new SimpleIntegerProperty(3);
 

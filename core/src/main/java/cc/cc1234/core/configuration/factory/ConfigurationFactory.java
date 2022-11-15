@@ -3,11 +3,12 @@ package cc.cc1234.core.configuration.factory;
 import cc.cc1234.config.JsonPrettyZooConfigRepository;
 import cc.cc1234.core.configuration.entity.Configuration;
 import cc.cc1234.core.configuration.entity.ServerConfiguration;
-import cc.cc1234.core.configuration.entity.ServerConnectionAdvanceConfiguration;
+import cc.cc1234.core.configuration.entity.ConnectionConfiguration;
 import cc.cc1234.core.configuration.value.SSHTunnelConfiguration;
 import cc.cc1234.specification.config.PrettyZooConfigRepository;
 import cc.cc1234.specification.config.model.ConfigData;
-import cc.cc1234.specification.config.model.ServerConnectionAdvanceConfigData;
+import cc.cc1234.specification.config.model.ConnectionConfigData;
+import cc.cc1234.specification.config.model.ServerConfigData;
 import cc.cc1234.specification.listener.ConfigurationChangeListener;
 
 import java.util.List;
@@ -22,18 +23,6 @@ public class ConfigurationFactory {
         final List<ServerConfiguration> serverConfigurations = configData.getServers()
                 .stream()
                 .map(serverConfig -> {
-                    SSHTunnelConfiguration tunnelConfiguration = serverConfig.getSshTunnelConfig()
-                            .map(tunnelConfig -> SSHTunnelConfiguration.builder()
-                                    .localhost(tunnelConfig.getLocalhost())
-                                    .localPort(tunnelConfig.getLocalPort())
-                                    .sshUsername(tunnelConfig.getSshUsername())
-                                    .sshPassword(tunnelConfig.getPassword())
-                                    .sshHost(tunnelConfig.getSshHost())
-                                    .sshPort(tunnelConfig.getSshPort())
-                                    .remoteHost(tunnelConfig.getRemoteHost())
-                                    .remotePort(tunnelConfig.getRemotePort())
-                                    .build())
-                            .orElse(null);
                     var hostAndPort = serverConfig.getHost().split(":");
                     // compatible: before v1.9.2 host is [xxx:port]
                     var host = serverConfig.getPort().map(p -> serverConfig.getHost())
@@ -41,12 +30,8 @@ public class ConfigurationFactory {
                     var port = serverConfig.getPort()
                             .orElseGet(() -> Integer.parseInt(hostAndPort[1]));
                     var url = host + ":" + port;
-                    var advanceConfig = new ServerConnectionAdvanceConfiguration();
-                    ServerConnectionAdvanceConfigData originAdvance = serverConfig.getConnectionAdvanceConfig();
-                    advanceConfig.setRetryIntervalTime(originAdvance.getRetryIntervalTime());
-                    advanceConfig.setMaxRetries(originAdvance.getMaxRetries());
-                    advanceConfig.setSessionTimeout(originAdvance.getSessionTimeout());
-                    advanceConfig.setConnectionTimeout(originAdvance.getConnectionTimeout());
+                    SSHTunnelConfiguration tunnelConfiguration = sshTunnelConfiguration(serverConfig);
+                    ConnectionConfiguration connectionConfiguration = connectionConfiguration(serverConfig);
                     return ServerConfiguration.builder()
                             .alias(serverConfig.getAlias())
                             .url(url)
@@ -58,7 +43,7 @@ public class ConfigurationFactory {
                             .sshTunnel(tunnelConfiguration)
                             .enableConnectionAdvanceConfiguration(
                                     serverConfig.getEnableConnectionAdvanceConfiguration())
-                            .connectionAdvanceConfiguration(advanceConfig)
+                            .connectionConfiguration(connectionConfiguration)
                             .build();
                 })
                 .collect(Collectors.toList());
@@ -75,6 +60,32 @@ public class ConfigurationFactory {
                 .serverConfigurations(serverConfigurations)
                 .uiConfiguration(uiConfiguration)
                 .build();
+    }
+
+    private static SSHTunnelConfiguration sshTunnelConfiguration(ServerConfigData serverConfig) {
+        SSHTunnelConfiguration tunnelConfiguration = serverConfig.getSshTunnelConfig()
+                .map(tunnelConfig -> SSHTunnelConfiguration.builder()
+                        .localhost(tunnelConfig.getLocalhost())
+                        .localPort(tunnelConfig.getLocalPort())
+                        .sshUsername(tunnelConfig.getSshUsername())
+                        .sshPassword(tunnelConfig.getPassword())
+                        .sshHost(tunnelConfig.getSshHost())
+                        .sshPort(tunnelConfig.getSshPort())
+                        .remoteHost(tunnelConfig.getRemoteHost())
+                        .remotePort(tunnelConfig.getRemotePort())
+                        .build())
+                .orElse(null);
+        return tunnelConfiguration;
+    }
+
+    private ConnectionConfiguration connectionConfiguration(ServerConfigData serverConfig) {
+        var connectionConfiguration = new ConnectionConfiguration();
+        ConnectionConfigData originAdvance = serverConfig.getConnectionConfig();
+        connectionConfiguration.setRetryIntervalTime(originAdvance.getRetryIntervalTime());
+        connectionConfiguration.setMaxRetries(originAdvance.getMaxRetries());
+        connectionConfiguration.setSessionTimeout(originAdvance.getSessionTimeout());
+        connectionConfiguration.setConnectionTimeout(originAdvance.getConnectionTimeout());
+        return connectionConfiguration;
     }
 
     private Configuration.FontConfiguration getOrDefaultFontConfiguration(ConfigData.FontConfigData data) {

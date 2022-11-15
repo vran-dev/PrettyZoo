@@ -24,14 +24,14 @@
                              text="Use SSH Tunnel"
                              AnchorPane.leftAnchor="30.0"
                              AnchorPane.topAnchor="124.0"/>
-            <JFXToggleButton fx:id="advanceConnectionConfigCheckbox" mnemonicParsing="false"
+            <JFXToggleButton fx:id="connectionConfigCheckbox" mnemonicParsing="false"
                              prefHeight="18.0" size="8.0"
                              text="Custom Connection Config"
                              AnchorPane.leftAnchor="200.0"
                              AnchorPane.topAnchor="124.0"/>
         </AnchorPane>
 
-        <JFXTabPane fx:id="tunnelTabPane"
+        <JFXTabPane fx:id="extendConfigTabPane"
                     AnchorPane.leftAnchor="30.0"
                     AnchorPane.rightAnchor="30.0"
                     AnchorPane.topAnchor="184.0"

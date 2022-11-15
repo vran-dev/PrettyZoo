@@ -36,8 +36,8 @@ public class ServerConfiguration {
     private SSHTunnelConfiguration sshTunnel;
 
     @Builder.Default
-    private ServerConnectionAdvanceConfiguration connectionAdvanceConfiguration
-            = new ServerConnectionAdvanceConfiguration();
+    private ConnectionConfiguration connectionConfiguration
+            = new ConnectionConfiguration();
 
     public void update(ServerConfiguration update) {
         if (update.getSshTunnelEnabled() && update.getSshTunnel() == null) {
@@ -49,11 +49,11 @@ public class ServerConfiguration {
         this.alias = update.getAlias();
         this.enableConnectionAdvanceConfiguration = update.getEnableConnectionAdvanceConfiguration();
         // advance config
-        ServerConnectionAdvanceConfiguration advanceConfig = update.getConnectionAdvanceConfiguration();
-        this.connectionAdvanceConfiguration.setConnectionTimeout(advanceConfig.getConnectionTimeout());
-        this.connectionAdvanceConfiguration.setSessionTimeout(advanceConfig.getSessionTimeout());
-        this.connectionAdvanceConfiguration.setMaxRetries(advanceConfig.getMaxRetries());
-        this.connectionAdvanceConfiguration.setRetryIntervalTime(advanceConfig.getRetryIntervalTime());
+        ConnectionConfiguration connectionConfig = update.getConnectionConfiguration();
+        this.connectionConfiguration.setConnectionTimeout(connectionConfig.getConnectionTimeout());
+        this.connectionConfiguration.setSessionTimeout(connectionConfig.getSessionTimeout());
+        this.connectionConfiguration.setMaxRetries(connectionConfig.getMaxRetries());
+        this.connectionConfiguration.setRetryIntervalTime(connectionConfig.getRetryIntervalTime());
     }
 
     public void incrementConnectTimes() {

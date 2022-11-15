@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServerConnectionAdvanceConfiguration {
+public class ConnectionConfiguration {
 
     @Builder.Default
     private int maxRetries = 2;
@@ -29,7 +29,7 @@ public class ServerConnectionAdvanceConfiguration {
     @Builder.Default
     private int sessionTimeout = 6000;
 
-    public void update(ServerConnectionAdvanceConfiguration config) {
+    public void update(ConnectionConfiguration config) {
         this.maxRetries = config.getMaxRetries();
         this.retryIntervalTime = config.getRetryIntervalTime();
         this.connectionTimeout = config.getConnectionTimeout();

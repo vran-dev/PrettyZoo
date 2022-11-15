@@ -38,10 +38,10 @@ public class ZookeeperFactory {
         var params = ZookeeperParams.builder()
                 .url(serverConfig.getUrl())
                 .aclList(serverConfig.getAclList())
-                .maxRetries(serverConfig.getConnectionAdvanceConfiguration().getMaxRetries())
-                .connectionTimeout(serverConfig.getConnectionAdvanceConfiguration().getConnectionTimeout())
-                .retryIntervalTime(serverConfig.getConnectionAdvanceConfiguration().getRetryIntervalTime())
-                .sessionTimeout(serverConfig.getConnectionAdvanceConfiguration().getSessionTimeout())
+                .maxRetries(serverConfig.getConnectionConfiguration().getMaxRetries())
+                .connectionTimeout(serverConfig.getConnectionConfiguration().getConnectionTimeout())
+                .retryIntervalTime(serverConfig.getConnectionConfiguration().getRetryIntervalTime())
+                .sessionTimeout(serverConfig.getConnectionConfiguration().getSessionTimeout())
                 .build();
         return new Zookeeper(serverConfig.getUrl(), () -> factory.createAsync(params, serverListeners),
                 tunnel, nodeListeners, serverListeners);

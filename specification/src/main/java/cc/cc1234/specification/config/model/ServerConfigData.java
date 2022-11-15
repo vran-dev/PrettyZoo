@@ -33,6 +33,6 @@ public class ServerConfigData {
 
     private Optional<SSHTunnelConfigData> sshTunnelConfig = Optional.empty();
 
-    private ServerConnectionAdvanceConfigData connectionAdvanceConfig = new ServerConnectionAdvanceConfigData();
+    private ConnectionConfigData connectionConfig = new ConnectionConfigData();
 
 }
