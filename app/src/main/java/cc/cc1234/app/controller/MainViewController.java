@@ -77,7 +77,10 @@ public class MainViewController {
     private Menu langMenu;
 
     @FXML
-    private MenuButton fontMenuButton;
+    private JFXSlider fontSizeSlider;
+
+    @FXML
+    private MenuItem fontSizeMenuItem;
 
     @FXML
     private Hyperlink prettyZooLink;
@@ -187,18 +190,17 @@ public class MainViewController {
     private void initFontChangeButton() {
         Integer fontSize = prettyZooFacade.getFontSize();
         rootStackPane.setStyle("-fx-font-size: " + fontSize);
-        var jfxSlider = new JFXSlider(8, 25, fontSize);
-        jfxSlider.valueProperty().addListener(((observable, oldValue, newValue) -> {
+        fontSizeSlider.setValue(fontSize);
+
+        fontSizeSlider.valueProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 rootStackPane.setStyle("-fx-font-size: " + newValue);
                 prettyZooFacade.changeFontSize(newValue.intValue());
             }
         }));
-        var jfxSliderItem = new MenuItem("", jfxSlider);
-        var valueTextBinding = Bindings.createStringBinding(() -> jfxSlider.valueProperty().intValue() + "",
-                jfxSlider.valueProperty());
-        jfxSliderItem.textProperty().bind(valueTextBinding);
-        fontMenuButton.getItems().add(jfxSliderItem);
+        var valueTextBinding = Bindings.createStringBinding(() -> fontSizeSlider.valueProperty().intValue() + "",
+                fontSizeSlider.valueProperty());
+        fontSizeMenuItem.textProperty().bind(valueTextBinding);
 
         var langToggleGroup = new ToggleGroup();
         for (ConfigData.Lang value : ConfigData.Lang.values()) {
