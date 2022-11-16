@@ -1,8 +1,10 @@
 package cc.cc1234.app.vo;
 
 import cc.cc1234.core.configuration.entity.Configuration;
+import cc.cc1234.core.configuration.entity.ConnectionConfiguration;
 import cc.cc1234.core.configuration.entity.ServerConfiguration;
 import cc.cc1234.specification.config.model.ConfigData;
+import cc.cc1234.specification.config.model.ConnectionConfigData;
 import cc.cc1234.specification.config.model.ServerConfigData;
 
 import java.util.List;
@@ -44,6 +46,8 @@ public class ConfigurationVOTransfer {
             vo.setSshPassword(sshTunnelConfig.getSshPassword());
         }
         vo.setSshEnabled(serverConfiguration.getSshTunnelEnabled());
+        vo.setEnableConnectionAdvanceConfiguration(serverConfiguration.getEnableConnectionAdvanceConfiguration());
+        vo.setConnectionConfiguration(to(serverConfiguration.getConnectionConfiguration()));
         return vo;
     }
 
@@ -82,6 +86,26 @@ public class ConfigurationVOTransfer {
             }
         });
         vo.setSshEnabled(serverConfig.getSshTunnelEnabled());
+        vo.setEnableConnectionAdvanceConfiguration(serverConfig.getEnableConnectionAdvanceConfiguration());
+        vo.setConnectionConfiguration(to(serverConfig.getConnectionConfig()));
+        return vo;
+    }
+
+    public static ConnectionConfigurationVO to(ConnectionConfigData data) {
+        final ConnectionConfigurationVO vo = new ConnectionConfigurationVO();
+        vo.setConnectionTimeout(data.getConnectionTimeout());
+        vo.setSessionTimeout(data.getSessionTimeout());
+        vo.setMaxRetries(data.getMaxRetries());
+        vo.setRetryIntervalTime(data.getRetryIntervalTime());
+        return vo;
+    }
+
+    private static ConnectionConfigurationVO to(ConnectionConfiguration entity) {
+        final ConnectionConfigurationVO vo = new ConnectionConfigurationVO();
+        vo.setConnectionTimeout(entity.getConnectionTimeout());
+        vo.setSessionTimeout(entity.getSessionTimeout());
+        vo.setMaxRetries(entity.getMaxRetries());
+        vo.setRetryIntervalTime(entity.getRetryIntervalTime());
         return vo;
     }
 

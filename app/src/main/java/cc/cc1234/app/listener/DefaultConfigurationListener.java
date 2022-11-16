@@ -6,7 +6,9 @@ import cc.cc1234.app.context.LocaleContext;
 import cc.cc1234.app.vo.ConfigurationVO;
 import cc.cc1234.app.vo.ConfigurationVOTransfer;
 import cc.cc1234.app.vo.ServerConfigurationVO;
+import cc.cc1234.app.vo.ConnectionConfigurationVO;
 import cc.cc1234.specification.config.model.ServerConfigData;
+import cc.cc1234.specification.config.model.ConnectionConfigData;
 import cc.cc1234.specification.listener.ConfigurationChangeListener;
 import javafx.collections.FXCollections;
 
@@ -47,6 +49,7 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
                 .map(old -> {
                     old.setAclList(FXCollections.observableList(newValue.getAclList()));
                     old.setZkAlias(newValue.getAlias());
+                    old.setEnableConnectionAdvanceConfiguration(newValue.getEnableConnectionAdvanceConfiguration());
                     newValue.getSshTunnelConfig()
                             .map(sshTunnelConfig -> {
                                 old.setSshEnabled(newValue.getSshTunnelEnabled());
@@ -69,6 +72,13 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
                                 return true;
                             });
 
+                    ConnectionConfigData newAdvanceConfig = newValue.getConnectionConfig();
+                    ConnectionConfigurationVO updated = new ConnectionConfigurationVO();
+                    updated.setConnectionTimeout(newAdvanceConfig.getConnectionTimeout());
+                    updated.setSessionTimeout(newAdvanceConfig.getSessionTimeout());
+                    updated.setMaxRetries(newAdvanceConfig.getMaxRetries());
+                    updated.setRetryIntervalTime(newAdvanceConfig.getRetryIntervalTime());
+                    old.setConnectionConfiguration(updated);
                     return true;
                 })
                 .orElseGet(() -> configurationVO.getServers().add(vo));

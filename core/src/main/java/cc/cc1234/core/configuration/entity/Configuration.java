@@ -4,6 +4,7 @@ import cc.cc1234.core.configuration.value.SSHTunnelConfiguration;
 import cc.cc1234.specification.config.model.ConfigData;
 import cc.cc1234.specification.config.model.SSHTunnelConfigData;
 import cc.cc1234.specification.config.model.ServerConfigData;
+import cc.cc1234.specification.config.model.ConnectionConfigData;
 import cc.cc1234.specification.listener.ConfigurationChangeListener;
 import lombok.*;
 
@@ -140,10 +141,10 @@ public class Configuration {
         return configData;
     }
 
-    private ServerConfigData toServerConfig(ServerConfiguration serverConfiguration) {
+    private ServerConfigData toServerConfig(ServerConfiguration config) {
         SSHTunnelConfigData sshTunnelData = null;
-        if (serverConfiguration.getSshTunnel() != null) {
-            SSHTunnelConfiguration tunnelConfiguration = serverConfiguration.getSshTunnel();
+        if (config.getSshTunnel() != null) {
+            SSHTunnelConfiguration tunnelConfiguration = config.getSshTunnel();
             sshTunnelData = new SSHTunnelConfigData();
             sshTunnelData.setLocalhost(tunnelConfiguration.getLocalhost());
             sshTunnelData.setLocalPort(tunnelConfiguration.getLocalPort());
@@ -156,14 +157,22 @@ public class Configuration {
         }
 
         final ServerConfigData serverData = new ServerConfigData();
-        serverData.setConnectTimes(serverConfiguration.getConnectTimes());
-        serverData.setAclList(new ArrayList<>(serverConfiguration.getAclList()));
-        serverData.setUrl(serverConfiguration.getUrl());
-        serverData.setHost(serverConfiguration.getHost());
-        serverData.setPort(Optional.of(serverConfiguration.getPort()));
-        serverData.setSshTunnelEnabled(serverConfiguration.getSshTunnelEnabled());
+        serverData.setConnectTimes(config.getConnectTimes());
+        serverData.setAclList(new ArrayList<>(config.getAclList()));
+        serverData.setUrl(config.getUrl());
+        serverData.setHost(config.getHost());
+        serverData.setPort(Optional.of(config.getPort()));
+        serverData.setSshTunnelEnabled(config.getSshTunnelEnabled());
         serverData.setSshTunnelConfig(Optional.ofNullable(sshTunnelData));
-        serverData.setAlias(serverConfiguration.getAlias());
+        serverData.setAlias(config.getAlias());
+        serverData.setEnableConnectionAdvanceConfiguration(config.getEnableConnectionAdvanceConfiguration());
+
+        ConnectionConfigData advanceConfig = serverData.getConnectionConfig();
+        ConnectionConfiguration inputAdvanceConfig = config.getConnectionConfiguration();
+        advanceConfig.setConnectionTimeout(inputAdvanceConfig.getConnectionTimeout());
+        advanceConfig.setSessionTimeout(inputAdvanceConfig.getSessionTimeout());
+        advanceConfig.setMaxRetries(inputAdvanceConfig.getMaxRetries());
+        advanceConfig.setRetryIntervalTime(inputAdvanceConfig.getRetryIntervalTime());
         return serverData;
     }
 

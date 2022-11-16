@@ -30,16 +30,30 @@ public class ServerConfiguration {
     @Builder.Default
     private Boolean sshTunnelEnabled = false;
 
+    @Builder.Default
+    private Boolean enableConnectionAdvanceConfiguration = false;
+
     private SSHTunnelConfiguration sshTunnel;
 
-    public void update(ServerConfiguration serverConfiguration) {
-        if (serverConfiguration.getSshTunnelEnabled() && serverConfiguration.getSshTunnel() == null) {
+    @Builder.Default
+    private ConnectionConfiguration connectionConfiguration
+            = new ConnectionConfiguration();
+
+    public void update(ServerConfiguration update) {
+        if (update.getSshTunnelEnabled() && update.getSshTunnel() == null) {
             throw new IllegalStateException();
         }
-        this.aclList = serverConfiguration.getAclList();
-        this.sshTunnelEnabled = serverConfiguration.getSshTunnelEnabled();
-        this.sshTunnel = serverConfiguration.getSshTunnel();
-        this.alias = serverConfiguration.getAlias();
+        this.aclList = update.getAclList();
+        this.sshTunnelEnabled = update.getSshTunnelEnabled();
+        this.sshTunnel = update.getSshTunnel();
+        this.alias = update.getAlias();
+        this.enableConnectionAdvanceConfiguration = update.getEnableConnectionAdvanceConfiguration();
+        // advance config
+        ConnectionConfiguration connectionConfig = update.getConnectionConfiguration();
+        this.connectionConfiguration.setConnectionTimeout(connectionConfig.getConnectionTimeout());
+        this.connectionConfiguration.setSessionTimeout(connectionConfig.getSessionTimeout());
+        this.connectionConfiguration.setMaxRetries(connectionConfig.getMaxRetries());
+        this.connectionConfiguration.setRetryIntervalTime(connectionConfig.getRetryIntervalTime());
     }
 
     public void incrementConnectTimes() {

@@ -35,7 +35,14 @@ public class ZookeeperFactory {
                     .build();
         }
         var factory = new CuratorZookeeperConnectionFactory();
-        var params = new ZookeeperParams(serverConfig.getUrl(), serverConfig.getAclList());
+        var params = ZookeeperParams.builder()
+                .url(serverConfig.getUrl())
+                .aclList(serverConfig.getAclList())
+                .maxRetries(serverConfig.getConnectionConfiguration().getMaxRetries())
+                .connectionTimeout(serverConfig.getConnectionConfiguration().getConnectionTimeout())
+                .retryIntervalTime(serverConfig.getConnectionConfiguration().getRetryIntervalTime())
+                .sessionTimeout(serverConfig.getConnectionConfiguration().getSessionTimeout())
+                .build();
         return new Zookeeper(serverConfig.getUrl(), () -> factory.createAsync(params, serverListeners),
                 tunnel, nodeListeners, serverListeners);
     }
@@ -43,7 +50,10 @@ public class ZookeeperFactory {
     public Terminal createTerminal(String host, StringWriter writer) throws Exception {
         writer.write("connecting to " + host + "...\n");
         var factory = new CuratorZookeeperConnectionFactory();
-        var params = new ZookeeperParams(host, List.of());
+        var params = ZookeeperParams.builder()
+                .url(host)
+                .aclList(List.of())
+                .build();
         var connection = factory.create(params);
         var zk = ((CuratorFramework) connection.getClient()).getZookeeperClient().getZooKeeper();
         writer.write("connect success \n");

@@ -10,17 +10,21 @@ import cc.cc1234.app.validator.PortValidator;
 import cc.cc1234.app.validator.StringNotBlankValidator;
 import cc.cc1234.app.validator.StringNotEmptyValidator;
 import cc.cc1234.app.view.toast.VToast;
-import cc.cc1234.app.view.transitions.Transitions;
+import cc.cc1234.app.vo.ConnectionConfigurationVO;
 import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.app.vo.ServerStatus;
 import cc.cc1234.specification.listener.ServerListener;
 import com.google.common.base.Strings;
 import com.jfoenix.controls.*;
+import com.jfoenix.validation.NumberValidator;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -50,10 +54,16 @@ public class ServerViewController {
     private JFXToggleButton sshTunnelCheckbox;
 
     @FXML
-    private JFXTabPane tunnelTabPane;
+    private JFXToggleButton connectionConfigCheckbox;
 
     @FXML
-    private AnchorPane sshTunnelPane;
+    private JFXTabPane extendConfigTabPane;
+
+    @FXML
+    private Tab tunnelConfigTab;
+
+    @FXML
+    private Tab connectionConfigTab;
 
     @FXML
     private ProgressBar sshTunnelProgressBarTo;
@@ -90,6 +100,18 @@ public class ServerViewController {
 
     @FXML
     private JFXTextField remoteServerPort;
+
+    @FXML
+    private JFXTextField connectionTimeoutInput;
+
+    @FXML
+    private JFXTextField sessionTimeoutInput;
+
+    @FXML
+    private JFXTextField maxRetriesInput;
+
+    @FXML
+    private JFXTextField retryIntervalTimeInput;
 
     @FXML
     private Button closeButton;
@@ -210,6 +232,12 @@ public class ServerViewController {
         sshPassword.textProperty().setValue("");
         remoteServer.textProperty().setValue("");
         aclTextArea.textProperty().setValue("");
+        sshTunnelCheckbox.setSelected(false);
+        connectionConfigCheckbox.setSelected(false);
+        connectionTimeoutInput.textProperty().setValue("");
+        sessionTimeoutInput.textProperty().setValue("");
+        maxRetriesInput.textProperty().setValue("");
+        retryIntervalTimeInput.textProperty().setValue("");
     }
 
     private void propertyBind(ServerConfigurationVO config) {
@@ -225,6 +253,20 @@ public class ServerViewController {
         sshTunnelCheckbox.selectedProperty().setValue(config.isSshEnabled());
         final String acl = String.join("\n", config.getAclList());
         aclTextArea.textProperty().setValue(acl);
+
+        if (!config.isEnableConnectionAdvanceConfiguration()) {
+            extendConfigTabPane.getTabs().remove(connectionConfigTab);
+        }
+        if (!config.isSshEnabled()) {
+            extendConfigTabPane.getTabs().remove(tunnelConfigTab);
+        }
+
+        connectionConfigCheckbox.selectedProperty().setValue(config.isEnableConnectionAdvanceConfiguration());
+        ConnectionConfigurationVO connectionAdvanceCfg = config.getConnectionConfiguration();
+        connectionTimeoutInput.textProperty().setValue(connectionAdvanceCfg.getConnectionTimeout() + "");
+        sessionTimeoutInput.textProperty().setValue(connectionAdvanceCfg.getSessionTimeout() + "");
+        maxRetriesInput.textProperty().setValue(connectionAdvanceCfg.getMaxRetries() + "");
+        retryIntervalTimeInput.textProperty().setValue(connectionAdvanceCfg.getRetryIntervalTime() + "");
     }
 
     public void onClose() {
@@ -244,16 +286,48 @@ public class ServerViewController {
         closeButton.setOnMouseClicked(e -> onClose());
         saveButton.setOnMouseClicked(e -> onSave());
         deleteButton.setOnMouseClicked(e -> onDelete());
-        sshTunnelPane.getChildren().forEach(node -> {
-            node.setOnMouseClicked(e -> {
-                if (!sshTunnelCheckbox.isSelected()) {
-                    Transitions.zoomInLittleAndReverse(sshTunnelCheckbox).playFromStart();
+
+        initConfigTabPaneBinding();
+        aclTextArea.setPromptText("ACL:\r"
+                + "digest:test:test\r"
+                + "auth:test:test\r"
+                + "\n");
+        initPasswordComponent();
+        initValidator();
+    }
+
+    private void initConfigTabPaneBinding() {
+        sshTunnelCheckbox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
+            ObservableList<Tab> tabs = extendConfigTabPane.getTabs();
+            if (newValue) {
+                if (!tabs.contains(tunnelConfigTab)) {
+                    tabs.add(0, tunnelConfigTab);
+                    extendConfigTabPane.getSelectionModel().select(tunnelConfigTab);
                 }
-                e.consume();
-            });
-        });
-        tunnelTabPane.visibleProperty().bind(sshTunnelCheckbox.selectedProperty());
-        sshTunnelCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            } else {
+                if (tabs.contains(tunnelConfigTab)) {
+                    tabs.remove(tunnelConfigTab);
+                }
+            }
+        }));
+        connectionConfigCheckbox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
+            ObservableList<Tab> tabs = extendConfigTabPane.getTabs();
+            if (newValue) {
+                if (!tabs.contains(connectionConfigTab)) {
+                    tabs.add(connectionConfigTab);
+                    extendConfigTabPane.getSelectionModel().select(connectionConfigTab);
+                }
+            } else {
+                if (tabs.contains(connectionConfigTab)) {
+                    tabs.remove(connectionConfigTab);
+                }
+            }
+        }));
+
+        BooleanBinding checkboxSelectedBind = Bindings.createBooleanBinding(() -> {
+            return sshTunnelCheckbox.isSelected() || connectionConfigCheckbox.isSelected();
+        }, sshTunnelCheckbox.selectedProperty(), connectionConfigCheckbox.selectedProperty());
+        checkboxSelectedBind.addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 AnchorPane.setTopAnchor(serverBasicInfoPane, 0.0);
                 AnchorPane.setTopAnchor(buttonHBox, null);
@@ -264,13 +338,7 @@ public class ServerViewController {
                 AnchorPane.setTopAnchor(buttonHBox, 248.0);
             }
         });
-
-        aclTextArea.setPromptText("ACL:\r"
-                + "digest:test:test\r"
-                + "auth:test:test\r"
-                + "\n");
-        initPasswordComponent();
-        initValidator();
+        extendConfigTabPane.visibleProperty().bind(checkboxSelectedBind);
     }
 
     private void initPasswordComponent() {
@@ -314,6 +382,11 @@ public class ServerViewController {
         sshServerPort.setValidators(new PortValidator());
         sshUsername.setValidators(new NotNullValidator());
         sshPassword.setValidators(new NotNullValidator());
+
+        connectionTimeoutInput.setValidators(new StringNotBlankValidator(), new NumberValidator());
+        maxRetriesInput.setValidators(new StringNotBlankValidator(), new NumberValidator());
+        sessionTimeoutInput.setValidators(new StringNotBlankValidator(), new NumberValidator());
+        retryIntervalTimeInput.setValidators(new StringNotBlankValidator(), new NumberValidator());
     }
 
     private void resetValidate() {
@@ -326,6 +399,11 @@ public class ServerViewController {
         sshPassword.resetValidation();
         sshServer.resetValidation();
         sshServerPort.resetValidation();
+        // advance connection config validator reset
+        connectionTimeoutInput.resetValidation();
+        maxRetriesInput.resetValidation();
+        sessionTimeoutInput.resetValidation();
+        retryIntervalTimeInput.resetValidation();
     }
 
     private void sshTunnelViewPropertyBind() {
@@ -372,6 +450,15 @@ public class ServerViewController {
                     serverConfigVO.setSshServerPort(Integer.parseInt(sshServerPort.getText()));
                 }
                 serverConfigVO.setSshEnabled(sshTunnelCheckbox.isSelected());
+                serverConfigVO.setEnableConnectionAdvanceConfiguration(connectionConfigCheckbox.isSelected());
+                if (connectionConfigCheckbox.isSelected()) {
+                    ConnectionConfigurationVO advanceConfig = new ConnectionConfigurationVO();
+                    advanceConfig.setConnectionTimeout(Integer.parseInt(connectionTimeoutInput.getText()));
+                    advanceConfig.setSessionTimeout(Integer.parseInt(sessionTimeoutInput.getText()));
+                    advanceConfig.setMaxRetries(Integer.parseInt(maxRetriesInput.getText()));
+                    advanceConfig.setRetryIntervalTime(Integer.parseInt(retryIntervalTimeInput.getText()));
+                    serverConfigVO.setConnectionConfiguration(advanceConfig);
+                }
                 // zookeeper ACL config
                 List<String> acls = Arrays.stream(aclTextArea.textProperty().get().split("\n"))
                         .filter(acl -> !Strings.isNullOrEmpty(acl))
@@ -393,9 +480,16 @@ public class ServerViewController {
     }
 
     private boolean baseValidateBeforeSave() {
-        boolean baseValidate;
+        boolean baseValidate = true;
+        if (connectionConfigCheckbox.isSelected()) {
+            baseValidate = baseValidate && Stream.of(connectionTimeoutInput.validate(),
+                            sessionTimeoutInput.validate(),
+                            maxRetriesInput.validate(),
+                            retryIntervalTimeInput.validate())
+                    .allMatch(t -> t);
+        }
         if (sshTunnelCheckbox.isSelected()) {
-            baseValidate = Stream.of(
+            baseValidate = baseValidate && Stream.of(
                     zkHost.validate(),
                     zkPort.validate(),
                     zkAlias.validate(),
@@ -406,9 +500,9 @@ public class ServerViewController {
                     sshServer.validate(),
                     sshServerPort.validate()
             ).allMatch(t -> t);
-        } else {
-            baseValidate = Stream.of(zkHost.validate(), zkPort.validate(), zkAlias.validate()).allMatch(t -> t);
         }
+        baseValidate = baseValidate && Stream.of(zkHost.validate(), zkPort.validate(), zkAlias.validate())
+                .allMatch(t -> t);
         return baseValidate;
     }
 

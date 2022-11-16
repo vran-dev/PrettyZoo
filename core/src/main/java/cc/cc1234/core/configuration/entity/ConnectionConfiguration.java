@@ -1,21 +1,15 @@
-package cc.cc1234.specification.connection;
+package cc.cc1234.core.configuration.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class ZookeeperParams {
-
-    private String url;
-
-    private List<String> aclList;
+public class ConnectionConfiguration {
 
     @Builder.Default
     private int maxRetries = 2;
@@ -35,4 +29,10 @@ public class ZookeeperParams {
     @Builder.Default
     private int sessionTimeout = 6000;
 
+    public void update(ConnectionConfiguration config) {
+        this.maxRetries = config.getMaxRetries();
+        this.retryIntervalTime = config.getRetryIntervalTime();
+        this.connectionTimeout = config.getConnectionTimeout();
+        this.sessionTimeout = config.getSessionTimeout();
+    }
 }
