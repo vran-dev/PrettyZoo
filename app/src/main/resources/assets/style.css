@@ -157,7 +157,68 @@
     -fx-alignment: center;
     -fx-content-display: center;
 }
-.menu-button > .arrow-button, .menu-button > .arrow-button > .arrow { -fx-padding: 0; }
+
+/* ====================== image bg======================*/
+.icon-system-properties {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/properties.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-size: 18;
+    -fx-pref-height: 26;
+    -fx-pref-width: 26;
+}
+
+.icon-language{
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/language.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-size: 18;
+    -fx-pref-height: 26;
+    -fx-pref-width: 26;
+}
+
+.icon-export{
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/export.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-size: 18;
+    -fx-pref-height: 26;
+    -fx-pref-width: 26;
+}
+
+.icon-import {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/import.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-size: 18;
+    -fx-pref-height: 26;
+    -fx-pref-width: 26;
+}
+
+.icon-reset {
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/reset.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-size: 18;
+    -fx-pref-height: 26;
+    -fx-pref-width: 26;
+}
+
+
+.menu-button > .arrow-button, .menu-button > .arrow-button > .arrow {
+    -fx-padding: 0;
+}
+
 /* ====================== background color ======================*/
 
 .primary-background {
@@ -290,7 +351,6 @@
 }
 
 
-
 /* ========================== custom  =================================*/
 .vTextArea {
     -fx-border-color: #a0a0a0;
@@ -343,11 +403,11 @@
     -fx-effect: dropshadow(three-pass-box, #dcdcdc, 8, 0.3, 1.8, 1.8);
 }
 
-.server-progress-indicator  {
+.server-progress-indicator {
     -fx-progress-color: #000
 }
 
-.server-select-progress-indicator  {
+.server-select-progress-indicator {
     -fx-progress-color: #FFF
 }
 
@@ -542,7 +602,7 @@
     -fx-border-color: #DDD;
 }
 
-.progress-bar .bar{
+.progress-bar .bar {
     -fx-background-color: #000;
     -fx-opacity: 0.8;
 }

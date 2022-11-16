@@ -9,12 +9,12 @@ import cc.cc1234.app.util.Asserts;
 import cc.cc1234.app.util.Fills;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.vo.ConfigurationVOTransfer;
-import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.app.vo.ConnectionConfigurationVO;
+import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.app.vo.ZkNodeSearchResult;
 import cc.cc1234.core.configuration.entity.Configuration;
-import cc.cc1234.core.configuration.entity.ServerConfiguration;
 import cc.cc1234.core.configuration.entity.ConnectionConfiguration;
+import cc.cc1234.core.configuration.entity.ServerConfiguration;
 import cc.cc1234.core.configuration.service.ConfigurationDomainService;
 import cc.cc1234.core.configuration.value.SSHTunnelConfiguration;
 import cc.cc1234.core.zookeeper.service.ZookeeperDomainService;
@@ -330,11 +330,10 @@ public class PrettyZooFacade {
             try {
                 var properties = new Properties();
                 properties.load(new FileInputStream(sysPropPath));
-                var sysProps = new HashMap<String, String>();
                 for (var entry : properties.entrySet()) {
-                    sysProps.put(entry.getKey().toString(), entry.getValue().toString());
+                    System.setProperty(entry.getKey().toString(), entry.getValue().toString());
                 }
-                log.info("load system properties success ->\n {}", sysProps);
+                log.info("load system properties success ->\n {}", properties);
             } catch (IOException e) {
                 // ignore error and log it
                 log.error("load system properties failed", e);

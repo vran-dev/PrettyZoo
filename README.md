@@ -46,7 +46,7 @@ xattr -rc /Applications/prettyZoo.app
 
 ### How to add zookeeper system properties
 
-If you want to configure system properties for zookeeper, you could creat `zookeeper.file` file
+If you want to configure system properties for zookeeper, you could creat `zookeeper.properties` file
 
 - mac: `{{ user.home }}/.prettyZoo/zookeeper.properties`
 - wind: `{{ user.home }}/.prettyZoo/zookeeper.properties`

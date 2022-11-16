@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXSlider?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -19,32 +20,65 @@
                               AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0">
                             <children>
                                 <JFXButton fx:id="serverAddButton" mnemonicParsing="false" styleClass="plus-button">
-                                    <tooltip><Tooltip text="%main.menuBar.new" /></tooltip>
+                                    <tooltip>
+                                        <Tooltip text="%main.menuBar.new"/>
+                                    </tooltip>
                                 </JFXButton>
                                 <MenuButton fx:id="configMenuButton" mnemonicParsing="false"
                                             styleClass="setting-button">
-                                    <tooltip><Tooltip text="%main.menuBar.config" /></tooltip>
+                                    <tooltip>
+                                        <Tooltip text="%main.menuBar.config"/>
+                                    </tooltip>
                                     <items>
                                         <MenuItem fx:id="exportMenuItem" mnemonicParsing="false"
-                                                  text="%main.menuBar.config.export"/>
+                                                  text="%main.menuBar.config.export">
+                                            <graphic>
+                                                <Label styleClass="icon-export"/>
+                                            </graphic>
+                                        </MenuItem>
                                         <MenuItem fx:id="importMenuItem" mnemonicParsing="false"
-                                                  text="%main.menuBar.config.import"/>
-                                        <Menu fx:id="langMenu" text="%main.menuBar.config.lang"/>
-                                        <MenuItem fx:id="resetMenuItem" text="%main.menuBar.config.reset"/>
+                                                  text="%main.menuBar.config.import">
+                                            <graphic>
+                                                <Label styleClass="icon-import"/>
+                                            </graphic>
+                                        </MenuItem>
+                                        <Menu fx:id="fontSizeMenu"
+                                              text="%main.menuBar.font">
+                                            <graphic>
+                                                <Label styleClass="font-size-button"/>
+                                            </graphic>
+                                            <items>
+                                                <MenuItem fx:id="fontSizeMenuItem">
+                                                    <graphic>
+                                                        <JFXSlider fx:id="fontSizeSlider" min="8" max="25" value="12">
+                                                        </JFXSlider>
+                                                    </graphic>
+                                                </MenuItem>
+                                            </items>
+                                        </Menu>
+                                        <Menu fx:id="langMenu" text="%main.menuBar.config.lang">
+                                            <graphic>
+                                                <Label styleClass="icon-language"/>
+                                            </graphic>
+                                        </Menu>
+                                        <MenuItem fx:id="resetMenuItem" text="%main.menuBar.config.reset">
+                                            <graphic>
+                                                <Label styleClass="icon-reset"/>
+                                            </graphic>
+                                        </MenuItem>
                                     </items>
                                 </MenuButton>
                                 <JFXButton fx:id="logsButton" mnemonicParsing="false" styleClass="logs-button">
-                                    <tooltip><Tooltip text="%main.menuBar.logs" /></tooltip>
+                                    <tooltip>
+                                        <Tooltip text="%main.menuBar.logs"/>
+                                    </tooltip>
                                 </JFXButton>
-                                <MenuButton fx:id="fontMenuButton" mnemonicParsing="false"
-                                            styleClass="font-size-button">
-                                    <tooltip><Tooltip text="%main.menuBar.font" /></tooltip>
-                                    <items>
-                                    </items>
-                                </MenuButton>
-                                <JFXButton fx:id="checkUpdateButton" mnemonicParsing="false"
+                                <JFXButton fx:id="checkUpdateButton"
+                                           mnemonicParsing="false"
                                            styleClass="check-update-button">
-                                    <tooltip><Tooltip text="%main.menuBar.check-update.tooltip" /></tooltip>
+                                    <tooltip>
+                                        <Tooltip text="%main.menuBar.check-update.tooltip"/>
+                                    </tooltip>
                                 </JFXButton>
                             </children>
                             <padding>
@@ -61,15 +95,20 @@
                     <children>
                         <AnchorPane StackPane.alignment="CENTER">
                             <children>
-                                <Label fx:id="prettyZooLabel1" alignment="CENTER" contentDisplay="CENTER"
+                                <Label fx:id="prettyZooLabel" alignment="CENTER" contentDisplay="CENTER"
                                        prefHeight="160.0" prefWidth="199.0" style="-fx-background-color: transparent;"
                                        styleClass="prettyZoo" AnchorPane.bottomAnchor="300.0"
                                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                                        AnchorPane.topAnchor="50.0"/>
-                                <Hyperlink fx:id="prettyZooLink" alignment="CENTER" contentDisplay="CENTER"
-                                           layoutX="232.0" layoutY="303.0" text="https://github.com/vran-dev/PrettyZoo"
-                                           AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0"
-                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="250.0">
+                                <Hyperlink fx:id="prettyZooLink" alignment="CENTER"
+                                           contentDisplay="CENTER"
+                                           layoutX="232.0"
+                                           layoutY="303.0"
+                                           text="https://github.com/vran-dev/PrettyZoo"
+                                           AnchorPane.bottomAnchor="200.0"
+                                           AnchorPane.leftAnchor="0.0"
+                                           AnchorPane.rightAnchor="0.0"
+                                           AnchorPane.topAnchor="250.0">
                                     <font>
                                         <Font size="17.0"/>
                                     </font>
