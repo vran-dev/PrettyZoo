@@ -10,25 +10,58 @@
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.ServerViewController">
     <children>
         <AnchorPane fx:id="serverBasicInfoPane" prefWidth="650.0" AnchorPane.topAnchor="60">
-            <JFXTextField fx:id="zkHost" alignment="CENTER" layoutX="30.0" layoutY="25.0" prefHeight="26.0"
-                          prefWidth="160.0" promptText="host" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="25.0"/>
-            <Label layoutX="219.0" layoutY="30.0" text=":" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="30.0"/>
-            <JFXTextField fx:id="zkPort" alignment="CENTER" layoutX="230.0" layoutY="25.0" prefHeight="26.0"
-                          prefWidth="80.0" promptText="port" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="25.0"/>
-            <JFXTextArea fx:id="aclTextArea" layoutX="353.0" layoutY="51.0" prefHeight="90.0" prefWidth="240.0"
-                         AnchorPane.rightAnchor="81.0" AnchorPane.topAnchor="20.0"/>
-            <JFXTextField fx:id="zkAlias" layoutX="30.0" layoutY="84.0" prefHeight="25.0" prefWidth="260.0"
+            <JFXTextField fx:id="zkHost" labelFloat="false" alignment="CENTER_LEFT"
+                          prefHeight="26.0"
+                          prefWidth="160.0"
+                          promptText="zookeeper host"
+                          AnchorPane.leftAnchor="30.0"
+                          AnchorPane.topAnchor="25.0"/>
+            <Label layoutX="219.0"
+                   layoutY="30.0"
+                   text=":"
+                   AnchorPane.leftAnchor="200.0"
+                   AnchorPane.topAnchor="30.0"/>
+            <JFXTextField fx:id="zkPort" labelFloat="false"
+                          alignment="CENTER_LEFT"
+                          prefHeight="26.0"
+                          prefWidth="80.0"
+                          promptText="port"
+                          AnchorPane.leftAnchor="210.0"
+                          AnchorPane.topAnchor="25.0"/>
+            <JFXTextArea fx:id="aclTextArea"
+                         prefHeight="90.0"
+                         prefWidth="240.0"
+                         AnchorPane.rightAnchor="81.0"
+                         AnchorPane.topAnchor="20.0"/>
+            <JFXTextField fx:id="zkAlias"
+                          prefHeight="25.0"
+                          prefWidth="260.0"
+                          AnchorPane.leftAnchor="30.0"
+                          AnchorPane.topAnchor="80.0"
                           promptText="%server.input.alias.prompt"/>
-            <JFXToggleButton fx:id="sshTunnelCheckbox" mnemonicParsing="false"
-                             prefHeight="18.0" size="8.0"
-                             text="Use SSH Tunnel"
-                             AnchorPane.leftAnchor="30.0"
-                             AnchorPane.topAnchor="124.0"/>
-            <JFXToggleButton fx:id="connectionConfigCheckbox" mnemonicParsing="false"
-                             prefHeight="18.0" size="8.0"
-                             text="Custom Connection Config"
-                             AnchorPane.leftAnchor="200.0"
-                             AnchorPane.topAnchor="124.0"/>
+            <HBox AnchorPane.leftAnchor="30.0"
+                  AnchorPane.topAnchor="124.0"
+                  spacing="10">
+                <padding>
+                    <Insets left="5.0" right="5.0"/>
+                </padding>
+                <children>
+                    <JFXToggleButton fx:id="sshTunnelCheckbox"
+                                     mnemonicParsing="false"
+                                     prefHeight="18.0"
+                                     size="8.0"
+                                     text="Use SSH Tunnel"
+                    />
+                    <JFXToggleButton fx:id="connectionConfigCheckbox"
+                                     mnemonicParsing="false"
+                                     prefHeight="18.0"
+                                     size="8.0"
+                                     text="Connection Timeout"
+                                     AnchorPane.leftAnchor="200.0"
+                                     AnchorPane.topAnchor="124.0"/>
+                </children>
+            </HBox>
+
         </AnchorPane>
 
         <JFXTabPane fx:id="extendConfigTabPane"

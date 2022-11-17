@@ -67,7 +67,8 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
         disConnectMenu = new CustomMenuItem(disconnectButton);
 
         ContextMenu contextMenu = new ContextMenu(connectMenu, deleteMenu);
-        this.setContextMenu(contextMenu);
+        super.setContextMenu(contextMenu);
+        super.setPadding(new Insets(5, 5, 5, 5));
     }
 
     @Override
@@ -81,6 +82,7 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
 
         setText(null);
         var label = new Label();
+        label.textProperty().unbind();
         label.textProperty().bind(serverNameBinding(item));
 
         var symbolImage = new ImageView(CONNECTED_SYMBOL);
@@ -109,12 +111,12 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
                 updateItemUnSelectedCss(hbox, progressIndicator);
             }
         }));
+
         if (this.isSelected()) {
             updateItemSelectedCss(hbox, progressIndicator);
         } else {
             updateItemUnSelectedCss(hbox, progressIndicator);
         }
-        super.setPadding(new Insets(5, 5, 5, 5));
         super.setGraphic(hbox);
     }
 
