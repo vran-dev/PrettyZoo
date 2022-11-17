@@ -56,9 +56,6 @@ public class NodeViewController {
     private StackPane nodeViewRightPane;
 
     @FXML
-    private Button disconnectButton;
-
-    @FXML
     private Tab homeTab;
 
     @FXML
@@ -96,20 +93,11 @@ public class NodeViewController {
                 prettyZooFacade.changeNodeViewSplitPaneDividerPosition(newValue.doubleValue());
             }));
         });
-
         initSearchResultList();
         initSearchTextField();
         initZkNodeTreeView();
         initTerminalArea();
         initFourLetterTab();
-
-        disconnectButton.setTooltip(new Tooltip("disconnect server"));
-        disconnectButton.setOnAction(e -> {
-            final String server = ActiveServerContext.get();
-            prettyZooFacade.disconnect(server);
-            hideAndThen(() -> VToast.info("disconnect " + server + " success"));
-        });
-
     }
 
     public void show(StackPane parent,
@@ -235,6 +223,7 @@ public class NodeViewController {
     }
 
     private void initZkNodeTreeView() {
+        zkNodeTreeView.setCellFactory(view -> new ZkNodeTreeCell(this::onNodeAdd, this::onNodeDelete));
         zkNodeTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         zkNodeTreeView.getSelectionModel()
                 .selectedItemProperty()
@@ -247,7 +236,6 @@ public class NodeViewController {
     }
 
     private void switchServer(String url) {
-        zkNodeTreeView.setCellFactory(view -> new ZkNodeTreeCell(this::onNodeAdd, this::onNodeDelete));
         initRootTreeNode(url);
         ActiveServerContext.set(url);
         prettyZooFacade.syncIfNecessary(url);

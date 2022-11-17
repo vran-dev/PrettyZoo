@@ -170,7 +170,7 @@
     -fx-pref-width: 26;
 }
 
-.icon-language{
+.icon-language {
     -fx-background-color: transparent;
     -fx-background-image: url("img/language.png");
     -fx-background-repeat: no-repeat;
@@ -181,7 +181,7 @@
     -fx-pref-width: 26;
 }
 
-.icon-export{
+.icon-export {
     -fx-background-color: transparent;
     -fx-background-image: url("img/export.png");
     -fx-background-repeat: no-repeat;
@@ -213,7 +213,6 @@
     -fx-pref-height: 26;
     -fx-pref-width: 26;
 }
-
 
 .menu-button > .arrow-button, .menu-button > .arrow-button > .arrow {
     -fx-padding: 0;
@@ -378,39 +377,6 @@
     -fx-background-position: center;
 }
 
-.server-item-select {
-    -fx-background-color: #000;
-    -fx-opacity: 0.8;
-    -fx-border-color: #DDD;
-    -fx-border-width: 1 1 1 1;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-    -fx-fill: #FFF;
-    -fx-text-fill: #FFF;
-}
-
-.server-item {
-    -fx-background-color: #FFF;
-    -fx-border-color: #DDD;
-    -fx-border-width: 1 1 1 1;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-    -fx-text-fill: #000;
-    -fx-fill: #000;
-}
-
-.server-item:hover {
-    -fx-effect: dropshadow(three-pass-box, #dcdcdc, 8, 0.3, 1.8, 1.8);
-}
-
-.server-progress-indicator {
-    -fx-progress-color: #000
-}
-
-.server-select-progress-indicator {
-    -fx-progress-color: #FFF
-}
-
 
 /* V3.0 */
 
@@ -476,6 +442,20 @@
     -fx-background-color: #DDD;
 }
 
+/** ======================== menu items ========================*/
+.menu-item:focused {
+    -fx-background-color: #DDD;
+    -fx-text-fill: #000;
+    -fx-fill: #000;
+    -fx-opacity: 0.8;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: #000;
+    -fx-fill: #000;
+}
+
+/** ======================== tab panel ========================*/
 .tab-header-background {
     -fx-background-color: #FFF;
     -fx-border-color: #DEDEDE;

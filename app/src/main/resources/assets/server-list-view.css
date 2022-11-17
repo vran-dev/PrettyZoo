@@ -24,3 +24,37 @@
     -fx-border-width: 0;
     -fx-alignment: center;
 }
+
+
+.server-item-select {
+    -fx-background-color: #000;
+    -fx-opacity: 0.8;
+    -fx-border-color: #DDD;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-fill: #FFF;
+    -fx-text-fill: #FFF;
+}
+
+.server-item {
+    -fx-background-color: #FFF;
+    -fx-border-color: #DDD;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-text-fill: #000;
+    -fx-fill: #000;
+}
+
+.server-item:hover {
+    -fx-effect: dropshadow(three-pass-box, #dcdcdc, 8, 0.3, 1.8, 1.8);
+}
+
+.server-progress-indicator {
+    -fx-progress-color: #000
+}
+
+.server-select-progress-indicator {
+    -fx-progress-color: #FFF
+}

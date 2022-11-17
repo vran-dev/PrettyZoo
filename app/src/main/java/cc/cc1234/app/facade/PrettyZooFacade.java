@@ -285,7 +285,9 @@ public class PrettyZooFacade {
         var userHome = System.getProperty("user.home");
         var path = Paths.get(userHome + "/.prettyZoo/log/prettyZoo.log");
         try (ReversedLinesFileReader reader = new ReversedLinesFileReader(path, Charset.defaultCharset())) {
-            reader.readLines(50).forEach(lineConsumer);
+            List<String> lines = reader.readLines(50);
+            Collections.reverse(lines);
+            lines.forEach(lineConsumer);
         } catch (Exception e) {
             log.error("file read error, msg:{}", e.getMessage(), e);
         }
