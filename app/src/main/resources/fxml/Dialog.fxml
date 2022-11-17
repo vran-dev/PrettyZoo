@@ -1,19 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
+<AnchorPane fx:id="dialogPane"
+            styleClass="dialog"
+            stylesheets="@../assets/dialog.css"
+            xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="cc.cc1234.app.view.dialog.DialogController">
+    <children>
+        <GridPane styleClass="white-background">
+            <children>
+                <Label fx:id="titleLabel"
+                       styleClass="dialog-title"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="0"/>
+                <TextArea fx:id="contentTextArea"
+                          editable="false"
+                          focusTraversable="false"
+                          styleClass="dialog-content" text=""
+                          GridPane.columnIndex="0"
+                          GridPane.rowIndex="1">
+                    <font>
+                        <Font size="13.0"/>
+                    </font>
+                </TextArea>
+                <HBox GridPane.columnIndex="0"
+                      GridPane.rowIndex="2"
+                      spacing="10"
+                      alignment="CENTER_RIGHT">
+                    <JFXButton fx:id="confirmButton" styleClass="confirm-button" text="YES"/>
+                    <JFXButton fx:id="cancelButton" styleClass="cancel-button" text="NO"/>
+                </HBox>
+            </children>
+            <padding>
+                <Insets top="6" bottom="6" left="10" right="6"/>
+            </padding>
+        </GridPane>
 
-<AnchorPane fx:id="dialogPane" prefHeight="180.0" prefWidth="320.0" styleClass="dialog" stylesheets="@../assets/dialog.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.view.dialog.DialogController">
-   <children>
-      <Label fx:id="titleLabel" layoutX="14.0" layoutY="21.0" styleClass="dialog-title" />
-      <TextArea fx:id="contentTextArea" editable="false" focusTraversable="false" layoutX="43.0" layoutY="23.0" prefHeight="250.0" prefWidth="200.0" styleClass="dialog-content" text="确认执行该操作吗" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0">
-         <font>
-            <Font size="13.0" />
-         </font></TextArea>
-      <JFXButton fx:id="confirmButton" layoutX="262.0" layoutY="140.0" styleClass="confirm-button" text="YES" />
-      <JFXButton fx:id="cancelButton" layoutX="200.0" layoutY="140.0" styleClass="cancel-button" text="NO" />
-   </children>
+    </children>
 </AnchorPane>

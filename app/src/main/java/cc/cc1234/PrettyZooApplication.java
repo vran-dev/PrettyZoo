@@ -22,7 +22,7 @@ public class PrettyZooApplication extends Application {
     private static final PrettyZooFacade facade = new PrettyZooFacade();
 
     public static void main(String[] args) {
-        facade.loadSystemProperties();
+        facade.initZookeeperSystemProperties();
         initIconImage();
         Application.launch(args);
     }

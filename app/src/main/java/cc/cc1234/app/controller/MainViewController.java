@@ -31,11 +31,18 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class MainViewController {
+
+    private static final Logger log = LoggerFactory.getLogger(MainViewController.class);
 
     @FXML
     private StackPane rootStackPane;
@@ -69,6 +76,9 @@ public class MainViewController {
 
     @FXML
     private MenuItem importMenuItem;
+
+    @FXML
+    private MenuItem zookeeperPropsMenuItem;
 
     @FXML
     private MenuItem resetMenuItem;
@@ -177,6 +187,22 @@ public class MainViewController {
             prettyZooFacade.resetConfiguration();
             PrimaryStageContext.get().close();
             Platform.runLater(() -> new PrettyZooApplication().start(new Stage()));
+        });
+        zookeeperPropsMenuItem.setOnAction(e -> {
+            Properties properties = prettyZooFacade.loadZookeeperSystemProperties();
+            try (StringWriter writer = new StringWriter()) {
+                properties.store(writer, null);
+                Dialog.confirmEditable(ResourceBundleUtils.getContent("main.menuBar.config.zookeeper-prop"),
+                        writer.toString(),
+                        content -> {
+                            prettyZooFacade.saveZookeeperSystemProperties(content);
+                            Platform.runLater(() ->
+                                    VToast.info(ResourceBundleUtils.getContent("notification.save.success")));
+                        });
+            } catch (IOException ex) {
+                log.error("load zookeeper properties error", ex);
+                throw new RuntimeException(ex);
+            }
         });
     }
 

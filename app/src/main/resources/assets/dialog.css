@@ -11,13 +11,11 @@
     -fx-text-fill: #000;
 }
 
-
 .dialog-content {
     -fx-border-color: #FFF;
     -fx-background-insets: 0;
     -fx-background-color: #FFF;
     -fx-border-width: 0;
-    -fx-padding: 5, 10, 5, 10;
 }
 
 .dialog-content .content {
