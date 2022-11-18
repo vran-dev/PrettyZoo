@@ -7,6 +7,7 @@ import cc.cc1234.app.context.LogTailerThreadContext;
 import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.util.Asserts;
 import cc.cc1234.app.util.Fills;
+import cc.cc1234.app.util.ResourceBundleUtils;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.vo.ConfigurationVOTransfer;
 import cc.cc1234.app.vo.ConnectionConfigurationVO;
@@ -37,9 +38,7 @@ import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -326,22 +325,48 @@ public class PrettyZooFacade {
         tailerThread.start();
     }
 
-    public void loadSystemProperties() {
+    public void initZookeeperSystemProperties() {
+        var properties = loadZookeeperSystemProperties();
+        for (var entry : properties.entrySet()) {
+            System.setProperty(entry.getKey().toString(), entry.getValue().toString());
+        }
+    }
+
+    public Properties loadZookeeperSystemProperties() {
         String sysPropPath = PrettyZooConfigRepository.SYS_PROP_PATH;
         if (Files.exists(Paths.get(sysPropPath))) {
             try {
                 var properties = new Properties();
                 properties.load(new FileInputStream(sysPropPath));
-                for (var entry : properties.entrySet()) {
-                    System.setProperty(entry.getKey().toString(), entry.getValue().toString());
-                }
                 log.info("load system properties success ->\n {}", properties);
+                return properties;
             } catch (IOException e) {
                 // ignore error and log it
                 log.error("load system properties failed", e);
+                return new Properties();
             }
         } else {
             log.info("ignore load system properties, file not exists -> {}", sysPropPath);
+            return new Properties();
         }
     }
+
+    public void saveZookeeperSystemProperties(String content) {
+        String sysPropPath = PrettyZooConfigRepository.SYS_PROP_PATH;
+        Properties properties = new Properties();
+        try (StringReader reader = new StringReader(content)) {
+            properties.load(reader);
+        } catch (IOException e) {
+            log.error("save properties failed: " + content, e);
+            Platform.runLater(() -> VToast.info(ResourceBundleUtils.getContent("notification.save.failed")));
+        }
+
+        try (OutputStream out = Files.newOutputStream(Paths.get(sysPropPath))) {
+            properties.store(out, null);
+        } catch (IOException e) {
+            log.error("save properties file failed", e);
+            Platform.runLater(() -> VToast.info(ResourceBundleUtils.getContent("notification.save.failed")));
+        }
+    }
+
 }

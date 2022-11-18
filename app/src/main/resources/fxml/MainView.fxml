@@ -42,6 +42,12 @@
                                                 <Label styleClass="icon-import"/>
                                             </graphic>
                                         </MenuItem>
+                                        <MenuItem fx:id="zookeeperPropsMenuItem" mnemonicParsing="false"
+                                                  text="%main.menuBar.config.zookeeper-prop">
+                                            <graphic>
+                                                <Label styleClass="icon-system-properties"/>
+                                            </graphic>
+                                        </MenuItem>
                                         <Menu fx:id="fontSizeMenu"
                                               text="%main.menuBar.font">
                                             <graphic>
