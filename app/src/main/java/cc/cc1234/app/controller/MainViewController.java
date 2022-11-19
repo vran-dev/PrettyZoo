@@ -22,9 +22,7 @@ import com.jfoenix.controls.JFXSlider;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
@@ -107,7 +105,6 @@ public class MainViewController {
 
     @FXML
     private void initialize() {
-
         initServerListView();
         initConfigs();
 
@@ -185,14 +182,7 @@ public class MainViewController {
             serverListView.selectionModelProperty().get().clearSelection();
         });
         darkModeSwitchButton.setOnAction(e -> {
-            Scene scene = PrimaryStageContext.get().getScene();
-            ObservableList<String> stylesheets = scene.getStylesheets();
-            String dark = "/assets/css/dark/style.css";
-            if (stylesheets.contains(dark)) {
-                stylesheets.remove(dark);
-            } else {
-                stylesheets.add(dark);
-            }
+            prettyZooFacade.changeTheme();
         });
         exportMenuItem.setOnAction(e -> onExportAction());
         importMenuItem.setOnAction(e -> onImportAction());

@@ -59,6 +59,7 @@ public class ConfigurationFactory {
                 .configurationChangeListeners(listeners)
                 .serverConfigurations(serverConfigurations)
                 .uiConfiguration(uiConfiguration)
+                .theme(configData.getTheme())
                 .build();
     }
 

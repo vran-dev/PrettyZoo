@@ -701,20 +701,22 @@
 
 /*   ==================================  Tree view ==================================*/
 .tree-view {
-    -fx-background-color: transparent;
+    -fx-background-color: #FFF;
     -fx-text-fill: #000;
 }
 
 .tree-view:focused {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
+    -fx-background-color: #FFF;
+    -fx-border-color: #FFF;
 }
 
 .tree-view:disabled {
-    -fx-background-color: transparent;
+    -fx-background-color: #FFF;
 }
 
 .tree-cell {
+    -fx-text-fill: #000;
+    -fx-background-color: #FFF;
     -fx-padding: 0.25em;
 }
 
@@ -726,7 +728,6 @@
 
 .tree-cell:filled:selected {
     -fx-background-color: #DDD;
-    -fx-text-fill: #FFF;
     -fx-opacity: 0.8;
     -fx-padding: 0.25em;
 }
@@ -740,8 +741,13 @@
     -fx-background-radius: 8;
 }
 
-.context-menu .menu-item:focused {
-    -fx-background-color: #DDD;
+.context-menu .menu-item .text {
+    -fx-fill: #3a3a3a;
+}
+
+.context-menu .menu-item:focused .text {
+    -fx-fill: #000;
+    -fx-font-weight: bold;
 }
 
 .context-menu .button {

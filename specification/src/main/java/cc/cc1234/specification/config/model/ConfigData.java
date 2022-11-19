@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static cc.cc1234.specification.config.PrettyZooConfigRepository.THEME_DEFAULT;
+
 /**
  * 客户端核心配置
  */
@@ -22,6 +24,8 @@ public class ConfigData {
     private LocalConfigData localConfig = new LocalConfigData();
 
     private UiConfig uiConfig = new UiConfig();
+
+    private String theme = THEME_DEFAULT;
 
     @Data
     @AllArgsConstructor

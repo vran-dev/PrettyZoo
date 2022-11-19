@@ -2,9 +2,9 @@ package cc.cc1234.core.configuration.entity;
 
 import cc.cc1234.core.configuration.value.SSHTunnelConfiguration;
 import cc.cc1234.specification.config.model.ConfigData;
+import cc.cc1234.specification.config.model.ConnectionConfigData;
 import cc.cc1234.specification.config.model.SSHTunnelConfigData;
 import cc.cc1234.specification.config.model.ServerConfigData;
-import cc.cc1234.specification.config.model.ConnectionConfigData;
 import cc.cc1234.specification.listener.ConfigurationChangeListener;
 import lombok.*;
 
@@ -27,11 +27,14 @@ public class Configuration {
 
     private UiConfiguration uiConfiguration;
 
+    private String theme;
+
     public Configuration(List<ServerConfiguration> serverConfigs,
                          List<ConfigurationChangeListener> listeners,
                          FontConfiguration fontConfiguration,
                          LocaleConfiguration localeConfiguration,
-                         UiConfiguration uiConfiguration) {
+                         UiConfiguration uiConfiguration,
+                         String theme) {
         Objects.requireNonNull(listeners);
         Objects.requireNonNull(serverConfigs);
         Objects.requireNonNull(uiConfiguration);
@@ -40,6 +43,7 @@ public class Configuration {
         this.fontConfiguration = fontConfiguration;
         this.localeConfiguration = localeConfiguration;
         this.uiConfiguration = uiConfiguration;
+        this.theme = theme;
 
         final List<ServerConfigData> servers = this.serverConfigurations.stream()
                 .map(this::toServerConfig)
@@ -105,6 +109,10 @@ public class Configuration {
                 .forEach(ServerConfiguration::incrementConnectTimes);
     }
 
+    public void changeTheme(String theme) {
+        this.theme = theme;
+    }
+
     private void serverConfigurationPrecondition(ServerConfiguration serverConfig) {
         Objects.requireNonNull(serverConfig);
         Objects.requireNonNull(serverConfig.getUrl());
@@ -134,6 +142,7 @@ public class Configuration {
                 uiConfiguration.getMainSplitPaneDividerPosition(),
                 uiConfiguration.getNodeViewSplitPaneDividerPosition()
         );
+        configData.setTheme(this.theme);
         configData.setServers(servers);
         configData.setFontConfig(fontConfig);
         configData.setLocalConfig(langConfig);

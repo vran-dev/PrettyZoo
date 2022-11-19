@@ -679,7 +679,7 @@
 
 .tree-view:focused {
     -fx-background-color: #000;
-    -fx-border-color: transparent;
+    -fx-border-color: #000;
 }
 
 .tree-view:disabled {
@@ -716,12 +716,13 @@
     -fx-background-radius: 8;
 }
 
-.context-menu .menu-item:hover {
-    -fx-background-color: #000;
+.context-menu .menu-item .text {
+    -fx-fill: #DDD;
 }
 
-.context-menu .menu-item:focused {
-    -fx-background-color: #000;
+.context-menu .menu-item:focused .text {
+    -fx-fill: #FFF;
+    -fx-font-weight: bold;
 }
 
 .context-menu .button {
