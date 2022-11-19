@@ -37,26 +37,23 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
                             Consumer<ServerConfigurationVO> deleteAction,
                             Consumer<ServerConfigurationVO> disconnectAction) {
         ResourceBundle rb = ResourceBundleUtils.get(prettyZooFacade.getLocale());
-        ImageView connectGraphic = new ImageView("assets/img/connect.png");
-        connectGraphic.setFitWidth(18);
-        connectGraphic.setFitHeight(18);
         String connectText = rb.getString("server.button.connect");
         var connectButton = new JFXButton(connectText);
+        Label connectGraphic = new Label();
+        connectGraphic.getStyleClass().add("connect-button");
         connectButton.setGraphic(connectGraphic);
 
-        ImageView deleteGraphic = new ImageView("assets/img/delete.png");
-        deleteGraphic.setFitWidth(18);
-        deleteGraphic.setFitHeight(18);
         String deleteText = rb.getString("server.button.delete");
         var deleteButton = new JFXButton(deleteText);
-        deleteButton.setGraphic(deleteGraphic);
+        Label deleteButtonLabel = new Label();
+        deleteButtonLabel.getStyleClass().add("delete-button");
+        deleteButton.setGraphic(deleteButtonLabel);
 
-        ImageView disconnectGraphic = new ImageView("assets/img/disconnect.png");
-        disconnectGraphic.setFitWidth(18);
-        disconnectGraphic.setFitHeight(18);
         String disconnectText = rb.getString("server.button.disconnect");
         var disconnectButton = new JFXButton(disconnectText);
-        disconnectButton.setGraphic(disconnectGraphic);
+        Label disconnectButtonLabel = new Label();
+        disconnectButtonLabel.getStyleClass().add("stop-button");
+        disconnectButton.setGraphic(disconnectButtonLabel);
 
         deleteButton.setOnAction(e -> deleteAction.accept(getItem()));
         connectButton.setOnAction(e -> connectAction.accept(getItem()));

@@ -4,8 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane fx:id="nodeInfoPane" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #FFF;"
-            stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/15.0.1"
+<AnchorPane fx:id="nodeInfoPane" prefHeight="500.0" prefWidth="600.0" styleClass="white-background"
+            xmlns="http://javafx.com/javafx/15.0.1"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.NodeInfoViewController">
     <children>
         <SplitPane fx:id="nodeInfoSplitPane" dividerPositions="0.6" orientation="VERTICAL" prefHeight="200.0"
@@ -32,7 +32,8 @@
                             <children>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="5">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="cZxid"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="cZxid"
+                                              styleClass="black-text"/>
                                         <TextField fx:id="cZxidField" editable="false" styleClass="node-info-field"/>
                                     </children>
                                     <padding>
@@ -41,7 +42,8 @@
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="4">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="pZxid"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="pZxid"
+                                              styleClass="black-text"/>
                                         <TextField fx:id="pZxidField" editable="false" styleClass="node-info-field"/>
                                     </children>
                                     <padding>
@@ -50,7 +52,7 @@
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.rowIndex="1">
                                     <children>
-                                        <Label fx:id="mtimeLabel" minWidth="40.0" text="mtime"/>
+                                        <Label fx:id="mtimeLabel" minWidth="40.0" text="mtime" styleClass="black-text"/>
                                         <TextField fx:id="mtimeField" editable="false" styleClass="node-info-field"/>
                                     </children>
                                     <padding>
@@ -59,7 +61,8 @@
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ephemeralOwner"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ephemeralOwner"
+                                              styleClass="black-text"/>
                                         <TextField fx:id="ephemeralOwnerField" editable="false"
                                                    styleClass="node-info-field"/>
                                     </children>
@@ -69,7 +72,7 @@
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="2">
                                     <children>
-                                        <Label fx:id="ctimeLabel" minWidth="40.0" text="ctime"/>
+                                        <Label fx:id="ctimeLabel" minWidth="40.0" text="ctime" styleClass="black-text"/>
                                         <TextField fx:id="ctimeField" editable="false" styleClass="node-info-field"/>
                                     </children>
                                     <padding>
@@ -78,7 +81,8 @@
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="3">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="mZxid"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="mZxid"
+                                              styleClass="black-text"/>
                                         <TextField fx:id="mZxidField" editable="false" styleClass="node-info-field"/>
                                     </children>
                                     <padding>
@@ -88,7 +92,8 @@
                                 <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1"
                                       GridPane.rowIndex="1">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="dataLength"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="dataLength"
+                                              styleClass="black-text"/>
                                         <TextField fx:id="dataLengthField" editable="false"
                                                    styleClass="node-info-field"/>
                                     </children>
@@ -99,7 +104,8 @@
                                 <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1"
                                       GridPane.rowIndex="2">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="numChildren"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="numChildren"
+                                              styleClass="black-text"/>
                                         <TextField fx:id="numChildrenField" editable="false"
                                                    styleClass="node-info-field"/>
                                     </children>
@@ -110,7 +116,8 @@
                                 <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1"
                                       GridPane.rowIndex="3">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="dataVersion"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="dataVersion"
+                                              styleClass="black-text"/>
                                         <TextField fx:id="dataVersionField" editable="false"
                                                    styleClass="node-info-field"/>
                                     </children>
@@ -121,7 +128,8 @@
                                 <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1"
                                       GridPane.rowIndex="4">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="aclVersion"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="aclVersion"
+                                              styleClass="black-text"/>
                                         <TextField fx:id="aclVersionField" editable="false"
                                                    styleClass="node-info-field"/>
                                     </children>
@@ -132,7 +140,8 @@
                                 <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1"
                                       GridPane.rowIndex="5">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="cVersion"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="cVersion"
+                                              styleClass="black-text"/>
                                         <TextField fx:id="cVersionField" editable="false" styleClass="node-info-field"/>
                                     </children>
                                     <padding>
@@ -156,7 +165,7 @@
                               prefHeight="40.0" spacing="10.0" styleClass="data-menu-bar" AnchorPane.leftAnchor="0.0"
                               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <Button fx:id="nodeUpdateButton" mnemonicParsing="false" styleClass="data-save-button">
+                                <Button fx:id="nodeUpdateButton" mnemonicParsing="false" styleClass="save-button">
                                     <tooltip>
                                         <Tooltip anchorLocation="WINDOW_TOP_LEFT" text="更新"/>
                                     </tooltip>
@@ -169,7 +178,7 @@
                                     <children>
                                         <Button fx:id="rawFormatButton" mnemonicParsing="false" text="RAW"/>
                                         <Button fx:id="jsonFormatButton" mnemonicParsing="false" text="JSON"/>
-                                        <Button mnemonicParsing="false" text="XML" fx:id="xmlFormatButton"/>
+                                        <Button fx:id="xmlFormatButton" mnemonicParsing="false" text="XML"/>
                                     </children>
                                 </HBox>
                                 <ChoiceBox fx:id="charsetChoice" prefWidth="150.0"/>

@@ -22,8 +22,9 @@ import com.jfoenix.controls.JFXSlider;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
@@ -70,6 +71,9 @@ public class MainViewController {
 
     @FXML
     private Button logsButton;
+
+    @FXML
+    private Button darkModeSwitchButton;
 
     @FXML
     private MenuItem exportMenuItem;
@@ -119,7 +123,6 @@ public class MainViewController {
             }));
         });
 
-        mainRightPane.setPadding(new Insets(30, 30, 30, 30));
         initMenuAction();
         serverViewController.setOnClose(() -> this.serverListView.selectionModelProperty().get().clearSelection());
         prettyZooLink.setOnMouseClicked(e -> HostServiceContext.get().showDocument(prettyZooLink.getText()));
@@ -180,6 +183,16 @@ public class MainViewController {
         logsButton.setOnAction(e -> {
             logViewController.show(mainRightPane);
             serverListView.selectionModelProperty().get().clearSelection();
+        });
+        darkModeSwitchButton.setOnAction(e -> {
+            Scene scene = PrimaryStageContext.get().getScene();
+            ObservableList<String> stylesheets = scene.getStylesheets();
+            String dark = "/assets/css/dark/style.css";
+            if (stylesheets.contains(dark)) {
+                stylesheets.remove(dark);
+            } else {
+                stylesheets.add(dark);
+            }
         });
         exportMenuItem.setOnAction(e -> onExportAction());
         importMenuItem.setOnAction(e -> onImportAction());

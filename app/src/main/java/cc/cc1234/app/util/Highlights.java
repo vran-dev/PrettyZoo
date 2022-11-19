@@ -13,7 +13,7 @@ public class Highlights {
 
     public static StyleSpans<Collection<String>> computeHighlighting(String text) {
         if (text == null || text.isBlank()) {
-            return StyleSpans.singleton(Collections.singleton(""), 0);
+            return StyleSpans.singleton(Collections.singleton("black-text"), 0);
         }
 
         var result = Try.of(() -> JsonHighlights.compute(text))
@@ -26,7 +26,8 @@ public class Highlights {
         if (isXml(text)) {
             return XmlHighlights.compute(text);
         }
-        return StyleSpans.singleton(Collections.singleton(""), text.length());
+        return StyleSpans.singleton(Collections.singleton("black-text"), text.length());
+
     }
 
     private static boolean isXml(String xml) {

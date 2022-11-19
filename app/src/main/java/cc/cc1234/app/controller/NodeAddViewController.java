@@ -56,7 +56,6 @@ public class NodeAddViewController {
         AnchorPane.setRightAnchor(pane, 70d);
         AnchorPane.setBottomAnchor(pane, 55d);
         nodeAddPane.getChildren().add(pane);
-
         nodeNameTextField.setValidators(new RequiredFieldValidator("Required and must not be Empty"));
     }
 

@@ -11,12 +11,12 @@ open module app.main {
     requires java.net.http;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
-    requires org.fxmisc.richtext;
-    requires flowless;
     requires org.antlr.antlr4.runtime;
     requires zookeeper;
     requires com.jfoenix;
     requires org.apache.commons.io;
+    requires org.fxmisc.richtext;
+    requires org.fxmisc.flowless;
     // internal module
     requires core.main;
     requires specification.main;

@@ -109,7 +109,6 @@ public class NodeViewController {
         if (!parent.getChildren().contains(nodeViewPane)) {
             parent.getChildren().add(nodeViewPane);
         }
-        terminalTab.setText(server);
         this.server = server;
     }
 

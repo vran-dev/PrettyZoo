@@ -28,7 +28,6 @@ import cc.cc1234.specification.node.NodeMode;
 import cc.cc1234.specification.util.StringWriter;
 import com.google.common.base.Strings;
 import javafx.application.Platform;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.apache.commons.io.input.ReversedLinesFileReader;
@@ -109,12 +108,12 @@ public class PrettyZooFacade {
                     var highlights = Fills.fill(path, input,
                             s -> {
                                 Text text = new Text(s);
-                                text.setFill(Color.valueOf("#625D5DFF"));
+                                text.getStyleClass().add("black-text");
                                 return text;
                             },
                             s -> {
                                 final Text highlight = new Text(s);
-                                highlight.setFill(Color.valueOf("#2C6DD2"));
+                                highlight.getStyleClass().add("red-text");
                                 return highlight;
                             });
                     var textFlow = new TextFlow(highlights.toArray(new Text[0]));

@@ -63,7 +63,7 @@ public class JsonHighlightsVisitor extends JSONBaseVisitor<List<StyleSpan<Collec
 
     private void addEmpty(int start) {
         if (start > lastIndex) {
-            spans.add(new StyleSpan<>(Collections.emptyList(), start - lastIndex));
+            spans.add(new StyleSpan<>(Collections.singleton("black-text"), start - lastIndex));
             lastIndex = start;
         }
     }

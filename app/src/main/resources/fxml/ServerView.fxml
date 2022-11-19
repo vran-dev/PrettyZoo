@@ -5,8 +5,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<AnchorPane fx:id="serverInfoPane" prefHeight="500.0" prefWidth="650.0" style="-fx-background-color: #fff;"
-            stylesheets="@../assets/style.css, @../assets/server-view.css" xmlns="http://javafx.com/javafx/11.0.1"
+<AnchorPane fx:id="serverInfoPane" prefHeight="500.0" prefWidth="650.0"
+            styleClass="white-background"
+            xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.ServerViewController">
     <children>
         <AnchorPane fx:id="serverBasicInfoPane" prefWidth="650.0" AnchorPane.topAnchor="60">
@@ -19,6 +20,7 @@
             <Label layoutX="219.0"
                    layoutY="30.0"
                    text=":"
+                   styleClass="black-text"
                    AnchorPane.leftAnchor="200.0"
                    AnchorPane.topAnchor="30.0"/>
             <JFXTextField fx:id="zkPort" labelFloat="false"
@@ -29,6 +31,7 @@
                           AnchorPane.leftAnchor="210.0"
                           AnchorPane.topAnchor="25.0"/>
             <JFXTextArea fx:id="aclTextArea"
+                         styleClass="acl-textarea"
                          prefHeight="90.0"
                          prefWidth="240.0"
                          AnchorPane.rightAnchor="81.0"
@@ -134,20 +137,20 @@
                                     <Text strokeType="OUTSIDE"
                                           strokeWidth="0.0"
                                           text="SSH Server"
+                                          styleClass="black-text"
                                           GridPane.columnIndex="0"
                                           GridPane.rowIndex="0"/>
                                     <HBox GridPane.columnIndex="0"
                                           GridPane.rowIndex="1">
                                         <children>
                                             <JFXTextField fx:id="sshServer"
-                                                          disable="true"
                                                           prefWidth="144.0"
                                                           maxHeight="-Infinity"
                                                           promptText="ssh server"/>
-                                            <Label prefHeight="23.0" text=":"/>
+
+                                            <Label prefHeight="23.0" text=":" styleClass="black-text"/>
                                             <JFXTextField fx:id="sshServerPort"
                                                           alignment="CENTER"
-                                                          disable="true"
                                                           maxHeight="-Infinity"
                                                           prefWidth="60.0"
                                                           promptText="port"/>
@@ -155,7 +158,6 @@
                                     </HBox>
 
                                     <JFXTextField fx:id="sshUsername"
-                                                  disable="true"
                                                   prefWidth="206"
                                                   maxWidth="-Infinity"
                                                   promptText="%server.input.ssh.username.prompt"
@@ -164,7 +166,6 @@
                                     <HBox GridPane.columnIndex="0" GridPane.rowIndex="3">
                                         <children>
                                             <JFXPasswordField fx:id="sshPassword"
-                                                              disable="true"
                                                               prefWidth="172.0"
                                                               promptText="%server.input.ssh.password.prompt"/>
 
@@ -186,7 +187,6 @@
                                         GridPane.columnIndex="2">
                                 <children>
                                     <JFXTextField fx:id="remoteServer"
-                                                  disable="true"
                                                   layoutX="33.0"
                                                   layoutY="73.0"
                                                   prefHeight="23.0"
@@ -196,11 +196,14 @@
                                                   AnchorPane.rightAnchor="100.0"
                                                   AnchorPane.topAnchor="72.0"/>
                                     <Text layoutX="70.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                          text="Remote Server" AnchorPane.leftAnchor="22.0"
+                                          text="Remote Server"
+                                          styleClass="black-text"
+                                          AnchorPane.leftAnchor="22.0"
                                           AnchorPane.topAnchor="20.0"/>
                                     <Label layoutX="154.0" layoutY="75.0" prefHeight="23.0" text=":"
+                                           styleClass="black-text"
                                            AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="71.0"/>
-                                    <JFXTextField fx:id="remoteServerPort" alignment="CENTER" disable="true"
+                                    <JFXTextField fx:id="remoteServerPort" alignment="CENTER"
                                                   layoutX="170.0" layoutY="72.0" prefHeight="23.0"
                                                   prefWidth="70.0" promptText="port"
                                                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="71.0"/>
@@ -223,7 +226,7 @@
                               AnchorPane.rightAnchor="4.0"
                               AnchorPane.topAnchor="10.0">
                         <columnConstraints>
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0"/>
+                            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0"/>
                         </columnConstraints>
                         <rowConstraints>
                             <RowConstraints maxHeight="60.0" minHeight="30.0" prefHeight="30.0"
@@ -246,7 +249,7 @@
                                           GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                             <JFXTextField fx:id="maxRetriesInput" prefWidth="80.0"
                                           labelFloat="true"
-                                          promptText="max retry times"
+                                          promptText="%server.input.ssh.password.prompt"
                                           GridPane.columnIndex="0" GridPane.rowIndex="2"/>
                             <JFXTextField fx:id="retryIntervalTimeInput" prefWidth="80.0"
                                           labelFloat="true"
