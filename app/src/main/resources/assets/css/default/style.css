@@ -81,7 +81,7 @@
 }
 
 .check-update-progress {
-    -fx-progress-color: #FFF
+    -fx-progress-color: #000
 }
 
 .setting-button {
@@ -340,6 +340,19 @@
     -fx-background-size: 18;
     -fx-pref-height: 26;
     -fx-pref-width: 26;
+}
+
+.new-version {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../../img/new.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 30;
+    -fx-pref-height: 28;
+    -fx-pref-width: 40;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
 }
 
 /** ======================== default tab panel ========================*/

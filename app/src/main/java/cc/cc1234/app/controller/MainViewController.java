@@ -141,6 +141,7 @@ public class MainViewController {
         ProgressIndicator indicator = new ProgressIndicator();
         indicator.setPrefSize(12, 12);
         indicator.getStyleClass().add("check-update-progress");
+
         checkUpdateButton.getStyleClass().remove("check-update-button");
         checkUpdateButton.setGraphic(indicator);
         VersionChecker.hasNewVersion((latestVersion, features) -> {
