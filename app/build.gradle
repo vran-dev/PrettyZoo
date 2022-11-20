@@ -1,6 +1,6 @@
 plugins {
-    id 'org.openjfx.javafxplugin' version '0.0.10'
-    id 'org.beryx.jlink' version '2.24.4'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'org.beryx.jlink' version '2.25.0'
     id 'antlr'
     id 'idea'
     id 'application'
@@ -127,7 +127,9 @@ dependencies {
     antlr "org.antlr:antlr4:4.9" // use ANTLR version 4
 
     implementation 'com.google.guava:guava'
-    implementation 'org.fxmisc.richtext:richtextfx'
+    implementation('org.fxmisc.richtext:richtextfx') {
+        exclude group: 'org.openjfx'
+    }
     implementation 'org.antlr:antlr4-runtime'
     implementation 'com.jfoenix:jfoenix'
     implementation 'commons-io:commons-io'
