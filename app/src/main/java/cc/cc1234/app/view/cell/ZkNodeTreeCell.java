@@ -18,7 +18,11 @@ public class ZkNodeTreeCell extends JFXTreeCell<ZkNode> {
 
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
+    private Text node = new Text();
+
     public ZkNodeTreeCell(Runnable createAction, Runnable deleteAction) {
+        node.getStyleClass().add("black-text");
+
         ResourceBundle rb = ResourceBundleUtils.get(prettyZooFacade.getLocale());
 
         String addButtonText = rb.getString("nodeList.button.add");
@@ -51,17 +55,11 @@ public class ZkNodeTreeCell extends JFXTreeCell<ZkNode> {
             setText(null);
             setGraphic(null);
         } else {
-            final Text node = new Text(item.getName());
-            node.getStyleClass().add("black-text");
+            node.setText(item.getName());
             // ephemeral node
             if (item.getEphemeralOwner() != 0) {
                 node.setFill(Color.valueOf("#ffab00"));
             }
-
-            if (this.isSelected() && item.getEphemeralOwner() == 0) {
-                node.setFill(Color.valueOf("#FFF"));
-            }
-
             final HBox hbox = new HBox();
             hbox.getChildren().add(node);
             setGraphic(hbox);
