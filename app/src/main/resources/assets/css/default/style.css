@@ -718,11 +718,6 @@
     -fx-text-fill: #000;
 }
 
-.tree-view:focused {
-    -fx-background-color: #FFF;
-    -fx-border-color: #FFF;
-}
-
 .tree-view:disabled {
     -fx-background-color: #FFF;
 }
