@@ -10,10 +10,6 @@
 
 English |  [中文](README_CN.md)
 
-# Supported by
-
-[Jetbrains](https://www.jetbrains.com/)
-![https://www.jetbrains.com/](release/img/jetbrains.svg)
 
 # What
 
@@ -97,40 +93,20 @@ By wechat sponsor code
 
 # Show
 
-- over view
+![new-ui.gif](https://s2.loli.net/2022/11/20/hIwX7MQDSbVqk52.gif)
 
-![](release/img/main.png)
+![dark.gif](https://s2.loli.net/2022/11/20/8Yh6TjcfU5Fzy7b.gif)
 
-- server info 
-
-![](release/img/server.gif)
-
-- node data highlight
-
-![](release/img/highlight.gif)
-
-- node info
-
-![](release/img/time-format.gif)
-
-- node add 
-
-![](release/img/create-node.gif)
-
-- node search
-
-![](release/img/search.gif)
-
-- terminal
-
-![](release/img/terminal.gif)
-
-- 4-letter
-
-![](release/img/4-letter.gif)
+![timeout.gif](https://s2.loli.net/2022/11/20/CTFNVoWAUalKIzk.gif)
 
 ## Thanks
 
 - [ZooKeeper GUI 客户端](http://vip.iocoder.cn/Zookeeper/PrettyZoo/)  by 「芋道源码」
 
 - [PrettyZoo, 颜值与功能双在线的 Zookeeper 可视化工具](https://mp.weixin.qq.com/s/TkFirILto_moEv_kjBBPFw)
+
+
+# Supported by
+
+[Jetbrains](https://www.jetbrains.com/)
+![https://www.jetbrains.com/](release/img/jetbrains.svg)

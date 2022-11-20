@@ -93,37 +93,12 @@ PrettyZoo 会在启动的时候去加载这个文件里面，并将里面的内�
 
 # 界面展示
 
-- overview
+![new-ui.gif](https://s2.loli.net/2022/11/20/hIwX7MQDSbVqk52.gif)
 
-![](release/img/main.png)
+![dark.gif](https://s2.loli.net/2022/11/20/8Yh6TjcfU5Fzy7b.gif)
 
-- server info
+![timeout.gif](https://s2.loli.net/2022/11/20/CTFNVoWAUalKIzk.gif)
 
-![](release/img/server.gif)
-
-- node info
-
-![](release/img/time-format.gif)
-
-- node data highlight
-
-![](release/img/highlight.gif)
-
-- node add
-
-![](release/img/create-node.gif)
-
-- node search
-
-![](release/img/search.gif)
-
-- terminal
-
-![](release/img/terminal.gif)
-
-- 4-letter
-
-![](release/img/4-letter.gif)
 
 # 感谢
 
