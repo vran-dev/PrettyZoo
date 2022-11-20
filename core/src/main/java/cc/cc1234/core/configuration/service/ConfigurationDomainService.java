@@ -31,6 +31,10 @@ public class ConfigurationDomainService {
         return configuration;
     }
 
+    public Configuration load() {
+        return new ConfigurationFactory().create(List.of());
+    }
+
     public void save(ServerConfiguration serverConfig) {
         final Configuration configuration = get().orElseThrow();
         final Optional<ServerConfiguration> serverConfigurationOpt = get(serverConfig.getUrl());
@@ -65,6 +69,12 @@ public class ConfigurationDomainService {
     public void saveNodeViewSplitPaneDividerPosition(Double value) {
         var configuration = get().orElseThrow();
         configuration.getUiConfiguration().setNodeViewSplitPaneDividerPosition(value);
+        prettyZooConfigRepository.save(configuration.toPersistModel());
+    }
+
+    public void saveTheme(String theme) {
+        var configuration = get().orElseThrow();
+        configuration.changeTheme(theme);
         prettyZooConfigRepository.save(configuration.toPersistModel());
     }
 

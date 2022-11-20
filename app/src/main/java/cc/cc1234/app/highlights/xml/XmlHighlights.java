@@ -1,5 +1,6 @@
 package cc.cc1234.app.highlights.xml;
 
+import org.fxmisc.richtext.model.StyleSpan;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 
@@ -72,7 +73,7 @@ public class XmlHighlights {
             }
             lastKwEnd = matcher.end();
         }
-        spansBuilder.add(Collections.emptyList(), text.length() - lastKwEnd);
+        spansBuilder.add(new StyleSpan<>(Collections.singleton("black-text"), text.length() - lastKwEnd));
         return spansBuilder.create();
     }
 }

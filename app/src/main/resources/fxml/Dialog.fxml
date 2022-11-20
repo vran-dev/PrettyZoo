@@ -8,12 +8,11 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane fx:id="dialogPane"
             styleClass="dialog"
-            stylesheets="@../assets/dialog.css"
             xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="cc.cc1234.app.view.dialog.DialogController">
     <children>
-        <GridPane styleClass="white-background">
+        <GridPane vgap="5">
             <children>
                 <Label fx:id="titleLabel"
                        styleClass="dialog-title"
@@ -33,8 +32,8 @@
                       GridPane.rowIndex="2"
                       spacing="10"
                       alignment="CENTER_RIGHT">
-                    <JFXButton fx:id="confirmButton" styleClass="confirm-button" text="YES"/>
-                    <JFXButton fx:id="cancelButton" styleClass="cancel-button" text="NO"/>
+                    <JFXButton fx:id="confirmButton" styleClass="v-button" text="YES"/>
+                    <JFXButton fx:id="cancelButton" styleClass="v-button" text="NO"/>
                 </HBox>
             </children>
             <padding>

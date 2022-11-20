@@ -25,7 +25,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -69,7 +68,7 @@ public class ServerViewController {
     private ProgressBar sshTunnelProgressBarTo;
 
     @FXML
-    private TextArea aclTextArea;
+    private JFXTextArea aclTextArea;
 
     @FXML
     private JFXTextField zkHost;
@@ -263,10 +262,14 @@ public class ServerViewController {
 
         connectionConfigCheckbox.selectedProperty().setValue(config.isEnableConnectionAdvanceConfiguration());
         ConnectionConfigurationVO connectionAdvanceCfg = config.getConnectionConfiguration();
-        connectionTimeoutInput.textProperty().setValue(connectionAdvanceCfg.getConnectionTimeout() + "");
-        sessionTimeoutInput.textProperty().setValue(connectionAdvanceCfg.getSessionTimeout() + "");
-        maxRetriesInput.textProperty().setValue(connectionAdvanceCfg.getMaxRetries() + "");
-        retryIntervalTimeInput.textProperty().setValue(connectionAdvanceCfg.getRetryIntervalTime() + "");
+        connectionTimeoutInput.textProperty()
+                .setValue(Objects.toString(connectionAdvanceCfg.getConnectionTimeout(), ""));
+        sessionTimeoutInput.textProperty()
+                .setValue(Objects.toString(connectionAdvanceCfg.getSessionTimeout(), ""));
+        maxRetriesInput.textProperty()
+                .setValue(Objects.toString(connectionAdvanceCfg.getMaxRetries(), ""));
+        retryIntervalTimeInput.textProperty()
+                .setValue(Objects.toString(connectionAdvanceCfg.getRetryIntervalTime(), ""));
     }
 
     public void onClose() {
@@ -281,7 +284,6 @@ public class ServerViewController {
 
     @FXML
     private void initialize() {
-        sshTunnelViewPropertyBind();
         sshTunnelProgressBarTo.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
         closeButton.setOnMouseClicked(e -> onClose());
         saveButton.setOnMouseClicked(e -> onSave());
@@ -404,18 +406,6 @@ public class ServerViewController {
         maxRetriesInput.resetValidation();
         sessionTimeoutInput.resetValidation();
         retryIntervalTimeInput.resetValidation();
-    }
-
-    private void sshTunnelViewPropertyBind() {
-        var sshTunnelEnabledProperty = sshTunnelCheckbox.selectedProperty();
-        var disableBinding = Bindings.createBooleanBinding(() -> !sshTunnelEnabledProperty.get(),
-                sshTunnelEnabledProperty);
-        sshServer.disableProperty().bind(disableBinding);
-        sshServerPort.disableProperty().bind(disableBinding);
-        sshUsername.disableProperty().bind(disableBinding);
-        sshPassword.disableProperty().bind(disableBinding);
-        remoteServer.disableProperty().bind(disableBinding);
-        remoteServerPort.disableProperty().bind(disableBinding);
     }
 
     private void onSave() {

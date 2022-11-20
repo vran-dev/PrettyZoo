@@ -5,30 +5,32 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<TabPane fx:id="nodeViewPane" prefHeight="550.0" prefWidth="815.0"
-         stylesheets="@../assets/style.css, @../assets/node-info-tab.css" tabClosingPolicy="UNAVAILABLE"
+<TabPane fx:id="nodeViewPane"
+         prefHeight="550.0"
+         prefWidth="815.0"
+         tabClosingPolicy="UNAVAILABLE"
          xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
          fx:controller="cc.cc1234.app.controller.NodeViewController">
     <tabs>
-        <Tab fx:id="homeTab" text="Tree">
+        <Tab fx:id="homeTab" text="">
             <graphic>
-                <Label alignment="CENTER" contentDisplay="CENTER" styleClass="tree-tab-icon"/>
+                <Label alignment="CENTER" contentDisplay="CENTER" styleClass="tree-icon"/>
             </graphic>
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                     <children>
                         <SplitPane fx:id="nodeViewSplitPane" dividerPositions="0.3" prefHeight="160.0" prefWidth="200.0"
-                                   style="-fx-background-color: #FFF;" AnchorPane.bottomAnchor="0.0"
+                                   styleClass="white-background" AnchorPane.bottomAnchor="0.0"
                                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <items>
                                 <AnchorPane fx:id="nodeViewLeftPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0"
                                             prefWidth="100.0">
                                     <children>
-                                        <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="5.0" styleClass="head"
+                                        <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="5.0"
                                               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                                               AnchorPane.topAnchor="6">
                                             <children>
-                                                <Label styleClass="search-label"/>
+                                                <Label styleClass="search"/>
                                                 <JFXTextField fx:id="searchTextField" prefHeight="28.0"
                                                               promptText="%nodeList.button.search.prompt"
                                                               HBox.hgrow="ALWAYS">
@@ -44,7 +46,8 @@
                                         <TreeView fx:id="zkNodeTreeView" AnchorPane.bottomAnchor="0.0"
                                                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                                                   AnchorPane.topAnchor="45.0"/>
-                                        <ListView fx:id="searchResultList" stylesheets="@../assets/node-list-view.css"
+                                        <ListView fx:id="searchResultList"
+                                                  styleClass="search-result-list"
                                                   maxHeight="1.7976931348623157E308" minHeight="300.0" prefHeight="0.0"
                                                   visible="false" AnchorPane.bottomAnchor="0.0"
                                                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
@@ -62,9 +65,9 @@
                 </AnchorPane>
             </content>
         </Tab>
-        <Tab fx:id="terminalTab" text="&gt;_">
+        <Tab fx:id="terminalTab" text="">
             <graphic>
-                <Label alignment="CENTER" contentDisplay="CENTER" styleClass="terminal-tab-icon"/>
+                <Label alignment="CENTER" contentDisplay="CENTER" styleClass="terminal-icon"/>
             </graphic>
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"
@@ -88,7 +91,7 @@
             </graphic>
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"
-                            style="-fx-background-color: #FFF;">
+                            styleClass="white-background">
                     <children>
                         <JFXTextField fx:id="fourLetterCommandRequestArea" alignment="CENTER" layoutX="231.0"
                                       layoutY="75.0" prefHeight="30.0" prefWidth="364.0" AnchorPane.leftAnchor="50.0"
@@ -97,13 +100,12 @@
                                 <Font size="15.0"/>
                             </font>
                         </JFXTextField>
-                        <TextArea fx:id="fourLetterCommandResponseArea" editable="false" layoutX="108.0" layoutY="153.0"
-                                  prefHeight="328.0" prefWidth="592.0" style="-fx-background-color: transparent;"
-                                  styleClass="vTextArea" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0"
+                        <TextArea fx:id="fourLetterCommandResponseArea"
+                                  prefHeight="328.0"
+                                  prefWidth="592.0"
+                                  styleClass="vTextArea"
+                                  AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0"
                                   AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="80.0">
-                            <font>
-                                <Font size="16.0"/>
-                            </font>
                         </TextArea>
                     </children>
                 </AnchorPane>

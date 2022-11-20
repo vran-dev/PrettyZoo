@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXSlider?>
+<?import com.jfoenix.controls.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<StackPane fx:id="rootStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-           prefHeight="560.0" prefWidth="1050.0" stylesheets="@../assets/style.css"
+<StackPane fx:id="rootStackPane"
+           maxHeight="-Infinity"
+           maxWidth="-Infinity"
+           minHeight="-Infinity"
+           minWidth="-Infinity"
+           prefHeight="560.0"
+           prefWidth="1050.0"
+           styleClass="white-background,black-text"
            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="cc.cc1234.app.controller.MainViewController">
     <children>
         <SplitPane fx:id="mainSplitPane" dividerPositions="0.25" prefHeight="160.0" prefWidth="200.0">
             <items>
-                <AnchorPane fx:id="mainLeftPane" minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="694.0">
+                <AnchorPane fx:id="mainLeftPane" styleClass="white-background" minHeight="0.0" minWidth="0.0"
+                            prefHeight="550.0" prefWidth="694.0">
                     <children>
                         <VBox fx:id="serverButtons" alignment="TOP_LEFT" prefWidth="40.0" styleClass="main-menu-bar"
                               spacing="6" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                               AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0">
                             <children>
-                                <JFXButton fx:id="serverAddButton" mnemonicParsing="false" styleClass="plus-button">
+                                <JFXButton fx:id="serverAddButton" mnemonicParsing="false" styleClass="create-button">
                                     <tooltip>
                                         <Tooltip text="%main.menuBar.new"/>
                                     </tooltip>
@@ -33,25 +39,25 @@
                                         <MenuItem fx:id="exportMenuItem" mnemonicParsing="false"
                                                   text="%main.menuBar.config.export">
                                             <graphic>
-                                                <Label styleClass="icon-export"/>
+                                                <Label styleClass="export-icon"/>
                                             </graphic>
                                         </MenuItem>
                                         <MenuItem fx:id="importMenuItem" mnemonicParsing="false"
                                                   text="%main.menuBar.config.import">
                                             <graphic>
-                                                <Label styleClass="icon-import"/>
+                                                <Label styleClass="import-icon"/>
                                             </graphic>
                                         </MenuItem>
                                         <MenuItem fx:id="zookeeperPropsMenuItem" mnemonicParsing="false"
                                                   text="%main.menuBar.config.zookeeper-prop">
                                             <graphic>
-                                                <Label styleClass="icon-system-properties"/>
+                                                <Label styleClass="zk-icon"/>
                                             </graphic>
                                         </MenuItem>
                                         <Menu fx:id="fontSizeMenu"
                                               text="%main.menuBar.font">
                                             <graphic>
-                                                <Label styleClass="font-size-button"/>
+                                                <Label styleClass="font-size-icon"/>
                                             </graphic>
                                             <items>
                                                 <MenuItem fx:id="fontSizeMenuItem">
@@ -64,12 +70,12 @@
                                         </Menu>
                                         <Menu fx:id="langMenu" text="%main.menuBar.config.lang">
                                             <graphic>
-                                                <Label styleClass="icon-language"/>
+                                                <Label styleClass="lang-icon"/>
                                             </graphic>
                                         </Menu>
                                         <MenuItem fx:id="resetMenuItem" text="%main.menuBar.config.reset">
                                             <graphic>
-                                                <Label styleClass="icon-reset"/>
+                                                <Label styleClass="reset-icon"/>
                                             </graphic>
                                         </MenuItem>
                                     </items>
@@ -77,6 +83,13 @@
                                 <JFXButton fx:id="logsButton" mnemonicParsing="false" styleClass="logs-button">
                                     <tooltip>
                                         <Tooltip text="%main.menuBar.logs"/>
+                                    </tooltip>
+                                </JFXButton>
+                                <JFXButton fx:id="darkModeSwitchButton"
+                                           mnemonicParsing="false"
+                                           styleClass="dark-mode-icon">
+                                    <tooltip>
+                                        <Tooltip text="%main.menuBar.dark-mode.tooltip"/>
                                     </tooltip>
                                 </JFXButton>
                                 <JFXButton fx:id="checkUpdateButton"
@@ -91,18 +104,18 @@
                                 <Insets left="10.0" top="6.0"/>
                             </padding>
                         </VBox>
-                        <ListView fx:id="serverListView" stylesheets="@../assets/server-list-view.css"
+                        <ListView fx:id="serverListView"
                                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0"
                                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0">
                         </ListView>
                     </children>
                 </AnchorPane>
-                <StackPane fx:id="mainRightPane" style="-fx-background-color: #FFF;">
+                <StackPane fx:id="mainRightPane" styleClass="white-background">
                     <children>
                         <AnchorPane StackPane.alignment="CENTER">
                             <children>
                                 <Label fx:id="prettyZooLabel" alignment="CENTER" contentDisplay="CENTER"
-                                       prefHeight="160.0" prefWidth="199.0" style="-fx-background-color: transparent;"
+                                       prefHeight="160.0" prefWidth="199.0"
                                        styleClass="prettyZoo" AnchorPane.bottomAnchor="300.0"
                                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                                        AnchorPane.topAnchor="50.0"/>
@@ -125,6 +138,9 @@
                             </StackPane.margin>
                         </AnchorPane>
                     </children>
+                    <padding>
+                        <Insets right="30" left="30" bottom="30" top="30"/>
+                    </padding>
                 </StackPane>
             </items>
         </SplitPane>

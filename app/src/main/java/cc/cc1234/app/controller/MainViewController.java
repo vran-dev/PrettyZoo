@@ -23,7 +23,6 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
@@ -72,6 +71,9 @@ public class MainViewController {
     private Button logsButton;
 
     @FXML
+    private Button darkModeSwitchButton;
+
+    @FXML
     private MenuItem exportMenuItem;
 
     @FXML
@@ -103,7 +105,6 @@ public class MainViewController {
 
     @FXML
     private void initialize() {
-
         initServerListView();
         initConfigs();
 
@@ -119,7 +120,6 @@ public class MainViewController {
             }));
         });
 
-        mainRightPane.setPadding(new Insets(30, 30, 30, 30));
         initMenuAction();
         serverViewController.setOnClose(() -> this.serverListView.selectionModelProperty().get().clearSelection());
         prettyZooLink.setOnMouseClicked(e -> HostServiceContext.get().showDocument(prettyZooLink.getText()));
@@ -180,6 +180,9 @@ public class MainViewController {
         logsButton.setOnAction(e -> {
             logViewController.show(mainRightPane);
             serverListView.selectionModelProperty().get().clearSelection();
+        });
+        darkModeSwitchButton.setOnAction(e -> {
+            prettyZooFacade.changeTheme();
         });
         exportMenuItem.setOnAction(e -> onExportAction());
         importMenuItem.setOnAction(e -> onImportAction());

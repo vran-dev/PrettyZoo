@@ -23,7 +23,7 @@ public class PropertiesHighlights {
         final var spans = propertiesFileContext.accept(new PropertiesHighlightsVisitor());
         final StyleSpansBuilder<Collection<String>> builder = new StyleSpansBuilder<>();
         if (spans.isEmpty()) {
-            builder.add(Collections.emptyList(), properties.length());
+            builder.add(Collections.singleton("black-text"), properties.length());
         } else {
             builder.addAll(spans);
         }

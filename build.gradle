@@ -11,10 +11,10 @@ tasks.withType(JavaCompile) {
 allprojects {
     repositories {
         mavenLocal()
+        mavenCentral()
         maven {
             url 'https://maven.aliyun.com/nexus/content/groups/public/'
         }
-        mavenCentral()
     }
 }
 
@@ -47,7 +47,7 @@ subprojects {
         curatorRecipesVersion = '4.2.0'
         guavaVersio = '27.0.1-jre'
         jfoenixVersion = '9.0.10'
-        richtextfxVersion = '0.10.6'
+        richtextfxVersion = '0.11.0'
         sshjVersion = '0.27.0'
         antlr4RuntimeVersion = '4.9.2'
         commonsIoVersion = '2.10.0'

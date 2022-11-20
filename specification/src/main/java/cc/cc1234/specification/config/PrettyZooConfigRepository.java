@@ -17,6 +17,10 @@ public interface PrettyZooConfigRepository {
 
     String SYS_PROP_PATH = System.getProperty("user.home") + "/.prettyZoo/zookeeper.properties";
 
+    String THEME_DEFAULT = "default";
+
+    String THEME_DARK = "dark";
+
     ConfigData get();
 
     void save(ConfigData config);
