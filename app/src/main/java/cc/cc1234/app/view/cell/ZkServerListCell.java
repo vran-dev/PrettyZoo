@@ -5,17 +5,16 @@ import cc.cc1234.app.util.ResourceBundleUtils;
 import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.app.vo.ServerStatus;
 import com.jfoenix.controls.JFXButton;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
-import java.util.Collection;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
@@ -33,9 +32,32 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
 
     private CustomMenuItem deleteMenu;
 
+    private ImageView connectedSymbol;
+
+    private ImageView reconnectingSymbol;
+
+    private ProgressIndicator statusIndicator;
+
+    private HBox hbox;
+
     public ZkServerListCell(Consumer<ServerConfigurationVO> connectAction,
                             Consumer<ServerConfigurationVO> deleteAction,
                             Consumer<ServerConfigurationVO> disconnectAction) {
+        connectedSymbol = new ImageView(CONNECTED_SYMBOL);
+        connectedSymbol.setFitWidth(8);
+        connectedSymbol.setFitHeight(8);
+
+        reconnectingSymbol = new ImageView(RECONNECTING_SYMBOL);
+        reconnectingSymbol.setFitWidth(8);
+        reconnectingSymbol.setFitHeight(8);
+
+        statusIndicator = new ProgressIndicator();
+        statusIndicator.setPrefSize(12, 12);
+
+        hbox = new HBox(10);
+        hbox.getStyleClass().add("server-item");
+        hbox.setAlignment(Pos.CENTER);
+
         ResourceBundle rb = ResourceBundleUtils.get(prettyZooFacade.getLocale());
         String connectText = rb.getString("server.button.connect");
         var connectButton = new JFXButton(connectText);
@@ -78,43 +100,40 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
         }
 
         setText(null);
-        var label = new Label();
-        label.textProperty().unbind();
-        label.textProperty().bind(serverNameBinding(item));
+        var nameLabel = new Label();
+        nameLabel.textProperty().bind(serverNameBinding(item));
 
-        var symbolImage = new ImageView(CONNECTED_SYMBOL);
-        symbolImage.setFitWidth(8);
-        symbolImage.setFitHeight(8);
-
-        var progressIndicator = new ProgressIndicator();
-        progressIndicator.setPrefSize(12, 12);
-
-        var hbox = new HBox(10, label);
         hbox.setId(item.getZkUrl());
-        hbox.getStyleClass().add("server-item");
-        hbox.setAlignment(Pos.CENTER);
+        hbox.getChildren().clear();
+        hbox.getChildren().add(nameLabel);
+        super.setGraphic(hbox);
+
         item.statusProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                onServerStatusChange(newValue, hbox, progressIndicator);
-                onServerStatusChange(newValue, hbox, symbolImage);
+                initStatusIcon(newValue);
+                initContextMenu(newValue);
+                initStatusIndicator(newValue);
             }
         });
-        onServerStatusChange(item.getStatus(), hbox, progressIndicator);
-        onServerStatusChange(item.getStatus(), hbox, symbolImage);
+
+        initStatusIcon(item.getStatus());
+        initContextMenu(item.getStatus());
+        initStatusIndicator(item.getStatus());
+
+        // change css
         super.selectedProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue) {
-                updateItemSelectedCss(hbox, progressIndicator);
+                updateItemSelectedCss(hbox);
             } else {
-                updateItemUnSelectedCss(hbox, progressIndicator);
+                updateItemUnSelectedCss(hbox);
             }
         }));
 
-        if (this.isSelected()) {
-            updateItemSelectedCss(hbox, progressIndicator);
+        if (super.isSelected()) {
+            updateItemSelectedCss(hbox);
         } else {
-            updateItemUnSelectedCss(hbox, progressIndicator);
+            updateItemUnSelectedCss(hbox);
         }
-        super.setGraphic(hbox);
     }
 
     private StringBinding serverNameBinding(ServerConfigurationVO item) {
@@ -131,75 +150,65 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
         }
     }
 
-    private void onServerStatusChange(ServerStatus newValue, HBox hbox, ImageView child) {
-        Platform.runLater(() -> {
-            switch (newValue) {
-                case DISCONNECTED:
-                    hbox.getChildren().remove(child);
-                    if (!getContextMenu().getItems().contains(connectMenu)) {
-                        getContextMenu().getItems().add(0, connectMenu);
-                    }
-                    if (!getContextMenu().getItems().contains(deleteMenu)) {
-                        getContextMenu().getItems().add(deleteMenu);
-                    }
-                    getContextMenu().getItems().remove(disConnectMenu);
-                    break;
-                case CONNECTING:
-                case RECONNECTING:
-                    child.setImage(new Image(RECONNECTING_SYMBOL));
-                    getContextMenu().getItems().clear();
-                    break;
-                case CONNECTED:
-                    child.setImage(new Image(CONNECTED_SYMBOL));
-                    hbox.getChildren().add(0, child);
-                    if (!getContextMenu().getItems().contains(disConnectMenu)) {
-                        getContextMenu().getItems().add(0, disConnectMenu);
-                    }
-                    getContextMenu().getItems().remove(connectMenu);
-                    getContextMenu().getItems().remove(deleteMenu);
-                    break;
-                default:
-                    break;
-            }
-        });
-    }
-
-    private void onServerStatusChange(ServerStatus newValue, HBox hbox, ProgressIndicator child) {
-        Platform.runLater(() -> {
-            switch (newValue) {
-                case CONNECTING:
-                case RECONNECTING:
-                    addIfNecessary(hbox.getChildren(), child);
-                    break;
-                case DISCONNECTED:
-                case CONNECTED:
-                    removeIfNecessary(hbox.getChildren(), child);
-                    break;
-                default:
-                    break;
-            }
-        });
-    }
-
-    private <T> void addIfNecessary(Collection<T> collection, T value) {
-        if (!collection.contains(value)) {
-            collection.add(value);
+    private void initContextMenu(ServerStatus newValue) {
+        ObservableList<MenuItem> items = super.getContextMenu().getItems();
+        items.clear();
+        if (newValue == ServerStatus.CONNECTED) {
+            items.add(disConnectMenu);
+        } else if (newValue == ServerStatus.DISCONNECTED) {
+            items.add(connectMenu);
+            items.add(deleteMenu);
+        } else if (newValue == ServerStatus.RECONNECTING) {
+            items.add(disConnectMenu);
         }
     }
 
-    private <T> void removeIfNecessary(Collection<T> collection, T value) {
-        collection.remove(value);
+    private void initStatusIcon(ServerStatus newValue) {
+        ObservableList<Node> children = hbox.getChildren();
+        if (newValue == ServerStatus.CONNECTED) {
+            children.remove(reconnectingSymbol);
+            if (!children.contains(connectedSymbol)) {
+                children.add(0, connectedSymbol);
+            }
+        } else if (newValue == ServerStatus.CONNECTING || newValue == ServerStatus.RECONNECTING) {
+            children.remove(connectedSymbol);
+            if (!children.contains(reconnectingSymbol)) {
+                children.add(0, reconnectingSymbol);
+            }
+        } else if (newValue == ServerStatus.DISCONNECTED) {
+            children.remove(connectedSymbol);
+            children.remove(reconnectingSymbol);
+        }
     }
 
-    private void updateItemSelectedCss(HBox hbox, ProgressIndicator indicator) {
+    private void initStatusIndicator(ServerStatus newValue) {
+        ObservableList<Node> children = hbox.getChildren();
+        if (newValue == ServerStatus.CONNECTED) {
+            children.removeIf(node -> node instanceof ProgressIndicator);
+        } else if (newValue == ServerStatus.RECONNECTING) {
+            if (children.stream().noneMatch(n -> n instanceof ProgressIndicator)) {
+                children.add(statusIndicator);
+            }
+        } else if (newValue == ServerStatus.CONNECTING) {
+            if (children.stream().noneMatch(n -> n instanceof ProgressIndicator)) {
+                children.add(statusIndicator);
+            }
+        } else if (newValue == ServerStatus.DISCONNECTED) {
+            children.removeIf(node -> node instanceof ProgressIndicator);
+        }
+    }
+
+    private void updateItemSelectedCss(HBox hbox) {
         hbox.getStyleClass().add("server-item-select");
-        indicator.getStyleClass().addAll("server-select-progress-indicator");
+        statusIndicator.getStyleClass().removeAll("server-progress-indicator");
+        statusIndicator.getStyleClass().addAll("server-select-progress-indicator");
         hbox.getStyleClass().remove("server-item");
     }
 
-    private void updateItemUnSelectedCss(HBox hbox, ProgressIndicator indicator) {
+    private void updateItemUnSelectedCss(HBox hbox) {
         hbox.getStyleClass().remove("server-item-select");
-        indicator.getStyleClass().removeAll("server-progress-indicator");
+        statusIndicator.getStyleClass().removeAll("server-select-progress-indicator");
+        statusIndicator.getStyleClass().addAll("server-progress-indicator");
         hbox.getStyleClass().add("server-item");
     }
 }

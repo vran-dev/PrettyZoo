@@ -55,8 +55,14 @@ public class SSHTunnel {
                 }
             }).start();
         } catch (IOException e) {
+            if (e.getClass().getSimpleName().contains("Timeout")) {
+                throw new IllegalStateException("SSH connect error by timeout: " + sshHost, e);
+            }
+            if (e.getClass().getSimpleName().contains("UnknownHost")) {
+                throw new IllegalStateException("SSH connect error by Unknown host " + sshHost, e);
+            }
             log.error("create ssh-tunnel failed", e);
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException("create ssh-tunnel failed", e);
         }
     }
 

@@ -717,19 +717,16 @@
 .tree-cell {
     -fx-text-fill: #000;
     -fx-background-color: #FFF;
-    -fx-padding: 0.25em;
 }
 
 .tree-view:focused .tree-cell:selected {
     -fx-background-color: #DDD;
     -fx-text-fill: #FFF;
-    -fx-padding: 0.25em;
 }
 
 .tree-cell:filled:selected {
     -fx-background-color: #DDD;
     -fx-opacity: 0.8;
-    -fx-padding: 0.25em;
 }
 
 /* context menu */
