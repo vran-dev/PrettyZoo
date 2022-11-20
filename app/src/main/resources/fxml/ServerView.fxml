@@ -249,7 +249,7 @@
                                           GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                             <JFXTextField fx:id="maxRetriesInput" prefWidth="80.0"
                                           labelFloat="true"
-                                          promptText="%server.input.ssh.password.prompt"
+                                          promptText="max retry times"
                                           GridPane.columnIndex="0" GridPane.rowIndex="2"/>
                             <JFXTextField fx:id="retryIntervalTimeInput" prefWidth="80.0"
                                           labelFloat="true"
