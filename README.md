@@ -40,24 +40,6 @@ xattr -rc /Applications/prettyZoo.app
 
 4. Enjoy it
 
-### How to add zookeeper system properties
-
-If you want to configure system properties for zookeeper, you could creat `zookeeper.properties` file
-
-- mac: `{{ user.home }}/.prettyZoo/zookeeper.properties`
-- wind: `{{ user.home }}/.prettyZoo/zookeeper.properties`
-- linux: `{{ user.home }}/.prettyZoo/zookeeper.properties`
-
-such as follow content
-
-```properties
-jute.maxbuffer=1000000
-```
-
-prettyZoo will load and set it to system properties when application start
-
-> note: the `zookeeper.properties` will work for all server.
-
 # TODO
 
 1. - [x] Support i18n (V1.9.0+)
