@@ -690,11 +690,6 @@
     -fx-text-fill: #e6e6e6;
 }
 
-.tree-view:focused {
-    -fx-background-color: #000;
-    -fx-border-color: #000;
-}
-
 .tree-view:disabled {
     -fx-background-color: #000;
 }
@@ -702,22 +697,18 @@
 .tree-cell {
     -fx-text-fill: #e6e6e6;
     -fx-background-color: #000;
-    -fx-padding: 0.25em;
 }
 
 .tree-view:focused .tree-cell:selected {
-    -fx-border-color: #FFF;
-    -fx-border-width: 1 1 1 1;
+    -fx-border-color: transparent;
     -fx-text-fill: #e6e6e6;
     -fx-background-color: #2d2d2d;
     -fx-opacity: 0.8;
-    -fx-padding: 0.25em;
 }
 
 .tree-cell:filled:selected {
     -fx-background-color: #2d2d2d;
     -fx-opacity: 0.8;
-    -fx-padding: 0.25em;
 }
 
 /* context menu */
