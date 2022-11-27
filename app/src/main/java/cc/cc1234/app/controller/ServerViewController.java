@@ -1,10 +1,12 @@
 package cc.cc1234.app.controller;
 
+import cc.cc1234.app.context.PrimaryStageContext;
 import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.listener.DefaultTreeNodeListener;
 import cc.cc1234.app.util.Asserts;
 import cc.cc1234.app.util.FXMLs;
+import cc.cc1234.app.util.ResourceBundleUtils;
 import cc.cc1234.app.validator.NotNullValidator;
 import cc.cc1234.app.validator.PortValidator;
 import cc.cc1234.app.validator.StringNotBlankValidator;
@@ -27,9 +29,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +93,12 @@ public class ServerViewController {
 
     @FXML
     private JFXPasswordField sshPassword;
+
+    @FXML
+    private JFXTextField sshKeyFileField;
+
+    @FXML
+    private Button sshKeyFileClearButton;
 
     @FXML
     private JFXButton sshPasswordVisibleButton;
@@ -236,6 +246,7 @@ public class ServerViewController {
         sessionTimeoutInput.textProperty().setValue("6000");
         maxRetriesInput.textProperty().setValue("3");
         retryIntervalTimeInput.textProperty().setValue("1000");
+        sshKeyFileField.textProperty().setValue("");
     }
 
     private void propertyBind(ServerConfigurationVO config) {
@@ -248,6 +259,7 @@ public class ServerViewController {
         sshPassword.textProperty().setValue(config.getSshPassword());
         remoteServer.textProperty().setValue(config.getRemoteServer());
         remoteServerPort.textProperty().setValue(Objects.toString(config.getRemoteServerPort(), ""));
+        sshKeyFileField.textProperty().setValue(Objects.toString(config.getSshKeyFilePath(), ""));
         sshTunnelCheckbox.selectedProperty().setValue(config.isSshEnabled());
         final String acl = String.join("\n", config.getAclList());
         aclTextArea.textProperty().setValue(acl);
@@ -280,6 +292,8 @@ public class ServerViewController {
         closeButton.setOnMouseClicked(e -> onClose());
         saveButton.setOnMouseClicked(e -> onSave());
         deleteButton.setOnMouseClicked(e -> onDelete());
+        sshKeyFileField.setOnMouseClicked(e -> onChooseSshKeyFile());
+        sshKeyFileClearButton.setOnAction(e -> sshKeyFileField.setText(""));
 
         initConfigTabPaneBinding();
         aclTextArea.setPromptText("ACL:\r"
@@ -425,6 +439,7 @@ public class ServerViewController {
                 serverConfigVO.setSshUsername(sshUsername.textProperty().get());
                 serverConfigVO.setSshPassword(sshPassword.textProperty().get());
                 serverConfigVO.setSshServer(sshServer.textProperty().get());
+                serverConfigVO.setSshKeyFilePath(sshKeyFileField.textProperty().get());
                 if (Strings.isNullOrEmpty(sshServerPort.getText())) {
                     serverConfigVO.setSshServerPort(null);
                 } else {
@@ -485,6 +500,18 @@ public class ServerViewController {
         baseValidate = baseValidate && Stream.of(zkHost.validate(), zkPort.validate(), zkAlias.validate())
                 .allMatch(t -> t);
         return baseValidate;
+    }
+
+    private void onChooseSshKeyFile() {
+        var fileChooser = new FileChooser();
+        fileChooser.setTitle(ResourceBundleUtils.getContent("server.input.ssh.key-file.prompt"));
+        File configFile = fileChooser.showOpenDialog(PrimaryStageContext.get());
+        // configFile is null means click cancel
+        if (configFile == null) {
+            return;
+        }
+        String path = configFile.getAbsolutePath();
+        sshKeyFileField.setText(path);
     }
 
     private void onDelete() {

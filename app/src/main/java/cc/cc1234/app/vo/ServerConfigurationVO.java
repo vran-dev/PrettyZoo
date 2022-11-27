@@ -29,6 +29,8 @@ public class ServerConfigurationVO {
 
     private SimpleStringProperty sshPassword = new SimpleStringProperty("");
 
+    private SimpleStringProperty sshKeyFilePath = new SimpleStringProperty("");
+
     private SimpleStringProperty remoteServer = new SimpleStringProperty("");
 
     private ObjectProperty<Integer> remoteServerPort = new SimpleObjectProperty<>();
@@ -229,5 +231,17 @@ public class ServerConfigurationVO {
 
     public void setConnectionConfiguration(ConnectionConfigurationVO connectionConfiguration) {
         this.connectionConfiguration.set(connectionConfiguration);
+    }
+
+    public String getSshKeyFilePath() {
+        return sshKeyFilePath.get();
+    }
+
+    public SimpleStringProperty sshKeyFilePathProperty() {
+        return sshKeyFilePath;
+    }
+
+    public void setSshKeyFilePath(String sshKeyFilePath) {
+        this.sshKeyFilePath.set(sshKeyFilePath);
     }
 }

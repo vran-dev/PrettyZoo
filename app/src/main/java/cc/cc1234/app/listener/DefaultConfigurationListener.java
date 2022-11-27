@@ -59,6 +59,7 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
                                 old.setRemoteServerPort(sshTunnelConfig.getRemotePort());
                                 old.setSshUsername(sshTunnelConfig.getSshUsername());
                                 old.setSshPassword(sshTunnelConfig.getPassword());
+                                old.setSshKeyFilePath(sshTunnelConfig.getSshKeyFilePath());
                                 return true;
                             })
                             .orElseGet(() -> {
@@ -69,6 +70,7 @@ public class DefaultConfigurationListener implements ConfigurationChangeListener
                                 old.setSshPassword("");
                                 old.setRemoteServer("");
                                 old.setRemoteServerPort(null);
+                                old.setSshKeyFilePath("");
                                 return true;
                             });
 

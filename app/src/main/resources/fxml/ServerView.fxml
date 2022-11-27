@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<AnchorPane fx:id="serverInfoPane" prefHeight="500.0" prefWidth="650.0"
+<AnchorPane fx:id="serverInfoPane" prefHeight="520.0" prefWidth="650.0"
             styleClass="white-background"
             xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.ServerViewController">
@@ -77,7 +77,7 @@
             </HBox>
 
             <JFXTabPane fx:id="extendConfigTabPane"
-                        prefHeight="260"
+                        prefHeight="300"
                         maxHeight="-Infinity"
                         maxWidth="-Infinity"
                         GridPane.rowIndex="3"
@@ -85,7 +85,6 @@
                 <Tab fx:id="tunnelConfigTab" text="SSH Tunnel">
                     <GridPane hgap="20.0"
                               vgap="10.0"
-                              prefHeight="260.0"
                               prefWidth="618.0"
                               maxHeight="-Infinity"
                               maxWidth="-Infinity"
@@ -117,6 +116,7 @@
                         <children>
                             <GridPane maxHeight="-Infinity"
                                       GridPane.columnIndex="0"
+                                      vgap="12"
                                       style="-fx-border-color: #ddd;">
                                 <columnConstraints>
                                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="220.0"/>
@@ -169,17 +169,28 @@
                                                   GridPane.columnIndex="0"
                                                   GridPane.rowIndex="2"/>
                                     <HBox GridPane.columnIndex="0" GridPane.rowIndex="3">
-                                        <children>
-                                            <JFXPasswordField fx:id="sshPassword"
-                                                              prefWidth="172.0"
-                                                              promptText="%server.input.ssh.password.prompt"/>
+                                        <JFXPasswordField fx:id="sshPassword"
+                                                          prefWidth="172.0"
+                                                          promptText="%server.input.ssh.password.prompt"/>
 
-                                            <JFXButton fx:id="sshPasswordVisibleButton"
-                                                       prefWidth="34.0"
-                                                       styleClass="visible-button"
-                                                       text="visible"/>
-                                        </children>
+                                        <JFXButton fx:id="sshPasswordVisibleButton"
+                                                   prefWidth="34.0"
+                                                   styleClass="visible-button"
+                                                   text="visible"/>
                                     </HBox>
+                                    <HBox GridPane.columnIndex="0" GridPane.rowIndex="4">
+                                        <JFXTextField fx:id="sshKeyFileField"
+                                                      editable="true"
+                                                      prefWidth="172"
+                                                      maxWidth="-Infinity"
+                                                      promptText="%server.input.ssh.key-file.prompt"
+                                                      GridPane.columnIndex="0"
+                                                      GridPane.rowIndex="4"/>
+                                        <JFXButton fx:id="sshKeyFileClearButton"
+                                                   prefWidth="34.0"
+                                                   styleClass="clear-button"/>
+                                    </HBox>
+
                                 </children>
                                 <padding>
                                     <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
@@ -223,7 +234,6 @@
                 <Tab fx:id="connectionConfigTab" text="Connection Config">
                     <GridPane fx:id="connectionConfigPane"
                               vgap="10.0"
-                              hgap="20.0"
                               prefWidth="620">
                         <columnConstraints>
                             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0"/>
@@ -257,7 +267,7 @@
                                           GridPane.columnIndex="0" GridPane.rowIndex="3"/>
                         </children>
                         <padding>
-                            <Insets bottom="15.0" left="25.0" right="25.0" top="25.0"/>
+                            <Insets bottom="10.0" left="25.0" right="25.0" top="25.0"/>
                         </padding>
                     </GridPane>
                 </Tab>

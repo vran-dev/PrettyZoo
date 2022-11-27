@@ -2,8 +2,8 @@ package cc.cc1234.core.configuration.factory;
 
 import cc.cc1234.config.JsonPrettyZooConfigRepository;
 import cc.cc1234.core.configuration.entity.Configuration;
-import cc.cc1234.core.configuration.entity.ServerConfiguration;
 import cc.cc1234.core.configuration.entity.ConnectionConfiguration;
+import cc.cc1234.core.configuration.entity.ServerConfiguration;
 import cc.cc1234.core.configuration.value.SSHTunnelConfiguration;
 import cc.cc1234.specification.config.PrettyZooConfigRepository;
 import cc.cc1234.specification.config.model.ConfigData;
@@ -64,19 +64,19 @@ public class ConfigurationFactory {
     }
 
     private static SSHTunnelConfiguration sshTunnelConfiguration(ServerConfigData serverConfig) {
-        SSHTunnelConfiguration tunnelConfiguration = serverConfig.getSshTunnelConfig()
+        return serverConfig.getSshTunnelConfig()
                 .map(tunnelConfig -> SSHTunnelConfiguration.builder()
                         .localhost(tunnelConfig.getLocalhost())
                         .localPort(tunnelConfig.getLocalPort())
                         .sshUsername(tunnelConfig.getSshUsername())
                         .sshPassword(tunnelConfig.getPassword())
+                        .sshKeyFilePath(tunnelConfig.getSshKeyFilePath())
                         .sshHost(tunnelConfig.getSshHost())
                         .sshPort(tunnelConfig.getSshPort())
                         .remoteHost(tunnelConfig.getRemoteHost())
                         .remotePort(tunnelConfig.getRemotePort())
                         .build())
                 .orElse(null);
-        return tunnelConfiguration;
     }
 
     private ConnectionConfiguration connectionConfiguration(ServerConfigData serverConfig) {
