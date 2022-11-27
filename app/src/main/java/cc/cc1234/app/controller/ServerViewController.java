@@ -18,14 +18,13 @@ import com.google.common.base.Strings;
 import com.jfoenix.controls.*;
 import com.jfoenix.validation.NumberValidator;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
-import javafx.collections.ObservableList;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import org.slf4j.Logger;
@@ -47,7 +46,7 @@ public class ServerViewController {
     private AnchorPane serverInfoPane;
 
     @FXML
-    private AnchorPane serverBasicInfoPane;
+    private GridPane serverBasicInfoPane;
 
     @FXML
     private JFXToggleButton sshTunnelCheckbox;
@@ -253,13 +252,6 @@ public class ServerViewController {
         final String acl = String.join("\n", config.getAclList());
         aclTextArea.textProperty().setValue(acl);
 
-        if (!config.isEnableConnectionAdvanceConfiguration()) {
-            extendConfigTabPane.getTabs().remove(connectionConfigTab);
-        }
-        if (!config.isSshEnabled()) {
-            extendConfigTabPane.getTabs().remove(tunnelConfigTab);
-        }
-
         connectionConfigCheckbox.selectedProperty().setValue(config.isEnableConnectionAdvanceConfiguration());
         ConnectionConfigurationVO connectionAdvanceCfg = config.getConnectionConfiguration();
         connectionTimeoutInput.textProperty()
@@ -299,48 +291,47 @@ public class ServerViewController {
     }
 
     private void initConfigTabPaneBinding() {
-        sshTunnelCheckbox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
-            ObservableList<Tab> tabs = extendConfigTabPane.getTabs();
+        extendConfigTabPane.getTabs().clear();
+
+        // when check tunnel config box
+        sshTunnelCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                if (!tabs.contains(tunnelConfigTab)) {
-                    tabs.add(0, tunnelConfigTab);
+                if (!extendConfigTabPane.getTabs().contains(tunnelConfigTab)) {
+                    extendConfigTabPane.getTabs().add(0, tunnelConfigTab);
                     extendConfigTabPane.getSelectionModel().select(tunnelConfigTab);
                 }
             } else {
-                if (tabs.contains(tunnelConfigTab)) {
-                    tabs.remove(tunnelConfigTab);
-                }
+                extendConfigTabPane.getTabs().remove(tunnelConfigTab);
             }
-        }));
-        connectionConfigCheckbox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
-            ObservableList<Tab> tabs = extendConfigTabPane.getTabs();
+        });
+
+        // when check connection config box
+        connectionConfigCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                if (!tabs.contains(connectionConfigTab)) {
-                    tabs.add(connectionConfigTab);
+                if (!extendConfigTabPane.getTabs().contains(connectionConfigTab)) {
+                    int index = extendConfigTabPane.getTabs().size() > 0 ? 1 : 0;
+                    extendConfigTabPane.getTabs().add(index, connectionConfigTab);
                     extendConfigTabPane.getSelectionModel().select(connectionConfigTab);
                 }
             } else {
-                if (tabs.contains(connectionConfigTab)) {
-                    tabs.remove(connectionConfigTab);
-                }
-            }
-        }));
-
-        BooleanBinding checkboxSelectedBind = Bindings.createBooleanBinding(() -> {
-            return sshTunnelCheckbox.isSelected() || connectionConfigCheckbox.isSelected();
-        }, sshTunnelCheckbox.selectedProperty(), connectionConfigCheckbox.selectedProperty());
-        checkboxSelectedBind.addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                AnchorPane.setTopAnchor(serverBasicInfoPane, 0.0);
-                AnchorPane.setTopAnchor(buttonHBox, null);
-                AnchorPane.setBottomAnchor(buttonHBox, 30.0);
-            } else {
-                AnchorPane.setTopAnchor(serverBasicInfoPane, 30.0);
-                AnchorPane.setBottomAnchor(buttonHBox, null);
-                AnchorPane.setTopAnchor(buttonHBox, 248.0);
+                extendConfigTabPane.getTabs().remove(connectionConfigTab);
             }
         });
-        extendConfigTabPane.visibleProperty().bind(checkboxSelectedBind);
+
+        extendConfigTabPane.getTabs().addListener((ListChangeListener<Tab>) c -> {
+            if (c.getList().isEmpty()) {
+                serverBasicInfoPane.getChildren().remove(extendConfigTabPane);
+                GridPane.setRowIndex(buttonHBox, 3);
+            } else {
+                if (!serverBasicInfoPane.getChildren().contains(extendConfigTabPane)) {
+                    serverBasicInfoPane.getChildren().add(extendConfigTabPane);
+                    extendConfigTabPane.getSelectionModel().select(c.getList().iterator().next());
+                    GridPane.setColumnIndex(extendConfigTabPane, 0);
+                    GridPane.setRowIndex(extendConfigTabPane, 3);
+                    GridPane.setRowIndex(buttonHBox, 4);
+                }
+            }
+        });
     }
 
     private void initPasswordComponent() {
