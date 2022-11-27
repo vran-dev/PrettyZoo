@@ -232,10 +232,10 @@ public class ServerViewController {
         aclTextArea.textProperty().setValue("");
         sshTunnelCheckbox.setSelected(false);
         connectionConfigCheckbox.setSelected(false);
-        connectionTimeoutInput.textProperty().setValue("");
-        sessionTimeoutInput.textProperty().setValue("");
-        maxRetriesInput.textProperty().setValue("");
-        retryIntervalTimeInput.textProperty().setValue("");
+        connectionTimeoutInput.textProperty().setValue("5000");
+        sessionTimeoutInput.textProperty().setValue("6000");
+        maxRetriesInput.textProperty().setValue("3");
+        retryIntervalTimeInput.textProperty().setValue("1000");
     }
 
     private void propertyBind(ServerConfigurationVO config) {
