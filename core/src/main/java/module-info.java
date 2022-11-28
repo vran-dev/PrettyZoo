@@ -14,7 +14,7 @@ open module core.main {
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
     requires com.google.common;
-    requires sshj;
+    requires com.hierynomus.sshj;
 
     uses org.apache.logging.log4j.message.ThreadDumpMessage.ThreadInfoFactory;
     uses org.apache.logging.log4j.spi.Provider;

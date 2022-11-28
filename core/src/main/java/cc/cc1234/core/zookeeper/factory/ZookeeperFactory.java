@@ -28,6 +28,7 @@ public class ZookeeperFactory {
                     .localPort(tunnelConfig.getLocalPort())
                     .sshUsername(tunnelConfig.getSshUsername())
                     .sshPassword(tunnelConfig.getSshPassword())
+                    .sshKeyFilePath(tunnelConfig.getSshKeyFilePath())
                     .sshHost(tunnelConfig.getSshHost())
                     .sshPort(tunnelConfig.getSshPort())
                     .remoteHost(tunnelConfig.getRemoteHost())

@@ -161,6 +161,7 @@ public class Configuration {
             sshTunnelData.setSshPort(tunnelConfiguration.getSshPort());
             sshTunnelData.setSshUsername(tunnelConfiguration.getSshUsername());
             sshTunnelData.setPassword(tunnelConfiguration.getSshPassword());
+            sshTunnelData.setSshKeyFilePath(tunnelConfiguration.getSshKeyFilePath());
             sshTunnelData.setRemoteHost(tunnelConfiguration.getRemoteHost());
             sshTunnelData.setRemotePort(tunnelConfiguration.getRemotePort());
         }

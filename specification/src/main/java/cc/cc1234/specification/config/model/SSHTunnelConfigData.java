@@ -21,4 +21,6 @@ public class SSHTunnelConfigData {
 
     private String password;
 
+    private String sshKeyFilePath;
+
 }

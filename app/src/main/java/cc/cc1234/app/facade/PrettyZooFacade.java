@@ -154,10 +154,12 @@ public class PrettyZooFacade {
             tunnelConfigurationBuilder.sshHost(serverConfigurationVO.getSshServer())
                     .sshPort(serverConfigurationVO.getSshServerPort());
         }
-        tunnelConfigurationBuilder.localhost(serverConfigurationVO.getZkHost())
-                .localPort(serverConfigurationVO.getZkPort());
-        tunnelConfigurationBuilder.sshUsername(serverConfigurationVO.getSshUsername())
-                .sshPassword(serverConfigurationVO.getSshPassword());
+        tunnelConfigurationBuilder
+                .localhost(serverConfigurationVO.getZkHost())
+                .localPort(serverConfigurationVO.getZkPort())
+                .sshUsername(serverConfigurationVO.getSshUsername())
+                .sshPassword(serverConfigurationVO.getSshPassword())
+                .sshKeyFilePath(serverConfigurationVO.getSshKeyFilePath());
 
         ConnectionConfiguration advanceConfig = new ConnectionConfiguration();
         if (serverConfigurationVO.isEnableConnectionAdvanceConfiguration()) {

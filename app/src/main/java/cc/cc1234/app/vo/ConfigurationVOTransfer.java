@@ -44,6 +44,7 @@ public class ConfigurationVOTransfer {
             }
             vo.setSshUsername(sshTunnelConfig.getSshUsername());
             vo.setSshPassword(sshTunnelConfig.getSshPassword());
+            vo.setSshKeyFilePath(sshTunnelConfig.getSshKeyFilePath());
         }
         vo.setSshEnabled(serverConfiguration.getSshTunnelEnabled());
         vo.setEnableConnectionAdvanceConfiguration(serverConfiguration.getEnableConnectionAdvanceConfiguration());
@@ -78,6 +79,7 @@ public class ConfigurationVOTransfer {
             }
             vo.setSshUsername(sshTunnelConfig.getSshUsername());
             vo.setSshPassword(sshTunnelConfig.getPassword());
+            vo.setSshKeyFilePath(sshTunnelConfig.getSshKeyFilePath());
             if (sshTunnelConfig.getRemoteHost() == null || sshTunnelConfig.getRemotePort() == null) {
                 vo.setRemoteServer("");
             } else {

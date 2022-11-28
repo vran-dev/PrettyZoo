@@ -19,6 +19,8 @@ public class SSHTunnelConfiguration {
 
     private String sshPassword;
 
+    private String sshKeyFilePath;
+
     private String remoteHost;
 
     private Integer remotePort;
