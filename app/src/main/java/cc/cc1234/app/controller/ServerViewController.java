@@ -231,22 +231,26 @@ public class ServerViewController {
     }
 
     private void propertyReset() {
+        zkAlias.textProperty().setValue("");
+
         zkHost.textProperty().unbind();
         zkHost.textProperty().setValue("");
         zkPort.textProperty().setValue("");
-        zkAlias.textProperty().setValue("");
+        aclTextArea.textProperty().setValue("");
+
+        sshTunnelCheckbox.setSelected(false);
         sshServer.textProperty().setValue("");
         sshUsername.textProperty().setValue("");
         sshPassword.textProperty().setValue("");
         remoteServer.textProperty().setValue("");
-        aclTextArea.textProperty().setValue("");
-        sshTunnelCheckbox.setSelected(false);
+        remoteServerPort.textProperty().setValue("");
+        sshKeyFileField.textProperty().setValue("");
+
         connectionConfigCheckbox.setSelected(false);
         connectionTimeoutInput.textProperty().setValue("5000");
         sessionTimeoutInput.textProperty().setValue("6000");
         maxRetriesInput.textProperty().setValue("3");
         retryIntervalTimeInput.textProperty().setValue("1000");
-        sshKeyFileField.textProperty().setValue("");
     }
 
     private void propertyBind(ServerConfigurationVO config) {
@@ -305,8 +309,6 @@ public class ServerViewController {
     }
 
     private void initConfigTabPaneBinding() {
-        extendConfigTabPane.getTabs().clear();
-
         // when check tunnel config box
         sshTunnelCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
@@ -346,6 +348,7 @@ public class ServerViewController {
                 }
             }
         });
+        extendConfigTabPane.getTabs().clear();
     }
 
     private void initPasswordComponent() {
