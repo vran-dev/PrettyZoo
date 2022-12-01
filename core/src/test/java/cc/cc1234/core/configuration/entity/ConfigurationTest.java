@@ -114,7 +114,6 @@ public class ConfigurationTest {
     private ServerConfiguration createServerConfiguration(String host, int port) {
         String url = host + ":" + port;
         return ServerConfiguration.builder()
-                .url(url)
                 .host(host)
                 .port(port)
                 .alias(url)
