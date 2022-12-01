@@ -20,7 +20,9 @@ import com.jfoenix.controls.*;
 import com.jfoenix.validation.NumberValidator;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
@@ -298,12 +300,13 @@ public class ServerViewController {
         });
 
         extendConfigTabPane.getTabs().addListener((ListChangeListener<Tab>) c -> {
+            ObservableList<Node> child = serverBasicInfoPane.getChildren();
             if (c.getList().isEmpty()) {
-                serverBasicInfoPane.getChildren().remove(extendConfigTabPane);
+                child.remove(extendConfigTabPane);
                 GridPane.setRowIndex(buttonHBox, 3);
             } else {
-                if (!serverBasicInfoPane.getChildren().contains(extendConfigTabPane)) {
-                    serverBasicInfoPane.getChildren().add(extendConfigTabPane);
+                if (!child.contains(extendConfigTabPane)) {
+                    child.add(extendConfigTabPane);
                     extendConfigTabPane.getSelectionModel().select(c.getList().iterator().next());
                     GridPane.setColumnIndex(extendConfigTabPane, 0);
                     GridPane.setRowIndex(extendConfigTabPane, 3);
@@ -362,20 +365,13 @@ public class ServerViewController {
     }
 
     private void propertyBind() {
+        // basic config
         zkHost.textProperty().bindBidirectional(serverConfiguration.zkHostProperty());
         zkPort.textProperty().bindBidirectional(serverConfiguration.zkPortProperty(), IntegerNumberConverter.INSTANCE);
-        zkPort.textProperty().bindBidirectional(serverConfiguration.zkPortProperty(), IntegerNumberConverter.INSTANCE);
         zkAlias.textProperty().bindBidirectional(serverConfiguration.zkAliasProperty());
-        sshServer.textProperty().bindBidirectional(serverConfiguration.sshServerProperty());
-        sshServerPort.textProperty()
-                .bindBidirectional(serverConfiguration.sshServerPortProperty(), IntegerNumberConverter.INSTANCE);
-        sshUsername.textProperty().bindBidirectional(serverConfiguration.sshUsernameProperty());
-        sshPassword.textProperty().bindBidirectional(serverConfiguration.sshPasswordProperty());
-        sshKeyFileField.textProperty().bindBidirectional(serverConfiguration.sshKeyFilePathProperty());
-        remoteServer.textProperty().bindBidirectional(serverConfiguration.remoteServerProperty());
-        remoteServerPort.textProperty()
-                .bindBidirectional(serverConfiguration.remoteServerPortProperty(), IntegerNumberConverter.INSTANCE);
-        sshTunnelCheckbox.selectedProperty().bindBidirectional(serverConfiguration.sshEnabledProperty());
+        aclTextArea.textProperty().bindBidirectional(serverConfiguration.aclProperty());
+
+        // advance connection config
         connectionConfigCheckbox.selectedProperty()
                 .bindBidirectional(serverConfiguration.enableConnectionAdvanceConfigurationProperty());
         ConnectionConfigurationVO connectionConfig = serverConfiguration.getConnectionConfiguration();
@@ -387,8 +383,18 @@ public class ServerViewController {
                 .bindBidirectional(connectionConfig.sessionTimeoutProperty(), IntegerNumberConverter.INSTANCE);
         retryIntervalTimeInput.textProperty()
                 .bindBidirectional(connectionConfig.retryIntervalTimeProperty(), IntegerNumberConverter.INSTANCE);
-        aclTextArea.textProperty()
-                .bindBidirectional(serverConfiguration.aclProperty());
+
+        // ssh tunnel config
+        sshServer.textProperty().bindBidirectional(serverConfiguration.sshServerProperty());
+        sshServerPort.textProperty()
+                .bindBidirectional(serverConfiguration.sshServerPortProperty(), IntegerNumberConverter.INSTANCE);
+        sshUsername.textProperty().bindBidirectional(serverConfiguration.sshUsernameProperty());
+        sshPassword.textProperty().bindBidirectional(serverConfiguration.sshPasswordProperty());
+        sshKeyFileField.textProperty().bindBidirectional(serverConfiguration.sshKeyFilePathProperty());
+        remoteServer.textProperty().bindBidirectional(serverConfiguration.remoteServerProperty());
+        remoteServerPort.textProperty()
+                .bindBidirectional(serverConfiguration.remoteServerPortProperty(), IntegerNumberConverter.INSTANCE);
+        sshTunnelCheckbox.selectedProperty().bindBidirectional(serverConfiguration.sshEnabledProperty());
     }
 
     private void resetValidate() {

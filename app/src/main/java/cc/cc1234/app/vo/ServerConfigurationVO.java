@@ -44,6 +44,15 @@ public class ServerConfigurationVO {
         zkAlias.set(config.getZkAlias());
         acl.set(config.getAcl());
 
+        // advance connection config
+        ConnectionConfigurationVO connectionConfig = config.getConnectionConfiguration();
+        enableConnectionAdvanceConfiguration.set(config.isEnableConnectionAdvanceConfiguration());
+        connectionConfiguration.get().setConnectionTimeout(connectionConfig.getConnectionTimeout());
+        connectionConfiguration.get().setMaxRetries(connectionConfig.getMaxRetries());
+        connectionConfiguration.get().setRetryIntervalTime(connectionConfig.getRetryIntervalTime());
+        connectionConfiguration.get().setSessionTimeout(connectionConfig.getSessionTimeout());
+
+        // ssh tunnel config
         sshEnabled.set(config.isSshEnabled());
         sshServer.set(config.getSshServer());
         sshServerPort.set(config.getSshServerPort());
@@ -52,12 +61,6 @@ public class ServerConfigurationVO {
         sshKeyFilePath.set(config.getSshKeyFilePath());
         remoteServer.set(config.getRemoteServer());
         remoteServerPort.set(config.getRemoteServerPort());
-        enableConnectionAdvanceConfiguration.set(config.isEnableConnectionAdvanceConfiguration());
-        ConnectionConfigurationVO connectionConfig = config.getConnectionConfiguration();
-        connectionConfiguration.get().setConnectionTimeout(connectionConfig.getConnectionTimeout());
-        connectionConfiguration.get().setMaxRetries(connectionConfig.getMaxRetries());
-        connectionConfiguration.get().setRetryIntervalTime(connectionConfig.getRetryIntervalTime());
-        connectionConfiguration.get().setSessionTimeout(connectionConfig.getSessionTimeout());
     }
 
     public void reset() {
