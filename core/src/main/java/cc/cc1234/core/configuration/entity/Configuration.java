@@ -54,10 +54,10 @@ public class Configuration {
     public void add(ServerConfiguration serverConfiguration) {
         serverConfigurationPrecondition(serverConfiguration);
         serverConfigurations.stream()
-                .filter(s -> s.getUrl().equals(serverConfiguration.getUrl()))
+                .filter(s -> s.getId().equals(serverConfiguration.getId()))
                 .findFirst()
                 .ifPresent(s -> {
-                    throw new IllegalStateException(serverConfiguration.getUrl() + " exists");
+                    throw new IllegalStateException(serverConfiguration.getLabel() + " exists");
                 });
         var copiedServers = new ArrayList<>(this.serverConfigurations);
         copiedServers.add(serverConfiguration);
@@ -68,7 +68,7 @@ public class Configuration {
     public void update(ServerConfiguration serverConfiguration) {
         serverConfigurationPrecondition(serverConfiguration);
         ServerConfiguration server = serverConfigurations.stream()
-                .filter(s -> s.getUrl().equals(serverConfiguration.getUrl()))
+                .filter(s -> s.getId().equals(serverConfiguration.getId()))
                 .findFirst()
                 .orElseThrow();
         server.update(serverConfiguration);
@@ -86,26 +86,26 @@ public class Configuration {
                 listener.onLocaleChange(this.localeConfiguration.getLocale()));
     }
 
-    public Optional<ServerConfiguration> get(String url) {
-        return serverConfigurations.stream().filter(s -> s.getUrl().equals(url)).findFirst();
+    public Optional<ServerConfiguration> getById(String id) {
+        return serverConfigurations.stream().filter(s -> s.getId().equals(id)).findFirst();
     }
 
-    public Boolean exists(String host) {
-        return get(host).isPresent();
+    public Boolean existsById(String id) {
+        return getById(id).isPresent();
     }
 
-    public void delete(String url) {
-        final ServerConfiguration existsServer = get(url).orElseThrow();
+    public void deleteById(String id) {
+        final ServerConfiguration existsServer = getById(id).orElseThrow();
         List<ServerConfiguration> configurations = serverConfigurations.stream()
-                .filter(s -> !s.getUrl().equals(url))
+                .filter(s -> !s.getId().equals(id))
                 .collect(Collectors.toList());
         this.serverConfigurations = configurations;
         configurationChangeListeners.forEach(listener -> listener.onServerRemove(toServerConfig(existsServer)));
     }
 
-    public void incrementConnectTimes(String server) {
+    public void incrementConnectTimes(String id) {
         serverConfigurations.stream()
-                .filter(config -> config.getUrl().equals(server))
+                .filter(config -> config.getId().equals(id))
                 .forEach(ServerConfiguration::incrementConnectTimes);
     }
 
@@ -115,7 +115,6 @@ public class Configuration {
 
     private void serverConfigurationPrecondition(ServerConfiguration serverConfig) {
         Objects.requireNonNull(serverConfig);
-        Objects.requireNonNull(serverConfig.getUrl());
         Objects.requireNonNull(serverConfig.getHost());
         Objects.requireNonNull(serverConfig.getPort());
         Objects.requireNonNull(serverConfig.getSshTunnelEnabled());
@@ -152,7 +151,7 @@ public class Configuration {
 
     private ServerConfigData toServerConfig(ServerConfiguration config) {
         SSHTunnelConfigData sshTunnelData = null;
-        if (config.getSshTunnel() != null) {
+        if (config.getSshTunnelEnabled()) {
             SSHTunnelConfiguration tunnelConfiguration = config.getSshTunnel();
             sshTunnelData = new SSHTunnelConfigData();
             sshTunnelData.setLocalhost(tunnelConfiguration.getLocalhost());
@@ -167,11 +166,11 @@ public class Configuration {
         }
 
         final ServerConfigData serverData = new ServerConfigData();
+        serverData.setId(config.getId());
         serverData.setConnectTimes(config.getConnectTimes());
         serverData.setAclList(new ArrayList<>(config.getAclList()));
-        serverData.setUrl(config.getUrl());
         serverData.setHost(config.getHost());
-        serverData.setPort(Optional.of(config.getPort()));
+        serverData.setPort(config.getPort());
         serverData.setSshTunnelEnabled(config.getSshTunnelEnabled());
         serverData.setSshTunnelConfig(Optional.ofNullable(sshTunnelData));
         serverData.setAlias(config.getAlias());

@@ -19,13 +19,16 @@ public class CuratorZookeeperConnection implements ZookeeperConnection<CuratorFr
 
     private static final Logger log = LoggerFactory.getLogger(CuratorZookeeperConnection.class);
 
+    private final String id;
+
     private final CuratorFramework curatorFramework;
 
     private final TreeCache treeCache;
 
     private AtomicBoolean isSync = new AtomicBoolean(false);
 
-    public CuratorZookeeperConnection(CuratorFramework curatorFramework) {
+    public CuratorZookeeperConnection(String id, CuratorFramework curatorFramework) {
+        this.id = id;
         this.curatorFramework = curatorFramework;
         treeCache = new TreeCache(curatorFramework, "/");
     }
@@ -87,7 +90,7 @@ public class CuratorZookeeperConnection implements ZookeeperConnection<CuratorFr
         final String server = curatorFramework.getZookeeperClient().getCurrentConnectionString();
         if (!isSync.get()) {
             log.debug("begin to sync tree node from {}", server);
-            treeCache.getListenable().addListener(new CuratorTreeCacheListener(listeners));
+            treeCache.getListenable().addListener(new CuratorTreeCacheListener(id, listeners));
             try {
                 treeCache.start();
                 isSync.set(true);
@@ -96,7 +99,12 @@ public class CuratorZookeeperConnection implements ZookeeperConnection<CuratorFr
                 treeCache.close();
             }
         } else {
-            log.info("ignore sync operation, because of {} has been sync", server);
+            log.info("ignore sync operation, because of {} [{}] has been sync", server, getId());
         }
+    }
+
+    @Override
+    public String getId() {
+        return this.id;
     }
 }

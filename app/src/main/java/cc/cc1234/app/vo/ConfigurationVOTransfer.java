@@ -24,10 +24,10 @@ public class ConfigurationVOTransfer {
 
     public static ServerConfigurationVO to(ServerConfiguration serverConfiguration) {
         final ServerConfigurationVO vo = new ServerConfigurationVO();
-        vo.setZkUrl(serverConfiguration.getUrl());
+        vo.setId(serverConfiguration.getId());
         vo.setZkHost(serverConfiguration.getHost());
         vo.setZkPort(serverConfiguration.getPort());
-        vo.getAclList().addAll(serverConfiguration.getAclList());
+        vo.setAcl(String.join("\n", serverConfiguration.getAclList()));
         if (serverConfiguration.getSshTunnel() != null) {
             var sshTunnelConfig = serverConfiguration.getSshTunnel();
             if (sshTunnelConfig.getRemoteHost() == null) {
@@ -65,27 +65,19 @@ public class ConfigurationVOTransfer {
 
     public static ServerConfigurationVO to(ServerConfigData serverConfig) {
         final ServerConfigurationVO vo = new ServerConfigurationVO();
-        vo.setZkUrl(serverConfig.getUrl());
+        vo.setId(serverConfig.getId());
         vo.setZkHost(serverConfig.getHost());
-        vo.setZkPort(serverConfig.getPort().get());
-        vo.getAclList().addAll(serverConfig.getAclList());
+        vo.setZkPort(serverConfig.getPort());
+        vo.setAcl(String.join("\n", serverConfig.getAclList()));
         vo.setZkAlias(serverConfig.getAlias());
         serverConfig.getSshTunnelConfig().ifPresent(sshTunnelConfig -> {
-            if (sshTunnelConfig.getRemoteHost() == null || sshTunnelConfig.getRemotePort() == null) {
-                vo.setRemoteServer("");
-            } else {
-                vo.setRemoteServer(sshTunnelConfig.getRemoteHost());
-                vo.setRemoteServerPort(sshTunnelConfig.getRemotePort());
-            }
+            vo.setRemoteServer(sshTunnelConfig.getRemoteHost());
+            vo.setRemoteServerPort(sshTunnelConfig.getRemotePort());
             vo.setSshUsername(sshTunnelConfig.getSshUsername());
             vo.setSshPassword(sshTunnelConfig.getPassword());
             vo.setSshKeyFilePath(sshTunnelConfig.getSshKeyFilePath());
-            if (sshTunnelConfig.getRemoteHost() == null || sshTunnelConfig.getRemotePort() == null) {
-                vo.setRemoteServer("");
-            } else {
-                vo.setSshServer(sshTunnelConfig.getSshHost());
-                vo.setSshServerPort(sshTunnelConfig.getSshPort());
-            }
+            vo.setSshServer(sshTunnelConfig.getSshHost());
+            vo.setSshServerPort(sshTunnelConfig.getSshPort());
         });
         vo.setSshEnabled(serverConfig.getSshTunnelEnabled());
         vo.setEnableConnectionAdvanceConfiguration(serverConfig.getEnableConnectionAdvanceConfiguration());

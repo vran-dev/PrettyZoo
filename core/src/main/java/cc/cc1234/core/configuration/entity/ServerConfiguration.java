@@ -10,10 +10,7 @@ import java.util.List;
 @Builder
 public class ServerConfiguration {
 
-    /**
-     * host:port
-     */
-    private String url;
+    private String id;
 
     private String host;
 
@@ -36,13 +33,14 @@ public class ServerConfiguration {
     private SSHTunnelConfiguration sshTunnel;
 
     @Builder.Default
-    private ConnectionConfiguration connectionConfiguration
-            = new ConnectionConfiguration();
+    private ConnectionConfiguration connectionConfiguration = new ConnectionConfiguration();
 
     public void update(ServerConfiguration update) {
         if (update.getSshTunnelEnabled() && update.getSshTunnel() == null) {
             throw new IllegalStateException();
         }
+        this.host = update.getHost();
+        this.port = update.getPort();
         this.aclList = update.getAclList();
         this.sshTunnelEnabled = update.getSshTunnelEnabled();
         this.sshTunnel = update.getSshTunnel();
@@ -60,4 +58,18 @@ public class ServerConfiguration {
         this.connectTimes += 1;
     }
 
+    public String getLabel() {
+        if (alias != null && !alias.isBlank()) {
+            return alias;
+        }
+        if (sshTunnelEnabled) {
+            return getSshTunnel().getRemoteHost() + ":" + getSshTunnel().getRemotePort();
+        }
+        return host + ":" + port;
+    }
+
+    public String getConnectionTo() {
+        // TODO if ssh enabled, use localhost && random port
+        return host + ":" + port;
+    }
 }

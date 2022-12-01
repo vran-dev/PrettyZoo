@@ -10,6 +10,7 @@ import cc.cc1234.app.view.cell.ZkNodeTreeCell;
 import cc.cc1234.app.view.dialog.Dialog;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.vo.ZkNodeSearchResult;
+import cc.cc1234.core.configuration.entity.ServerConfiguration;
 import cc.cc1234.specification.node.ZkNode;
 import cc.cc1234.specification.util.StringWriter;
 import javafx.collections.ObservableList;
@@ -78,7 +79,7 @@ public class NodeViewController {
 
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
-    private String server;
+    private String serverId;
 
     private NodeInfoViewController nodeInfoViewController = FXMLs.getController("fxml/NodeInfoView.fxml");
 
@@ -101,20 +102,22 @@ public class NodeViewController {
     }
 
     public void show(StackPane parent,
-                     String server) {
-        if (server != null) {
-            switchServer(server);
+                     String serverId) {
+        if (serverId != null) {
+            switchServer(serverId);
         }
 
         if (!parent.getChildren().contains(nodeViewPane)) {
             parent.getChildren().add(nodeViewPane);
         }
-        this.server = server;
+        this.serverId = serverId;
     }
 
-    public void disconnect(String server) {
-        prettyZooFacade.disconnect(server);
-        hideAndThen(() -> VToast.info("disconnect " + server + " success"));
+    public void disconnectById(String id) {
+        prettyZooFacade.disconnect(id);
+        hideAndThen(() -> {
+            VToast.info("disconnect " + prettyZooFacade.getServerConfigurationById(id).getLabel() + " success");
+        });
     }
 
     public void hide() {
@@ -123,7 +126,7 @@ public class NodeViewController {
     }
 
     public void hideIfNotActive() {
-        if (!ActiveServerContext.isSame(server)) {
+        if (!ActiveServerContext.isSame(serverId)) {
             hide();
         }
     }
@@ -234,27 +237,27 @@ public class NodeViewController {
                 });
     }
 
-    private void switchServer(String url) {
-        initRootTreeNode(url);
-        ActiveServerContext.set(url);
-        prettyZooFacade.syncIfNecessary(url);
+    private void switchServer(String serverId) {
+        initRootTreeNode(serverId);
+        ActiveServerContext.set(serverId);
+        prettyZooFacade.syncIfNecessary(serverId);
         final TreeItem<ZkNode> selectedItem = zkNodeTreeView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
             nodeInfoViewController.show(nodeViewRightPane, selectedItem.getValue());
         } else {
             nodeInfoViewController.show(nodeViewRightPane);
         }
-        log.debug("switch server {} success", url);
+        log.debug("switch server {} success", serverId);
     }
 
-    private void initRootTreeNode(String host) {
+    private void initRootTreeNode(String serverId) {
         final String root = "/";
         final TreeItemCache treeItemCache = TreeItemCache.getInstance();
-        if (!treeItemCache.hasNode(host, root)) {
+        if (!treeItemCache.hasNode(serverId, root)) {
             final ZkNode zkNode = new ZkNode(root, root);
             zkNode.resetStat();
             final TreeItem<ZkNode> rootTreeItem = new TreeItem<>(zkNode);
-            treeItemCache.add(host, root, rootTreeItem);
+            treeItemCache.add(serverId, root, rootTreeItem);
             zkNodeTreeView.setRoot(rootTreeItem);
         }
     }
@@ -281,14 +284,15 @@ public class NodeViewController {
         terminalArea.textProperty().addListener((ob, old, newValue) -> terminalArea.setScrollTop(Double.MAX_VALUE));
         terminalInput.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
-                final String currentServer = ActiveServerContext.get();
+                final String currentServerId = ActiveServerContext.get();
+                ServerConfiguration server = prettyZooFacade.getServerConfigurationById(currentServerId);
                 if ("clear".equals(terminalInput.getText())) {
                     terminalInput.clear();
                     terminalArea.clear();
-                    terminalArea.appendText(currentServer + "\t$\t" + terminalInput.getText());
+                    terminalArea.appendText(server.getLabel() + "\t$\t" + terminalInput.getText());
                 } else {
-                    terminalArea.appendText(currentServer + "\t$\t" + terminalInput.getText() + "\r\n");
-                    prettyZooFacade.executeCommand(currentServer, terminalInput.getText());
+                    terminalArea.appendText(server.getLabel() + "\t$\t" + terminalInput.getText() + "\r\n");
+                    prettyZooFacade.executeCommand(currentServerId, terminalInput.getText());
                     terminalInput.clear();
                 }
                 terminalArea.appendText("\r\n");

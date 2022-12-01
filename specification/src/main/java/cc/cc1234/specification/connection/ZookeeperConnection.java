@@ -21,4 +21,6 @@ public interface ZookeeperConnection<T> {
     T getClient();
 
     void sync(List<ZookeeperNodeListener> listeners);
+
+    String getId();
 }

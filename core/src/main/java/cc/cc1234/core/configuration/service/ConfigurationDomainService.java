@@ -37,7 +37,7 @@ public class ConfigurationDomainService {
 
     public void save(ServerConfiguration serverConfig) {
         final Configuration configuration = get().orElseThrow();
-        final Optional<ServerConfiguration> serverConfigurationOpt = get(serverConfig.getUrl());
+        final Optional<ServerConfiguration> serverConfigurationOpt = getById(serverConfig.getId());
         if (serverConfigurationOpt.isPresent()) {
             configuration.update(serverConfig);
         } else {
@@ -82,11 +82,14 @@ public class ConfigurationDomainService {
         return Optional.ofNullable(configurationCache.getVal());
     }
 
-    public Optional<ServerConfiguration> get(String url) {
+    public Optional<ServerConfiguration> getById(String id) {
+        if (id == null) {
+            return Optional.empty();
+        }
         return get().orElseThrow()
                 .getServerConfigurations()
                 .stream()
-                .filter(s -> s.getUrl().equals(url))
+                .filter(s -> s.getId().equals(id))
                 .findFirst();
     }
 
@@ -95,15 +98,15 @@ public class ConfigurationDomainService {
         return configuration.getLocaleConfiguration().getLocale();
     }
 
-    public void deleteServerConfiguration(String server) {
+    public void deleteServerConfiguration(String id) {
         Objects.requireNonNull(configurationCache.getVal());
-        configurationCache.getVal().delete(server);
+        configurationCache.getVal().deleteById(id);
         prettyZooConfigRepository.save(configurationCache.getVal().toPersistModel());
     }
 
-    public Boolean containServerConfig(String server) {
+    public Boolean containServerConfig(String id) {
         Objects.requireNonNull(configurationCache.getVal());
-        return configurationCache.getVal().exists(server);
+        return configurationCache.getVal().existsById(id);
     }
 
     public void importConfig(File configFile) {
@@ -126,9 +129,9 @@ public class ConfigurationDomainService {
         }
     }
 
-    public void incrementConnectTimes(String server) {
+    public void incrementConnectTimes(String id) {
         get().ifPresent(config -> {
-            config.incrementConnectTimes(server);
+            config.incrementConnectTimes(id);
             prettyZooConfigRepository.save(config.toPersistModel());
         });
     }

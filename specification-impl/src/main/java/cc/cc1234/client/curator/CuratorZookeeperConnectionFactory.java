@@ -5,6 +5,7 @@ import cc.cc1234.specification.connection.ZookeeperConnectionFactory;
 import cc.cc1234.specification.connection.ZookeeperParams;
 import cc.cc1234.specification.listener.ServerListener;
 import org.apache.curator.RetryPolicy;
+import org.apache.curator.framework.AuthInfo;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.api.ACLProvider;
@@ -19,7 +20,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFactory<CuratorFramework> {
 
@@ -38,7 +38,7 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
         } catch (InterruptedException e) {
             throw new IllegalStateException("connect timeout", e);
         }
-        return new CuratorZookeeperConnection(client);
+        return new CuratorZookeeperConnection(params.getId(), client);
     }
 
     @Override
@@ -50,11 +50,11 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
                 switch (newState) {
                     case RECONNECTED:
                     case CONNECTED:
-                        listener.forEach(l -> l.onConnected(params.getUrl()));
+                        listener.forEach(l -> l.onConnected(params.getId()));
                         break;
                     case SUSPENDED:
                     case LOST:
-                        listener.forEach(l -> l.onReconnecting(params.getUrl()));
+                        listener.forEach(l -> l.onReconnecting(params.getId()));
                         break;
                     default:
                         client.close();
@@ -63,7 +63,7 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
         });
         client.getCuratorListenable().addListener((client1, event) -> {
             if (event.getType() == CuratorEventType.CLOSING) {
-                listener.forEach(l -> l.onClose(params.getUrl()));
+                listener.forEach(l -> l.onClose(params.getId()));
             }
         });
 
@@ -77,7 +77,7 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
             client.close();
             throw new IllegalStateException("connect " + params.getUrl() + " failed", e);
         }
-        return new CuratorZookeeperConnection(client);
+        return new CuratorZookeeperConnection(params.getId(), client);
     }
 
     private CuratorFramework curatorFramework(ZookeeperParams params) {
@@ -89,8 +89,12 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
                 .sessionTimeoutMs(params.getSessionTimeout())
                 .retryPolicy(retryPolicy);
 
-        if (!params.getAclList().isEmpty()) {
-            var acls = params.getAclList().stream().map(ACLs::parseDigest).collect(Collectors.toList());
+        List<AuthInfo> acls = params.getAclList()
+                .stream()
+                .filter(s -> !s.isBlank())
+                .map(ACLs::parseDigest)
+                .toList();
+        if (!acls.isEmpty()) {
             builder.authorization(acls)
                     .aclProvider(new ACLProvider() {
                         @Override

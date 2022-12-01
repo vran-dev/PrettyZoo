@@ -13,6 +13,8 @@ import java.util.List;
 @Builder
 public class ZookeeperParams {
 
+    private String id;
+
     private String url;
 
     private List<String> aclList;

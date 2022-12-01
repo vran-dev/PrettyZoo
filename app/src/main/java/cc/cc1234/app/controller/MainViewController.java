@@ -287,8 +287,8 @@ public class MainViewController {
         serverListView.setCellFactory(cellCallback -> {
             var cell = new ZkServerListCell(
                     server -> serverViewController.connect(mainRightPane, server),
-                    server -> serverViewController.delete(server.getZkUrl()),
-                    server -> serverViewController.disconnect(server.getZkUrl())
+                    server -> serverViewController.deleteById(server.getId()),
+                    server -> serverViewController.disconnect(server.getId())
             );
             cell.setOnMouseClicked(event -> {
                 if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {

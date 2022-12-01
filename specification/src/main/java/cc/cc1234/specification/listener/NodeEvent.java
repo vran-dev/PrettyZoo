@@ -14,4 +14,6 @@ public class NodeEvent {
 
     private String server;
 
+    private String id;
+
 }

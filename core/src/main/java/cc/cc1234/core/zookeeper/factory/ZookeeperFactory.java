@@ -11,7 +11,6 @@ import cc.cc1234.specification.listener.ServerListener;
 import cc.cc1234.specification.listener.ZookeeperNodeListener;
 import cc.cc1234.specification.util.StringWriter;
 import cc.cc1234.zookeeper.ZooKeeperMain;
-import org.apache.curator.framework.CuratorFramework;
 
 import java.util.List;
 
@@ -37,28 +36,34 @@ public class ZookeeperFactory {
         }
         var factory = new CuratorZookeeperConnectionFactory();
         var params = ZookeeperParams.builder()
-                .url(serverConfig.getUrl())
+                .id(serverConfig.getId())
+                .url(serverConfig.getConnectionTo())
                 .aclList(serverConfig.getAclList())
                 .maxRetries(serverConfig.getConnectionConfiguration().getMaxRetries())
                 .connectionTimeout(serverConfig.getConnectionConfiguration().getConnectionTimeout())
                 .retryIntervalTime(serverConfig.getConnectionConfiguration().getRetryIntervalTime())
                 .sessionTimeout(serverConfig.getConnectionConfiguration().getSessionTimeout())
                 .build();
-        return new Zookeeper(serverConfig.getUrl(), () -> factory.createAsync(params, serverListeners),
-                tunnel, nodeListeners, serverListeners);
+        return new Zookeeper(serverConfig.getId(),
+                serverConfig.getConnectionTo(),
+                () -> factory.createAsync(params, serverListeners),
+                tunnel,
+                nodeListeners,
+                serverListeners);
     }
 
-    public Terminal createTerminal(String host, StringWriter writer) throws Exception {
-        writer.write("connecting to " + host + "...\n");
+    public Terminal createTerminal(String id, String url, StringWriter writer) throws Exception {
+        writer.write("connecting to " + url + "...\n");
         var factory = new CuratorZookeeperConnectionFactory();
         var params = ZookeeperParams.builder()
-                .url(host)
+                .id(id)
+                .url(url)
                 .aclList(List.of())
                 .build();
         var connection = factory.create(params);
-        var zk = ((CuratorFramework) connection.getClient()).getZookeeperClient().getZooKeeper();
+        var zk = connection.getClient().getZookeeperClient().getZooKeeper();
         writer.write("connect success \n");
         var zkMain = new ZooKeeperMain(zk, writer);
-        return new Terminal(host, connection, zkMain);
+        return new Terminal(id, url, connection, zkMain);
     }
 }
