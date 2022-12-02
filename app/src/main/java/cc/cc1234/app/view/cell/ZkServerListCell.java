@@ -40,6 +40,8 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
 
     private HBox hbox;
 
+    private ContextMenu contextMenu;
+
     public ZkServerListCell(Consumer<ServerConfigurationVO> connectAction,
                             Consumer<ServerConfigurationVO> deleteAction,
                             Consumer<ServerConfigurationVO> disconnectAction) {
@@ -77,7 +79,10 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
         disconnectButtonLabel.getStyleClass().add("stop-button");
         disconnectButton.setGraphic(disconnectButtonLabel);
 
-        deleteButton.setOnAction(e -> deleteAction.accept(getItem()));
+        deleteButton.setOnAction(e -> {
+            deleteAction.accept(getItem());
+            contextMenu.hide();
+        });
         connectButton.setOnAction(e -> connectAction.accept(getItem()));
         disconnectButton.setOnAction(e -> disconnectAction.accept(getItem()));
 
@@ -85,7 +90,7 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
         connectMenu = new CustomMenuItem(connectButton);
         disConnectMenu = new CustomMenuItem(disconnectButton);
 
-        ContextMenu contextMenu = new ContextMenu(connectMenu, deleteMenu);
+        contextMenu = new ContextMenu(connectMenu, deleteMenu);
         super.setContextMenu(contextMenu);
         super.setPadding(new Insets(5, 5, 5, 5));
     }
@@ -103,7 +108,7 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
         var nameLabel = new Label();
         nameLabel.textProperty().bind(serverNameBinding(item));
 
-        hbox.setId(item.getZkUrl());
+        hbox.setId(item.getId());
         hbox.getChildren().clear();
         hbox.getChildren().add(nameLabel);
         super.setGraphic(hbox);
@@ -137,17 +142,27 @@ public class ZkServerListCell extends ListCell<ServerConfigurationVO> {
     }
 
     private StringBinding serverNameBinding(ServerConfigurationVO item) {
-        return Bindings.createStringBinding(() -> serverNameFormat(item), item.zkUrlProperty(), item.zkAliasProperty());
+        return Bindings.createStringBinding(() -> serverNameFormat(item),
+                item.zkHostProperty(),
+                item.zkPortProperty(),
+                item.remoteServerProperty(),
+                item.remoteServerPortProperty(),
+                item.zkAliasProperty());
     }
 
     private String serverNameFormat(ServerConfigurationVO item) {
-        String server = item.getZkUrl();
         String alias = item.getZkAlias();
         if (alias != null && !alias.isBlank()) {
             return alias;
-        } else {
-            return server;
         }
+        String zkHost = item.getZkHost();
+        if (zkHost != null && !zkHost.isBlank()) {
+            return zkHost + ":" + item.getZkPort();
+        }
+        if (item.isSshEnabled()) {
+            return item.getRemoteServer() + ":" + item.getRemoteServerPort();
+        }
+        return item.getId();
     }
 
     private void initContextMenu(ServerStatus newValue) {

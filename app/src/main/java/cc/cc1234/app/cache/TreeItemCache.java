@@ -11,8 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class TreeItemCache {
 
-    // TODO combine pathTreeCache and treeItemCache
-    private static final Map<String, PathTrie<TreeItem<ZkNode>>> pathTreeCache = new ConcurrentHashMap<>();
+    private static final Map<String, PathTrie<TreeItem<ZkNode>>> CACHE = new ConcurrentHashMap<>();
 
     private static final TreeItemCache INSTANCE = new TreeItemCache();
 
@@ -23,35 +22,35 @@ public class TreeItemCache {
         return INSTANCE;
     }
 
-    public boolean hasServer(String server) {
-        return pathTreeCache.containsKey(server);
+    public boolean exists(String serverId) {
+        return CACHE.containsKey(serverId);
     }
 
-    public boolean hasNode(String server, String path) {
-        return hasServer(server) && get(server, path) != null;
+    public boolean hasNode(String serverId, String path) {
+        return exists(serverId) && get(serverId, path) != null;
     }
 
     public void add(String server, String path, TreeItem<ZkNode> item) {
-        var pathTrie = pathTreeCache.computeIfAbsent(server, key -> new PathTrie<>());
+        var pathTrie = CACHE.computeIfAbsent(server, key -> new PathTrie<>());
         pathTrie.add(path, item);
     }
 
-    public List<TreeItem<ZkNode>> search(String host, String node) {
-        if (host == null || !this.hasServer(host)) {
+    public List<TreeItem<ZkNode>> search(String id, String node) {
+        if (id == null || !this.exists(id)) {
             return Collections.emptyList();
         }
-        return pathTreeCache.get(host).search(node);
+        return CACHE.get(id).search(node);
     }
 
-    public TreeItem<ZkNode> get(String server, String path) {
-        return pathTreeCache.get(server).getByPath(path);
+    public TreeItem<ZkNode> get(String serverId, String path) {
+        return CACHE.get(serverId).getByPath(path);
     }
 
-    public void remove(String server, String path) {
-        pathTreeCache.get(server).remove(path);
+    public void remove(String serverId, String path) {
+        CACHE.get(serverId).remove(path);
     }
 
-    public void remove(String server) {
-        pathTreeCache.remove(server);
+    public void remove(String serverId) {
+        CACHE.remove(serverId);
     }
 }

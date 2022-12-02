@@ -23,18 +23,13 @@ public class ConfigurationFactory {
         final List<ServerConfiguration> serverConfigurations = configData.getServers()
                 .stream()
                 .map(serverConfig -> {
-                    var hostAndPort = serverConfig.getHost().split(":");
-                    // compatible: before v1.9.2 host is [xxx:port]
-                    var host = serverConfig.getPort().map(p -> serverConfig.getHost())
-                            .orElse(hostAndPort[0]);
-                    var port = serverConfig.getPort()
-                            .orElseGet(() -> Integer.parseInt(hostAndPort[1]));
-                    var url = host + ":" + port;
+                    var host = serverConfig.getHost();
+                    var port = serverConfig.getPort();
                     SSHTunnelConfiguration tunnelConfiguration = sshTunnelConfiguration(serverConfig);
                     ConnectionConfiguration connectionConfiguration = connectionConfiguration(serverConfig);
                     return ServerConfiguration.builder()
+                            .id(serverConfig.getId())
                             .alias(serverConfig.getAlias())
-                            .url(url)
                             .host(host)
                             .port(port)
                             .aclList(serverConfig.getAclList())

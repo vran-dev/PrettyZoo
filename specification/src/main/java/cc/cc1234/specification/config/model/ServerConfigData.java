@@ -10,16 +10,13 @@ import java.util.Optional;
 public class ServerConfigData {
 
     /**
-     * url = host:port
+     * nullable
      */
-    private String url;
+    private String id;
 
     private String host;
 
-    /**
-     * compatible: v1.9.3 will be required
-     */
-    private Optional<Integer> port = Optional.empty();
+    private Integer port;
 
     private String alias;
 

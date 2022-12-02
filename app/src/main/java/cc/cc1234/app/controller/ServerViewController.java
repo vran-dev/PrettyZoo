@@ -1,13 +1,13 @@
 package cc.cc1234.app.controller;
 
 import cc.cc1234.app.context.PrimaryStageContext;
+import cc.cc1234.app.converter.IntegerNumberConverter;
 import cc.cc1234.app.facade.PrettyZooFacade;
 import cc.cc1234.app.fp.Try;
 import cc.cc1234.app.listener.DefaultTreeNodeListener;
 import cc.cc1234.app.util.Asserts;
 import cc.cc1234.app.util.FXMLs;
 import cc.cc1234.app.util.ResourceBundleUtils;
-import cc.cc1234.app.validator.NotNullValidator;
 import cc.cc1234.app.validator.PortValidator;
 import cc.cc1234.app.validator.StringNotBlankValidator;
 import cc.cc1234.app.validator.StringNotEmptyValidator;
@@ -16,12 +16,13 @@ import cc.cc1234.app.vo.ConnectionConfigurationVO;
 import cc.cc1234.app.vo.ServerConfigurationVO;
 import cc.cc1234.app.vo.ServerStatus;
 import cc.cc1234.specification.listener.ServerListener;
-import com.google.common.base.Strings;
 import com.jfoenix.controls.*;
 import com.jfoenix.validation.NumberValidator;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
@@ -34,12 +35,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ServerViewController {
@@ -138,6 +136,8 @@ public class ServerViewController {
 
     private PrettyZooFacade prettyZooFacade = new PrettyZooFacade();
 
+    private ServerConfigurationVO serverConfiguration = new ServerConfigurationVO();
+
     private Map<String, NodeViewController> nodeViewControllerMap = new ConcurrentHashMap<>();
 
     private volatile NodeViewController currentNodeViewController = null;
@@ -163,41 +163,42 @@ public class ServerViewController {
         onConnect(stackPane, configurationVO);
     }
 
-    public void delete(String zkServer) {
-        prettyZooFacade.deleteServerConfiguration(zkServer);
+    public void deleteById(String id) {
+        prettyZooFacade.deleteServerConfigurationById(id);
         if (prettyZooFacade.getServerConfigurations().isEmpty()) {
             onClose();
         }
         VToast.info("Delete success");
     }
 
-    public void disconnect(String zkServer) {
-        if (nodeViewControllerMap.containsKey(zkServer)) {
-            NodeViewController nodeViewController = nodeViewControllerMap.remove(zkServer);
-            nodeViewController.disconnect(zkServer);
+    public void disconnect(String id) {
+        if (nodeViewControllerMap.containsKey(id)) {
+            NodeViewController nodeViewController = nodeViewControllerMap.remove(id);
+            nodeViewController.disconnectById(id);
         }
     }
 
     private void showNewServerView(StackPane stackPane) {
-        zkHost.setEditable(true);
-        zkPort.setEditable(true);
         buttonHBox.getChildren().remove(deleteButton);
         buttonHBox.getChildren().remove(connectButton);
-        propertyReset();
+        serverConfiguration.reset();
         switchIfNecessary(stackPane);
         zkHost.requestFocus();
     }
 
     private void showServerInfoView(StackPane stackPane, ServerConfigurationVO config) {
+        zkHost.setEditable(true);
+        zkPort.setEditable(true);
         if (config.getStatus() == ServerStatus.CONNECTING) {
             buttonHBox.setDisable(true);
+            zkHost.setEditable(false);
+            zkPort.setEditable(false);
         } else if (config.getStatus() == ServerStatus.DISCONNECTED) {
             buttonHBox.setDisable(false);
         }
-        zkHost.setEditable(false);
-        zkPort.setEditable(false);
+
         connectButton.setOnMouseClicked(e -> onConnect(stackPane, config));
-        propertyBind(config);
+        propertyUpdate(config);
         showConnectAndSaveButton();
         switchIfNecessary(stackPane);
     }
@@ -230,54 +231,8 @@ public class ServerViewController {
         }
     }
 
-    private void propertyReset() {
-        zkAlias.textProperty().setValue("");
-
-        zkHost.textProperty().unbind();
-        zkHost.textProperty().setValue("");
-        zkPort.textProperty().setValue("");
-        aclTextArea.textProperty().setValue("");
-
-        sshTunnelCheckbox.setSelected(false);
-        sshServer.textProperty().setValue("");
-        sshUsername.textProperty().setValue("");
-        sshPassword.textProperty().setValue("");
-        remoteServer.textProperty().setValue("");
-        remoteServerPort.textProperty().setValue("");
-        sshKeyFileField.textProperty().setValue("");
-
-        connectionConfigCheckbox.setSelected(false);
-        connectionTimeoutInput.textProperty().setValue("5000");
-        sessionTimeoutInput.textProperty().setValue("6000");
-        maxRetriesInput.textProperty().setValue("3");
-        retryIntervalTimeInput.textProperty().setValue("1000");
-    }
-
-    private void propertyBind(ServerConfigurationVO config) {
-        zkHost.textProperty().setValue(config.getZkHost());
-        zkPort.textProperty().setValue(config.getZkPort() + "");
-        zkAlias.textProperty().setValue(config.getZkAlias());
-        sshServer.textProperty().setValue(config.getSshServer());
-        sshServerPort.textProperty().setValue(Objects.toString(config.getSshServerPort(), ""));
-        sshUsername.textProperty().setValue(config.getSshUsername());
-        sshPassword.textProperty().setValue(config.getSshPassword());
-        remoteServer.textProperty().setValue(config.getRemoteServer());
-        remoteServerPort.textProperty().setValue(Objects.toString(config.getRemoteServerPort(), ""));
-        sshKeyFileField.textProperty().setValue(Objects.toString(config.getSshKeyFilePath(), ""));
-        sshTunnelCheckbox.selectedProperty().setValue(config.isSshEnabled());
-        final String acl = String.join("\n", config.getAclList());
-        aclTextArea.textProperty().setValue(acl);
-
-        connectionConfigCheckbox.selectedProperty().setValue(config.isEnableConnectionAdvanceConfiguration());
-        ConnectionConfigurationVO connectionAdvanceCfg = config.getConnectionConfiguration();
-        connectionTimeoutInput.textProperty()
-                .setValue(Objects.toString(connectionAdvanceCfg.getConnectionTimeout(), ""));
-        sessionTimeoutInput.textProperty()
-                .setValue(Objects.toString(connectionAdvanceCfg.getSessionTimeout(), ""));
-        maxRetriesInput.textProperty()
-                .setValue(Objects.toString(connectionAdvanceCfg.getMaxRetries(), ""));
-        retryIntervalTimeInput.textProperty()
-                .setValue(Objects.toString(connectionAdvanceCfg.getRetryIntervalTime(), ""));
+    private void propertyUpdate(ServerConfigurationVO config) {
+        this.serverConfiguration.update(config);
     }
 
     public void onClose() {
@@ -306,6 +261,7 @@ public class ServerViewController {
                 + "\n");
         initPasswordComponent();
         initValidator();
+        propertyBind();
     }
 
     private void initConfigTabPaneBinding() {
@@ -316,8 +272,17 @@ public class ServerViewController {
                     extendConfigTabPane.getTabs().add(0, tunnelConfigTab);
                     extendConfigTabPane.getSelectionModel().select(tunnelConfigTab);
                 }
+                zkHost.setDisable(true);
+                if (serverConfiguration.getZkHost() != null && !serverConfiguration.getZkHost().isBlank()) {
+                    zkHost.getProperties().put("originValue", serverConfiguration.getZkHost());
+                }
+                serverConfiguration.setZkHost("127.0.0.1");
             } else {
                 extendConfigTabPane.getTabs().remove(tunnelConfigTab);
+                zkHost.setDisable(false);
+                if (zkHost.getProperties().containsKey("originValue")) {
+                    serverConfiguration.setZkHost((String) zkHost.getProperties().get("originValue"));
+                }
             }
         });
 
@@ -335,12 +300,13 @@ public class ServerViewController {
         });
 
         extendConfigTabPane.getTabs().addListener((ListChangeListener<Tab>) c -> {
+            ObservableList<Node> child = serverBasicInfoPane.getChildren();
             if (c.getList().isEmpty()) {
-                serverBasicInfoPane.getChildren().remove(extendConfigTabPane);
+                child.remove(extendConfigTabPane);
                 GridPane.setRowIndex(buttonHBox, 3);
             } else {
-                if (!serverBasicInfoPane.getChildren().contains(extendConfigTabPane)) {
-                    serverBasicInfoPane.getChildren().add(extendConfigTabPane);
+                if (!child.contains(extendConfigTabPane)) {
+                    child.add(extendConfigTabPane);
                     extendConfigTabPane.getSelectionModel().select(c.getList().iterator().next());
                     GridPane.setColumnIndex(extendConfigTabPane, 0);
                     GridPane.setRowIndex(extendConfigTabPane, 3);
@@ -390,13 +356,45 @@ public class ServerViewController {
 
         sshServer.setValidators(new StringNotBlankValidator());
         sshServerPort.setValidators(new PortValidator());
-        sshUsername.setValidators(new NotNullValidator());
-        sshPassword.setValidators(new NotNullValidator());
+        sshUsername.setValidators(new StringNotBlankValidator());
 
         connectionTimeoutInput.setValidators(new StringNotBlankValidator(), new NumberValidator());
         maxRetriesInput.setValidators(new StringNotBlankValidator(), new NumberValidator());
         sessionTimeoutInput.setValidators(new StringNotBlankValidator(), new NumberValidator());
         retryIntervalTimeInput.setValidators(new StringNotBlankValidator(), new NumberValidator());
+    }
+
+    private void propertyBind() {
+        // basic config
+        zkHost.textProperty().bindBidirectional(serverConfiguration.zkHostProperty());
+        zkPort.textProperty().bindBidirectional(serverConfiguration.zkPortProperty(), IntegerNumberConverter.INSTANCE);
+        zkAlias.textProperty().bindBidirectional(serverConfiguration.zkAliasProperty());
+        aclTextArea.textProperty().bindBidirectional(serverConfiguration.aclProperty());
+
+        // advance connection config
+        connectionConfigCheckbox.selectedProperty()
+                .bindBidirectional(serverConfiguration.enableConnectionAdvanceConfigurationProperty());
+        ConnectionConfigurationVO connectionConfig = serverConfiguration.getConnectionConfiguration();
+        connectionTimeoutInput.textProperty()
+                .bindBidirectional(connectionConfig.connectionTimeoutProperty(), IntegerNumberConverter.INSTANCE);
+        maxRetriesInput.textProperty()
+                .bindBidirectional(connectionConfig.maxRetriesProperty(), IntegerNumberConverter.INSTANCE);
+        sessionTimeoutInput.textProperty()
+                .bindBidirectional(connectionConfig.sessionTimeoutProperty(), IntegerNumberConverter.INSTANCE);
+        retryIntervalTimeInput.textProperty()
+                .bindBidirectional(connectionConfig.retryIntervalTimeProperty(), IntegerNumberConverter.INSTANCE);
+
+        // ssh tunnel config
+        sshServer.textProperty().bindBidirectional(serverConfiguration.sshServerProperty());
+        sshServerPort.textProperty()
+                .bindBidirectional(serverConfiguration.sshServerPortProperty(), IntegerNumberConverter.INSTANCE);
+        sshUsername.textProperty().bindBidirectional(serverConfiguration.sshUsernameProperty());
+        sshPassword.textProperty().bindBidirectional(serverConfiguration.sshPasswordProperty());
+        sshKeyFileField.textProperty().bindBidirectional(serverConfiguration.sshKeyFilePathProperty());
+        remoteServer.textProperty().bindBidirectional(serverConfiguration.remoteServerProperty());
+        remoteServerPort.textProperty()
+                .bindBidirectional(serverConfiguration.remoteServerPortProperty(), IntegerNumberConverter.INSTANCE);
+        sshTunnelCheckbox.selectedProperty().bindBidirectional(serverConfiguration.sshEnabledProperty());
     }
 
     private void resetValidate() {
@@ -418,70 +416,25 @@ public class ServerViewController {
 
     private void onSave() {
         resetValidate();
-
         boolean passed = baseValidateBeforeSave();
         if (passed) {
-            String serverUrl = zkHost.getText() + ":" + zkPort.getText();
-            if (zkHost.isEditable() && prettyZooFacade.hasServerConfiguration(serverUrl)) {
-                // new server must be unique
-                VToast.error(serverUrl + " already exists");
-            } else {
-                var serverConfigVO = new ServerConfigurationVO();
-                // zookeeper server config
-                serverConfigVO.setZkAlias(zkAlias.textProperty().get());
-                serverConfigVO.setZkHost(zkHost.textProperty().get());
-                serverConfigVO.setZkPort(Integer.parseInt(zkPort.getText()));
-                serverConfigVO.setZkUrl(zkHost.getText() + ":" + zkPort.getText());
-                // ssh-tunnel config
-                serverConfigVO.setRemoteServer(remoteServer.textProperty().get());
-                if (Strings.isNullOrEmpty(remoteServerPort.getText())) {
-                    serverConfigVO.setRemoteServerPort(null);
-                } else {
-                    serverConfigVO.setRemoteServerPort(Integer.parseInt(remoteServerPort.getText()));
-                }
-                serverConfigVO.setSshUsername(sshUsername.textProperty().get());
-                serverConfigVO.setSshPassword(sshPassword.textProperty().get());
-                serverConfigVO.setSshServer(sshServer.textProperty().get());
-                serverConfigVO.setSshKeyFilePath(sshKeyFileField.textProperty().get());
-                if (Strings.isNullOrEmpty(sshServerPort.getText())) {
-                    serverConfigVO.setSshServerPort(null);
-                } else {
-                    serverConfigVO.setSshServerPort(Integer.parseInt(sshServerPort.getText()));
-                }
-                serverConfigVO.setSshEnabled(sshTunnelCheckbox.isSelected());
-                serverConfigVO.setEnableConnectionAdvanceConfiguration(connectionConfigCheckbox.isSelected());
-                if (connectionConfigCheckbox.isSelected()) {
-                    ConnectionConfigurationVO advanceConfig = new ConnectionConfigurationVO();
-                    advanceConfig.setConnectionTimeout(Integer.parseInt(connectionTimeoutInput.getText()));
-                    advanceConfig.setSessionTimeout(Integer.parseInt(sessionTimeoutInput.getText()));
-                    advanceConfig.setMaxRetries(Integer.parseInt(maxRetriesInput.getText()));
-                    advanceConfig.setRetryIntervalTime(Integer.parseInt(retryIntervalTimeInput.getText()));
-                    serverConfigVO.setConnectionConfiguration(advanceConfig);
-                }
-                // zookeeper ACL config
-                List<String> acls = Arrays.stream(aclTextArea.textProperty().get().split("\n"))
-                        .filter(acl -> !Strings.isNullOrEmpty(acl))
-                        .collect(Collectors.toList());
-                serverConfigVO.getAclList().addAll(acls);
-
-                Try.of(() -> prettyZooFacade.saveServerConfiguration(serverConfigVO))
-                        .onSuccess(e -> {
-                            if (zkHost.isEditable()) {
-                                onClose();
-                            }
-                            VToast.info("save success");
-                        })
-                        .onFailure(e -> {
-                            VToast.error(e.getMessage());
-                        });
-            }
+            Try.of(() -> prettyZooFacade.saveServerConfiguration(serverConfiguration))
+                    .onSuccess(e -> {
+                        if (serverConfiguration.getId() == null || serverConfiguration.getId().isBlank()) {
+                            onClose();
+                        }
+                        VToast.info("save success");
+                    })
+                    .onFailure(e -> {
+                        VToast.error(e.getMessage());
+                    });
         }
     }
 
     private boolean baseValidateBeforeSave() {
         boolean baseValidate = true;
         if (connectionConfigCheckbox.isSelected()) {
-            baseValidate = baseValidate && Stream.of(connectionTimeoutInput.validate(),
+            baseValidate = Stream.of(connectionTimeoutInput.validate(),
                             sessionTimeoutInput.validate(),
                             maxRetriesInput.validate(),
                             retryIntervalTimeInput.validate())
@@ -489,7 +442,6 @@ public class ServerViewController {
         }
         if (sshTunnelCheckbox.isSelected()) {
             baseValidate = baseValidate && Stream.of(
-                    zkHost.validate(),
                     zkPort.validate(),
                     zkAlias.validate(),
                     remoteServer.validate(),
@@ -499,9 +451,10 @@ public class ServerViewController {
                     sshServer.validate(),
                     sshServerPort.validate()
             ).allMatch(t -> t);
+        } else {
+            baseValidate = baseValidate && Stream.of(zkHost.validate(), zkPort.validate(), zkAlias.validate())
+                    .allMatch(t -> t);
         }
-        baseValidate = baseValidate && Stream.of(zkHost.validate(), zkPort.validate(), zkAlias.validate())
-                .allMatch(t -> t);
         return baseValidate;
     }
 
@@ -520,8 +473,8 @@ public class ServerViewController {
     private void onDelete() {
         Asserts.notBlank(zkHost.getText(), "server can not be null");
         Asserts.notBlank(zkPort.getText(), "port can not be null");
-        String url = zkHost.getText() + ":" + zkPort.getText();
-        prettyZooFacade.deleteServerConfiguration(url);
+        String id = serverConfiguration.getId();
+        prettyZooFacade.deleteServerConfigurationById(id);
         if (prettyZooFacade.getServerConfigurations().isEmpty()) {
             onClose();
         }
@@ -534,20 +487,22 @@ public class ServerViewController {
         }
         Try.of(() -> {
             Asserts.notNull(serverConfigurationVO, "save config first");
-            Asserts.assertTrue(prettyZooFacade.hasServerConfiguration(serverConfigurationVO.getZkUrl()),
+            Asserts.assertTrue(prettyZooFacade.hasServerConfiguration(serverConfigurationVO.getId()),
                     "save config first");
         }).onSuccess(o -> {
             if (serverConfigurationVO.getStatus() == ServerStatus.DISCONNECTED) {
                 serverConfigurationVO.setStatus(ServerStatus.CONNECTING);
             }
             buttonHBox.setDisable(true);
-            NodeViewController nodeViewController = retrieveNodeViewController(serverConfigurationVO.getZkUrl());
-            prettyZooFacade.connect(serverConfigurationVO.getZkUrl(),
+            NodeViewController nodeViewController = retrieveNodeViewController(serverConfigurationVO.getId());
+            prettyZooFacade.connect(serverConfigurationVO.getId(),
                             List.of(new DefaultTreeNodeListener()),
                             List.of(new ServerListener() {
                                 @Override
-                                public void onClose(String serverUrl) {
-                                    if (serverUrl.equals(serverConfigurationVO.getZkUrl())) {
+                                public void onClose(String id) {
+                                    if (id.equals(serverConfigurationVO.getId())) {
+                                        log.info("server [{}] {} closed", id,
+                                                prettyZooFacade.getServerConfigurationById(id).getLabel());
                                         Platform.runLater(() -> {
                                             serverConfigurationVO.setStatus(ServerStatus.DISCONNECTED);
                                             if (closeHook != null) {
@@ -558,21 +513,24 @@ public class ServerViewController {
                                 }
 
                                 @Override
-                                public void onReconnecting(String serverHost) {
-                                    if (serverHost.equals(serverConfigurationVO.getZkUrl())) {
+                                public void onReconnecting(String id) {
+                                    if (id.equals(serverConfigurationVO.getId())) {
                                         Platform.runLater(() -> {
                                             serverConfigurationVO.setStatus(ServerStatus.RECONNECTING);
-                                            VToast.error(serverHost + " lost connection");
+                                            VToast.error(prettyZooFacade.getServerConfigurationById(id).getLabel()
+                                                    + " lost connection");
                                         });
                                     }
                                 }
 
                                 @Override
-                                public void onConnected(String serverHost) {
-                                    if (serverHost.equals(serverConfigurationVO.getZkUrl())) {
+                                public void onConnected(String id) {
+                                    if (id.equals(serverConfigurationVO.getId())) {
                                         Platform.runLater(() -> {
                                             if (serverConfigurationVO.getStatus() == ServerStatus.RECONNECTING) {
-                                                VToast.info("reconnect " + serverHost + " success");
+                                                VToast.info("reconnect "
+                                                        + prettyZooFacade.getServerConfigurationById(id).getLabel()
+                                                        + " success");
                                             }
                                             serverConfigurationVO.setStatus(ServerStatus.CONNECTED);
                                         });
@@ -587,12 +545,12 @@ public class ServerViewController {
         });
     }
 
-    private NodeViewController retrieveNodeViewController(String server) {
-        if (nodeViewControllerMap.containsKey(server)) {
-            return nodeViewControllerMap.get(server);
+    private NodeViewController retrieveNodeViewController(String id) {
+        if (nodeViewControllerMap.containsKey(id)) {
+            return nodeViewControllerMap.get(id);
         } else {
             NodeViewController nodeViewController = FXMLs.getController("fxml/NodeListView.fxml");
-            nodeViewControllerMap.put(server, nodeViewController);
+            nodeViewControllerMap.put(id, nodeViewController);
             return nodeViewController;
         }
     }
@@ -601,7 +559,7 @@ public class ServerViewController {
                                         NodeViewController nodeViewController,
                                         ServerConfigurationVO serverConfigurationVO) {
         Platform.runLater(() -> {
-            nodeViewController.show(parent, serverConfigurationVO.getZkUrl());
+            nodeViewController.show(parent, serverConfigurationVO.getId());
             if (currentNodeViewController != null) {
                 currentNodeViewController.hideIfNotActive();
             }

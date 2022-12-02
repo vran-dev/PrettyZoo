@@ -59,33 +59,34 @@ public class PrettyZooFacade {
 
     private ConfigurationDomainService configurationDomainService = new ConfigurationDomainService();
 
-    public void createNode(String server, String path, String data, NodeMode mode) throws Exception {
-        zookeeperDomainService.create(server, path, data, mode);
+    public void createNode(String serverId, String path, String data, NodeMode mode) throws Exception {
+        zookeeperDomainService.create(serverId, path, data, mode);
     }
 
-    public void deleteNode(String server, List<String> pathList) {
+    public void deleteNode(String serverId, List<String> pathList) {
         try {
-            zookeeperDomainService.delete(server, pathList);
+            zookeeperDomainService.delete(serverId, pathList);
         } catch (Exception e) {
             log.error("delete node failed", e);
             throw new IllegalStateException(e);
         }
     }
 
-    public CompletableFuture<Void> connect(String url,
+    public CompletableFuture<Void> connect(String id,
                                            List<ZookeeperNodeListener> nodeListeners,
                                            List<ServerListener> serverListeners) {
         return CompletableFuture.runAsync(() -> {
-            var serverConfig = configurationDomainService.get(url).orElseThrow();
+            var serverConfig = configurationDomainService.getById(id).orElseThrow();
             zookeeperDomainService.connect(serverConfig, nodeListeners, serverListeners);
-            configurationDomainService.incrementConnectTimes(url);
+            configurationDomainService.incrementConnectTimes(id);
         });
     }
 
-    public void disconnect(String host) {
+    public void disconnect(String id) {
         Platform.runLater(() -> {
-            zookeeperDomainService.disconnect(host);
-            treeItemCache.remove(host);
+            ServerConfiguration serverConfiguration = configurationDomainService.getById(id).orElseThrow();
+            zookeeperDomainService.disconnect(serverConfiguration.getId());
+            treeItemCache.remove(id);
         });
     }
 
@@ -95,16 +96,16 @@ public class PrettyZooFacade {
         LogTailerThreadContext.stop();
     }
 
-    public void syncIfNecessary(String host) {
-        zookeeperDomainService.sync(host);
+    public void syncIfNecessary(String serverId) {
+        zookeeperDomainService.sync(serverId);
     }
 
     public List<ZkNodeSearchResult> onSearch(String input) {
-        final String host = ActiveServerContext.get();
+        final String serverId = ActiveServerContext.get();
         if (Strings.isNullOrEmpty(input)) {
             return Collections.emptyList();
         }
-        final List<ZkNodeSearchResult> res = treeItemCache.search(host, input)
+        final List<ZkNodeSearchResult> res = treeItemCache.search(serverId, input)
                 .stream()
                 .map(item -> {
                     String path = item.getValue().getPath();
@@ -130,36 +131,37 @@ public class PrettyZooFacade {
         return treeItemCache.hasNode(ActiveServerContext.get(), nodeAbsolutePath);
     }
 
-    public Stat updateData(String host,
+    public Stat updateData(String serverId,
                            String nodePath,
                            String data,
                            Consumer<Throwable> errorCallback) {
-        return Try.of(() -> zookeeperDomainService.set(host, nodePath, data))
+        return Try.of(() -> zookeeperDomainService.set(serverId, nodePath, data))
                 .onFailure(errorCallback::accept)
                 .get();
     }
 
-    public boolean hasServerConfiguration(String host) {
-        return configurationDomainService.containServerConfig(host);
+    public boolean hasServerConfiguration(String id) {
+        if (id == null) {
+            return false;
+        }
+        return configurationDomainService.containServerConfig(id);
     }
 
     public void saveServerConfiguration(ServerConfigurationVO serverConfigurationVO) {
-        var tunnelConfigurationBuilder = SSHTunnelConfiguration.builder();
-        if (serverConfigurationVO.getRemoteServer().trim().length() > 0) {
-            tunnelConfigurationBuilder.remoteHost(serverConfigurationVO.getRemoteServer())
-                    .remotePort(serverConfigurationVO.getRemoteServerPort());
+        SSHTunnelConfiguration tunnelConfig = null;
+        if (serverConfigurationVO.isSshEnabled()) {
+            tunnelConfig = SSHTunnelConfiguration.builder()
+                    .remoteHost(serverConfigurationVO.getRemoteServer())
+                    .remotePort(serverConfigurationVO.getRemoteServerPort())
+                    .sshHost(serverConfigurationVO.getSshServer())
+                    .sshPort(serverConfigurationVO.getSshServerPort())
+                    .localhost(serverConfigurationVO.getZkHost())
+                    .localPort(serverConfigurationVO.getZkPort())
+                    .sshUsername(serverConfigurationVO.getSshUsername())
+                    .sshPassword(serverConfigurationVO.getSshPassword())
+                    .sshKeyFilePath(serverConfigurationVO.getSshKeyFilePath())
+                    .build();
         }
-
-        if (serverConfigurationVO.getSshServer().trim().length() > 0) {
-            tunnelConfigurationBuilder.sshHost(serverConfigurationVO.getSshServer())
-                    .sshPort(serverConfigurationVO.getSshServerPort());
-        }
-        tunnelConfigurationBuilder
-                .localhost(serverConfigurationVO.getZkHost())
-                .localPort(serverConfigurationVO.getZkPort())
-                .sshUsername(serverConfigurationVO.getSshUsername())
-                .sshPassword(serverConfigurationVO.getSshPassword())
-                .sshKeyFilePath(serverConfigurationVO.getSshKeyFilePath());
 
         ConnectionConfiguration advanceConfig = new ConnectionConfiguration();
         if (serverConfigurationVO.isEnableConnectionAdvanceConfiguration()) {
@@ -171,14 +173,15 @@ public class PrettyZooFacade {
             advanceConfig.setRetryIntervalTime(inputAdvanceConfig.getRetryIntervalTime());
         }
 
+        boolean idIsBlank = serverConfigurationVO.getId().isBlank();
         var serverConfiguration = ServerConfiguration.builder()
+                .id(idIsBlank ? UUID.randomUUID().toString() : serverConfigurationVO.getId())
                 .alias(serverConfigurationVO.getZkAlias())
-                .url(serverConfigurationVO.getZkUrl())
                 .host(serverConfigurationVO.getZkHost())
                 .port(serverConfigurationVO.getZkPort())
-                .aclList(new ArrayList<>(serverConfigurationVO.getAclList()))
+                .aclList(new ArrayList<>(List.of(Objects.toString(serverConfigurationVO.getAcl(), "").split("\n"))))
                 .sshTunnelEnabled(serverConfigurationVO.isSshEnabled())
-                .sshTunnel(tunnelConfigurationBuilder.build())
+                .sshTunnel(tunnelConfig)
                 .enableConnectionAdvanceConfiguration(serverConfigurationVO.isEnableConnectionAdvanceConfiguration())
                 .connectionConfiguration(advanceConfig)
                 .build();
@@ -215,8 +218,8 @@ public class PrettyZooFacade {
         configurationDomainService.save(new Configuration.FontConfiguration(newSize));
     }
 
-    public void deleteServerConfiguration(String server) {
-        configurationDomainService.deleteServerConfiguration(server);
+    public void deleteServerConfigurationById(String id) {
+        configurationDomainService.deleteServerConfiguration(id);
     }
 
     public Locale getLocale() {
@@ -244,6 +247,11 @@ public class PrettyZooFacade {
                 .stream()
                 .map(ConfigurationVOTransfer::to)
                 .collect(Collectors.toList());
+    }
+
+    public ServerConfiguration getServerConfigurationById(String id) {
+        final Configuration configuration = configurationDomainService.get().orElseThrow();
+        return configuration.getById(id).orElseThrow();
     }
 
     public void exportConfig(File file) {
@@ -294,21 +302,37 @@ public class PrettyZooFacade {
         changeNodeViewSplitPaneDividerPosition(0.3);
     }
 
-    public void startTerminal(String server, StringWriter stream) {
-        zookeeperDomainService.initTerminal(server, stream);
+    public void startTerminal(String serverId, StringWriter stream) {
+        ServerConfiguration server = configurationDomainService.getById(serverId)
+                .orElseThrow();
+        String urlToConnect;
+        if (server.getSshTunnelEnabled()) {
+            urlToConnect = "localhost:" + server.getPort();
+        } else {
+            urlToConnect = server.getHost() + ":" + server.getPort();
+        }
+        zookeeperDomainService.initTerminal(serverId, urlToConnect, stream);
     }
 
-    public void executeCommand(String server, String command) {
+    public void executeCommand(String id, String command) {
         try {
-            zookeeperDomainService.execute(server, command);
+            zookeeperDomainService.execute(id, command);
         } catch (Exception e) {
-            log.error("execute command failed at  " + server + ":" + command, e);
+            log.error("execute command failed at  " + id + ":" + command, e);
             VToast.error("命令执行失败，请重试");
         }
     }
 
-    public String executeFourLetterCommand(String server, String fourLetter) {
-        return zookeeperDomainService.execute4LetterCommand(server, fourLetter);
+    public String executeFourLetterCommand(String serverId, String fourLetter) {
+        ServerConfiguration server = configurationDomainService.getById(serverId)
+                .orElseThrow();
+        String hostToConnect;
+        if (server.getSshTunnelEnabled()) {
+            hostToConnect = "localhost:" + server.getPort();
+        } else {
+            hostToConnect = server.getHost() + ":" + server.getPort();
+        }
+        return zookeeperDomainService.execute4LetterCommand(server.getId(), hostToConnect, fourLetter);
     }
 
     public void startLogTailer(Consumer<String> lineConsumer, Consumer<Exception> exceptionConsumer) {

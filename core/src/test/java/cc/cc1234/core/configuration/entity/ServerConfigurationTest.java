@@ -11,7 +11,6 @@ public class ServerConfigurationTest {
     @Test
     public void testUpdateBaseInfo() {
         var serverConfiguration = ServerConfiguration.builder()
-                .url("localhost:2181")
                 .host("localhost")
                 .port(2181)
                 .aclList(List.of())
@@ -21,7 +20,6 @@ public class ServerConfigurationTest {
                 .build();
 
         var updateInfo = ServerConfiguration.builder()
-                .url("local.me:2182")
                 .host("local.me")
                 .aclList(List.of("digest:digest:digest"))
                 .port(2182)
@@ -48,7 +46,6 @@ public class ServerConfigurationTest {
     @Test
     public void testUpdateSSHTunnelInfo() {
         var serverConfiguration = ServerConfiguration.builder()
-                .url("localhost:2181")
                 .host("localhost")
                 .port(2181)
                 .aclList(List.of())
@@ -87,7 +84,6 @@ public class ServerConfigurationTest {
     @Test
     public void testIncrementConnectTimes() {
         var serverConfiguration = ServerConfiguration.builder()
-                .url("localhost:2181")
                 .host("localhost")
                 .port(2181)
                 .aclList(List.of())

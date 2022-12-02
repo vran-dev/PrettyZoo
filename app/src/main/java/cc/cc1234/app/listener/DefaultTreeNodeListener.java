@@ -35,7 +35,7 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
     public void onNodeUpdate(NodeEvent event) {
         Platform.runLater(() -> {
             final String path = event.getNode().getPath();
-            final TreeItem<ZkNode> item = treeItemCache.get(event.getServer(), path);
+            final TreeItem<ZkNode> item = treeItemCache.get(event.getId(), path);
             final ZkNode itemValue = item.getValue();
             itemValue.copyField(event.getNode());
         });
@@ -45,12 +45,12 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
     public void onNodeDelete(NodeEvent event) {
         final String path = event.getNode().getPath();
         final String parent = PathUtils.getParent(path);
-        final TreeItem<ZkNode> parentItem = treeItemCache.get(event.getServer(), parent);
-        final TreeItem<ZkNode> removeItem = treeItemCache.get(event.getServer(), path);
+        final TreeItem<ZkNode> parentItem = treeItemCache.get(event.getId(), parent);
+        final TreeItem<ZkNode> removeItem = treeItemCache.get(event.getId(), path);
         if (parentItem != null && removeItem != null) {
             Platform.runLater(() -> {
                 parentItem.getChildren().remove(removeItem);
-                treeItemCache.remove(event.getServer(), path);
+                treeItemCache.remove(event.getId(), path);
             });
         }
     }
@@ -67,27 +67,27 @@ public class DefaultTreeNodeListener implements ZookeeperNodeListener {
         final String rootPath = "/";
         Platform.runLater(() -> {
             if (path.equals(rootPath)) {
-                final TreeItem<ZkNode> root = treeItemCache.get(event.getServer(), rootPath);
+                final TreeItem<ZkNode> root = treeItemCache.get(event.getId(), rootPath);
                 root.getValue().copyField(origin);
                 root.setExpanded(true);
             } else {
                 // fixme numOfChildren of the node should increase manual
                 final TreeItem<ZkNode> treeItem = new TreeItem<>(node);
-                treeItemCache.add(event.getServer(), path, treeItem);
+                treeItemCache.add(event.getId(), path, treeItem);
                 final String parent = PathUtils.getParent(path);
-                final TreeItem<ZkNode> parentItem = treeItemCache.get(event.getServer(), parent);
+                final TreeItem<ZkNode> parentItem = treeItemCache.get(event.getId(), parent);
                 parentItem.getChildren().add(treeItem);
             }
         });
     }
 
     @Override
-    public void syncCompleted(String server) {
-        completed.add(server);
-        log.info("{} sync completed, loaded = ?, total = ?", server);
+    public void syncCompleted(String id) {
+        completed.add(id);
+        log.info("{} sync completed, loaded = ?, total = ?", id);
     }
 
     private boolean skip(String node, NodeEvent event) {
-        return !completed.contains(event.getServer()) || Objects.equals(node, "/");
+        return !completed.contains(event.getId()) || Objects.equals(node, "/");
     }
 }

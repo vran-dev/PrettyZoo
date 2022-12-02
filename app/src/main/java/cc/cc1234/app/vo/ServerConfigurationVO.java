@@ -1,21 +1,18 @@
 package cc.cc1234.app.vo;
 
 import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class ServerConfigurationVO {
 
-    private SimpleStringProperty zkUrl = new SimpleStringProperty("");
+    private SimpleStringProperty id = new SimpleStringProperty("");
 
     private SimpleStringProperty zkHost = new SimpleStringProperty("");
 
-    private SimpleIntegerProperty zkPort = new SimpleIntegerProperty(0);
+    private SimpleIntegerProperty zkPort = new SimpleIntegerProperty(2181);
 
     private SimpleStringProperty zkAlias = new SimpleStringProperty("");
 
-    private ObjectProperty<ObservableList<String>> aclList =
-            new SimpleObjectProperty<>(FXCollections.observableArrayList());
+    private StringProperty acl = new SimpleStringProperty();
 
     private SimpleObjectProperty<ServerStatus> status = new SimpleObjectProperty<>(ServerStatus.DISCONNECTED);
 
@@ -23,7 +20,7 @@ public class ServerConfigurationVO {
 
     private SimpleStringProperty sshServer = new SimpleStringProperty("");
 
-    private ObjectProperty<Integer> sshServerPort = new SimpleObjectProperty<>();
+    private SimpleIntegerProperty sshServerPort = new SimpleIntegerProperty();
 
     private SimpleStringProperty sshUsername = new SimpleStringProperty("");
 
@@ -33,19 +30,65 @@ public class ServerConfigurationVO {
 
     private SimpleStringProperty remoteServer = new SimpleStringProperty("");
 
-    private ObjectProperty<Integer> remoteServerPort = new SimpleObjectProperty<>();
+    private SimpleIntegerProperty remoteServerPort = new SimpleIntegerProperty();
 
     private SimpleBooleanProperty enableConnectionAdvanceConfiguration = new SimpleBooleanProperty(false);
 
     private ObjectProperty<ConnectionConfigurationVO> connectionConfiguration
-            = new SimpleObjectProperty<>();
+            = new SimpleObjectProperty<>(new ConnectionConfigurationVO());
+
+    public void update(ServerConfigurationVO config) {
+        id.set(config.getId());
+        zkHost.set(config.getZkHost());
+        zkPort.set(config.getZkPort());
+        zkAlias.set(config.getZkAlias());
+        acl.set(config.getAcl());
+
+        // advance connection config
+        ConnectionConfigurationVO connectionConfig = config.getConnectionConfiguration();
+        enableConnectionAdvanceConfiguration.set(config.isEnableConnectionAdvanceConfiguration());
+        connectionConfiguration.get().setConnectionTimeout(connectionConfig.getConnectionTimeout());
+        connectionConfiguration.get().setMaxRetries(connectionConfig.getMaxRetries());
+        connectionConfiguration.get().setRetryIntervalTime(connectionConfig.getRetryIntervalTime());
+        connectionConfiguration.get().setSessionTimeout(connectionConfig.getSessionTimeout());
+
+        // ssh tunnel config
+        sshEnabled.set(config.isSshEnabled());
+        sshServer.set(config.getSshServer());
+        sshServerPort.set(config.getSshServerPort());
+        sshUsername.set(config.getSshUsername());
+        sshPassword.set(config.getSshPassword());
+        sshKeyFilePath.set(config.getSshKeyFilePath());
+        remoteServer.set(config.getRemoteServer());
+        remoteServerPort.set(config.getRemoteServerPort());
+    }
+
+    public void reset() {
+        id.set("");
+        zkHost.set("");
+        zkPort.set(2181);
+        zkAlias.set("");
+        acl.set("");
+        sshEnabled.set(false);
+        sshServer.set("");
+        sshServerPort.set(22);
+        sshUsername.set("");
+        sshPassword.set("");
+        sshKeyFilePath.set("");
+        remoteServer.set("");
+        remoteServerPort.set(2181);
+        enableConnectionAdvanceConfiguration.set(false);
+        connectionConfiguration.get().setConnectionTimeout(5000);
+        connectionConfiguration.get().setSessionTimeout(6000);
+        connectionConfiguration.get().setMaxRetries(3);
+        connectionConfiguration.get().setRetryIntervalTime(1000);
+    }
 
     public void unbind() {
-        zkUrl.unbind();
         zkHost.unbind();
         zkPort.unbind();
         zkAlias.unbind();
-        aclList.unbind();
+        acl.unbind();
         sshEnabled.unbind();
         sshServer.unbind();
         sshServerPort.unbind();
@@ -57,156 +100,172 @@ public class ServerConfigurationVO {
         connectionConfiguration.unbind();
     }
 
-    public String getZkUrl() {
-        return zkUrl.get();
+    public String getId() {
+        return id.get();
     }
 
-    public void setZkUrl(String zkUrl) {
-        this.zkUrl.set(zkUrl);
+    public SimpleStringProperty idProperty() {
+        return id;
     }
 
-    public SimpleStringProperty zkUrlProperty() {
-        return zkUrl;
-    }
-
-    public ServerStatus getStatus() {
-        return status.get();
-    }
-
-    public void setStatus(ServerStatus status) {
-        this.status.set(status);
-    }
-
-    public SimpleObjectProperty<ServerStatus> statusProperty() {
-        return status;
+    public void setId(String id) {
+        this.id.set(id);
     }
 
     public String getZkHost() {
         return zkHost.get();
     }
 
-    public void setZkHost(String zkHost) {
-        this.zkHost.set(zkHost);
-    }
-
     public SimpleStringProperty zkHostProperty() {
         return zkHost;
+    }
+
+    public void setZkHost(String zkHost) {
+        this.zkHost.set(zkHost);
     }
 
     public int getZkPort() {
         return zkPort.get();
     }
 
-    public void setZkPort(int zkPort) {
-        this.zkPort.set(zkPort);
-    }
-
     public SimpleIntegerProperty zkPortProperty() {
         return zkPort;
     }
 
-    public ObservableList<String> getAclList() {
-        return aclList.get();
-    }
-
-    public void setAclList(ObservableList<String> aclList) {
-        this.aclList.set(aclList);
-    }
-
-    public ObjectProperty<ObservableList<String>> aclListProperty() {
-        return aclList;
-    }
-
-    public boolean isSshEnabled() {
-        return sshEnabled.get();
-    }
-
-    public void setSshEnabled(boolean sshEnabled) {
-        this.sshEnabled.set(sshEnabled);
-    }
-
-    public SimpleBooleanProperty sshEnabledProperty() {
-        return sshEnabled;
-    }
-
-    public String getSshServer() {
-        return sshServer.get();
-    }
-
-    public void setSshServer(String sshServer) {
-        this.sshServer.set(sshServer);
-    }
-
-    public SimpleStringProperty sshServerProperty() {
-        return sshServer;
-    }
-
-    public Integer getSshServerPort() {
-        return sshServerPort.get();
-    }
-
-    public void setSshServerPort(Integer sshServerPort) {
-        this.sshServerPort.set(sshServerPort);
-    }
-
-    public ObjectProperty<Integer> sshServerPortProperty() {
-        return sshServerPort;
-    }
-
-    public String getSshUsername() {
-        return sshUsername.get();
-    }
-
-    public void setSshUsername(String sshUsername) {
-        this.sshUsername.set(sshUsername);
-    }
-
-    public SimpleStringProperty sshUsernameProperty() {
-        return sshUsername;
-    }
-
-    public String getSshPassword() {
-        return sshPassword.get();
-    }
-
-    public void setSshPassword(String sshPassword) {
-        this.sshPassword.set(sshPassword);
-    }
-
-    public SimpleStringProperty sshPasswordProperty() {
-        return sshPassword;
-    }
-
-    public String getRemoteServer() {
-        return remoteServer.get();
-    }
-
-    public void setRemoteServer(String remoteServer) {
-        this.remoteServer.set(remoteServer);
-    }
-
-    public Integer getRemoteServerPort() {
-        return remoteServerPort.get();
-    }
-
-    public void setRemoteServerPort(Integer remoteServerPort) {
-        this.remoteServerPort.set(remoteServerPort);
-    }
-
-    public ObjectProperty<Integer> remoteServerPortProperty() {
-        return remoteServerPort;
+    public void setZkPort(int zkPort) {
+        this.zkPort.set(zkPort);
     }
 
     public String getZkAlias() {
         return zkAlias.get();
     }
 
+    public SimpleStringProperty zkAliasProperty() {
+        return zkAlias;
+    }
+
     public void setZkAlias(String zkAlias) {
         this.zkAlias.set(zkAlias);
     }
 
-    public SimpleStringProperty zkAliasProperty() {
-        return zkAlias;
+    public String getAcl() {
+        return acl.get();
+    }
+
+    public StringProperty aclProperty() {
+        return acl;
+    }
+
+    public void setAcl(String acl) {
+        this.acl.set(acl);
+    }
+
+    public ServerStatus getStatus() {
+        return status.get();
+    }
+
+    public SimpleObjectProperty<ServerStatus> statusProperty() {
+        return status;
+    }
+
+    public void setStatus(ServerStatus status) {
+        this.status.set(status);
+    }
+
+    public boolean isSshEnabled() {
+        return sshEnabled.get();
+    }
+
+    public SimpleBooleanProperty sshEnabledProperty() {
+        return sshEnabled;
+    }
+
+    public void setSshEnabled(boolean sshEnabled) {
+        this.sshEnabled.set(sshEnabled);
+    }
+
+    public String getSshServer() {
+        return sshServer.get();
+    }
+
+    public SimpleStringProperty sshServerProperty() {
+        return sshServer;
+    }
+
+    public void setSshServer(String sshServer) {
+        this.sshServer.set(sshServer);
+    }
+
+    public int getSshServerPort() {
+        return sshServerPort.get();
+    }
+
+    public SimpleIntegerProperty sshServerPortProperty() {
+        return sshServerPort;
+    }
+
+    public void setSshServerPort(int sshServerPort) {
+        this.sshServerPort.set(sshServerPort);
+    }
+
+    public String getSshUsername() {
+        return sshUsername.get();
+    }
+
+    public SimpleStringProperty sshUsernameProperty() {
+        return sshUsername;
+    }
+
+    public void setSshUsername(String sshUsername) {
+        this.sshUsername.set(sshUsername);
+    }
+
+    public String getSshPassword() {
+        return sshPassword.get();
+    }
+
+    public SimpleStringProperty sshPasswordProperty() {
+        return sshPassword;
+    }
+
+    public void setSshPassword(String sshPassword) {
+        this.sshPassword.set(sshPassword);
+    }
+
+    public String getSshKeyFilePath() {
+        return sshKeyFilePath.get();
+    }
+
+    public SimpleStringProperty sshKeyFilePathProperty() {
+        return sshKeyFilePath;
+    }
+
+    public void setSshKeyFilePath(String sshKeyFilePath) {
+        this.sshKeyFilePath.set(sshKeyFilePath);
+    }
+
+    public String getRemoteServer() {
+        return remoteServer.get();
+    }
+
+    public SimpleStringProperty remoteServerProperty() {
+        return remoteServer;
+    }
+
+    public void setRemoteServer(String remoteServer) {
+        this.remoteServer.set(remoteServer);
+    }
+
+    public int getRemoteServerPort() {
+        return remoteServerPort.get();
+    }
+
+    public SimpleIntegerProperty remoteServerPortProperty() {
+        return remoteServerPort;
+    }
+
+    public void setRemoteServerPort(int remoteServerPort) {
+        this.remoteServerPort.set(remoteServerPort);
     }
 
     public boolean isEnableConnectionAdvanceConfiguration() {
@@ -231,17 +290,5 @@ public class ServerConfigurationVO {
 
     public void setConnectionConfiguration(ConnectionConfigurationVO connectionConfiguration) {
         this.connectionConfiguration.set(connectionConfiguration);
-    }
-
-    public String getSshKeyFilePath() {
-        return sshKeyFilePath.get();
-    }
-
-    public SimpleStringProperty sshKeyFilePathProperty() {
-        return sshKeyFilePath;
-    }
-
-    public void setSshKeyFilePath(String sshKeyFilePath) {
-        this.sshKeyFilePath.set(sshKeyFilePath);
     }
 }

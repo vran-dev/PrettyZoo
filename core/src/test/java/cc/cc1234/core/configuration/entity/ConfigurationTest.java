@@ -18,7 +18,7 @@ public class ConfigurationTest {
 
         // add duplicate server
         Assert.assertThrows(IllegalStateException.class, () -> {
-            Assert.assertTrue(configuration.exists("localhost:2181"));
+            Assert.assertTrue(configuration.existsById("localhost:2181"));
             var server = createServerConfiguration("localhost", 2181);
             configuration.add(server);
         });
@@ -26,7 +26,7 @@ public class ConfigurationTest {
         // normal add
         var server = createServerConfiguration("local.test.add", 2181);
         configuration.add(server);
-        Assert.assertTrue(configuration.exists("local.test.add:2181"));
+        Assert.assertTrue(configuration.existsById("local.test.add:2181"));
     }
 
     @Test
@@ -47,12 +47,12 @@ public class ConfigurationTest {
         var listener = new ConfigurationChangeListener() {
         };
         var configuration = create(listener);
-        Assert.assertTrue(configuration.exists("localhost:2181"));
-        Assert.assertTrue(configuration.exists("localhost:2182"));
-        Assert.assertTrue(configuration.exists("local.test:2181"));
-        Assert.assertFalse(configuration.exists("localhost:21"));
-        Assert.assertFalse(configuration.exists(""));
-        Assert.assertFalse(configuration.exists(null));
+        Assert.assertTrue(configuration.existsById("localhost:2181"));
+        Assert.assertTrue(configuration.existsById("localhost:2182"));
+        Assert.assertTrue(configuration.existsById("local.test:2181"));
+        Assert.assertFalse(configuration.existsById("localhost:21"));
+        Assert.assertFalse(configuration.existsById(""));
+        Assert.assertFalse(configuration.existsById(null));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class ConfigurationTest {
         var listener = new ConfigurationChangeListener() {
         };
         var configuration = create(listener);
-        var l = configuration.get("localhost:2181").orElseThrow();
+        var l = configuration.getById("localhost:2181").orElseThrow();
         Assert.assertEquals("localhost", l.getHost());
         Assert.assertEquals(2181, l.getPort().intValue());
         Assert.assertEquals("localhost:2181", l.getAlias());
@@ -68,7 +68,7 @@ public class ConfigurationTest {
         Assert.assertNotNull(l.getAclList());
         Assert.assertTrue(l.getAclList().isEmpty());
 
-        Assert.assertFalse(configuration.get(null).isPresent());
+        Assert.assertFalse(configuration.getById(null).isPresent());
     }
 
     @Test
@@ -76,10 +76,10 @@ public class ConfigurationTest {
         var listener = new ConfigurationChangeListener() {
         };
         var configuration = create(listener);
-        configuration.delete("localhost:2181");
-        Assert.assertFalse(configuration.exists("localhost:2181"));
+        configuration.deleteById("localhost:2181");
+        Assert.assertFalse(configuration.existsById("localhost:2181"));
 
-        Assert.assertThrows(NoSuchElementException.class, () -> configuration.delete("localhost"));
+        Assert.assertThrows(NoSuchElementException.class, () -> configuration.deleteById("localhost"));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class ConfigurationTest {
         var listener = new ConfigurationChangeListener() {
         };
         var configuration = create(listener);
-        var serverConfiguration = configuration.get("localhost:2181").orElseThrow();
+        var serverConfiguration = configuration.getById("localhost:2181").orElseThrow();
         var expectConnectTimes = serverConfiguration.getConnectTimes() + 1;
         configuration.incrementConnectTimes("localhost:2181");
         Assert.assertEquals(expectConnectTimes, serverConfiguration.getConnectTimes());
@@ -114,7 +114,6 @@ public class ConfigurationTest {
     private ServerConfiguration createServerConfiguration(String host, int port) {
         String url = host + ":" + port;
         return ServerConfiguration.builder()
-                .url(url)
                 .host(host)
                 .port(port)
                 .alias(url)

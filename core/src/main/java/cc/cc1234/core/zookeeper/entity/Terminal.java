@@ -9,6 +9,8 @@ import java.io.IOException;
 
 public class Terminal {
 
+    private String serverId;
+
     @Getter
     private String host;
 
@@ -16,9 +18,11 @@ public class Terminal {
 
     private ZooKeeperMain zooKeeperMain;
 
-    public Terminal(String host,
+    public Terminal(String id,
+                    String host,
                     ZookeeperConnection connection,
                     ZooKeeperMain zooKeeperMain) {
+        this.serverId = id;
         this.host = host;
         this.connection = connection;
         this.zooKeeperMain = zooKeeperMain;

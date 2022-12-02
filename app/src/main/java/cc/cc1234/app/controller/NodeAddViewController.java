@@ -82,11 +82,10 @@ public class NodeAddViewController {
 
     public void onSave() {
         if (nodeNameTextField.validate()) {
-            String server = ActiveServerContext.get();
             final NodeMode mode = createMode();
             String path = PathConcat.concat(currentPathField.getText(), nodeNameTextField.getText());
             String data = dataCodeArea.getText();
-            Try.of(() -> prettyZooFacade.createNode(server, path, data, mode))
+            Try.of(() -> prettyZooFacade.createNode(ActiveServerContext.get(), path, data, mode))
                     .onSuccess(r -> {
                         hide();
                         VToast.info("success");

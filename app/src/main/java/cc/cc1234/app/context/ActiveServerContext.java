@@ -6,6 +6,9 @@ import java.util.Objects;
 
 public class ActiveServerContext {
 
+    /**
+     * server id
+     */
     private static volatile String active;
 
     public static void set(String change) {
@@ -20,8 +23,8 @@ public class ActiveServerContext {
         return !Strings.isNullOrEmpty(active);
     }
 
-    public static boolean isSame(String server) {
-        return Objects.equals(server, active);
+    public static boolean isSame(String id) {
+        return Objects.equals(id, active);
     }
 
     public static void invalidate() {

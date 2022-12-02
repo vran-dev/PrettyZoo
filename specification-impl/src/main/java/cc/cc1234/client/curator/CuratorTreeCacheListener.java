@@ -17,9 +17,13 @@ public class CuratorTreeCacheListener implements TreeCacheListener {
 
     private static final Logger log = LoggerFactory.getLogger(CuratorTreeCacheListener.class);
 
+    private String id;
+
     private List<ZookeeperNodeListener> listeners;
 
-    public CuratorTreeCacheListener(List<ZookeeperNodeListener> listeners) {
+    public CuratorTreeCacheListener(String id,
+                                    List<ZookeeperNodeListener> listeners) {
+        this.id = id;
         this.listeners = listeners;
     }
 
@@ -28,17 +32,17 @@ public class CuratorTreeCacheListener implements TreeCacheListener {
         final String server = client.getZookeeperClient().getCurrentConnectionString();
         if (event.getType() == TreeCacheEvent.Type.INITIALIZED) {
             log.debug("{} tree node sync finished", server);
-            listeners.forEach(listeners -> listeners.syncCompleted(server));
+            listeners.forEach(listeners -> listeners.syncCompleted(id));
             return;
         }
         if (event.getType() == TreeCacheEvent.Type.CONNECTION_SUSPENDED
                 || event.getType() == TreeCacheEvent.Type.CONNECTION_LOST) {
-            listeners.forEach(listeners -> listeners.disConnect(server));
+            listeners.forEach(listeners -> listeners.disConnect(id));
             return;
         }
 
         if (event.getType() == TreeCacheEvent.Type.CONNECTION_RECONNECTED) {
-            listeners.forEach(listeners -> listeners.reconnected(server));
+            listeners.forEach(listeners -> listeners.reconnected(id));
             return;
         }
 
@@ -58,16 +62,16 @@ public class CuratorTreeCacheListener implements TreeCacheListener {
         node.setName(PathUtils.getLastPath(path));
 
         if (event.getType() == TreeCacheEvent.Type.NODE_ADDED) {
-            listeners.forEach(listener -> listener.onNodeAdd(new NodeEvent(node, server)));
+            listeners.forEach(listener -> listener.onNodeAdd(new NodeEvent(node, server, id)));
         }
 
         if (event.getType() == TreeCacheEvent.Type.NODE_REMOVED) {
-            listeners.forEach(listener -> listener.onNodeDelete(new NodeEvent(node, server)));
+            listeners.forEach(listener -> listener.onNodeDelete(new NodeEvent(node, server, id)));
 
         }
 
         if (event.getType() == TreeCacheEvent.Type.NODE_UPDATED) {
-            listeners.forEach(listener -> listener.onNodeUpdate(new NodeEvent(node, server)));
+            listeners.forEach(listener -> listener.onNodeUpdate(new NodeEvent(node, server, id)));
         }
     }
 }
