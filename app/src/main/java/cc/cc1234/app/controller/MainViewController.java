@@ -164,9 +164,12 @@ public class MainViewController {
                         VToast.info(ResourceBundleUtils.getContent("action.check-update.no-change"));
                     }
                 },
-                () -> {
+                ex -> {
                     checkUpdateButton.getStyleClass().add("check-update-button");
                     checkUpdateButton.setGraphic(null);
+                    if (!ignoreToast) {
+                        VToast.info(ex.getMessage());
+                    }
                 });
     }
 

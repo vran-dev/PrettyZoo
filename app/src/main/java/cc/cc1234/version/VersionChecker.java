@@ -1,6 +1,5 @@
 package cc.cc1234.version;
 
-import cc.cc1234.app.view.toast.VToast;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.application.Platform;
@@ -12,23 +11,16 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class VersionChecker {
 
     private static final Logger logger = LoggerFactory.getLogger(VersionChecker.class);
 
-    public static void hasNewVersion(BiConsumer<String, String> newVersionAction) {
-        hasNewVersion(newVersionAction,
-                () -> {
-                },
-                () -> {
-                });
-    }
-
     public static void hasNewVersion(BiConsumer<String, String> newVersionAction,
                                      Runnable noUpdateAction,
-                                     Runnable exceptionally) {
+                                     Consumer<Throwable> exceptionally) {
         var request = HttpRequest.newBuilder(URI.create("https://api.github.com/repos/vran-dev/PrettyZoo/releases/latest"))
                 .build();
         var client = HttpClient.newHttpClient();
@@ -54,8 +46,7 @@ public class VersionChecker {
                     }
                 })
                 .exceptionally((ex) -> {
-                    Platform.runLater(exceptionally);
-                    Platform.runLater(() -> VToast.error("check update failed"));
+                    Platform.runLater(() -> exceptionally.accept(ex));
                     return null;
                 });
     }
