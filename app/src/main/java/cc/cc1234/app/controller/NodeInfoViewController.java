@@ -9,6 +9,7 @@ import cc.cc1234.app.view.NodeDataArea;
 import cc.cc1234.app.view.dialog.Dialog;
 import cc.cc1234.app.view.toast.VToast;
 import cc.cc1234.app.view.transitions.Transitions;
+import cc.cc1234.app.vo.SwitchableTextFieldDatum;
 import cc.cc1234.specification.node.ZkNode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.fxml.FXML;
@@ -30,10 +31,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
 
 @SuppressWarnings("all")
 public class NodeInfoViewController {
-
+    
+    private static final String DATUM = "datum";
+    
     @FXML
     private AnchorPane nodeInfoPane;
 
@@ -91,7 +95,19 @@ public class NodeInfoViewController {
 
     @FXML
     private Label ctimeLabel;
-
+    
+    @FXML
+    private Label cZxidLabel;
+    
+    @FXML
+    private Label pZxidLabel;
+    
+    @FXML
+    private Label mZxidLabel;
+    
+    @FXML
+    private Label ephemeralOwnerLabel;
+    
     @FXML
     private Button jsonFormatButton;
 
@@ -131,10 +147,15 @@ public class NodeInfoViewController {
         nodeUpdateButton.setOnMouseClicked(e -> onNodeUpdate());
         initCodeArea();
         final Tooltip timeLabelTooltip = new Tooltip("Click to change format");
+        final Tooltip zxidLabelTooltip = new Tooltip("Click to change between hex and long");
         mtimeLabel.setTooltip(timeLabelTooltip);
         ctimeLabel.setTooltip(timeLabelTooltip);
         mtimeLabel.setOnMouseClicked(e -> changeTimeFormat());
         ctimeLabel.setOnMouseClicked(e -> changeTimeFormat());
+        Stream.of(ephemeralOwnerLabel, cZxidLabel, pZxidLabel, mZxidLabel).forEach(label -> {
+            label.setTooltip(zxidLabelTooltip);
+            label.setOnMouseClicked(e -> switchZxid());
+        });
         jsonFormatButton.setOnAction(e -> dataJsonFormat());
         rawFormatButton.setOnAction(e -> dataRawFormat());
         xmlFormatButton.setOnAction(e -> dataXmlFormat());
@@ -252,10 +273,10 @@ public class NodeInfoViewController {
      * TODO use data bind to instead of manual bind
      */
     private void updateField(Stat node) {
-        ephemeralOwnerField.setText(String.valueOf(node.getEphemeralOwner()));
-        cZxidField.setText(String.valueOf(node.getCzxid()));
-        pZxidField.setText(String.valueOf(node.getPzxid()));
-        mZxidField.setText(String.valueOf(node.getMzxid()));
+        putZxidDatum(ephemeralOwnerField, node.getEphemeralOwner());
+        putZxidDatum(cZxidField, node.getCzxid());
+        putZxidDatum(pZxidField, node.getPzxid());
+        putZxidDatum(mZxidField, node.getMzxid());
         dataLengthField.setText(String.valueOf(node.getDataLength()));
         numChildrenField.setText(String.valueOf(node.getNumChildren()));
         dataVersionField.setText(String.valueOf(node.getVersion()));
@@ -266,17 +287,23 @@ public class NodeInfoViewController {
         ctimeField.getProperties().put("timestamp", node.getCtime());
         ctimeField.getProperties().put("dateTime", format(node.getCtime()));
         showDateTime();
+        switchZxid();
     }
-
+    
+    private void putZxidDatum(TextField field, long value) {
+        field.getProperties().put(DATUM, new SwitchableTextFieldDatum(String.valueOf(value),
+                Formatters.longToHexString(value)));
+    }
+    
     private void initTextField(ZkNode node) {
         setCodeAreaData(transformData(node));
         dataCodeArea.getProperties().put("raw", transformData(node));
         dataCodeArea.getProperties().put("rawBytes", node.getDataBytes());
-
-        ephemeralOwnerField.setText(String.valueOf(node.getEphemeralOwner()));
-        cZxidField.setText(String.valueOf(node.getCzxid()));
-        pZxidField.setText(String.valueOf(node.getPzxid()));
-        mZxidField.setText(String.valueOf(node.getMzxid()));
+    
+        putZxidDatum(ephemeralOwnerField, node.getEphemeralOwner());
+        putZxidDatum(cZxidField, node.getCzxid());
+        putZxidDatum(pZxidField, node.getPzxid());
+        putZxidDatum(mZxidField, node.getMzxid());
         dataLengthField.setText(String.valueOf(node.getDataLength()));
         numChildrenField.setText(String.valueOf(node.getNumChildren()));
         dataVersionField.setText(String.valueOf(node.getVersion()));
@@ -289,8 +316,17 @@ public class NodeInfoViewController {
         ctimeField.getProperties().put("timestamp", node.getCtime());
         ctimeField.getProperties().put("dateTime", format(node.getCtime()));
         showDateTime();
+        switchZxid();
     }
-
+    
+    private void switchZxid() {
+        Stream.of(ephemeralOwnerField, cZxidField, pZxidField, mZxidField).forEach(field -> {
+            SwitchableTextFieldDatum datum = (SwitchableTextFieldDatum) field.getProperties()
+                    .getOrDefault(DATUM, SwitchableTextFieldDatum.BLANK);
+            field.setText(datum.exchange());
+        });
+    }
+    
     private String transformData(ZkNode node) {
         final String charset = charsetChoice.getSelectionModel().getSelectedItem();
         try {
