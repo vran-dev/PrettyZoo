@@ -44,4 +44,9 @@ public class Formatters {
             throw new RuntimeException(e);
         }
     }
+    
+    public static String longToHexString(long val) {
+        return "0x" + Long.toHexString(val);
+    }
+    
 }
