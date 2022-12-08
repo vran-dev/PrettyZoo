@@ -1,15 +1,14 @@
 package cc.cc1234.app.vo;
 
-
 public class SwitchableTextFieldDatum {
    
-    private String formatted;
+    private final String formatted;
     
-    private String raw;
+    private final String raw;
     
     private boolean showRaw = true;
     
-    public static SwitchableTextFieldDatum BLANK = new SwitchableTextFieldDatum("", "");
+    public static final SwitchableTextFieldDatum BLANK = new SwitchableTextFieldDatum("", "");
     
     public SwitchableTextFieldDatum(String raw, String formatted) {
         this.formatted = formatted;
