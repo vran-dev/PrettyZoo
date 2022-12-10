@@ -947,7 +947,7 @@
 
 .dialog-title {
     -fx-text-alignment: center;
-    -fx-text-fill: #FFF;
+    -fx-text-fill: #000;
     -fx-font-weight: bold;
     -fx-font-size: 16;
     -fx-border-width: 0;
