@@ -25,7 +25,7 @@ subprojects {
 
     sourceCompatibility = 17
     group 'cc.c1234'
-    version '2.0.0'
+    version '2.1.0'
 
     checkstyle {
         toolVersion = '8.42'
