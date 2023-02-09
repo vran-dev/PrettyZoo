@@ -1,6 +1,6 @@
 plugins {
     id 'org.openjfx.javafxplugin' version '0.0.10'
-    id 'org.beryx.jlink' version '2.25.0'
+    id 'org.beryx.jlink' version '2.26.0'
     id 'antlr'
     id 'idea'
     id 'application'
@@ -9,7 +9,7 @@ plugins {
 checkstyleMain.source = "src/main/java"
 
 javafx {
-    version = "17.0.1"
+    version = "18.0.2"
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.base']
 }
 
