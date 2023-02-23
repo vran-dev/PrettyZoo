@@ -16,11 +16,12 @@ jobs:
         os: [ windows-latest, macos-latest, ubuntu-latest ]
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 17
-        uses: actions/setup-java@v1
+      - uses: actions/checkout@v3
+      - name: Set Up Java18
+        uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          distribution: 'zulu'
+          java-version: '18'
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
 
@@ -33,6 +34,7 @@ jobs:
         with:
           files: |
             app/build/jpackage/*.msi
+            app/build/jpackage/*.zip
           draft: true
           fail_on_unmatched_files: true
         env:
