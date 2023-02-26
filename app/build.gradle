@@ -17,7 +17,6 @@ mainClassName = "cc.cc1234.Application"
 
 def runArgsValue = [
         "-XX:+UnlockExperimentalVMOptions",
-        "-XX:+UseZGC",
         // required due to a bug in Java: https://github.com/javafxports/openjdk-jfx/issues/175
         "-Djdk.gtk.version=2",
         "-Dfile.encoding=utf-8",
