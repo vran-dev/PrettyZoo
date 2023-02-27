@@ -10,7 +10,6 @@ open module core.main {
     requires curator.client;
     requires zookeeper;
     requires org.slf4j;
-    requires log4j.slf4j.impl;
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
     requires com.google.common;

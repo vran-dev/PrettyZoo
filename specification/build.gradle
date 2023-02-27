@@ -11,11 +11,9 @@ compileJava {
 dependencies {
     api('org.apache.zookeeper:zookeeper') {
         exclude group: 'junit', module: 'junit'
-        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-        exclude group: 'io.netty', module: 'netty'
         exclude group: 'log4j', module: 'log4j'
+        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
-
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 }

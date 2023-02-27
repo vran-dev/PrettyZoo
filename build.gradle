@@ -40,9 +40,9 @@ subprojects {
     ext {
         slf4jVersion = '1.7.28'
         jacksonVersion = '2.12.0'
-        log4jVersion = '2.12.1'
+        log4jVersion = '2.20.0'
         junitVersion = '4.12'
-        zookeeperVersion = '3.4.6'
+        zookeeperVersion = '3.4.10'
         curatorRecipesVersion = '4.2.0'
         guavaVersio = '27.0.1-jre'
         jfoenixVersion = '9.0.10'
@@ -56,9 +56,9 @@ subprojects {
 
     dependencies {
         implementation group: 'org.slf4j', name: 'slf4j-api', version: "${slf4jVersion}"
-        implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: "${log4jVersion}"
-        implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: "${log4jVersion}"
-        implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: "${log4jVersion}"
+        implementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
+        implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+        implementation "org.apache.logging.log4j:log4j-slf4j2-impl:${log4jVersion}"
         testImplementation group: 'junit', name: 'junit', version: "${junitVersion}"
 
         constraints {
@@ -68,6 +68,12 @@ subprojects {
             implementation group: 'com.jfoenix', name: 'jfoenix', version: "${jfoenixVersion}"
             implementation "com.google.guava:guava:${guavaVersio}"
             implementation group: 'org.antlr', name: 'antlr4-runtime', version: "${antlr4RuntimeVersion}"
+            implementation('org.slf4j:slf4j-api:2.0.6') {
+                force = true
+            }
+            implementation('org.slf4j:slf4j-log4j12:2.0.6') {
+                force = true
+            }
             api("org.apache.zookeeper:zookeeper:${zookeeperVersion}") {
                 force = true
             }
