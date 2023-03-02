@@ -6,5 +6,5 @@ open module specification.main {
     exports cc.cc1234.specification.node;
     exports cc.cc1234.specification.listener;
     exports cc.cc1234.specification.util;
-    requires zookeeper;
+    requires merged.zookeeper;
 }

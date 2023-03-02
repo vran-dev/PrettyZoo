@@ -256,9 +256,9 @@ public class ServerViewController {
 
         initConfigTabPaneBinding();
         aclTextArea.setPromptText("ACL:\r"
-                + "digest:test:test\r"
-                + "auth:test:test\r"
-                + "\n");
+            + "digest:test:test\r"
+            + "auth:test:test\r"
+            + "\n");
         initPasswordComponent();
         initValidator();
         propertyBind();
@@ -330,9 +330,9 @@ public class ServerViewController {
         });
         sshPasswordVisibleButton.setOnMouseReleased(e -> {
             var originPromptText = ((String) sshPassword.getProperties()
-                    .getOrDefault(originPromptKey, ""));
+                .getOrDefault(originPromptKey, ""));
             var originText = ((String) sshPassword.getProperties()
-                    .getOrDefault(originTextKey, ""));
+                .getOrDefault(originTextKey, ""));
             sshPassword.promptTextProperty().set(originPromptText);
             sshPassword.textProperty().set(originText);
 
@@ -373,27 +373,27 @@ public class ServerViewController {
 
         // advance connection config
         connectionConfigCheckbox.selectedProperty()
-                .bindBidirectional(serverConfiguration.enableConnectionAdvanceConfigurationProperty());
+            .bindBidirectional(serverConfiguration.enableConnectionAdvanceConfigurationProperty());
         ConnectionConfigurationVO connectionConfig = serverConfiguration.getConnectionConfiguration();
         connectionTimeoutInput.textProperty()
-                .bindBidirectional(connectionConfig.connectionTimeoutProperty(), IntegerNumberConverter.INSTANCE);
+            .bindBidirectional(connectionConfig.connectionTimeoutProperty(), IntegerNumberConverter.INSTANCE);
         maxRetriesInput.textProperty()
-                .bindBidirectional(connectionConfig.maxRetriesProperty(), IntegerNumberConverter.INSTANCE);
+            .bindBidirectional(connectionConfig.maxRetriesProperty(), IntegerNumberConverter.INSTANCE);
         sessionTimeoutInput.textProperty()
-                .bindBidirectional(connectionConfig.sessionTimeoutProperty(), IntegerNumberConverter.INSTANCE);
+            .bindBidirectional(connectionConfig.sessionTimeoutProperty(), IntegerNumberConverter.INSTANCE);
         retryIntervalTimeInput.textProperty()
-                .bindBidirectional(connectionConfig.retryIntervalTimeProperty(), IntegerNumberConverter.INSTANCE);
+            .bindBidirectional(connectionConfig.retryIntervalTimeProperty(), IntegerNumberConverter.INSTANCE);
 
         // ssh tunnel config
         sshServer.textProperty().bindBidirectional(serverConfiguration.sshServerProperty());
         sshServerPort.textProperty()
-                .bindBidirectional(serverConfiguration.sshServerPortProperty(), IntegerNumberConverter.INSTANCE);
+            .bindBidirectional(serverConfiguration.sshServerPortProperty(), IntegerNumberConverter.INSTANCE);
         sshUsername.textProperty().bindBidirectional(serverConfiguration.sshUsernameProperty());
         sshPassword.textProperty().bindBidirectional(serverConfiguration.sshPasswordProperty());
         sshKeyFileField.textProperty().bindBidirectional(serverConfiguration.sshKeyFilePathProperty());
         remoteServer.textProperty().bindBidirectional(serverConfiguration.remoteServerProperty());
         remoteServerPort.textProperty()
-                .bindBidirectional(serverConfiguration.remoteServerPortProperty(), IntegerNumberConverter.INSTANCE);
+            .bindBidirectional(serverConfiguration.remoteServerPortProperty(), IntegerNumberConverter.INSTANCE);
         sshTunnelCheckbox.selectedProperty().bindBidirectional(serverConfiguration.sshEnabledProperty());
     }
 
@@ -419,15 +419,15 @@ public class ServerViewController {
         boolean passed = baseValidateBeforeSave();
         if (passed) {
             Try.of(() -> prettyZooFacade.saveServerConfiguration(serverConfiguration))
-                    .onSuccess(e -> {
-                        if (serverConfiguration.getId() == null || serverConfiguration.getId().isBlank()) {
-                            onClose();
-                        }
-                        VToast.info("save success");
-                    })
-                    .onFailure(e -> {
-                        VToast.error(e.getMessage());
-                    });
+                .onSuccess(e -> {
+                    if (serverConfiguration.getId() == null || serverConfiguration.getId().isBlank()) {
+                        onClose();
+                    }
+                    VToast.info("save success");
+                })
+                .onFailure(e -> {
+                    VToast.error(e.getMessage());
+                });
         }
     }
 
@@ -435,25 +435,25 @@ public class ServerViewController {
         boolean baseValidate = true;
         if (connectionConfigCheckbox.isSelected()) {
             baseValidate = Stream.of(connectionTimeoutInput.validate(),
-                            sessionTimeoutInput.validate(),
-                            maxRetriesInput.validate(),
-                            retryIntervalTimeInput.validate())
-                    .allMatch(t -> t);
+                    sessionTimeoutInput.validate(),
+                    maxRetriesInput.validate(),
+                    retryIntervalTimeInput.validate())
+                .allMatch(t -> t);
         }
         if (sshTunnelCheckbox.isSelected()) {
             baseValidate = baseValidate && Stream.of(
-                    zkPort.validate(),
-                    zkAlias.validate(),
-                    remoteServer.validate(),
-                    remoteServerPort.validate(),
-                    sshUsername.validate(),
-                    sshPassword.validate(),
-                    sshServer.validate(),
-                    sshServerPort.validate()
+                zkPort.validate(),
+                zkAlias.validate(),
+                remoteServer.validate(),
+                remoteServerPort.validate(),
+                sshUsername.validate(),
+                sshPassword.validate(),
+                sshServer.validate(),
+                sshServerPort.validate()
             ).allMatch(t -> t);
         } else {
             baseValidate = baseValidate && Stream.of(zkHost.validate(), zkPort.validate(), zkAlias.validate())
-                    .allMatch(t -> t);
+                .allMatch(t -> t);
         }
         return baseValidate;
     }
@@ -488,7 +488,7 @@ public class ServerViewController {
         Try.of(() -> {
             Asserts.notNull(serverConfigurationVO, "save config first");
             Asserts.assertTrue(prettyZooFacade.hasServerConfiguration(serverConfigurationVO.getId()),
-                    "save config first");
+                "save config first");
         }).onSuccess(o -> {
             if (serverConfigurationVO.getStatus() == ServerStatus.DISCONNECTED) {
                 serverConfigurationVO.setStatus(ServerStatus.CONNECTING);
@@ -496,49 +496,55 @@ public class ServerViewController {
             buttonHBox.setDisable(true);
             NodeViewController nodeViewController = retrieveNodeViewController(serverConfigurationVO.getId());
             prettyZooFacade.connect(serverConfigurationVO.getId(),
-                            List.of(new DefaultTreeNodeListener()),
-                            List.of(new ServerListener() {
-                                @Override
-                                public void onClose(String id) {
-                                    if (id.equals(serverConfigurationVO.getId())) {
-                                        log.info("server [{}] {} closed", id,
-                                                prettyZooFacade.getServerConfigurationById(id).getLabel());
-                                        Platform.runLater(() -> {
-                                            serverConfigurationVO.setStatus(ServerStatus.DISCONNECTED);
-                                            if (closeHook != null) {
-                                                closeHook.run();
-                                            }
-                                        });
+                    List.of(new DefaultTreeNodeListener()),
+                    List.of(new ServerListener() {
+                        @Override
+                        public void onClose(String id, String reason) {
+                            if (id.equals(serverConfigurationVO.getId())) {
+                                log.info("server [{}] {} closed", id,
+                                    prettyZooFacade.getServerConfigurationById(id).getLabel());
+                                Platform.runLater(() -> {
+                                    if (serverConfigurationVO.getStatus().isConnected()) {
+                                        disconnect(id);
                                     }
-                                }
+                                    serverConfigurationVO.setStatus(ServerStatus.DISCONNECTED);
+                                    if (reason != null) {
+                                        VToast.error(reason);
+                                    }
+                                    if (closeHook != null) {
+                                        closeHook.run();
+                                    }
+                                });
+                            }
+                        }
 
-                                @Override
-                                public void onReconnecting(String id) {
-                                    if (id.equals(serverConfigurationVO.getId())) {
-                                        Platform.runLater(() -> {
-                                            serverConfigurationVO.setStatus(ServerStatus.RECONNECTING);
-                                            VToast.error(prettyZooFacade.getServerConfigurationById(id).getLabel()
-                                                    + " lost connection");
-                                        });
-                                    }
-                                }
+                        @Override
+                        public void onReconnecting(String id) {
+                            if (id.equals(serverConfigurationVO.getId())) {
+                                Platform.runLater(() -> {
+                                    serverConfigurationVO.setStatus(ServerStatus.RECONNECTING);
+                                    VToast.error(prettyZooFacade.getServerConfigurationById(id).getLabel()
+                                        + " lost connection");
+                                });
+                            }
+                        }
 
-                                @Override
-                                public void onConnected(String id) {
-                                    if (id.equals(serverConfigurationVO.getId())) {
-                                        Platform.runLater(() -> {
-                                            if (serverConfigurationVO.getStatus() == ServerStatus.RECONNECTING) {
-                                                VToast.info("reconnect "
-                                                        + prettyZooFacade.getServerConfigurationById(id).getLabel()
-                                                        + " success");
-                                            }
-                                            serverConfigurationVO.setStatus(ServerStatus.CONNECTED);
-                                        });
+                        @Override
+                        public void onConnected(String id) {
+                            if (id.equals(serverConfigurationVO.getId())) {
+                                Platform.runLater(() -> {
+                                    if (serverConfigurationVO.getStatus() == ServerStatus.RECONNECTING) {
+                                        VToast.info("reconnect "
+                                            + prettyZooFacade.getServerConfigurationById(id).getLabel()
+                                            + " success");
                                     }
-                                }
-                            }))
-                    .thenAccept(v -> connectSuccessCallback(parent, nodeViewController, serverConfigurationVO))
-                    .exceptionally(e -> connectErrorCallback(e, serverConfigurationVO));
+                                    serverConfigurationVO.setStatus(ServerStatus.CONNECTED);
+                                });
+                            }
+                        }
+                    }))
+                .thenAccept(v -> connectSuccessCallback(parent, nodeViewController, serverConfigurationVO))
+                .exceptionally(e -> connectErrorCallback(e, serverConfigurationVO));
         }).onFailure(e -> {
             log.error("connect server error", e);
             VToast.error(e.getMessage());

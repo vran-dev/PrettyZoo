@@ -7,10 +7,18 @@ public interface ServerListener {
     }
 
     default void onClose(String id) {
+        this.onClose(id, null);
+    }
+
+    default void onClose(String id, String reason) {
 
     }
 
     default void onReconnecting(String id) {
+
+    }
+
+    default void onAuthFailed(String id) {
 
     }
 }

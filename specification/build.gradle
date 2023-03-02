@@ -9,12 +9,57 @@ compileJava {
 }
 
 dependencies {
-    api('org.apache.zookeeper:zookeeper') {
-        exclude group: 'junit', module: 'junit'
-        exclude group: 'log4j', module: 'log4j'
-        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    if (!file("libs/merged-zookeeper.jar").exists()) {
+        compileOnly('org.apache.zookeeper:zookeeper') {
+            exclude group: 'junit', module: 'junit'
+            exclude group: 'log4j', module: 'log4j'
+            exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+        }
     }
+    api(files("libs/merged-zookeeper.jar"))
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 }
 
+// 从依赖路径中将 zookeeper 和 zookeeper-jute 解压出来，然后将两个打包为 zookeeper-all.jar 放到 libs 目录下，并将 merged-zookeeper.jar 添加到 classpath 中
+task unzipZookeeper(type: Copy) {
+    if (file("$buildDir/unzipped-zookeeper").exists()) {
+        file("$buildDir/unzipped-zookeeper").deleteDir()
+    }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    configurations.compileClasspath.findAll { it.name.startsWith('zookeeper') }.forEach {
+        from zipTree(it)
+        into "$buildDir/unzipped-zookeeper"
+        doLast {
+            def zookeeperJuteDir = file("$buildDir/unzipped-zookeeper/META-INF/maven/org.apache.zookeeper/zookeeper-jute")
+            if (zookeeperJuteDir.isDirectory() && zookeeperJuteDir.exists()) {
+                zookeeperJuteDir.deleteDir()
+
+            }
+            def pomPropertiesPath = file("$buildDir/unzipped-zookeeper/META-INF/maven/org.apache.zookeeper/zookeeper/pom.properties")
+            if (pomPropertiesPath.exists()) {
+                pomPropertiesPath.text = pomPropertiesPath.text.replace("artifactId=zookeeper", "artifactId=merged-zookeeper")
+            }
+        }
+    }
+}
+
+// build jar from unzipped-zookeeper directory
+task buildMergedZookeeperJar(type: Jar, dependsOn: unzipZookeeper) {
+    from "$buildDir/unzipped-zookeeper"
+    archiveFileName.set('merged-zookeeper.jar')
+    manifest {
+        attributes(
+                "Implementation-Title": "Apache ZooKeeper",
+                "Implementation-Version": "${zookeeperVersion}",
+                "Specification-Vendor": "The Apache Software Foundation",
+                "Specification-Title": "Apache ZooKeeper",
+                "Implementation-Vendor-Id": "org.apache.zookeeper",
+                "Implementation-Vendor": "The Apache Software Foundation",
+                "Build-Jdk": "1.8.0_241",
+                "Specification-Version": " 3.6",
+                "Implementation-URL: http://zookeeper.apache.org/",
+        )
+    }
+    destinationDirectory.set(file("$projectDir/libs"))
+}
