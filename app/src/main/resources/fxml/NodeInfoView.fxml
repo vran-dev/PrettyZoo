@@ -170,7 +170,7 @@
                                     </font>
                                 </Button>
                                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0"
-                                      styleClass="button-group">
+                                      styleClass="button-group,text">
                                     <children>
                                         <Button fx:id="rawFormatButton" mnemonicParsing="false" text="RAW"/>
                                         <Button fx:id="jsonFormatButton" mnemonicParsing="false" text="JSON"/>
