@@ -842,7 +842,7 @@
 .node-info-field {
     -fx-border-color: transparent transparent transparent transparent;
     -fx-background-color: transparent;
-    -fx-text-fill: #3F51B5;
+    -fx-text-fill: #2d2d2d;
     -fx-pref-width: 200px;
 }
 
@@ -901,6 +901,7 @@
     -fx-fill-height: true;
     -fx-pref-width: -1;
     -fx-min-width: 200;
+    -fx-text-fill: #000;
 }
 
 .button-group .button {
