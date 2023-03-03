@@ -21,7 +21,7 @@ public class ZkNodeTreeCell extends JFXTreeCell<ZkNode> {
     private Text node = new Text();
 
     public ZkNodeTreeCell(Runnable createAction, Runnable deleteAction) {
-        node.getStyleClass().add("black-text");
+        node.getStyleClass().add("text");
 
         ResourceBundle rb = ResourceBundleUtils.get(prettyZooFacade.getLocale());
 

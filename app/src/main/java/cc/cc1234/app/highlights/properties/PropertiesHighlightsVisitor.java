@@ -50,7 +50,7 @@ public class PropertiesHighlightsVisitor extends PropertiesBaseVisitor<List<Styl
 
     private void addEmpty(int start) {
         if (start > lastIndex) {
-            spans.add(new StyleSpan<>(Collections.singleton("black-text"), start - lastIndex));
+            spans.add(new StyleSpan<>(Collections.singleton("text"), start - lastIndex));
             lastIndex = start;
         }
     }

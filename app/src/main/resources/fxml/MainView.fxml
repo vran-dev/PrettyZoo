@@ -12,7 +12,7 @@
            minWidth="-Infinity"
            prefHeight="600.0"
            prefWidth="1050.0"
-           styleClass="white-background,black-text"
+           styleClass="white-background,text"
            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="cc.cc1234.app.controller.MainViewController">
     <children>

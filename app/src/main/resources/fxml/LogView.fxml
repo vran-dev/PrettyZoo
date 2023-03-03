@@ -8,7 +8,7 @@
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="cc.cc1234.app.controller.LogViewController">
     <children>
         <JFXTextArea fx:id="logContentArea" editable="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="8.0"
-                     AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="2.0"/>
+                     AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="2.0" styleClass="text"/>
         <JFXButton fx:id="closeButton" layoutX="612.0" layoutY="14.0" styleClass="v-button" text="X"
                    AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0"/>
     </children>

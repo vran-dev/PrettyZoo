@@ -7,11 +7,6 @@
     -fx-background-color: transparent;
 }
 
-.black-text {
-    -fx-text-fill: #000;
-    -fx-fill: #000;
-}
-
 .red-text {
     -fx-text-fill: #D22C2CFF;
     -fx-fill: #D22C2CFF;
@@ -19,6 +14,7 @@
 
 .text {
     -fx-fill: #000; /* default */
+    -fx-text-fill: #000;
 }
 
 .button {

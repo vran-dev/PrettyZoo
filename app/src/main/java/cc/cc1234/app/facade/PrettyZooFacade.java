@@ -112,7 +112,7 @@ public class PrettyZooFacade {
                     var highlights = Fills.fill(path, input,
                             s -> {
                                 Text text = new Text(s);
-                                text.getStyleClass().add("black-text");
+                                text.getStyleClass().add("text");
                                 return text;
                             },
                             s -> {
