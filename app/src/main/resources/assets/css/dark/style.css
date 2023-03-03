@@ -1014,3 +1014,11 @@
     -fx-background-color: #000;
     -fx-border-width: 0;
 }
+
+/* tooltip */
+.tooltip {
+    -fx-text-fill: #DDD;
+    -fx-background-color: transparent;
+    -fx-font-size: 0.85em;
+    -fx-effect: none;
+}

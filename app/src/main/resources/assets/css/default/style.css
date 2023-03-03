@@ -1047,3 +1047,11 @@
     -fx-border-width: 0 0 0 0;
     -fx-border-color: #454444;
 }
+
+/* tooltip */
+.tooltip {
+    -fx-text-fill: #3a3a3a;
+    -fx-background-color: transparent;
+    -fx-font-size: 0.85em;
+    -fx-effect: none;
+}

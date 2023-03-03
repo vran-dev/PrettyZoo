@@ -163,7 +163,7 @@
                             <children>
                                 <Button fx:id="nodeUpdateButton" mnemonicParsing="false" styleClass="save-button">
                                     <tooltip>
-                                        <Tooltip anchorLocation="WINDOW_TOP_LEFT" text="更新"/>
+                                        <Tooltip anchorLocation="WINDOW_TOP_LEFT" text="%nodeData.button.save"/>
                                     </tooltip>
                                     <font>
                                         <Font size="10.0"/>
