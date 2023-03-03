@@ -4,7 +4,7 @@ open module specificationImpl.main {
     requires curator.framework;
     requires curator.recipes;
     requires org.slf4j;
-    requires zookeeper;
+    requires merged.zookeeper;
     requires curator.client;
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.core;

@@ -13,4 +13,8 @@ public enum ServerStatus {
     public boolean isConnecting() {
         return this == CONNECTING || this == RECONNECTING;
     }
+
+    public boolean isConnected() {
+        return this == CONNECTED;
+    }
 }

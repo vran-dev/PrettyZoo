@@ -50,7 +50,9 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
                 switch (newState) {
                     case RECONNECTED:
                     case CONNECTED:
-                        listener.forEach(l -> l.onConnected(params.getId()));
+                        if (client.getZookeeperClient().isConnected()) {
+                            listener.forEach(l -> l.onConnected(params.getId()));
+                        }
                         break;
                     case SUSPENDED:
                     case LOST:
@@ -64,6 +66,11 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
         client.getCuratorListenable().addListener((client1, event) -> {
             if (event.getType() == CuratorEventType.CLOSING) {
                 listener.forEach(l -> l.onClose(params.getId()));
+            }
+            if (event.getWatchedEvent().getState().name().equals("AuthFailed")) {
+                if (!client1.getZookeeperClient().isConnected()) {
+                    listener.forEach(l -> l.onClose(params.getId(), "AuthFailed"));
+                }
             }
         });
 
@@ -82,31 +89,31 @@ public class CuratorZookeeperConnectionFactory implements ZookeeperConnectionFac
 
     private CuratorFramework curatorFramework(ZookeeperParams params) {
         final RetryPolicy retryPolicy =
-                new ExponentialBackoffRetry(params.getRetryIntervalTime(), params.getMaxRetries());
+            new ExponentialBackoffRetry(params.getRetryIntervalTime(), params.getMaxRetries());
         final CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
-                .connectString(params.getUrl())
-                .connectionTimeoutMs(params.getConnectionTimeout())
-                .sessionTimeoutMs(params.getSessionTimeout())
-                .retryPolicy(retryPolicy);
+            .connectString(params.getUrl())
+            .connectionTimeoutMs(params.getConnectionTimeout())
+            .sessionTimeoutMs(params.getSessionTimeout())
+            .retryPolicy(retryPolicy);
 
         List<AuthInfo> acls = params.getAclList()
-                .stream()
-                .filter(s -> !s.isBlank())
-                .map(ACLs::parseDigest)
-                .toList();
+            .stream()
+            .filter(s -> !s.isBlank())
+            .map(ACLs::parseDigest)
+            .toList();
         if (!acls.isEmpty()) {
             builder.authorization(acls)
-                    .aclProvider(new ACLProvider() {
-                        @Override
-                        public List<ACL> getDefaultAcl() {
-                            return ZooDefs.Ids.CREATOR_ALL_ACL;
-                        }
+                .aclProvider(new ACLProvider() {
+                    @Override
+                    public List<ACL> getDefaultAcl() {
+                        return ZooDefs.Ids.CREATOR_ALL_ACL;
+                    }
 
-                        @Override
-                        public List<ACL> getAclForPath(String path) {
-                            return ZooDefs.Ids.CREATOR_ALL_ACL;
-                        }
-                    });
+                    @Override
+                    public List<ACL> getAclForPath(String path) {
+                        return ZooDefs.Ids.CREATOR_ALL_ACL;
+                    }
+                });
         }
 
         return builder.build();

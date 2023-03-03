@@ -8,7 +8,7 @@ open module core.main {
     requires curator.framework;
     requires curator.recipes;
     requires curator.client;
-    requires zookeeper;
+    requires merged.zookeeper;
     requires org.slf4j;
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
