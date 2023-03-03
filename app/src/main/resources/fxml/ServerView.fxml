@@ -33,7 +33,7 @@
                                       prefWidth="160.0"
                                       promptText="zookeeper host"/>
                         <Label text=":"
-                               styleClass="black-text"
+                               styleClass="text"
                                AnchorPane.leftAnchor="200.0"
                                AnchorPane.topAnchor="30.0"/>
                         <JFXTextField fx:id="zkPort" labelFloat="false"
@@ -142,7 +142,7 @@
                                     <Text strokeType="OUTSIDE"
                                           strokeWidth="0.0"
                                           text="SSH Server"
-                                          styleClass="black-text"
+                                          styleClass="text"
                                           GridPane.columnIndex="0"
                                           GridPane.rowIndex="0"/>
                                     <HBox GridPane.columnIndex="0"
@@ -153,7 +153,7 @@
                                                           maxHeight="-Infinity"
                                                           promptText="ssh server"/>
 
-                                            <Label prefHeight="23.0" text=":" styleClass="black-text"/>
+                                            <Label prefHeight="23.0" text=":" styleClass="text"/>
                                             <JFXTextField fx:id="sshServerPort"
                                                           alignment="CENTER"
                                                           maxHeight="-Infinity"
@@ -213,11 +213,11 @@
                                                   AnchorPane.topAnchor="72.0"/>
                                     <Text layoutX="70.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0"
                                           text="Remote Zookeeper Server"
-                                          styleClass="black-text"
+                                          styleClass="text"
                                           AnchorPane.leftAnchor="22.0"
                                           AnchorPane.topAnchor="20.0"/>
                                     <Label layoutX="154.0" layoutY="75.0" prefHeight="23.0" text=":"
-                                           styleClass="black-text"
+                                           styleClass="text"
                                            AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="71.0"/>
                                     <JFXTextField fx:id="remoteServerPort" alignment="CENTER"
                                                   layoutX="170.0" layoutY="72.0" prefHeight="23.0"

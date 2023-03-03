@@ -7,11 +7,6 @@
     -fx-background-color: transparent;
 }
 
-.black-text {
-    -fx-text-fill: #000;
-    -fx-fill: #000;
-}
-
 .red-text {
     -fx-text-fill: #D22C2CFF;
     -fx-fill: #D22C2CFF;
@@ -19,6 +14,7 @@
 
 .text {
     -fx-fill: #000; /* default */
+    -fx-text-fill: #000;
 }
 
 .button {
@@ -842,7 +838,7 @@
 .node-info-field {
     -fx-border-color: transparent transparent transparent transparent;
     -fx-background-color: transparent;
-    -fx-text-fill: #3F51B5;
+    -fx-text-fill: #2d2d2d;
     -fx-pref-width: 200px;
 }
 
@@ -901,6 +897,7 @@
     -fx-fill-height: true;
     -fx-pref-width: -1;
     -fx-min-width: 200;
+    -fx-text-fill: #000;
 }
 
 .button-group .button {
@@ -1045,4 +1042,12 @@
     -fx-background-color: #FFF;
     -fx-border-width: 0 0 0 0;
     -fx-border-color: #454444;
+}
+
+/* tooltip */
+.tooltip {
+    -fx-text-fill: #3a3a3a;
+    -fx-background-color: transparent;
+    -fx-font-size: 0.85em;
+    -fx-effect: none;
 }

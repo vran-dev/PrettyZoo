@@ -18,7 +18,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import org.apache.zookeeper.data.Stat;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 
@@ -35,9 +34,9 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("all")
 public class NodeInfoViewController {
-    
+
     private static final String DATUM = "datum";
-    
+
     @FXML
     private AnchorPane nodeInfoPane;
 
@@ -95,19 +94,19 @@ public class NodeInfoViewController {
 
     @FXML
     private Label ctimeLabel;
-    
+
     @FXML
     private Label cZxidLabel;
-    
+
     @FXML
     private Label pZxidLabel;
-    
+
     @FXML
     private Label mZxidLabel;
-    
+
     @FXML
     private Label ephemeralOwnerLabel;
-    
+
     @FXML
     private Button jsonFormatButton;
 
@@ -161,17 +160,17 @@ public class NodeInfoViewController {
         xmlFormatButton.setOnAction(e -> dataXmlFormat());
         formatButtons = List.of(jsonFormatButton, xmlFormatButton, rawFormatButton);
         Charset.availableCharsets()
-                .entrySet()
-                .stream()
-                .filter(entry -> !entry.getValue().name().startsWith("x-"))
-                .filter(entry -> !entry.getValue().name().startsWith("X-"))
-                .filter(entry -> !entry.getValue().name().startsWith("IBM"))
-                .filter(entry -> !entry.getValue().name().startsWith("ibm"))
-                .filter(entry -> !entry.getValue().name().startsWith("windows"))
-                .filter(entry -> !entry.getValue().name().startsWith("WINDOWS"))
-                .forEach(entry -> {
-                    charsetChoice.getItems().add(entry.getValue().name());
-                });
+            .entrySet()
+            .stream()
+            .filter(entry -> !entry.getValue().name().startsWith("x-"))
+            .filter(entry -> !entry.getValue().name().startsWith("X-"))
+            .filter(entry -> !entry.getValue().name().startsWith("IBM"))
+            .filter(entry -> !entry.getValue().name().startsWith("ibm"))
+            .filter(entry -> !entry.getValue().name().startsWith("windows"))
+            .filter(entry -> !entry.getValue().name().startsWith("WINDOWS"))
+            .forEach(entry -> {
+                charsetChoice.getItems().add(entry.getValue().name());
+            });
         charsetChoice.getSelectionModel().select("UTF-8");
         charsetChoice.getSelectionModel().selectedItemProperty().addListener((event, ov, nv) -> {
             if (nv == null) {
@@ -188,8 +187,6 @@ public class NodeInfoViewController {
             }
         });
 
-        Tooltip tooltip = new Tooltip("Double click");
-        Tooltip.install(dataMenuBar, tooltip);
         dataMenuBar.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2 && e.getButton() == MouseButton.PRIMARY) {
                 StackPane parent = (StackPane) nodeInfoPane.getParent();
@@ -251,7 +248,7 @@ public class NodeInfoViewController {
         Runnable action = () -> {
             Transitions.rotate(nodeUpdateButton, () -> {
                 Stat stat = prettyZooFacade.updateData(ActiveServerContext.get(), path, data,
-                        ex -> VToast.error(ex.getMessage()));
+                    ex -> VToast.error(ex.getMessage()));
                 dataCodeArea.getProperties().put("raw", data);
                 dataCodeArea.getProperties().put("rawBytes", data.getBytes());
                 updateField(stat);
@@ -289,17 +286,17 @@ public class NodeInfoViewController {
         showDateTime();
         switchZxid();
     }
-    
+
     private void putZxidDatum(TextField field, long value) {
         field.getProperties().put(DATUM, new SwitchableTextFieldDatum(String.valueOf(value),
-                Formatters.longToHexString(value)));
+            Formatters.longToHexString(value)));
     }
-    
+
     private void initTextField(ZkNode node) {
         setCodeAreaData(transformData(node));
         dataCodeArea.getProperties().put("raw", transformData(node));
         dataCodeArea.getProperties().put("rawBytes", node.getDataBytes());
-    
+
         putZxidDatum(ephemeralOwnerField, node.getEphemeralOwner());
         putZxidDatum(cZxidField, node.getCzxid());
         putZxidDatum(pZxidField, node.getPzxid());
@@ -318,15 +315,15 @@ public class NodeInfoViewController {
         showDateTime();
         switchZxid();
     }
-    
+
     private void switchZxid() {
         Stream.of(ephemeralOwnerField, cZxidField, pZxidField, mZxidField).forEach(field -> {
             SwitchableTextFieldDatum datum = (SwitchableTextFieldDatum) field.getProperties()
-                    .getOrDefault(DATUM, SwitchableTextFieldDatum.BLANK);
+                .getOrDefault(DATUM, SwitchableTextFieldDatum.BLANK);
             field.setText(datum.exchange());
         });
     }
-    
+
     private String transformData(ZkNode node) {
         final String charset = charsetChoice.getSelectionModel().getSelectedItem();
         try {
@@ -367,7 +364,7 @@ public class NodeInfoViewController {
             return "-";
         } else {
             return OffsetDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
     }
 
@@ -433,7 +430,6 @@ public class NodeInfoViewController {
     }
 
     private void switchFormatButton(Button button) {
-        button.setTextFill(Color.valueOf("#3F51B5"));
-        formatButtons.stream().filter(b -> b != button).forEach(b -> b.setTextFill(Color.valueOf("#000")));
+        // donothing
     }
 }

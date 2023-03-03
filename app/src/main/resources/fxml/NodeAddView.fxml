@@ -22,7 +22,7 @@
                      AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="130.0"/>
 
         <Label layoutX="171.0" layoutY="24.0" style="-fx-font-weight: bold;"
-               styleClass="black-text"
+               styleClass="text"
                text="Path" AnchorPane.leftAnchor="70.0"
                AnchorPane.topAnchor="25.0"/>
 

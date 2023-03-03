@@ -73,7 +73,7 @@ public class XmlHighlights {
             }
             lastKwEnd = matcher.end();
         }
-        spansBuilder.add(new StyleSpan<>(Collections.singleton("black-text"), text.length() - lastKwEnd));
+        spansBuilder.add(new StyleSpan<>(Collections.singleton("text"), text.length() - lastKwEnd));
         return spansBuilder.create();
     }
 }
