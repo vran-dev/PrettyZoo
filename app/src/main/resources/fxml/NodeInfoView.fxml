@@ -59,7 +59,8 @@
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
-                                        <Label fx:id="ephemeralOwnerLabel" minWidth="130.0" text="ephemeralOwner" styleClass="text"/>
+                                        <Label fx:id="ephemeralOwnerLabel" minWidth="130.0" text="ephemeralOwner"
+                                               styleClass="text"/>
                                         <TextField fx:id="ephemeralOwnerField" editable="false"
                                                    styleClass="node-info-field"/>
                                     </children>
@@ -173,8 +174,7 @@
                                       styleClass="button-group,text">
                                     <children>
                                         <Button fx:id="rawFormatButton" mnemonicParsing="false" text="RAW"/>
-                                        <Button fx:id="jsonFormatButton" mnemonicParsing="false" text="JSON"/>
-                                        <Button fx:id="xmlFormatButton" mnemonicParsing="false" text="XML"/>
+                                        <Button fx:id="smartFormatButton" mnemonicParsing="false" text="FORMAT"/>
                                     </children>
                                 </HBox>
                                 <ChoiceBox fx:id="charsetChoice" prefWidth="150.0"/>

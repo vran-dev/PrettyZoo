@@ -108,13 +108,10 @@ public class NodeInfoViewController {
     private Label ephemeralOwnerLabel;
 
     @FXML
-    private Button jsonFormatButton;
+    private Button smartFormatButton;
 
     @FXML
     private Button rawFormatButton;
-
-    @FXML
-    private Button xmlFormatButton;
 
     @FXML
     private HBox dataMenuBar;
@@ -155,10 +152,8 @@ public class NodeInfoViewController {
             label.setTooltip(zxidLabelTooltip);
             label.setOnMouseClicked(e -> switchZxid());
         });
-        jsonFormatButton.setOnAction(e -> dataJsonFormat());
+        smartFormatButton.setOnAction(e -> dataFormat());
         rawFormatButton.setOnAction(e -> dataRawFormat());
-        xmlFormatButton.setOnAction(e -> dataXmlFormat());
-        formatButtons = List.of(jsonFormatButton, xmlFormatButton, rawFormatButton);
         Charset.availableCharsets()
             .entrySet()
             .stream()
@@ -216,7 +211,6 @@ public class NodeInfoViewController {
         } else {
             initTextField(zkNode);
         }
-        switchFormatButton(rawFormatButton);
     }
 
     private void initCodeArea() {
@@ -384,40 +378,36 @@ public class NodeInfoViewController {
         pathField.clear();
     }
 
-    private void dataJsonFormat() {
+    private void dataFormat() {
         final Object data = dataCodeArea.getProperties().get("raw");
         if (data == null) {
             return;
         }
-        String prettyJson;
         try {
-            String raw = data.toString();
-            prettyJson = Formatters.prettyJson(raw);
-            if (Objects.equals(SYS_LF, "\r\n")) {
-                prettyJson = prettyJson.replaceAll("\r\n", "\n");
-            }
-            if (!Objects.equals(prettyJson, raw)) {
-                setCodeAreaData(prettyJson);
-            }
-            switchFormatButton(jsonFormatButton);
+            jsonFormat(data);
         } catch (JsonProcessingException e) {
-            VToast.error("JSON format failed");
+            try {
+                xmlFormat(data);
+            } catch (Exception ex) {
+                VToast.error("only support json, xml now");
+            }
         }
     }
 
-    private void dataXmlFormat() {
-        final Object data = dataCodeArea.getProperties().get("raw");
-        if (data == null) {
-            return;
+    private void jsonFormat(Object data) throws JsonProcessingException {
+        String raw = data.toString();
+        String prettyJson = Formatters.prettyJson(raw);
+        if (Objects.equals(SYS_LF, "\r\n")) {
+            prettyJson = prettyJson.replaceAll("\r\n", "\n");
         }
-        final String prettyXML;
-        try {
-            prettyXML = Formatters.prettyXml(data.toString());
-            setCodeAreaData(prettyXML);
-            switchFormatButton(xmlFormatButton);
-        } catch (Exception e) {
-            VToast.error("XML format failed");
+        if (!Objects.equals(prettyJson, raw)) {
+            setCodeAreaData(prettyJson);
         }
+    }
+
+    private void xmlFormat(Object data) {
+        String prettyXML = Formatters.prettyXml(data.toString());
+        setCodeAreaData(prettyXML);
     }
 
     private void dataRawFormat() {
@@ -426,10 +416,6 @@ public class NodeInfoViewController {
             return;
         }
         setCodeAreaData(data.toString());
-        switchFormatButton(rawFormatButton);
     }
 
-    private void switchFormatButton(Button button) {
-        // donothing
-    }
 }
