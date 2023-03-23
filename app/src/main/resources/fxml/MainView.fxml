@@ -4,7 +4,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
 <StackPane fx:id="rootStackPane"
            maxHeight="-Infinity"
            maxWidth="-Infinity"
@@ -115,23 +114,28 @@
                         <AnchorPane StackPane.alignment="CENTER">
                             <children>
                                 <Label fx:id="prettyZooLabel" alignment="CENTER" contentDisplay="CENTER"
-                                       prefHeight="160.0" prefWidth="199.0"
-                                       styleClass="prettyZoo" AnchorPane.bottomAnchor="300.0"
-                                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                       styleClass="prettyZoo"
+                                       minHeight="300"
+                                       minWidth="300"
+                                       AnchorPane.leftAnchor="0.0"
+                                       AnchorPane.rightAnchor="0.0"
                                        AnchorPane.topAnchor="50.0"/>
-                                <Hyperlink fx:id="prettyZooLink" alignment="CENTER"
-                                           contentDisplay="CENTER"
-                                           layoutX="232.0"
-                                           layoutY="303.0"
-                                           text="https://github.com/vran-dev/PrettyZoo"
-                                           AnchorPane.bottomAnchor="200.0"
-                                           AnchorPane.leftAnchor="0.0"
-                                           AnchorPane.rightAnchor="0.0"
-                                           AnchorPane.topAnchor="250.0">
-                                    <font>
-                                        <Font size="17.0"/>
-                                    </font>
-                                </Hyperlink>
+                                <HBox AnchorPane.leftAnchor="50.0"
+                                      AnchorPane.rightAnchor="0.0"
+                                      AnchorPane.topAnchor="260.0"
+                                      alignment="TOP_CENTER"
+                                      spacing="10">
+                                    <padding>
+                                        <Insets left="5.0" right="5.0"/>
+                                    </padding>
+                                    <VBox>
+                                        <JFXButton styleClass="git-icon" fx:id="prettyZooLink"/>
+                                    </VBox>
+                                    <VBox spacing="20">
+                                        <JFXButton styleClass="sponsor-icon" fx:id="sponsorButton"/>
+                                        <Label fx:id="wechatSponsorLabel" styleClass="wechat-sponsor" visible="false"/>
+                                    </VBox>
+                                </HBox>
                             </children>
                             <StackPane.margin>
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
