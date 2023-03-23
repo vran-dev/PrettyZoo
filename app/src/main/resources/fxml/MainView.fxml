@@ -111,19 +111,28 @@
                 </AnchorPane>
                 <StackPane fx:id="mainRightPane" styleClass="white-background">
                     <children>
-                        <AnchorPane StackPane.alignment="CENTER">
+                        <GridPane fx:id="serverBasicInfoPane" prefWidth="650.0" StackPane.alignment="CENTER"
+                                  vgap="0"
+                                  hgap="20.0">
+                            <columnConstraints>
+                                <ColumnConstraints halignment="CENTER"
+                                                   hgrow="ALWAYS"
+                                                   minWidth="240.0"
+                                                   maxWidth="-Infinity"
+                                                   prefWidth="650.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints valignment="CENTER"/>
+                            </rowConstraints>
                             <children>
                                 <Label fx:id="prettyZooLabel" alignment="CENTER" contentDisplay="CENTER"
                                        styleClass="prettyZoo"
-                                       minHeight="300"
+                                       minHeight="220"
                                        minWidth="300"
-                                       AnchorPane.leftAnchor="0.0"
-                                       AnchorPane.rightAnchor="0.0"
-                                       AnchorPane.topAnchor="50.0"/>
-                                <HBox AnchorPane.leftAnchor="50.0"
-                                      AnchorPane.rightAnchor="0.0"
-                                      AnchorPane.topAnchor="260.0"
-                                      alignment="TOP_CENTER"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="0"
+                                />
+                                <HBox alignment="TOP_CENTER"
+                                      GridPane.columnIndex="0" GridPane.rowIndex="1"
                                       spacing="10">
                                     <padding>
                                         <Insets left="5.0" right="5.0"/>
@@ -140,7 +149,7 @@
                             <StackPane.margin>
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                             </StackPane.margin>
-                        </AnchorPane>
+                        </GridPane>
                     </children>
                     <padding>
                         <Insets right="30" left="30" bottom="30" top="30"/>
