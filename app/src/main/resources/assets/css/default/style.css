@@ -558,9 +558,9 @@
 
 /*server list item */
 .server-item-select {
-    -fx-background-color: #444444;
-    -fx-border-color: #DDD;
-    -fx-border-width: 1 1 1 1;
+    -fx-background-color: #818181;
+    /*-fx-border-color: #DDD;*/
+    /*-fx-border-width: 1 1 1 1;*/
     -fx-border-radius: 8;
     -fx-background-radius: 8;
     -fx-text-fill: #FFF;
@@ -580,7 +580,7 @@
 }
 
 .server-item:hover {
-    -fx-effect: dropshadow(three-pass-box, #dcdcdc, 8, 0.3, 1.8, 1.8);
+    -fx-effect: dropshadow(three-pass-box, #e3e3e3, 8, 0.3, 1.8, 1.8);
 }
 
 .server-progress-indicator {
