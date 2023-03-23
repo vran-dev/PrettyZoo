@@ -812,7 +812,7 @@
 .node-info-field {
     -fx-border-color: transparent transparent transparent transparent;
     -fx-background-color: #1e1e1e;
-    -fx-text-fill: #a9a9a9;
+    -fx-text-fill: #e3e3e3;
     -fx-pref-width: 200px;
 }
 
