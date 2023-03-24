@@ -1,6 +1,5 @@
-
 <p align="center">
-    <img src="release/img/icon.png">
+    <img src="release/img/icon.png" width="200">
 </p>
 
 
@@ -10,12 +9,12 @@
 
 English |  [中文](README_CN.md)
 
-
 # What
 
-[PrettyZoo](https://github.com/vran-dev/PrettyZoo) is a GUI for [Zookeeper](https://zookeeper.apache.org/) created by JavaFX and Apache Curator Framework.
+[PrettyZoo](https://github.com/vran-dev/PrettyZoo) is a GUI for [Zookeeper](https://zookeeper.apache.org/) created by
+JavaFX and Apache Curator Framework.
 
-You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/releases),  support
+You can download and install at [Release](https://github.com/vran-dev/PrettyZoo/releases), support
 
 - Windows (msi)
 - Mac (dmg)
@@ -42,13 +41,20 @@ xattr -rc /Applications/prettyZoo.app
 
 # TODO
 
-1. - [x] Support i18n (V1.9.0+)
-2. - [ ] terminal highlight
-3. - [x] global font size change (v1.6.0+)
-4. - [x] node data highlight (V1.7.0+)
-5. - [x] migration UI library to   [Jfoenix](https://github.com/sshahine/JFoenix) ( V1.8.0+)
-6. - [ ] zookeeper monitor
-7. - [x] log dashboard (v1.9.3)
+1.
+    - [x] Support i18n (V1.9.0+)
+2.
+    - [ ] terminal highlight
+3.
+    - [x] global font size change (v1.6.0+)
+4.
+    - [x] node data highlight (V1.7.0+)
+5.
+    - [x] migration UI library to   [Jfoenix](https://github.com/sshahine/JFoenix) ( V1.8.0+)
+6.
+    - [ ] zookeeper monitor
+7.
+    - [x] log dashboard (v1.9.3)
 
 # Feature
 
@@ -56,7 +62,7 @@ xattr -rc /Applications/prettyZoo.app
 2. Support real-time node synchronize
 3. Support ACL
 4. Support SSH tunnel
-5. Support config export /  import
+5. Support config export / import
 6. Support node create / search / update / delete
 7. Support terminal operation
 8. Support **JSON** / **XML** data pretty format
@@ -86,7 +92,6 @@ By wechat sponsor code
 - [ZooKeeper GUI 客户端](http://vip.iocoder.cn/Zookeeper/PrettyZoo/)  by 「芋道源码」
 
 - [PrettyZoo, 颜值与功能双在线的 Zookeeper 可视化工具](https://mp.weixin.qq.com/s/TkFirILto_moEv_kjBBPFw)
-
 
 # Supported by
 
