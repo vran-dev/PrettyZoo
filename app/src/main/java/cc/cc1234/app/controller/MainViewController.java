@@ -95,7 +95,13 @@ public class MainViewController {
     private MenuItem fontSizeMenuItem;
 
     @FXML
-    private Hyperlink prettyZooLink;
+    private Button prettyZooLink;
+
+    @FXML
+    private Button sponsorButton;
+
+    @FXML
+    private Label wechatSponsorLabel;
 
     private ServerViewController serverViewController = FXMLs.getController("fxml/ServerView.fxml");
 
@@ -122,8 +128,20 @@ public class MainViewController {
 
         initMenuAction();
         serverViewController.setOnClose(() -> this.serverListView.selectionModelProperty().get().clearSelection());
-        prettyZooLink.setOnMouseClicked(e -> HostServiceContext.get().showDocument(prettyZooLink.getText()));
+        prettyZooLink.setOnMouseClicked(e -> HostServiceContext.get()
+            .showDocument("https://github.com/vran-dev/PrettyZoo"));
         initFontChangeButton();
+        initSponsorButton();
+    }
+
+    private void initSponsorButton() {
+        sponsorButton.setOnMouseEntered(e -> {
+            wechatSponsorLabel.setVisible(true);
+        });
+
+        sponsorButton.setOnMouseExited(e -> {
+            wechatSponsorLabel.setVisible(false);
+        });
     }
 
     public StackPane getRootStackPane() {
@@ -145,32 +163,32 @@ public class MainViewController {
         checkUpdateButton.getStyleClass().remove("check-update-button");
         checkUpdateButton.setGraphic(indicator);
         VersionChecker.hasNewVersion((latestVersion, features) -> {
-                    String title = "New version";
-                    final String content = new StringBuilder()
-                            .append("latest: ").append(latestVersion).append("\r\n")
-                            .append("yours: v").append(Version.VERSION).append("\r\n")
-                            .append("features: \r\n").append(features)
-                            .toString();
-                    checkUpdateButton.setOnAction(e2 ->
-                            Dialog.confirm(title, content, HostServiceContext::jumpToReleases));
-                    checkUpdateButton.getStyleClass().add("new-version");
-                    checkUpdateButton.setTooltip(new Tooltip("New version " + latestVersion + " released"));
-                    checkUpdateButton.setGraphic(null);
-                },
-                () -> {
-                    checkUpdateButton.getStyleClass().add("check-update-button");
-                    checkUpdateButton.setGraphic(null);
-                    if (!ignoreToast) {
-                        VToast.info(ResourceBundleUtils.getContent("action.check-update.no-change"));
-                    }
-                },
-                ex -> {
-                    checkUpdateButton.getStyleClass().add("check-update-button");
-                    checkUpdateButton.setGraphic(null);
-                    if (!ignoreToast) {
-                        VToast.info(ex.getMessage());
-                    }
-                });
+                String title = "New version";
+                final String content = new StringBuilder()
+                    .append("latest: ").append(latestVersion).append("\r\n")
+                    .append("yours: v").append(Version.VERSION).append("\r\n")
+                    .append("features: \r\n").append(features)
+                    .toString();
+                checkUpdateButton.setOnAction(e2 ->
+                    Dialog.confirm(title, content, HostServiceContext::jumpToReleases));
+                checkUpdateButton.getStyleClass().add("new-version");
+                checkUpdateButton.setTooltip(new Tooltip("New version " + latestVersion + " released"));
+                checkUpdateButton.setGraphic(null);
+            },
+            () -> {
+                checkUpdateButton.getStyleClass().add("check-update-button");
+                checkUpdateButton.setGraphic(null);
+                if (!ignoreToast) {
+                    VToast.info(ResourceBundleUtils.getContent("action.check-update.no-change"));
+                }
+            },
+            ex -> {
+                checkUpdateButton.getStyleClass().add("check-update-button");
+                checkUpdateButton.setGraphic(null);
+                if (!ignoreToast) {
+                    VToast.info(ex.getMessage());
+                }
+            });
     }
 
     private void initMenuAction() {
@@ -200,12 +218,12 @@ public class MainViewController {
             try (StringWriter writer = new StringWriter()) {
                 properties.store(writer, null);
                 Dialog.confirmEditable(ResourceBundleUtils.getContent("main.menuBar.config.zookeeper-prop"),
-                        writer.toString(),
-                        content -> {
-                            prettyZooFacade.saveZookeeperSystemProperties(content);
-                            Platform.runLater(() ->
-                                    VToast.info(ResourceBundleUtils.getContent("notification.save.success")));
-                        });
+                    writer.toString(),
+                    content -> {
+                        prettyZooFacade.saveZookeeperSystemProperties(content);
+                        Platform.runLater(() ->
+                            VToast.info(ResourceBundleUtils.getContent("notification.save.success")));
+                    });
             } catch (IOException ex) {
                 log.error("load zookeeper properties error", ex);
                 throw new RuntimeException(ex);
@@ -216,8 +234,8 @@ public class MainViewController {
     public void bindShortcutKey() {
         serverAddButton.setTooltip(new Tooltip(ShortcutKeys.NEW_SERVER.key().getDisplayText()));
         rootStackPane.getScene()
-                .getAccelerators()
-                .put(ShortcutKeys.NEW_SERVER.key(), () -> serverViewController.show(mainRightPane));
+            .getAccelerators()
+            .put(ShortcutKeys.NEW_SERVER.key(), () -> serverViewController.show(mainRightPane));
     }
 
     private void initFontChangeButton() {
@@ -232,7 +250,7 @@ public class MainViewController {
             }
         }));
         var valueTextBinding = Bindings.createStringBinding(() -> fontSizeSlider.valueProperty().intValue() + "",
-                fontSizeSlider.valueProperty());
+            fontSizeSlider.valueProperty());
         fontSizeMenuItem.textProperty().bind(valueTextBinding);
 
         var langToggleGroup = new ToggleGroup();
@@ -271,7 +289,7 @@ public class MainViewController {
             return;
         }
         Platform.runLater(() -> Try.of(() -> prettyZooFacade.exportConfig(file))
-                .onFailure(e -> VToast.error(e.getMessage())));
+            .onFailure(e -> VToast.error(e.getMessage())));
     }
 
     private void onImportAction() {
@@ -283,15 +301,15 @@ public class MainViewController {
             return;
         }
         Try.of(() -> prettyZooFacade.importConfig(configFile))
-                .onFailure(e -> Platform.runLater(() -> VToast.error(e.getMessage())));
+            .onFailure(e -> Platform.runLater(() -> VToast.error(e.getMessage())));
     }
 
     private void initServerListView() {
         serverListView.setCellFactory(cellCallback -> {
             var cell = new ZkServerListCell(
-                    server -> serverViewController.connect(mainRightPane, server),
-                    server -> serverViewController.deleteById(server.getId()),
-                    server -> serverViewController.disconnect(server.getId())
+                server -> serverViewController.connect(mainRightPane, server),
+                server -> serverViewController.deleteById(server.getId()),
+                server -> serverViewController.disconnect(server.getId())
             );
             cell.setOnMouseClicked(event -> {
                 if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
@@ -314,13 +332,13 @@ public class MainViewController {
     private void initConfigs() {
         final ConfigurationVO configurationVO = new ConfigurationVO();
         configurationVO.getServers()
-                .addListener((ListChangeListener<? super ServerConfigurationVO>) (change) -> {
-                    if (change.getList().isEmpty()) {
-                        mainSplitPane.setDividerPositions(calculateDividerPositions());
-                    } else {
-                        mainSplitPane.setDividerPositions(0.25);
-                    }
-                });
+            .addListener((ListChangeListener<? super ServerConfigurationVO>) (change) -> {
+                if (change.getList().isEmpty()) {
+                    mainSplitPane.setDividerPositions(calculateDividerPositions());
+                } else {
+                    mainSplitPane.setDividerPositions(0.25);
+                }
+            });
         prettyZooFacade.loadServerConfigurations(new DefaultConfigurationListener(configurationVO));
         serverListView.itemsProperty().set(configurationVO.getServers());
     }

@@ -352,6 +352,36 @@
     -fx-content-display: center;
 }
 
+.git-icon {
+    -fx-background-image: url("../../img/git/github-light.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-size: 22;
+    -fx-pref-height: 28;
+    -fx-pref-width: 28;
+}
+
+.sponsor-icon {
+    -fx-background-image: url("../../img/sponsor/sponsor.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-size: 22;
+    -fx-pref-height: 28;
+    -fx-pref-width: 28;
+}
+
+.wechat-sponsor {
+    -fx-background-image: url("../../img/sponsor/wechat-sponsor.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-size: 210;
+    -fx-pref-height: 210;
+    -fx-pref-width: 220;
+}
+
 /** ======================== default tab panel ========================*/
 .tab-header-background {
     -fx-background-color: #1e1e1e;
@@ -1004,6 +1034,7 @@
     -fx-background-image: url("../../logo/prettyzoo-logo.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
+    -fx-background-size: 300px;
 }
 
 .main-menu-bar {

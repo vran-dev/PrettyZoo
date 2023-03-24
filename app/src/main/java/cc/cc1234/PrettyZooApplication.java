@@ -44,7 +44,7 @@ public class PrettyZooApplication extends Application {
 
     private static Optional<InputStream> getIconStream() {
         InputStream stream = PrettyZooApplication.class.getClassLoader()
-                .getSystemResourceAsStream("assets/logo/prettyzoo-logo.png");
+                .getSystemResourceAsStream("assets/icon/icon.png");
         return Optional.ofNullable(stream);
     }
 
