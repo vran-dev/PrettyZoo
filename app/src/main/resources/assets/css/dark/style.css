@@ -572,9 +572,10 @@
     -fx-opacity: 0.8;
     -fx-border-color: #DDD;
     -fx-border-width: 1 1 1 1;
-    -fx-border-radius: 10px 0px 20px 10px;
-    -fx-background-radius: 10px 0px 20px 10px;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
     -fx-text-fill: #FFF;
+    -fx-effect: none;
 }
 
 .server-item-select .label {
