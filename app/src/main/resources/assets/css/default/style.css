@@ -589,16 +589,13 @@
 
 /*server list item */
 .server-item-select {
-    -fx-background-color: #818181;
-    /*-fx-border-color: #DDD;*/
-    /*-fx-border-width: 1 1 1 1;*/
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-    -fx-text-fill: #FFF;
+    -fx-background-color: #EEE;
+    -fx-border-radius: 10px 0px 20px 10px;
+    -fx-background-radius: 10px 0px 20px 10px;
 }
 
 .server-item-select .label {
-    -fx-text-fill: #FFF;
+    -fx-text-fill: #000;
 }
 
 .server-item {
@@ -619,7 +616,7 @@
 }
 
 .server-select-progress-indicator {
-    -fx-progress-color: #FFF
+    -fx-progress-color: #000
 }
 
 /* menu button & menu item*/
@@ -778,7 +775,8 @@
     -fx-fill: #3a3a3a;
 }
 
-.context-menu .menu-item:focused .text {
+.context-menu .menu-item:hover .text {
+    -fx-font-family: "Arial";
     -fx-fill: #000;
     -fx-font-weight: bold;
 }
