@@ -589,9 +589,11 @@
 
 /*server list item */
 .server-item-select {
-    -fx-background-color: #EEE;
-    -fx-border-radius: 10px 0px 20px 10px;
-    -fx-background-radius: 10px 0px 20px 10px;
+    -fx-border-color: linear-gradient(from 50% 0% to 50% 50%, #EEE, #DDD);
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #FFF, #eaeaea);
+    -fx-effect: dropshadow(three-pass-box, #FFF, 8, 0.3, 1.8, 1.8);
 }
 
 .server-item-select .label {
