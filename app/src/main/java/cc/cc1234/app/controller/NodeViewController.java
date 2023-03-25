@@ -163,8 +163,8 @@ public class NodeViewController {
             String content = String.format(rb.getString("nodeDelete.action.confirm.content"), nodes);
             Dialog.confirm(title, content, () -> {
                 Try.of(() -> prettyZooFacade.deleteNode(ActiveServerContext.get(), pathList))
-                        .onFailure(exception -> VToast.error("delete failed:" + exception.getMessage()))
-                        .onSuccess(t -> VToast.info("Request success"));
+                    .onFailure(exception -> VToast.error("delete failed:" + exception.getMessage()))
+                    .onSuccess(t -> VToast.info("Request success"));
             });
         }
     }
@@ -214,7 +214,7 @@ public class NodeViewController {
                         }
 
                         if (mouseEvent.getButton() == MouseButton.PRIMARY
-                                && mouseEvent.getClickCount() == 1) {
+                            && mouseEvent.getClickCount() == 1) {
                             nodeInfoViewController.show(nodeViewRightPane, item.getItem().getValue());
                             return;
                         }
@@ -228,13 +228,13 @@ public class NodeViewController {
         zkNodeTreeView.setCellFactory(view -> new ZkNodeTreeCell(this::onNodeAdd, this::onNodeDelete));
         zkNodeTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         zkNodeTreeView.getSelectionModel()
-                .selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> {
-                    nodeAddViewController.hide();
-                    if (newValue != null) {
-                        nodeInfoViewController.show(nodeViewRightPane, newValue.getValue());
-                    }
-                });
+            .selectedItemProperty()
+            .addListener((observable, oldValue, newValue) -> {
+                nodeAddViewController.hide();
+                if (newValue != null) {
+                    nodeInfoViewController.show(nodeViewRightPane, newValue.getValue());
+                }
+            });
     }
 
     private void switchServer(String serverId) {
@@ -281,7 +281,8 @@ public class NodeViewController {
 
         terminalArea.setEditable(false);
         terminalArea.setWrapText(true);
-        terminalArea.textProperty().addListener((ob, old, newValue) -> terminalArea.setScrollTop(Double.MAX_VALUE));
+        terminalArea.textProperty()
+            .addListener((ob, old, newValue) -> terminalArea.setScrollTop(Double.MAX_VALUE));
         terminalInput.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
                 final String currentServerId = ActiveServerContext.get();
@@ -289,9 +290,9 @@ public class NodeViewController {
                 if ("clear".equals(terminalInput.getText())) {
                     terminalInput.clear();
                     terminalArea.clear();
-                    terminalArea.appendText(server.getLabel() + "\t$\t" + terminalInput.getText());
+                    terminalArea.appendText(server.getLabel() + " $ " + terminalInput.getText());
                 } else {
-                    terminalArea.appendText(server.getLabel() + "\t$\t" + terminalInput.getText() + "\r\n");
+                    terminalArea.appendText(server.getLabel() + " $ " + terminalInput.getText() + "\r\n");
                     prettyZooFacade.executeCommand(currentServerId, terminalInput.getText());
                     terminalInput.clear();
                 }
