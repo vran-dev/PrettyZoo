@@ -589,10 +589,11 @@
 
 /*server list item */
 .server-item-select {
-    -fx-border-color: linear-gradient(from 50% 0% to 50% 50%, #EEE, #DDD);
+    -fx-border-color: linear-gradient(from 20% 20% to 60% 60%, #6d7269, #8b97a2);
     -fx-border-radius: 8;
     -fx-background-radius: 8;
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #FFF, #eaeaea);
+    /*-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #FFF, #eaeaea);*/
+    -fx-background-color: #fdfdfd;
     -fx-effect: dropshadow(three-pass-box, #FFF, 8, 0.3, 1.8, 1.8);
 }
 
@@ -602,7 +603,7 @@
 
 .server-item {
     -fx-background-color: #FFF;
-    -fx-border-color: #DDD;
+    -fx-border-color: #f1f1f1;
     -fx-border-width: 1 1 1 1;
     -fx-border-radius: 8;
     -fx-background-radius: 8;
@@ -610,7 +611,7 @@
 }
 
 .server-item:hover {
-    -fx-effect: dropshadow(three-pass-box, #e3e3e3, 8, 0.3, 1.8, 1.8);
+    -fx-effect: dropshadow(three-pass-box, #eeeeee, 5, 0.3, 1.8, 1.8);
 }
 
 .server-progress-indicator {

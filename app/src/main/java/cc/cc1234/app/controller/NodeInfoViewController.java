@@ -152,7 +152,9 @@ public class NodeInfoViewController {
             label.setTooltip(zxidLabelTooltip);
             label.setOnMouseClicked(e -> switchZxid());
         });
-        smartFormatButton.setOnAction(e -> dataFormat());
+        smartFormatButton.setOnAction(e -> {
+            dataFormat();
+        });
         rawFormatButton.setOnAction(e -> dataRawFormat());
         Charset.availableCharsets()
             .entrySet()
