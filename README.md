@@ -34,7 +34,7 @@ sudo spctl --master-disable
 3. run the follow command
 
 ```shell
-xattr -rc /Applications/prettyZoo.app
+sudo xattr -rc /Applications/prettyZoo.app
 ```
 
 4. Enjoy it
