@@ -38,10 +38,10 @@ subprojects {
     }
 
     ext {
-        slf4jVersion = '1.7.28'
+        slf4jVersion = '2.0.9'
         jacksonVersion = '2.12.0'
-        log4jVersion = '2.20.0'
-        junitVersion = '4.12'
+        log4jVersion = '2.21.1'
+        junitVersion = '4.13.1'
         zookeeperVersion = '3.6.4'
         curatorRecipesVersion = '5.4.0'
         guavaVersio = '27.0.1-jre'
@@ -50,7 +50,7 @@ subprojects {
         sshjVersion = '0.34.0'
         antlr4RuntimeVersion = '4.9.2'
         commonsIoVersion = '2.10.0'
-        lombokVersion = '1.18.22'
+        lombokVersion = '1.18.30'
         mapStructVersion = '1.5.3.Final'
     }
 
