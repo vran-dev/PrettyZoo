@@ -4,6 +4,24 @@
 
 ![release-version](https://img.shields.io/github/v/release/vran-dev/prettyZoo?include_prereleases&style=for-the-badge) ![downloads](https://img.shields.io/github/downloads/vran-dev/PrettyZoo/total?style=for-the-badge) ![language](https://img.shields.io/github/languages/top/vran-dev/PrettyZoo?style=for-the-badge) ![licence](https://img.shields.io/github/license/vran-dev/PrettyZoo?style=for-the-badge) ![stars](https://img.shields.io/github/stars/vran-dev/PrettyZoo?style=for-the-badge)
 
+# 声明
+
+Hello PrettyZoo 的用户们，
+
+自从2019年9月30日发布了第一个版本以来，已经过去了将近4年的时间。我想借此机会向每一位用户表达最深的感谢，感谢你们在这段时间里一直陪伴并支持着这个项目。
+
+然而，由于时间和精力的限制，我不得不决定停止对这个项目的维护。这是一个艰难的决定，但我相信这是对目前情况的最佳选择，这样的限制让我无法继续全力以赴地支持和更新这个项目。
+
+在这些年里，我们共同见证了项目的成长和发展。我非常珍视每一个用户给予我们的反馈和建议，你们的支持是我坚持下去的动力。但是，我也要诚实地面对现实，我无法再保证项目能够得到持续的更新和维护。
+
+尽管我将停止对项目的维护，但我希望这个开源项目能够继续为大家带来价值。项目归档后，您仍然可以通过 fork 该项目来进行开发和迭代，鼓励感兴趣的开发者和用户以自己的方式进行开发和贡献，让这个项目以另一种形式得意延续下去。
+
+再次感谢每一位用户的支持和理解, 再次对该项目抱有期待的用户说声抱歉
+
+2024-01-09 22:15 by vran
+
+> 回首向来萧瑟处，归去，也无风雨也无晴。
+
 # 语言
 
 [English](README.md)  | 中文

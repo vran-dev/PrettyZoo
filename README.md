@@ -5,6 +5,23 @@
 
 ![release-version](https://img.shields.io/github/v/release/vran-dev/prettyZoo?include_prereleases&style=for-the-badge) ![downloads](https://img.shields.io/github/downloads/vran-dev/PrettyZoo/total?style=for-the-badge) ![language](https://img.shields.io/github/languages/top/vran-dev/PrettyZoo?style=for-the-badge) ![licence](https://img.shields.io/github/license/vran-dev/PrettyZoo?style=for-the-badge) ![stars](https://img.shields.io/github/stars/vran-dev/PrettyZoo?style=for-the-badge)
 
+#  Announce
+
+Hello PrettyZoo users.
+
+Since the first version was released on September 30, 2019, almost 4 years have passed. I would like to take this opportunity to express my deepest gratitude to each and every one of you users for being with and supporting this project throughout this time.
+
+However, due to time and energy constraints, I have had to decide to stop maintaining the project. This is a difficult decision, but I believe it is the best choice for the current situation, and such limitations prevent me from continuing to fully support and update the project.
+
+Over the years, we have seen the project grow and develop together. I value the feedback and suggestions that every user has given us, and your support is what keeps me going. However, I have to be honest and face the reality that I can no longer guarantee that the project will be continuously updated and maintained.
+
+Although I will no longer be maintaining the project, I hope that this open source project will continue to bring value to all of you. After the project is archived, you can still develop and iterate on the project by forking it, and interested developers and users are encouraged to develop and contribute in their own way, so that the project can continue in another form of interest.
+
+Thanks again to everyone for their support and understanding, and apologies to anyone who had expectations for the project!
+
+2024-01-09 22:15 by vran
+
+
 # Language
 
 English |  [中文](README_CN.md)
